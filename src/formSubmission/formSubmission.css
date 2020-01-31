@@ -19,6 +19,7 @@
 
 /*Turns the label into buttons that can be used to get rid of the normal buttons used for radio buttons*/
 label {
+    display:inline-block;
     background-color: #e4e4e4;
     color: rgba(0, 0, 0, 0.6);
     font-size: 16px;
@@ -29,6 +30,7 @@ label {
     /*border: 1px solid rgba(0, 0, 0, 0.1);*/
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
     transition: all 0.15s ease-in-out; /*The decadence*/
+    
 }
 
 label:hover {
@@ -49,7 +51,42 @@ input[type=radio]{
     width: 1px;
     border: 0;
     overflow: hidden;
+}
+
+/*Turns the label into buttons that can be used to get rid of the normal buttons used for radio buttons*/
+label.checkbox {
+    display:inline-block;
+    background-color: #e4e4e4;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 16px;
+    /*line-height: 1;*/
+    text-align: center;
+    padding: 8px 16px;
+    /*margin-right: -1px;*/
+    /*border: 1px solid rgba(0, 0, 0, 0.1);*/
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+    transition: all 0.15s ease-in-out; /*The decadence*/
     
+}
+
+label.checkbox:hover {
+    cursor: pointer;
+}
+
+input:checked + label.checkbox {
+    background-color: #8794dc;
+    color: rgba(0, 0, 0, 1);
+    box-shadow: none;
+}
+
+/*Hides the actual checkbox buttons away*/
+input[type=checkbox]{
+    position: absolute !important;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    width: 1px;
+    border: 0;
+    overflow: hidden;
 }
 
 /*input[type=radio]{

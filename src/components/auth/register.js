@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import {Redirect} from 'react-router-dom'
+import {connect} from 'react-redux';
+import {registerUser} from '../../store/actions/authActions';
 
 //Component providing registration functionality for admin to register user
 class Register extends Component {
@@ -9,6 +11,10 @@ class Register extends Component {
     confirmpassword: ''
   }
 
+  // componentDidUpdate = () => {
+  //   this.props.signUp(this.state);
+  // }
+
   handleChange = (event) => {
     this.setState({
       [event.target.id]: event.target.value
@@ -17,16 +23,21 @@ class Register extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    axios.post(`http://localhost:4000/register`, {email: this.state.email, password: this.state.password, confirmpassword: this.state.confirmpassword})
-      .then(response => {
-        console.log(response);
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    this.props.signUp(this.state);
+    // if (this.props.authorized == true){
+    //   console.log(this.props.authorized);
+    // } else {
+    //   console.log();
+    // }
   };
 
   render(){
+    console.log(this.props.authorized);
+    const {authorized} = this.props;
+
+    if (authorized.auth === true){
+      return <Redirect to='/welcome' />
+    }
     return(
       <div>
         <form onSubmit ={this.handleSubmit}>
@@ -51,5 +62,17 @@ class Register extends Component {
     )
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    authorized: state.auth,
+    authError: state.authError
+  };
+}
 
-export default Register
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signUp: (user) => dispatch(registerUser(user))
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register)

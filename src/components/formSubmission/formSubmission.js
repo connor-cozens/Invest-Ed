@@ -3,6 +3,12 @@ import './formSubmission.css';
 
 var selectedBases = [];
 
+class formSubmission extends React.Component{
+  //States 
+  //Props
+  //WATCH THE REACT TUTORIALS
+}
+
 function formSubmission() {
     return (
         <div className = "formSubmission">
@@ -837,6 +843,13 @@ function formSubmission() {
             <option value="Zimbabwe">Zimbabwe</option>
             </select>
 
+            <p>Organizational Traits</p><br></br>Select all that apply:<br></br>
+              <input type="checkbox" id="orgTrait1" name="organizationalTrait" value="Led by independent board of trustees or CEO"/> <label for="orgTrait1" class="checkbox">Led by Independent Board of Trustees or CEO</label>
+              <input type="checkbox" id="orgTrait2" name="organizationalTrait" value="Aim to address issues of common good"/> <label for="orgTrait2" class="checkbox">Aim to address issues of common good</label>
+              <input type="checkbox" id="orgTrait3" name="organizationalTrait" value="Not-for-profit oriented"/> <label for="orgTrait3" class="checkbox">Not-for-profit oriented</label>
+              <input type="checkbox" id="orgTrait4" name="organizationalTrait" value="Use own financial resources"/> <label for="orgTrait4" class="checkbox">Use own financial resources</label>
+              <input type="checkbox" id="orgTrait5" name="organizationalTrait" value="Commitment to measurement"/> <label for="orgTrait5" class="checkbox">Commitment to measurement</label>
+              <input type="checkbox" id="orgTrait6" name="organizationalTrait" value="Explicit intention to have social impact in the education sector"/> <label for="orgTrait6" class="checkbox">Explicit intention to have social impact in the education sector</label>
 
             <h4>Implementer</h4>
 

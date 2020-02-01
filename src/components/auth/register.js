@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import {Redirect} from 'react-router-dom'
+import React, { Component } from 'react';
+import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {registerUser} from '../../store/actions/authActions';
 

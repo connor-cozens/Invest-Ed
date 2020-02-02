@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {registerUser} from '../../store/actions/authActions';
+import './auth.css';
 
 //Component providing registration functionality for admin to register user
 class Register extends Component {
@@ -24,11 +25,6 @@ class Register extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.props.signUp(this.state);
-    // if (this.props.authorized == true){
-    //   console.log(this.props.authorized);
-    // } else {
-    //   console.log();
-    // }
   };
 
   render(){
@@ -38,26 +34,38 @@ class Register extends Component {
     if (authorized.auth === true){
       return <Redirect to='/welcome' />
     }
+
+    const errors = [];
+    if (authorized.authError){
+      authorized.authError.forEach((error) => {
+        errors.push(
+          <div key = {error} className="alert alert-danger alert-dismissible fade show" role={error}>
+            {error}
+          </div>
+        )
+      });
+    }
+
     return(
-      <div>
-        <form onSubmit ={this.handleSubmit}>
-          <h2>Register a Research Team Member</h2>
-          <div>
-            <label htmlFor = "email">Email</label>
-            <input type = "email" id = "email" onChange={this.handleChange}/>
+      <div className = "container">
+        <div className = "row mt-5">
+          <div className = "col-md-6 m-auto">
+            <div className = "card card-body text-center">
+              <form onSubmit ={this.handleSubmit}>
+                <h2>Research Member Registration</h2>
+                  <div className = "registerform">
+                    <br/>
+                    {errors}
+                    <input type = "email" id = "email" placeholder = "Enter researcher email" onChange={this.handleChange}/>
+                    <input type = "username" id = "username" placeholder = "Enter username"/>
+                    <input type = "password" id = "password" placeholder = "Enter password" onChange={this.handleChange}/>
+                    <input type = "password" id = "confirmpassword" placeholder = "Confirm password" onChange={this.handleChange}/>
+                    <input type = "submit" value = "Register"/>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
-          <div>
-            <label htmlFor = "password">Password</label>
-            <input type = "password" id = "password" onChange={this.handleChange}/>
-          </div>
-          <div>
-            <label htmlFor = "confirmpassword">Confirm Password</label>
-            <input type = "password" id = "confirmpassword" onChange={this.handleChange}/>
-          </div>
-          <div>
-            <button type = "submit">Register</button>
-          </div>
-        </form>
       </div>
     )
   }

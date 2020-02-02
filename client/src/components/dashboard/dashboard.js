@@ -6,11 +6,17 @@ class dashboard extends Component {
   render() {
     const {authorized} = this.props;
     if (authorized.auth === false){
-      return <Redirect to='/' />
+      return <Redirect to='/register' />
     }
     return (
-      <div>
-        <h1> You have successfully registered a team member. Welcome to your dashboard </h1>
+      <div className = "container">
+        <div className = "row mt-5">
+          <div className = "col-md-8 m-auto">
+            <div className = "card card-body text-center">
+              <h4>You have successfully registered a research team member. Welcome to your dashboard </h4>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }

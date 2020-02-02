@@ -1,0 +1,62 @@
+/*Register page formatting*/
+.registerform {
+    margin: 2% 15% auto;
+    margin-bottom: 100px;
+}
+
+  .registerform input  {
+    /* width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    resize: vertical;
+    font-size: 20px; */
+    -webkit-appearance: none;
+    width: 100%;
+    border: 0;
+    font-family: inherit;
+    padding: 12px 0px;
+    margin: 15px auto;
+    height: 48px;
+    font-size: 16px;
+    font-weight: 500;
+    border-bottom: 2px solid #C8CCD4;
+    background: none;
+    border-radius: 0;
+    color: #223254;
+    transition: all .15s ease;
+    &:hover;
+      background: rgba(#223254,.03);
+    &:not(:placeholder-shown);
+      +: span;
+        color: #5A667F;
+        transform: translateY(-26px) scale(.75);
+    &:focus;
+      background: none;
+      outline: none;
+      +: span;
+        color: #262729;
+        transform: translateY(-26px) scale(.75);
+        +: .border;
+            transform: scaleX(1);
+  }
+
+  input[value=Register] {
+      margin-top: 30px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 25px auto;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10% auto;
+      display:block;
+      font-size: 18px;
+  }
+
+  h2 {
+     text-align: center;
+ }

@@ -17,6 +17,31 @@
 }*/
 
 
+button[type=button]{
+    display:inline-block;
+    border: none;
+    background-color: #bd87dc;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 16px;
+    /*line-height: 1;*/
+    text-align: center;
+    padding: 8px 16px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    /*margin-right: -1px;*/
+    /*border: 1px solid rgba(0, 0, 0, 0.1);*/
+    /*box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);*/
+    transition: all 0.15s ease-in-out; /*The decadence*/
+    
+}
+
+button[type=button]:hover {
+    background-color: #ce6d6d;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+
 /*Turns the label into buttons that can be used to get rid of the normal buttons used for radio buttons*/
 label {
     display:inline-block;
@@ -26,6 +51,7 @@ label {
     /*line-height: 1;*/
     text-align: center;
     padding: 8px 16px;
+    margin-bottom: 5px;
     /*margin-right: -1px;*/
     /*border: 1px solid rgba(0, 0, 0, 0.1);*/
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
@@ -62,6 +88,7 @@ label.checkbox {
     /*line-height: 1;*/
     text-align: center;
     padding: 8px 16px;
+    margin-bottom: 5px;
     /*margin-right: -1px;*/
     /*border: 1px solid rgba(0, 0, 0, 0.1);*/
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);

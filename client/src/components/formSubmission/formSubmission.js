@@ -1,15 +1,33 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import './formSubmission.css';
 
-var selectedBases = [];
+class formSubmission extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      internationalBases: []//,
+      //operations: []
+    };
 
-// class formSubmission extends React.Component{
-//   //States
-//   //Props
-//   //WATCH THE REACT TUTORIALS
-// }
+    this.addIBase = this.addIBase.bind(this);
+  }
 
-function formSubmission() {
+  buttonMaker(props){
+    return <p>{props.name}</p>
+  }
+
+  addIBase(e){
+    var base = e.currentTarget.value;
+    console.log(typeof(this.state.internationalBases));
+    //Check if it's already there
+    this.state.internationalBases.push(<this.buttonMaker key={base} name={base}/>)
+    console.log(base);
+    ReactDOM.render(<ul>{this.state.internationalBases}</ul>, document.getElementById('iBases'))
+  }
+
+
+  render(){
     return (
         <div className = "formSubmission">
             <h3>Form Submission</h3>
@@ -42,7 +60,7 @@ function formSubmission() {
             <br></br><br></br>
 
             <p>International Base</p>
-            <select id="internationalBase" name="country">
+            <select id="internationalBase" name="country" onChange={this.addIBase}>
             <option value="base">Choose the International Base Countries</option>
             <option value="Afganistan">Afghanistan</option>
             <option value="Albania">Albania</option>
@@ -292,7 +310,8 @@ function formSubmission() {
             <option value="Zimbabwe">Zimbabwe</option>
             </select>
 
-            <p id = "selectedBases"></p>
+            <div id="iBases"></div>
+
 
             <p>Operation</p>
 
@@ -868,8 +887,8 @@ function formSubmission() {
             </form>
             </div>
         </div>
-
     );
+  }
 }
 
 /*function multiSelectIBases(){

@@ -6,7 +6,11 @@ import {
 
 export const registerUser = (user) => (dispatch) => {
   axios.post(`http://localhost:4000/register`, {
-    email: user.email, 
+    firstname: user.firstname,
+    lastname: user.lastname,
+    email: user.email,
+    organization: user.organization,
+    accesslevel: user.accesslevel,
     password: user.password,
     confirmpassword: user.confirmpassword})
     .then(response => {

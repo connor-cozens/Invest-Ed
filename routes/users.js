@@ -15,8 +15,12 @@ module.exports = (app, db, body, oneOf, validationResult) => {
   });
 
   app.post('/register', ([
+    body('firstname', 'first name field cannot be empty').notEmpty(),
+    body('lastname', 'last name field cannot be empty').notEmpty(),
     body('email', 'email field cannot be empty').notEmpty(),
     body('email', 'invalid email address').isEmail(),
+    body('accesslevel', 'access level must be selected').notEmpty(),
+    body('accesslevel', 'access level must be selected').custom(((value, {req}) => value != "Select")),
     body('password', 'password field cannot be empty').notEmpty(),
     body('confirmpassword', 'passwords do not match').exists().custom((value, {req}) => value === req.body.password)
   ]),
@@ -32,6 +36,10 @@ module.exports = (app, db, body, oneOf, validationResult) => {
     else {
       const email = req.body.email;
       const password = req.body.password;
+      const firstname = req.body.firstname;
+      const lastname = req.body.lastname;
+      const organization = req.body.organization;
+      const accesslevel = req.body.accesslevel;
 
       user.findOne({where: {email: email}})
         .then((address) => {
@@ -43,7 +51,7 @@ module.exports = (app, db, body, oneOf, validationResult) => {
           }
           else {
             bcrypt.hash(password, saltRounds, function(err, hash) {
-              db.query('INSERT INTO credentials (email, password) VALUES (?, ?)', [email, hash], (err, results, fields) => {
+              db.query('INSERT INTO credentials (email, password, firstname, lastname, accesslevel, organization) VALUES (?, ?, ?, ?, ?, ?)', [email, hash, firstname, lastname, accesslevel, organization], (err, results, fields) => {
                 if (err) {
                   throw err
                 } else {

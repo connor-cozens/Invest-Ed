@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './formSubmission.css';
+import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom'
 
 class formSubmission extends React.Component{
   constructor(props){
@@ -132,8 +134,12 @@ class formSubmission extends React.Component{
     }
   }
 
-
   render(){
+    const {authorized} = this.props;
+    if (authorized.auth === false) {
+      return <Redirect to='/register' />
+    }
+
     return (
         <div className = "formSubmission">
             <h3>Form Submission</h3>
@@ -1270,4 +1276,11 @@ function createButton(value){
 }*/
 
 
-export default formSubmission;
+const mapStateToProps = (state) => {
+  return {
+    authorized: state.auth,
+    authError: state.authError
+  };
+}
+
+export default connect(mapStateToProps)(formSubmission)

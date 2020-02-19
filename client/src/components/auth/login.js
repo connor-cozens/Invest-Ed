@@ -44,24 +44,22 @@ class Login extends Component {
     }
 
     return(
-      <div className = "container">
-        <div className = "row mt-5">
+      <div className = "row mt-5">
+        <div className = "col-md-3 m-auto">
           <form onSubmit ={this.handleSubmit} className="form-inline">
-            <div className = "col-md-8 m-auto">
-              <div className = "card card-body text-center">
-                <h2>Login</h2>
-                  <div className = "loginform">
-                    <br/>
-                    {errors}
-                    <input type = "email" id = "email" placeholder = "Enter email*" onChange={this.handleChange}/>
-                    <input type = "password" id = "password" placeholder = "Enter password*" onChange={this.handleChange}/>
-                    <input type = "submit" value = "Login"/>
-                  </div>
+            <div className = "card card-body text-center">
+              <h2>Login</h2>
+                <div className = "loginform">
+                  <br/>
+                  {errors}
+                  <input type = "email" id = "email" placeholder = "Email" onChange={this.handleChange}/>
+                  <input type = "password" id = "password" placeholder = "Password" onChange={this.handleChange}/>
+                  <input type = "submit" value = "Login"/>
                 </div>
               </div>
             </form>
           </div>
-      </div>
+        </div>
     );
   }
 }

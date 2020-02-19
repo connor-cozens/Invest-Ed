@@ -29,7 +29,7 @@ class Login extends Component {
     const {authorized} = this.props;
 
     if (authorized.auth === true){
-      return <Redirect to='/login' />
+      return <Redirect to='/welcome' />
     }
 
     const errors = [];

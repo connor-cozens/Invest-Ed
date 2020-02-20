@@ -4,16 +4,6 @@ const saltRounds = 10;
 const user = require('../models/User');
 
 module.exports = (app, db, body, oneOf, validationResult) => {
-  app.get('/log', (req, res) => {
-    db.query("SELECT * FROM credentials", (err, rows, fields) => {
-      if (err) {
-        throw err
-      } else {
-        res.send(rows);
-      }
-    })
-  });
-
   app.post('/login', ([
     body('email', 'email field cannot be empty').notEmpty(),
     body('email', 'invalid email address').isEmail(),
@@ -94,6 +84,7 @@ module.exports = (app, db, body, oneOf, validationResult) => {
             res.json(obj);
           }
           else {
+            // If no user found with same email, then go ahead and insert user credentials into database, including hashed password
             bcrypt.hash(password, saltRounds, function(err, hash) {
               db.query('INSERT INTO credentials (email, password, firstname, lastname, accesslevel, organization) VALUES (?, ?, ?, ?, ?, ?)', [email, hash, firstname, lastname, accesslevel, organization], (err, results, fields) => {
                 if (err) {

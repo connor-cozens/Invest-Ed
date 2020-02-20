@@ -136,7 +136,7 @@ class formSubmission extends React.Component{
 
   render(){
     const {authorized} = this.props;
-    if (authorized.auth === false) {
+    if (authorized === false) {
       return <Redirect to='/register' />
     }
 
@@ -1278,8 +1278,7 @@ function createButton(value){
 
 const mapStateToProps = (state) => {
   return {
-    authorized: state.auth,
-    authError: state.authError
+    authorized: state.authenticate.auth
   };
 }
 

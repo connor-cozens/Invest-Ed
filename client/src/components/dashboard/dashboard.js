@@ -6,7 +6,7 @@ import {Redirect} from 'react-router-dom'
 class dashboard extends Component {
   render() {
     const {authorized} = this.props;
-    if (authorized.auth === false){
+    if (authorized === false){
       return <Redirect to='/' />
     }
     return (
@@ -36,8 +36,7 @@ class dashboard extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    authorized: state.auth,
-    authError: state.authError
+    authorized: state.authenticate.auth,
   };
 }
 

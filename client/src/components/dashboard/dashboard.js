@@ -7,7 +7,7 @@ class dashboard extends Component {
   render() {
     const {authorized} = this.props;
     if (authorized.auth === false){
-      return <Redirect to='/register' />
+      return <Redirect to='/' />
     }
     return (
       <div>

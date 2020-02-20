@@ -4,7 +4,7 @@
     margin-bottom: 100px;
 }
 
-  .registerform input{
+  .registerform input, .loginform input{
     /* width: 100%;
     padding: 15px;
     border: 1px solid #ccc;
@@ -44,7 +44,7 @@
             transform: scaleX(1);
   }
 
-  .registerform select{
+  .registerform select {
     /* width: 100%;
     padding: 15px;
     border: 1px solid #ccc;

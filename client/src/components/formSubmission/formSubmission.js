@@ -137,9 +137,8 @@ class formSubmission extends React.Component{
   render(){
     const {authorized} = this.props;
     if (authorized === false) {
-      return <Redirect to='/register' />
+      return <Redirect to='/login' />
     }
-
     return (
         <div className = "formSubmission">
             <h3>Form Submission</h3>

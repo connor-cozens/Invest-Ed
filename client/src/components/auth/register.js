@@ -37,7 +37,7 @@ class Register extends Component {
     const {authorized, authError} = this.props;
 
     if (authorized === true){
-      return <Redirect to='/welcome' />
+      return <Redirect to='/register-success' />
     }
 
     const errors = [];

@@ -3,7 +3,9 @@ import {
   REGISTER_SUCCESS,
   REGISTER_ERROR,
   LOGIN_SUCCESS,
-  LOGIN_ERROR
+  LOGIN_ERROR,
+  LOGOUT_SUCCESS,
+  LOGOUT_ERROR
 } from '../reducers/authReducer';
 
 export const registerUser = (user) => (dispatch) => {
@@ -63,4 +65,30 @@ export const loginUser = (user) => (dispatch) => {
       console.log(err);
       dispatch({type: LOGIN_ERROR, payload: err})
     })
+}
+
+export const logoutUser = () => (dispatch) => {
+    try {
+      const deserializedState = localStorage.getItem('state');
+      if (deserializedState !== null){
+        const deserializedStateObj = JSON.parse(deserializedState);
+        console.log(deserializedStateObj.authenticate.auth);
+        if (deserializedStateObj.authenticate.auth){
+          dispatch({type: LOGOUT_SUCCESS});
+        }
+        else{
+          dispatch({type: LOGOUT_ERROR});
+        }
+      }
+      else{
+        dispatch({type: LOGOUT_ERROR});
+      }
+    }
+    catch(err){
+      console.log(err);
+      dispatch({type: LOGOUT_ERROR});
+    }
+
+    // dispatch({type: LOG, payload: errorMsgList});
+    // ;
 }

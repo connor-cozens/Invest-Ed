@@ -72,12 +72,8 @@ export const logoutUser = () => (dispatch) => {
       const deserializedState = localStorage.getItem('state');
       if (deserializedState !== null){
         const deserializedStateObj = JSON.parse(deserializedState);
-        console.log(deserializedStateObj.authenticate.auth);
         if (deserializedStateObj.authenticate.auth){
           dispatch({type: LOGOUT_SUCCESS});
-        }
-        else{
-          dispatch({type: LOGOUT_ERROR});
         }
       }
       else{
@@ -88,7 +84,4 @@ export const logoutUser = () => (dispatch) => {
       console.log(err);
       dispatch({type: LOGOUT_ERROR});
     }
-
-    // dispatch({type: LOG, payload: errorMsgList});
-    // ;
 }

@@ -61,8 +61,8 @@ class Register extends Component {
                   <div className = "registerform">
                     <br/>
                     {errors}
-                    <input className = "col-md-5" type = "firstname" id = "firstname" placeholder = "Enter first name*" onChange={this.handleChange}/>
-                    <input className = "col-md-5" style = {{marginLeft:'70px'}} type = "lastname" id = "lastname" placeholder = "Enter last name*" onChange={this.handleChange}/>
+                    <input type = "firstname" id = "firstname" placeholder = "Enter first name*" onChange={this.handleChange}/>
+                    <input type = "lastname" id = "lastname" placeholder = "Enter last name*" onChange={this.handleChange}/>
                     <input type = "email" id = "email" placeholder = "Enter email*" onChange={this.handleChange}/>
                     <select type="accesslevel" id="accesslevel" name="accesslevel" onChange={this.handleChange}>
                       <option value="Select" selected = "selected">Select a user access type*</option>

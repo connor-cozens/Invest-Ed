@@ -6,26 +6,15 @@ import {Redirect} from 'react-router-dom'
 class dashboard extends Component {
   render() {
     const {authorized} = this.props;
-    if (authorized.auth === false){
-      return <Redirect to='/' />
+    if (authorized === false){
+      return <Redirect to='/login' />
     }
     return (
-      <div>
-        <div className = "container">
-          <div className = "row mt-5">
-            <div className = "col-md-8 m-auto">
-              <div className = "card card-body text-center">
-                <h4>You have successfully registered an organization user.</h4>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className = "container">
-          <div className = "row mt-5">
-            <div className = "col-md-8 m-auto">
-              <div className = "card card-body text-center">
-                 <Link to="/formsubmission"><h5>Request a change or addition</h5></Link>
-              </div>
+      <div className = "container">
+        <div className = "row mt-5">
+          <div className = "col-md-8 m-auto">
+            <div className = "card card-body text-center">
+               <Link to="/formsubmission"><h5>Request a change or addition</h5></Link>
             </div>
           </div>
         </div>
@@ -36,8 +25,7 @@ class dashboard extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    authorized: state.auth,
-    authError: state.authError
+    authorized: state.authenticate.auth,
   };
 }
 

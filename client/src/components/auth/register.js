@@ -34,15 +34,15 @@ class Register extends Component {
 
   render(){
     console.log(this.props.authorized);
-    const {authorized} = this.props;
+    const {authorized, authError} = this.props;
 
-    if (authorized.auth === true){
-      return <Redirect to='/welcome' />
+    if (authorized === true){
+      return <Redirect to='/register-success' />
     }
 
     const errors = [];
-    if (authorized.authError){
-      authorized.authError.forEach((error) => {
+    if (authError){
+      authError.forEach((error) => {
         errors.push(
           <div key = {error} className="alert alert-danger alert-dismissible fade show" role={error}>
             {error}
@@ -86,8 +86,8 @@ class Register extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    authorized: state.auth,
-    authError: state.authError
+    authorized: state.authenticate.auth,
+    authError: state.authenticate.authError
   };
 }
 

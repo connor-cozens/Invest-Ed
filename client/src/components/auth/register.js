@@ -37,11 +37,15 @@ class Register extends Component {
     const {authorized, authError} = this.props;
 
     if (authorized === true){
-      return <Redirect to='/register-success' />
+      return <Redirect to=
+        {{
+          pathname: '/register-success',
+          state: {registration: true}
+        }} />
     }
 
     const errors = [];
-    if (authError){
+    if (authError !== null){
       authError.forEach((error) => {
         errors.push(
           <div key = {error} className="alert alert-danger alert-dismissible fade show" role={error}>

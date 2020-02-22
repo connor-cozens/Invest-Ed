@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 import { DropdownList } from 'react-widgets'
 import {connect} from 'react-redux';
-import {registerUser} from '../../store/actions/authActions';
+import {registerUser} from '../../store/actions/dataActions';
 import './auth.css';
 
 //Component providing registration functionality for admin to register user
@@ -34,9 +34,12 @@ class Register extends Component {
 
   render(){
     console.log(this.props.authorized);
-    const {authorized, authError} = this.props;
+    const {authorized, registered, registerError} = this.props;
+    if (authorized !== true){
+      return <Redirect to='/' />
+    }
 
-    if (authorized === true){
+    if (registered === true){
       return <Redirect to=
         {{
           pathname: '/register-success',
@@ -45,8 +48,8 @@ class Register extends Component {
     }
 
     const errors = [];
-    if (authError !== null){
-      authError.forEach((error) => {
+    if (registerError !== null){
+      registerError.forEach((error) => {
         errors.push(
           <div key = {error} className="alert alert-danger alert-dismissible fade show" role={error}>
             {error}
@@ -90,8 +93,9 @@ class Register extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    authorized: state.authenticate.auth,
-    authError: state.authenticate.authError
+    registered: state.data.registered,
+    registerError: state.data.registerError,
+    authorized: state.authenticate.auth
   };
 }
 

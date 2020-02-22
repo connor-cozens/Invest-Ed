@@ -1,6 +1,7 @@
 import {combineReducers, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import authReducer from './authReducer';
+import dataReducer from './dataReducer';
 
 //Save redux store in localStorage
 export const saveToLocalStorage = (state) => {
@@ -32,7 +33,8 @@ export const initialState = {};
 
 //Create reducer
 export const reducers = combineReducers({
-    authenticate: authReducer
+    authenticate: authReducer,
+    data: dataReducer
 });
 
 // Create enhancer

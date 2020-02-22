@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 import { DropdownList } from 'react-widgets'
 import {connect} from 'react-redux';
-import {registerUser} from '../../store/actions/authActions';
+import {registerUser} from '../../store/actions/dataActions';
 import './auth.css';
 
 //Component providing registration functionality for admin to register user
@@ -34,15 +34,22 @@ class Register extends Component {
 
   render(){
     console.log(this.props.authorized);
-    const {authorized, authError} = this.props;
+    const {authorized, registered, registerError} = this.props;
+    if (authorized !== true){
+      return <Redirect to='/' />
+    }
 
-    if (authorized === true){
-      return <Redirect to='/register-success' />
+    if (registered === true){
+      return <Redirect to=
+        {{
+          pathname: '/register-success',
+          state: {registration: true}
+        }} />
     }
 
     const errors = [];
-    if (authError){
-      authError.forEach((error) => {
+    if (registerError !== null){
+      registerError.forEach((error) => {
         errors.push(
           <div key = {error} className="alert alert-danger alert-dismissible fade show" role={error}>
             {error}
@@ -61,8 +68,8 @@ class Register extends Component {
                   <div className = "registerform">
                     <br/>
                     {errors}
-                    <input className = "col-md-5" type = "firstname" id = "firstname" placeholder = "Enter first name*" onChange={this.handleChange}/>
-                    <input className = "col-md-5" style = {{marginLeft:'70px'}} type = "lastname" id = "lastname" placeholder = "Enter last name*" onChange={this.handleChange}/>
+                    <input type = "firstname" id = "firstname" placeholder = "Enter first name*" onChange={this.handleChange}/>
+                    <input type = "lastname" id = "lastname" placeholder = "Enter last name*" onChange={this.handleChange}/>
                     <input type = "email" id = "email" placeholder = "Enter email*" onChange={this.handleChange}/>
                     <select type="accesslevel" id="accesslevel" name="accesslevel" onChange={this.handleChange}>
                       <option value="Select" selected = "selected">Select a user access type*</option>
@@ -86,8 +93,9 @@ class Register extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    authorized: state.authenticate.auth,
-    authError: state.authenticate.authError
+    registered: state.data.registered,
+    registerError: state.data.registerError,
+    authorized: state.authenticate.auth
   };
 }
 

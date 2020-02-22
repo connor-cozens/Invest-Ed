@@ -9,7 +9,7 @@ const Landing = (props) => {
       <h2 style = {{paddingTop: '50px'}}>Landing Page</h2>
       {showAuthStatus}
     </div>
-  )
+  );
 }
 
 const mapStateToProps = (state) => {

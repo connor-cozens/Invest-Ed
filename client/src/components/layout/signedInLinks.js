@@ -1,15 +1,31 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {logoutUser} from '../../store/actions/authActions';
 
-const SignedInLinks = () => {
-  return (
-    <nav className = "navbar navbar-expand-lg navbar-dark bg-primary">
-      <div className = "container">
-        <Link to = '/dashboard' className = "navbar-brand">My Dashboard</Link>
-        <Link to = '/' className = "navbar-brand">Sign out</Link>
-      </div>
-    </nav>
-  )
+class SignedInLinks extends Component {
+
+  handleLogout = (event) => {
+    event.preventDefault();
+    this.props.logOut();
+  };
+  render() {
+    return (
+      <nav className = "navbar navbar-expand-lg navbar-dark bg-primary">
+        <div className = "container">
+          <Link to = '/dashboard' className = "navbar-brand">My Dashboard</Link>
+          <Link to = '/register' className = "navbar-brand">Register a User</Link>
+          <Link className = "navbar-brand" onClick = {this.handleLogout}>Sign out</Link>
+        </div>
+      </nav>
+    );
+  }
 }
 
-export default SignedInLinks
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logOut: () => dispatch(logoutUser())
+  };
+}
+
+export default connect(null, mapDispatchToProps)(SignedInLinks)

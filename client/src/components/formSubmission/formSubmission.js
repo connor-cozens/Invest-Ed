@@ -137,10 +137,10 @@ class formSubmission extends React.Component{
   render(){
     const {authorized} = this.props;
     if (authorized === false) {
-      return <Redirect to='/login' />
+      return <Redirect to='/' />
     }
     return (
-        <div className = "formSubmission">
+        <div className = "formSubmission" style = {{paddingTop: '50px'}}>
             <h3>Form Submission</h3>
             <div>
             <form action="/action_page.php">

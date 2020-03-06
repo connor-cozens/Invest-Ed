@@ -1,43 +1,59 @@
-//NPM Dependencies
-const express = require('express');
-const cors = require('cors');
-const sequelize = require('sequelize');
-const passport = require('passport');
-const bodyParser = require('body-parser');
-const { body, oneOf, validationResult } = require('express-validator');
+var express =       require("express")
+var redis =         require("redis")
+//var passport =      require("passport")
+var session =       require('express-session')
+var redisStore =    require('connect-redis')(session)
+var mysql =         require('mysql');
+var async =         require("async")
+var cookieParser =  require("cookie-parser")
+var cors = require("cors");
+var bodyParser = require("body-parser")
 
-//Initializations
-const app = express();
-const indexController = require('./routes/index');
-const usersController = require('./routes/users');
+var client = redis.createClient()
+var app = express()
+//var router = express.Router()
 
-//Connect to sql
-const mysql = require('mysql2');
-const dbconfig = require('./config/dbconfig')
-const db = mysql.createConnection(dbconfig.db.local);
+//require('./config/passport.js')
 
-db.connect((err) => {
-  if (err){
-    throw err;
-  } else {
-    console.log("Connected");
-  }
-});
+//var port = process.env.PORT || 3000
+var port = 3000
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-//Parse as urlencoded and json.
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(session({
+    secret: 'ssshhhhh',
+    resave: true,
+    saveUninitialized: true,
+    store: new redisStore({
+        host: 'localhost',
+        port: 6379,
+        client: client,
+        ttl: 260
+    })
+}))
 
-//Invoke controllers
-indexController(app);
-usersController(app, db, body, oneOf, validationResult);
+app.use(cookieParser("secretSign#143_!223"))
+app.use(bodyParser.json())
+app.use(cors())
+app.use(bodyParser.urlencoded({extended: false}))
 
-const PORT = 4000;
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
-});
+//app.use(passport.initialize())
+//app.use(passport.session())
+
+var Register = require('./routes/Register')
+var Login = require('./routes/Login')
+var Index = require('./routes/Index')
+var Visualize = require('./routes/Visualize')
+var Contact = require('./routes/Contact')
+var Logout = require('./routes/Logout')
+
+
+app.use('/', Index)
+app.use('/login', Login)
+app.use('/register', Register)
+app.use('/visualize', Visualize)
+app.use('/contact', Contact)
+app.use('/logout', Logout)
+
+
+app.listen(port, () =>{
+    console.log("Server is running on port: " + port)
+})

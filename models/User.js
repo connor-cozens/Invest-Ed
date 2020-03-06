@@ -1,47 +1,49 @@
-const mysql = require('mysql2');
-const bcrypt = require('bcrypt');
+const Sequelize = require("sequelize")
+const db = require("../database/db")
 
-const dbconfig = require('./../config/dbconfig');
-const sequelize = require('./../services/database');
-const {Sequelize, DataTypes, Model} = require('sequelize');
+module.exports = db.sequelize.define(
+    'user',
+    {
+        id: {
+            type: Sequelize.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+            allowNull: false
+        },
+        firstName: {
+            type: Sequelize.STRING,
+            allowNull: false,
+        },
+        lastName: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        email:{
+            type: Sequelize.STRING,
+            allowNull: false,
+        },
+        username: {
+            type: Sequelize.STRING,
+            allowNull: false,
+        },
+        password: {
+            type: Sequelize.STRING,
+            allowNull: false,
+        },
+        organization: {
+            type: Sequelize.STRING,
+            allowNull: false,
+        },
+        accessLevel: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+        },
+        created: {
+            type: Sequelize.DATE
+        }
+    },
+    {
+        timestamps: false
+    }
 
-// User Model
-const User = sequelize.define('User', {
-  // Model attributes are defined here
-  id: {
-    type: DataTypes.STRING(25),
-    allowNull: false,
-    autoIncrement: true,
-    primaryKey: true
-  },
-  firstname: {
-    type: DataTypes.STRING(45),
-    allowNull: false,
-  },
-  lastname: {
-    type: DataTypes.STRING(45),
-    allowNull: false,
-  },
-  email: {
-    type: DataTypes.STRING(25),
-    allowNull: false,
-    unique: true
-  },
-  organization: {
-    type: DataTypes.STRING(45),
-    allowNull: true,
-  },
-  accesslevel: {
-    type: DataTypes.STRING(15),
-    allowNull: false,
-  },
-  password: {
-    type: DataTypes.STRING(60),
-    allowNull: false,
-  }}, {
-    // Table to access from database specified here
-    tableName: 'credentials',
-    timestamps: false
-});
-
-module.exports = User;
+)

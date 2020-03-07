@@ -26,6 +26,7 @@
     "lodash": "4.17.15",
     "mysql": "2.18.1",
     "mysql2": "^2.1.0",
+    "nodemailer": "^6.4.4",
     "nodemon": "^2.0.2",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
@@ -33,5 +34,13 @@
     "sequelize": "5.21.5"
   },
   "devDependencies": {},
-  "description": ""
+  "description": "# Instructions",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/condevcx3/Invest-Ed.git"
+  },
+  "bugs": {
+    "url": "https://github.com/condevcx3/Invest-Ed/issues"
+  },
+  "homepage": "https://github.com/condevcx3/Invest-Ed#readme"
 }

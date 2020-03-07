@@ -1,7 +1,6 @@
 const express = require("express")
 const register = express.Router()
 const cors = require('cors')
-const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 const SchemaValidator = require('../middlewares/SchemeValidatorRegister')
@@ -9,8 +8,6 @@ const validateRequest = SchemaValidator(true);
 
 const User = require("../models/User")
 register.use(cors())
-
-process.env.SECRET_KEY = 'secret'
 
 register.post('/', validateRequest, (req, res) =>{
     const today = new Date()

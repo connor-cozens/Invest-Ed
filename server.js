@@ -15,19 +15,24 @@ var app = express()
 //var port = process.env.PORT || 3000
 var port = 3000
 
+var expiryDate = 3600000
+app.use(cookieParser('temporarySecret'))//new
 app.use(session({
-    secret: 'ssshhhhh',
+    name: 'sessionID',//new
+    secret: 'temporarySecret',
+    httpOnly: false,
+    cookie: {expires: new Date(Date.now() + (30 * 86400 * 1000))}, //new
     resave: true,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: new redisStore({
-        host: 'localhost',
+        host: 'localhost',  
         port: 6379,
         client: client,
         ttl: 260
-    })
+    }),
+    
 }))
 
-app.use(cookieParser("secretSign#143_!223"))
 app.use(bodyParser.json())
 app.use(cors())
 app.use(bodyParser.urlencoded({extended: false}))
@@ -48,6 +53,11 @@ app.use('/visualize', Visualize)
 app.use('/contact', Contact)
 app.use('/logout', Logout)
 
+
+
+const bcrypt = require('bcrypt')
+const SchemaValidator = require('./middlewares/SchemeValidatorLogin')
+const validateRequest = SchemaValidator(true);
 
 app.listen(port, () =>{
     console.log("Server is running on port: " + port)

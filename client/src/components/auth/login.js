@@ -8,7 +8,7 @@ import './auth.css';
 //Component providing login functionality
 class Login extends Component {
   state = {
-    email: '',
+    username: '',
     password: ''
   }
 
@@ -52,7 +52,7 @@ class Login extends Component {
                 <div className = "loginform">
                   <br/>
                   {errors}
-                  <input type = "email" id = "email" placeholder = "Email" onChange={this.handleChange}/>
+                  <input type = "username" id = "username" placeholder = "Username" onChange={this.handleChange}/>
                   <input type = "password" id = "password" placeholder = "Password" onChange={this.handleChange}/>
                   <input type = "submit" value = "Login"/>
                 </div>

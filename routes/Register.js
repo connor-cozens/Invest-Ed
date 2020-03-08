@@ -34,18 +34,18 @@ register.post('/', validateRequest, (req, res) =>{
                 userData.password = hash
                 User.create(userData)
                 .then(user =>{
-                    res.json({"error" : false, "message" : "Registered successfully."})
+                    res.json({"error" : false, "messages" : [{message: "Registered successfully."}]})
                 })
                 .catch(err => {
-                    res.json({"error" : true , "message" : "Error while adding user."})
+                    res.json({"error" : true , "messages" : [{message: "Error while adding user."}]})
                 })
             })
         }else{
-            res.json({error: "User already exists"})
+            res.json({"error": true, "messages": [{message: "User already exists"}]})
         }
     })
     .catch(err => {
-        res.json({"error" : true , "message" : "Error while adding user."})
+        res.json({"error" : true , "messages" : [{message: "Error while adding user."}]})
     })
 
 })

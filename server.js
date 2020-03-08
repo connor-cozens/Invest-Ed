@@ -12,8 +12,8 @@ var bodyParser = require("body-parser")
 var client = redis.createClient()
 var app = express()
 
-//var port = process.env.PORT || 3000
-var port = 3000
+//var port = process.env.PORT || 4000
+var port = 4000   //run on 4000 so you can run react app on port 3000
 
 app.use(session({
     secret: 'ssshhhhh',

@@ -10,15 +10,16 @@ import {REGISTER_CLEAR} from '../reducers/dataReducer';
 
 export const loginUser = (user) => (dispatch) => {
   axios.post(`http://localhost:4000/login`, {
-    email: user.email,
+    username: user.username,
     password: user.password})
     .then(response => {
       // If there are validation errors
-      if (response.data.err ==  true) {
-        const errorList = response.data.errors;
+      console.log(response.data.messages)
+      if (response.data.error ==  true) {
+        const errorList = response.data.messages;
         const errorMsgList = [];
         errorList.forEach(error => {
-          errorMsgList.push(error.msg);
+          errorMsgList.push(error.message);
         });
         dispatch({type: LOGIN_ERROR, payload: errorMsgList});
       }

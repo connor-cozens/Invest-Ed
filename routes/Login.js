@@ -18,21 +18,23 @@ users.post('/', validateRequest, (req,res) =>{
     })
     .then(user => {
         if(user){
-        
+
             var result = bcrypt.compareSync(req.body.password, user.password)
+            console.log(req.body)
+            console.log(req.session)
             if(result){
                 req.session.key = req.session.username
-            
-                res.json({"error" : false, "message" : "Login success."})
+
+                res.json({"error" : false, "messages" : [{message: "Login success."}]})
             }else{
-                res.json({"error" : true, "message" : "Login failed." })
+                res.json({"error" : true, "messages" : [{message: "Login failed."}]})
             }
         }else{
-            res.json({"error": true, "message" : "User does not exist"})
+            res.json({"error": true, "messages" : [{message: "User does not exist"}]})
         }
     })
     .catch(err => {
-        res.json({"error": true, "message" : "An error occurred"})
+        res.json({"error": true, "messages" : [{message: "An error occurred"}]})
 
     })
 })

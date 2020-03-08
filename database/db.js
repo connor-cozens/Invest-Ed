@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize")
 const db = {}
-const sequelize = new Sequelize("accounts", "root", "PASSWORD66^", {
+const sequelize = new Sequelize("users", "root", "password", {
     host: 'localhost',
     dialect: 'mysql',
     operatorAliases: false,
@@ -13,7 +13,7 @@ const sequelize = new Sequelize("accounts", "root", "PASSWORD66^", {
     }
 })
 
-db.sequelize = sequelize 
+db.sequelize = sequelize
 db.Sequelize = Sequelize
 
 sequelize

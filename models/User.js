@@ -43,6 +43,7 @@ module.exports = db.sequelize.define(
         }
     },
     {
+        tableName: 'credentials',
         timestamps: false
     }
 

@@ -8,6 +8,7 @@ const SchemaValidator = require('../middlewares/SchemeValidatorLogin')
 const validateRequest = SchemaValidator(true);
 
 const User = require("../models/User")
+
 users.use(cors())
 
 users.post('/', validateRequest, (req,res) =>{

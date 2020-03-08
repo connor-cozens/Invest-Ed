@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './formSubmission.css';
+import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom'
 
 class formSubmission extends React.Component{
   constructor(props){
@@ -334,8 +336,12 @@ class formSubmission extends React.Component{
 
 
   render(){
+    const {authorized} = this.props;
+    if (authorized === false) {
+      return <Redirect to='/' />
+    }
     return (
-        <div className = "formSubmission">
+        <div className = "formSubmission" style = {{paddingTop: '50px'}}>
             <h3>Form Submission</h3>
             <div>
             <form onSubmit={this.handleFormSubmit}>
@@ -1681,4 +1687,10 @@ Comment Storage: since you can't make HTML comments :(
 */
 
 
-export default formSubmission;
+const mapStateToProps = (state) => {
+  return {
+    authorized: state.authenticate.auth
+  };
+}
+
+export default connect(mapStateToProps)(formSubmission)

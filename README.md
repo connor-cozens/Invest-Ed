@@ -1,4 +1,4 @@
-# Global Education Analysis Tool
+# Invest-Ed Data Visualization Tool
 
 # Instructions
 

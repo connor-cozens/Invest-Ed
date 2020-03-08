@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
+import { DropdownList } from 'react-widgets'
 import {connect} from 'react-redux';
-import {registerUser} from '../../store/actions/authActions';
+import {registerUser} from '../../store/actions/dataActions';
+import './auth.css';
 
 //Component providing registration functionality for admin to register user
 class Register extends Component {
   state = {
+    firstname: '',
+    lastname: '',
     email: '',
+    organization: '',
+    accesslevel: '',
     password: '',
     confirmpassword: ''
   }
@@ -24,48 +30,72 @@ class Register extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.props.signUp(this.state);
-    // if (this.props.authorized == true){
-    //   console.log(this.props.authorized);
-    // } else {
-    //   console.log();
-    // }
   };
 
   render(){
     console.log(this.props.authorized);
-    const {authorized} = this.props;
-
-    if (authorized.auth === true){
-      return <Redirect to='/welcome' />
+    const {authorized, registered, registerError} = this.props;
+    if (authorized !== true){
+      return <Redirect to='/' />
     }
+
+    if (registered === true){
+      return <Redirect to=
+        {{
+          pathname: '/register-success',
+          state: {registration: true}
+        }} />
+    }
+
+    const errors = [];
+    if (registerError !== null){
+      registerError.forEach((error) => {
+        errors.push(
+          <div key = {error} className="alert alert-danger alert-dismissible fade show" role={error}>
+            {error}
+          </div>
+        )
+      });
+    }
+
     return(
-      <div>
-        <form onSubmit ={this.handleSubmit}>
-          <h2>Register a Research Team Member</h2>
-          <div>
-            <label htmlFor = "email">Email</label>
-            <input type = "email" id = "email" onChange={this.handleChange}/>
+      <div className = "container">
+        <div className = "row mt-5">
+          <form onSubmit ={this.handleSubmit} className="form-inline">
+            <div className = "col-md-8 m-auto">
+              <div className = "card card-body text-center">
+                <h2>Registration Portal</h2>
+                  <div className = "registerform">
+                    <br/>
+                    {errors}
+                    <input type = "firstname" id = "firstname" placeholder = "Enter first name*" onChange={this.handleChange}/>
+                    <input type = "lastname" id = "lastname" placeholder = "Enter last name*" onChange={this.handleChange}/>
+                    <input type = "email" id = "email" placeholder = "Enter email*" onChange={this.handleChange}/>
+                    <select type="accesslevel" id="accesslevel" name="accesslevel" onChange={this.handleChange}>
+                      <option value="Select" selected = "selected">Select a user access type*</option>
+                      <option value="research">Research user</option>
+                      <option value="organization">Organization user</option>
+                    </select>
+                    <input type = "organization" id = "organization" placeholder = "Enter organization name" onChange={this.handleChange}/>
+                    <br/><br/>
+                    <input type = "password" id = "password" placeholder = "Enter password*" onChange={this.handleChange}/>
+                    <input type = "password" id = "confirmpassword" placeholder = "Confirm password*" onChange={this.handleChange}/>
+                    <input type = "submit" value = "Register"/>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
-          <div>
-            <label htmlFor = "password">Password</label>
-            <input type = "password" id = "password" onChange={this.handleChange}/>
-          </div>
-          <div>
-            <label htmlFor = "confirmpassword">Confirm Password</label>
-            <input type = "password" id = "confirmpassword" onChange={this.handleChange}/>
-          </div>
-          <div>
-            <button type = "submit">Register</button>
-          </div>
-        </form>
       </div>
     )
   }
 }
+
 const mapStateToProps = (state) => {
   return {
-    authorized: state.auth,
-    authError: state.authError
+    registered: state.data.registered,
+    registerError: state.data.registerError,
+    authorized: state.authenticate.auth
   };
 }
 

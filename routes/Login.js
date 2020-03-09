@@ -24,8 +24,11 @@ users.post('/', validateRequest, (req,res) =>{
             if(result){
             
                 req.session.isLoggedIn = true
-                req.session.key=req.body.email
-        
+                req.session.key=req.body.username
+                req.session.username = req.body.username
+                req.session.accessLevel = user.accessLevel
+                res.cookie(req.session.username, req.session.accessLevel )
+         
                 res.json({"error" : false, "message" : "Login success."})
             }else{
                 res.json({"error" : true, "message" : "Login failed." })

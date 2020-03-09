@@ -2,8 +2,6 @@ const express = require("express")
 const logout = express.Router()
 const cors = require('cors')
 
-logout.use(cors())
-
 logout.get('/', (req,res, next) => {
     if(req.session.key) {
         req.session.destroy(function(){

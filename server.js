@@ -39,24 +39,18 @@ app.use(session({
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
+
+//Added fields to cors to allow incoming requests to include session in header
 app.use(cors({
   credentials: true,
   origin: function(origin, callback) {
     callback(null, true);
   }
 }))
-
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   res.header('Access-Control-Allow-Credentials', true);
-//   next();
-// });
 
 var Register = require('./routes/Register')
 var Login = require('./routes/Login')
@@ -64,6 +58,7 @@ var Index = require('./routes/Index')
 var Visualize = require('./routes/Visualize')
 var Contact = require('./routes/Contact')
 var Logout = require('./routes/Logout')
+var Dashboard = require('./routes/Dashboard')
 
 
 app.use('/', Index)
@@ -72,12 +67,8 @@ app.use('/register', Register)
 app.use('/visualize', Visualize)
 app.use('/contact', Contact)
 app.use('/logout', Logout)
+app.use('/dashboard',Dashboard)
 
-
-
-const bcrypt = require('bcrypt')
-const SchemaValidator = require('./middlewares/SchemeValidatorLogin')
-const validateRequest = SchemaValidator(true);
 
 app.listen(port, () =>{
     console.log("Server is running on port: " + port)

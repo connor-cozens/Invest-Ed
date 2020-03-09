@@ -20,9 +20,12 @@ users.post('/', validateRequest, (req,res) =>{
             var result = bcrypt.compareSync(req.body.password, user.password)
             if(result){
                 req.session.isLoggedIn = true
-                req.session.key = req.body.username
-                
+                req.session.key=req.body.username
+                req.session.username = req.body.username
+                req.session.accessLevel = user.accessLevel
+                res.cookie(req.session.username, req.session.accessLevel)
                 res.json({"error" : false, "messages" : [{message: "Login success."}]})
+
             }else{
                 res.json({"error" : true, "messages" : [{message: "Login failed."}]})
             }

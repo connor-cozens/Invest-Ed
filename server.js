@@ -10,28 +10,53 @@ var nodemailer = require('nodemailer')
 var bodyParser = require("body-parser")
 
 var client = redis.createClient()
+client.on('connect', () => {
+  console.log('Connected to Redis')
+})
+
 var app = express()
 
 //var port = process.env.PORT || 4000
 var port = 4000   //run on 4000 so you can run react app on port 3000
 
+var expiryDate = 3600000
+app.use(cookieParser('temporarySecret'))//new
 app.use(session({
-    secret: 'ssshhhhh',
+    name: 'sessionID',//new
+    secret: 'temporarySecret',
+    httpOnly: false,
+    cookie: {expires: new Date(Date.now() + (30 * 86400 * 1000))}, //new
     resave: true,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: new redisStore({
         host: 'localhost',
         port: 6379,
         client: client,
         ttl: 260
-    })
+    }),
+
 }))
 
-app.use(cookieParser("secretSign#143_!223"))
 app.use(bodyParser.json())
-app.use(cors())
 app.use(bodyParser.urlencoded({extended: false}))
+app.use(cors({
+  credentials: true,
+  origin: function(origin, callback) {
+    callback(null, true);
+  }
+}))
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   res.header('Access-Control-Allow-Credentials', true);
+//   next();
+// });
 
 var Register = require('./routes/Register')
 var Login = require('./routes/Login')
@@ -48,6 +73,11 @@ app.use('/visualize', Visualize)
 app.use('/contact', Contact)
 app.use('/logout', Logout)
 
+
+
+const bcrypt = require('bcrypt')
+const SchemaValidator = require('./middlewares/SchemeValidatorLogin')
+const validateRequest = SchemaValidator(true);
 
 app.listen(port, () =>{
     console.log("Server is running on port: " + port)

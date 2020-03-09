@@ -11,10 +11,11 @@ import {REGISTER_CLEAR} from '../reducers/dataReducer';
 export const loginUser = (user) => (dispatch) => {
   axios.post(`http://localhost:4000/login`, {
     username: user.username,
-    password: user.password})
+    password: user.password},
+    {withCredentials: true})
     .then(response => {
+      // console.log(response)
       // If there are validation errors
-      console.log(response.data.messages)
       if (response.data.error ==  true) {
         const errorList = response.data.messages;
         const errorMsgList = [];
@@ -32,7 +33,7 @@ export const loginUser = (user) => (dispatch) => {
     })
     .catch(err => {
       console.log(err);
-      dispatch({type: LOGIN_ERROR, payload: err})
+      dispatch({type: LOGIN_ERROR, payload: ["Something went wrong"]})
     })
 }
 

@@ -8,7 +8,6 @@ const SchemaValidator = require('../middlewares/SchemeValidatorLogin')
 const validateRequest = SchemaValidator(true);
 
 const User = require("../models/User")
-users.use(cors())
 
 users.post('/', validateRequest, (req,res) =>{
     User.findOne({
@@ -18,13 +17,11 @@ users.post('/', validateRequest, (req,res) =>{
     })
     .then(user => {
         if(user){
-
             var result = bcrypt.compareSync(req.body.password, user.password)
-            console.log(req.body)
-            console.log(req.session)
             if(result){
-                req.session.key = req.session.username
-
+                req.session.isLoggedIn = true
+                req.session.key = req.body.username
+                
                 res.json({"error" : false, "messages" : [{message: "Login success."}]})
             }else{
                 res.json({"error" : true, "messages" : [{message: "Login failed."}]})

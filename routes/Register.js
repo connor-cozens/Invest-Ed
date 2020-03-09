@@ -7,7 +7,6 @@ const SchemaValidator = require('../middlewares/SchemeValidatorRegister')
 const validateRequest = SchemaValidator(true);
 
 const User = require("../models/User")
-register.use(cors())
 
 register.post('/', validateRequest, (req, res) =>{
     const today = new Date()

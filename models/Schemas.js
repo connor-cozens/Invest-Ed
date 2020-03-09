@@ -2,8 +2,8 @@ const Joi = require('joi');
 
 const id = Joi.number().integer()
 
-const firstName = Joi.string().regex(/^[A-Z]+$/).uppercase();
-const lastName = Joi.string().regex(/^[A-Z]+$/).uppercase();
+const firstname = Joi.string().regex(/^[A-Z]+$/).uppercase();
+const lastname = Joi.string().regex(/^[A-Z]+$/).uppercase();
 
 const email = Joi.string().email().lowercase().required()
 const username = Joi.string().lowercase()
@@ -11,18 +11,18 @@ const username = Joi.string().lowercase()
 const password = Joi.string().regex(/^(?=.{6,})(?=.*[0-9].*)(?=.*[a-z].*).*$/)
 
 const organization = Joi.string()
-const accessLevel = Joi.number().integer().valid([0,1,2])
+const accesslevel = Joi.number().integer().valid([0,1,2])
 
 
 const userDataSchema = Joi.object().keys({
-    firstName: firstName.required(),
-    lastName: lastName.required(),
+    firstName: firstname.required(),
+    lastName: lastname.required(),
     email: email.required(),
     username: username.required(),
     password: password.strict().required(),
     confirmPassword: Joi.string().valid(Joi.ref('password')).required().strict(),
     organization: organization.required(),
-    accessLevel: accessLevel.required()
+    accessLevel: accesslevel.required()
 })
 
 const userLoginScheme = Joi.object().keys({

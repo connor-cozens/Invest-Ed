@@ -36,6 +36,7 @@ register.post('/', validateRequest, (req, res) =>{
                     res.json({"error" : false, "messages" : [{message: "Registered successfully."}]})
                 })
                 .catch(err => {
+                    console.log(err)
                     res.json({"error" : true , "messages" : [{message: "Error while adding user."}]})
                 })
             })

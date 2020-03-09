@@ -11,6 +11,7 @@ class Register extends Component {
     firstname: '',
     lastname: '',
     email: '',
+    username: '',
     organization: '',
     accesslevel: '',
     password: '',
@@ -29,6 +30,14 @@ class Register extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
+    console.log(this.state.accesslevel)
+    if (this.state.accesslevel == 'organization'){
+      console.log('org')
+      this.state.accesslevel = 1
+    } else if (this.state.accesslevel == 'research'){
+      console.log('resear')
+      this.state.accesslevel = 2
+    }
     this.props.signUp(this.state);
   };
 
@@ -71,6 +80,7 @@ class Register extends Component {
                     <input type = "firstname" id = "firstname" placeholder = "Enter first name*" onChange={this.handleChange}/>
                     <input type = "lastname" id = "lastname" placeholder = "Enter last name*" onChange={this.handleChange}/>
                     <input type = "email" id = "email" placeholder = "Enter email*" onChange={this.handleChange}/>
+                    <input type = "username" id = "username" placeholder = "Enter username*" onChange={this.handleChange}/>
                     <select type="accesslevel" id="accesslevel" name="accesslevel" onChange={this.handleChange}>
                       <option value="Select" selected = "selected">Select a user access type*</option>
                       <option value="research">Research user</option>

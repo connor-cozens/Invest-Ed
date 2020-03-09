@@ -27,10 +27,13 @@ module.exports = (useJoiError = false) => {
 
                 return Joi.validate(req.body, _schema, _validationOptions, (err, data) => {
 
-                    if(err){
-
-                        res.json({"error": true, "message" : err.message.replace(/['"]/g, '') })
-
+									if(err){
+											res.json({error: true,
+												messages :
+													_.map(err.details, ({message}) => ({
+														 message: message.replace(/['"]/g, '')
+												 }))
+											})
                     }else{
 
                         req.body = data

@@ -40,7 +40,6 @@ users.post('/', validateRequest, (req,res) =>{
     })
     .catch(err => {
         res.json({"error": true, "messages" : [{message: "An error occurred"}]})
-
     })
 })
 

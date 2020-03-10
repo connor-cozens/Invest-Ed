@@ -27,7 +27,7 @@ app.use(session({
     secret: 'temporarySecret',
     httpOnly: false,
     cookie: {expires: new Date(Date.now() + (30 * 86400 * 1000))}, //new
-    resave: true,
+    resave: false,
     saveUninitialized: false,
     store: new redisStore({
         host: 'localhost',

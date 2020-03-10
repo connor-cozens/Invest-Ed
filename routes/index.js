@@ -6,7 +6,7 @@ const index = express.Router()
 index.get('/', (req,res) => {
     console.log('User id: ' + req.user);
     console.log('User authenticated: ' + req.isAuthenticated());
-    //If session id sent from client in the request is valid
+    //If session id sent from client in the request header is valid
     if (req.isAuthenticated()){
       res.json({"error": false, "message": req.user}) //This is a dummy json. Instead would want to send user info based on querying db with this user id (in req.user)
     }

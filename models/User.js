@@ -43,7 +43,7 @@ module.exports = db.sequelize.define(
         }
     },
     {
-        tableName: 'credentials',
+        tableName: 'credentials',  //Specify table name to connect to in db, or just remove if not needed
         timestamps: false
     }
 

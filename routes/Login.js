@@ -23,6 +23,7 @@ users.post('/', validateRequest, (req,res) =>{
                 //Will use this session key to identify session
                 req.session.key = user.id
                 userId = user.id //User id to serialize into the session
+                //Login using passport's login function
                 req.login(userId, (error) => {
                   if (error){
                     res.json({"error" : true, "messages" : [{message: error}]})

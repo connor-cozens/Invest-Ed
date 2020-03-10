@@ -20,14 +20,12 @@ class Login extends Component {
   };
 
   handleSubmit = (event) => {
-    console.log(this.state)
     event.preventDefault();
     this.props.logIn(this.state);
   };
 
   render(){
     const {cookies} = this.props
-    console.log(this.props)
     console.log(this.props.authorized);
     const {authorized, authError} = this.props;
 

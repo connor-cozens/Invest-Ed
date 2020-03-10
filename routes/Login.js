@@ -3,6 +3,7 @@ const users = express.Router()
 const cors = require('cors')
 const bcrypt = require('bcrypt')
 const router = express.Router()
+const passport = require('passport')
 
 const SchemaValidator = require('../middlewares/SchemeValidatorLogin')
 const validateRequest = SchemaValidator(true);
@@ -19,13 +20,16 @@ users.post('/', validateRequest, (req,res) =>{
         if(user){
             var result = bcrypt.compareSync(req.body.password, user.password)
             if(result){
-                req.session.isLoggedIn = true
-                req.session.key=req.body.username
-                req.session.username = req.body.username
-                req.session.accessLevel = user.accessLevel
-                res.cookie(req.session.username, req.session.accessLevel)
-                res.json({"error" : false, "messages" : [{message: "Login success."}]})
-
+                //Will use this session key to identify session
+                req.session.key = user.id
+                userId = user.id //User id to serialize into the session
+                req.login(userId, (error) => {
+                  if (error){
+                    res.json({"error" : true, "messages" : [{message: error}]})
+                  }else{
+                    res.json({"error" : false, "messages" : [{message: "Login success."}]})
+                  }
+                })
             }else{
                 res.json({"error" : true, "messages" : [{message: "Login failed."}]})
             }
@@ -38,5 +42,13 @@ users.post('/', validateRequest, (req,res) =>{
 
     })
 })
+
+passport.serializeUser(function(userId, done) {
+  done(null, userId);
+});
+
+passport.deserializeUser(function(userId, done) {
+    done(null, userId);
+});
 
 module.exports = users

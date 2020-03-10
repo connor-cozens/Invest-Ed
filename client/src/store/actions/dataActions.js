@@ -18,7 +18,6 @@ export const registerUser = (user) => (dispatch) => {
     confirmPassword: user.confirmpassword})
     .then(response => {
       // If there are validation errors
-      console.log(response)
       if (response.data.error ==  true) {
         const errorList = response.data.messages;
         const errorMsgList = [];
@@ -34,7 +33,6 @@ export const registerUser = (user) => (dispatch) => {
       }
     })
     .catch(err => {
-      console.log(err);
       dispatch({type: REGISTER_ERROR, payload: ["Registration Error"]});
     })
 }
@@ -44,7 +42,17 @@ export const setRegistrationComplete = () => (dispatch) => {
     dispatch({type: REGISTER_CLEAR});
   }
   catch(err) {
-    console.log(err);
     dispatch({type: REGISTER_CLEAR_ERROR, payload: err});
   }
+}
+
+export const getUser = () => (dispatch) => {
+  axios.get(`http://localhost:4000/`,
+    {withCredentials: true})
+    .then(response => {
+      console.log(response)
+    })
+    .catch(err => {
+      console.log(err)
+    })
 }

@@ -8,6 +8,7 @@ var cookieParser =  require("cookie-parser")
 var cors = require("cors");
 var nodemailer = require('nodemailer')
 var bodyParser = require("body-parser")
+var passport = require('passport')
 
 var client = redis.createClient()
 client.on('connect', () => {
@@ -34,8 +35,9 @@ app.use(session({
         client: client,
         ttl: 260
     }),
-
 }))
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))

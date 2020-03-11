@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {getUser} from '../store/actions/dataActions';
 
 class Landing extends Component{
-  componentDidMount(prevProps){
+  componentDidMount(){
       this.props.getUser()
   }
 

@@ -3,7 +3,8 @@ import {
   REGISTER_SUCCESS,
   REGISTER_ERROR,
   REGISTER_CLEAR,
-  REGISTER_CLEAR_ERROR
+  REGISTER_CLEAR_ERROR,
+  SET_USER
 } from '../reducers/dataReducer';
 
 export const registerUser = (user) => (dispatch) => {
@@ -50,7 +51,10 @@ export const getUser = () => (dispatch) => {
   axios.get(`http://localhost:4000/`,
     {withCredentials: true})
     .then(response => {
-      console.log(response)
+      if (response.data.error == false) {
+        console.log(response)
+        dispatch({type: SET_USER, payload: response.data.message[0]});
+      }
     })
     .catch(err => {
       console.log(err)

@@ -7,7 +7,6 @@ import {Link} from 'react-router-dom';
 const Navbar = (props) => {
   const {authorized} = props;
   const linksToShow = authorized ? <SignedInLinks/> : <SignedOutLinks/>;
-  console.log(linksToShow)
   return (
     <nav className = "navbar navbar-dark bg-primary">
       <div className = "container">

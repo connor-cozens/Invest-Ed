@@ -31,9 +31,9 @@ class Register extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     if (this.state.accesslevel == 'organization'){
-      this.state.accesslevel = 1
+      this.state.accesslevel = 0
     } else if (this.state.accesslevel == 'research'){
-      this.state.accesslevel = 2
+      this.state.accesslevel = 1
     }
     this.props.signUp(this.state);
   };

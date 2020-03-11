@@ -26,6 +26,7 @@ users.post('/', validateRequest, (req,res) =>{
                 //Login using passport's login function
                 req.login(userId, (error) => {
                   if (error){
+                    console.log(error)
                     res.json({"error" : true, "messages" : [{message: error}]})
                   }else{
                     res.json({"error" : false, "messages" : [{message: "Login success."}]})

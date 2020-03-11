@@ -1,43 +1,77 @@
-//NPM Dependencies
-const express = require('express');
-const cors = require('cors');
-const sequelize = require('sequelize');
-const passport = require('passport');
-const bodyParser = require('body-parser');
-const { body, oneOf, validationResult } = require('express-validator');
+var express =       require("express")
+var redis =         require("redis")
+var session =       require('express-session')
+var redisStore =    require('connect-redis')(session)
+var mysql =         require('mysql');
+var async =         require("async")
+var cookieParser =  require("cookie-parser")
+var cors = require("cors");
+var nodemailer = require('nodemailer')
+var bodyParser = require("body-parser")
+var passport = require('passport')
 
-//Initializations
-const app = express();
-const indexController = require('./routes/index');
-const usersController = require('./routes/users');
+var client = redis.createClient()
+client.on('connect', () => {
+  console.log('Connected to Redis')
+})
 
-//Connect to sql
-const mysql = require('mysql2');
-const dbconfig = require('./config/dbconfig')
-const db = mysql.createConnection(dbconfig.db.local);
+var app = express()
 
-db.connect((err) => {
-  if (err){
-    throw err;
-  } else {
-    console.log("Connected");
+//var port = process.env.PORT || 4000
+var port = 4000   //run on 4000 so you can run react app on port 3000
+
+var expiryDate = 3600000
+app.use(cookieParser('temporarySecret'))//new
+app.use(session({
+    name: 'sessionID',//new
+    secret: 'temporarySecret',
+    httpOnly: false,
+    cookie: {expires: new Date(Date.now() + (30 * 86400 * 1000))}, //new
+    resave: false,
+    saveUninitialized: false,
+    store: new redisStore({
+        host: 'localhost',
+        port: 6379,
+        client: client,
+        ttl: 260
+    }),
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}))
+
+//Added fields to cors to allow incoming requests to include session in header
+app.use(cors({
+  credentials: true,
+  origin: function(origin, callback) {
+    callback(null, true);
   }
-});
-
+}))
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-//Parse as urlencoded and json.
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
-//Invoke controllers
-indexController(app);
-usersController(app, db, body, oneOf, validationResult);
+var Register = require('./routes/Register')
+var Login = require('./routes/Login')
+var Index = require('./routes/Index')
+var Visualize = require('./routes/Visualize')
+var Contact = require('./routes/Contact')
+var Logout = require('./routes/Logout')
+var Dashboard = require('./routes/Dashboard')
 
-const PORT = 4000;
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
-});
+
+app.use('/', Index)
+app.use('/login', Login)
+app.use('/register', Register)
+app.use('/visualize', Visualize)
+app.use('/contact', Contact)
+app.use('/logout', Logout)
+app.use('/dashboard',Dashboard)
+
+
+app.listen(port, () =>{
+    console.log("Server is running on port: " + port)
+})

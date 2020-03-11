@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 import { DropdownList } from 'react-widgets'
+import {withCookies} from 'react-cookie';
 import {connect} from 'react-redux';
 import {loginUser, registerUser} from '../../store/actions/authActions';
 import './auth.css';
@@ -8,7 +9,7 @@ import './auth.css';
 //Component providing login functionality
 class Login extends Component {
   state = {
-    email: '',
+    username: '',
     password: ''
   }
 
@@ -19,12 +20,12 @@ class Login extends Component {
   };
 
   handleSubmit = (event) => {
-    console.log(this.state)
     event.preventDefault();
     this.props.logIn(this.state);
   };
 
   render(){
+    const {cookies} = this.props
     console.log(this.props.authorized);
     const {authorized, authError} = this.props;
 
@@ -52,7 +53,7 @@ class Login extends Component {
                 <div className = "loginform">
                   <br/>
                   {errors}
-                  <input type = "email" id = "email" placeholder = "Email" onChange={this.handleChange}/>
+                  <input type = "username" id = "username" placeholder = "Username" onChange={this.handleChange}/>
                   <input type = "password" id = "password" placeholder = "Password" onChange={this.handleChange}/>
                   <input type = "submit" value = "Login"/>
                 </div>
@@ -77,4 +78,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default withCookies(connect(mapStateToProps, mapDispatchToProps)(Login))

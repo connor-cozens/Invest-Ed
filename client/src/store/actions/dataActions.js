@@ -8,33 +8,32 @@ import {
 
 export const registerUser = (user) => (dispatch) => {
   axios.post(`http://localhost:4000/register`, {
-    firstname: user.firstname,
-    lastname: user.lastname,
+    firstName: user.firstname,
+    lastName: user.lastname,
     email: user.email,
+    username: user.username,
     organization: user.organization,
-    accesslevel: user.accesslevel,
+    accessLevel: user.accesslevel,
     password: user.password,
-    confirmpassword: user.confirmpassword})
+    confirmPassword: user.confirmpassword})
     .then(response => {
       // If there are validation errors
-      if (response.data.err ==  true) {
-        const errorList = response.data.errors;
+      if (response.data.error ==  true) {
+        const errorList = response.data.messages;
         const errorMsgList = [];
         errorList.forEach(error => {
-          errorMsgList.push(error.msg);
+          errorMsgList.push(error.message);
         });
         dispatch({type: REGISTER_ERROR, payload: errorMsgList});
       }
 
       // If there are no validation errors
       else {
-        console.log("No register error");
         dispatch({type: REGISTER_SUCCESS});
       }
     })
     .catch(err => {
-      console.log(err);
-      dispatch({type: REGISTER_ERROR, payload: err});
+      dispatch({type: REGISTER_ERROR, payload: ["Registration Error"]});
     })
 }
 
@@ -43,7 +42,17 @@ export const setRegistrationComplete = () => (dispatch) => {
     dispatch({type: REGISTER_CLEAR});
   }
   catch(err) {
-    console.log(err);
     dispatch({type: REGISTER_CLEAR_ERROR, payload: err});
   }
+}
+
+export const getUser = () => (dispatch) => {
+  axios.get(`http://localhost:4000/`,
+    {withCredentials: true})
+    .then(response => {
+      console.log(response)
+    })
+    .catch(err => {
+      console.log(err)
+    })
 }

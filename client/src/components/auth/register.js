@@ -18,10 +18,6 @@ class Register extends Component {
     confirmpassword: ''
   }
 
-  // componentDidUpdate = () => {
-  //   this.props.signUp(this.state);
-  // }
-
   handleChange = (event) => {
     this.setState({
       [event.target.id]: event.target.value
@@ -53,6 +49,19 @@ class Register extends Component {
         }} />
     }
 
+    const {userData} = this.props;
+    //If research user, only allow option to register organization user. If root user, can register both organization and research users
+    const selectOptions = userData.accessLevel == 1 ?
+            <select type="accesslevel" id="accesslevel" name="accesslevel" onChange={this.handleChange}>
+              <option value="Select" selected = "selected">Select a user access type*</option>
+              <option value="organization">Organization user</option>
+            </select> :
+            <select type="accesslevel" id="accesslevel" name="accesslevel" onChange={this.handleChange}>
+              <option value="Select" selected = "selected">Select a user access type*</option>
+              <option value="research">Research user</option>
+              <option value="organization">Organization user</option>
+            </select>
+
     const errors = [];
     if (registerError !== null){
       registerError.forEach((error) => {
@@ -78,11 +87,7 @@ class Register extends Component {
                     <input type = "lastname" id = "lastname" placeholder = "Enter last name*" onChange={this.handleChange}/>
                     <input type = "email" id = "email" placeholder = "Enter email*" onChange={this.handleChange}/>
                     <input type = "username" id = "username" placeholder = "Enter username*" onChange={this.handleChange}/>
-                    <select type="accesslevel" id="accesslevel" name="accesslevel" onChange={this.handleChange}>
-                      <option value="Select" selected = "selected">Select a user access type*</option>
-                      <option value="research">Research user</option>
-                      <option value="organization">Organization user</option>
-                    </select>
+                    {selectOptions}
                     <input type = "organization" id = "organization" placeholder = "Enter organization name" onChange={this.handleChange}/>
                     <br/><br/>
                     <input type = "password" id = "password" placeholder = "Enter password*" onChange={this.handleChange}/>
@@ -101,6 +106,7 @@ class Register extends Component {
 const mapStateToProps = (state) => {
   return {
     registered: state.data.registered,
+    userData: state.data.userInformation,
     registerError: state.data.registerError,
     authorized: state.authenticate.auth
   };

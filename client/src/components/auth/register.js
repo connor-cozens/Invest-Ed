@@ -34,10 +34,15 @@ class Register extends Component {
     this.props.signUp(this.state);
   };
 
+
   render(){
     console.log(this.props.authorized);
-    const {authorized, registered, registerError} = this.props;
+    const {authorized, userData, registered, registerError} = this.props;
     if (authorized !== true){
+      return <Redirect to='/' />
+    }
+
+    if (userData.accessLevel == 0) {
       return <Redirect to='/' />
     }
 
@@ -49,7 +54,6 @@ class Register extends Component {
         }} />
     }
 
-    const {userData} = this.props;
     //If research user, only allow option to register organization user. If root user, can register both organization and research users
     const selectOptions = userData.accessLevel == 1 ?
             <select type="accesslevel" id="accesslevel" name="accesslevel" onChange={this.handleChange}>

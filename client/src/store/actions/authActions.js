@@ -47,24 +47,18 @@ export const logoutUser = () => (dispatch) => {
           dispatch({type: LOGOUT_ERROR, payload: [response.data.message]});
       }
       else {
-        try {
-          const deserializedState = localStorage.getItem('state');
-          if (deserializedState !== null){
-            const deserializedStateObj = JSON.parse(deserializedState);
-            if (deserializedStateObj.authenticate.auth){
-              dispatch({type: LOGOUT_SUCCESS});
-              dispatch({type: UNSET_USER});
-            }
-          }
-          else{
-            dispatch({type: LOGOUT_ERROR});
-          }
-        }catch(err){
-          dispatch({type: LOGOUT_ERROR, payload: [err]});
-        }
+        //REMOVED LOGIC TO GET LOCALSTORAGE because don't want to disable user logout if they remove their localstorage
+        dispatch({type: LOGOUT_SUCCESS});
+        dispatch({type: UNSET_USER});
       }
     })
     .catch(err => {
       dispatch({type: LOGOUT_ERROR, payload: [err]});
     })
+}
+
+//Force logout if for any reason user is not authenticated when attempting to access a resource while they should have been logged in
+export const forceLogout = () => (dispatch) => {
+  dispatch({type: LOGOUT_SUCCESS});
+  dispatch({type: UNSET_USER});
 }

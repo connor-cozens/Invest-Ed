@@ -4,12 +4,14 @@ export const REGISTER_CLEAR = 'REGISTER_CLEAR';
 export const REGISTER_ERROR = 'REGISTER_ERROR';
 export const SET_USER = 'SET_USER'
 export const UNSET_USER = 'UNSET_USER';
+export const ACCESS_ERROR = 'ACCESS_ERROR'
 
 const initState = {
   userInformation: null,
   formSubmissions: null,
   registered: false,
-  registerError: null
+  registerError: null,
+  accessError: null
 }
 
 const dataReducer = (state = initState, action) => {
@@ -51,6 +53,11 @@ const dataReducer = (state = initState, action) => {
         formSubmissions: null,
         registered: false,
         registerError: null
+      };
+    case ACCESS_ERROR:
+      return {
+        ...state,
+        accessError: action.payload
       };
     default:
      return state;

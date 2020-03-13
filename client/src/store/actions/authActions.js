@@ -6,7 +6,10 @@ import {
   LOGOUT_ERROR
 } from '../reducers/authReducer';
 
-import {REGISTER_CLEAR} from '../reducers/dataReducer';
+import {
+  REGISTER_CLEAR,
+  UNSET_USER
+} from '../reducers/dataReducer';
 
 export const loginUser = (user) => (dispatch) => {
   axios.post(`http://localhost:4000/login`, {
@@ -32,7 +35,7 @@ export const loginUser = (user) => (dispatch) => {
     })
     .catch(err => {
       console.log(err);
-      dispatch({type: LOGIN_ERROR, payload: ["Something went wrong"]})
+      dispatch({type: LOGIN_ERROR, payload: ["An error occurred"]})
     })
 }
 
@@ -50,7 +53,7 @@ export const logoutUser = () => (dispatch) => {
             const deserializedStateObj = JSON.parse(deserializedState);
             if (deserializedStateObj.authenticate.auth){
               dispatch({type: LOGOUT_SUCCESS});
-              dispatch({type: REGISTER_CLEAR});
+              dispatch({type: UNSET_USER});
             }
           }
           else{

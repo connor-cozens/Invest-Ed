@@ -33,7 +33,7 @@ const RegistrationSuccess = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    authorized: state.authenticate.auth,
+    authorized: state.authenticate.auth
   };
 }
 

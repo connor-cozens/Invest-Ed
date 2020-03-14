@@ -10,15 +10,16 @@ class SignedInLinks extends Component {
     this.props.logOut();
   };
   render() {
-    const {authorized} = this.props;
+    const {authorized, userData} = this.props;
     if (authorized) {
-      const {userData} = this.props;
-      const loading = "Loading"
+      const loading = "Loading";
+
+      const register = userData ? (userData.accessLevel == 0 ? null :<Link to = '/register' className = "navbar-brand">Register a User</Link>):loading;
       return (
         <nav className = "navbar navbar-expand-lg navbar-dark bg-primary">
           <div className = "container">
             <Link to = '/dashboard' className = "navbar-brand">My Dashboard</Link>
-            <Link to = '/register' className = "navbar-brand">Register a User</Link>
+            {register}
             <Link to = '/profile' className = "navbar-brand">{userData ? userData.email : loading}</Link>
             <Link className = "navbar-brand" onClick = {this.handleLogout}>Sign out</Link>
           </div>

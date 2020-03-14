@@ -13,6 +13,7 @@ const RegistrationSuccess = (props) => {
       fromRegister = true;
     }
   }
+
   if (authorized === true && fromRegister === true) {
     props.registrationComplete();
     return (
@@ -27,7 +28,6 @@ const RegistrationSuccess = (props) => {
       </div>
     );
   }
-
   return <Redirect to='/' />
 }
 

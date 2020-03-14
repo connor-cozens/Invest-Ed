@@ -4,8 +4,11 @@ import {
   REGISTER_ERROR,
   REGISTER_CLEAR,
   REGISTER_CLEAR_ERROR,
-  SET_USER
+  SET_USER,
+  ACCESS_ERROR
 } from '../reducers/dataReducer';
+
+import {forceLogout} from './authActions';
 
 export const registerUser = (user) => (dispatch) => {
   axios.post(`http://localhost:4000/register`, {
@@ -54,9 +57,17 @@ export const getUser = () => (dispatch) => {
       if (response.data.error == false) {
         console.log(response)
         dispatch({type: SET_USER, payload: response.data.message[0]});
+      } else {
+        //If user not authorized to access content but they are set to authorized, need to log them out immediately
+        if (response.data.message == "Not authorized to view this content") {
+          dispatch(forceLogout())
+        }
+        else {
+          dispatch({type: ACCESS_ERROR, payload: response.data.message})
+        }
       }
     })
     .catch(err => {
-      console.log(err)
+      dispatch({type: ACCESS_ERROR, payload: err})
     })
 }

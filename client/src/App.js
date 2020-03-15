@@ -8,6 +8,7 @@ import Dashboard from './components/dashboard/dashboard';
 import Landing from './components/landing';
 import RegistrationSuccess from './components/auth/registrationSuccess'
 import formSubmission from './components/formSubmission/formSubmission';
+import Visualize from './components/visualize/visualize';
 
 class App extends Component {
   render() {
@@ -17,6 +18,7 @@ class App extends Component {
           <Navbar/>
           <Switch>
             <Route exact path = '/' component = {Landing} />
+            <Route exact path = '/visualize' component = {Visualize} />
             <Route exact path = '/register' component = {Register} />
             <Route exact path = '/register-success' component = {RegistrationSuccess} />
             <Route exact path = '/dashboard' component = {Dashboard} />

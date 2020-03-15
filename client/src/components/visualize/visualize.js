@@ -111,12 +111,12 @@ class Visualize extends Component {
   render() {
     return (
       <div>
-        <select type="selectedFoundations" id="selectedFoundations" name="selectedFoundations" onChange={this.handleFoundationSelection} style = {{width:"30%", margin: "50px 0 0 50px"}}>
+        <select type="selectedFoundations" id="selectedFoundations" name="selectedFoundations" onChange={this.handleFoundationSelection} style = {{width:"22%", margin: "50px 0 0 50px"}}>
           <option value="select" selected = "selected">Filter a foundation attribute</option>
           <option value="profitMotive">profit Motive</option>
           <option value="organizationForm">Organization Form</option>
         </select>
-        <select type="selectedInitiatives" id="selectedInitiatives" name="selectedFoundations" onChange={this.handleInitiativeSelection} style = {{width:"30%", margin: "50px 0 0 50px"}}>
+        <select type="selectedInitiatives" id="selectedInitiatives" name="selectedFoundations" onChange={this.handleInitiativeSelection} style = {{width:"22%", margin: "50px 0 0 50px"}}>
           <option value="select" selected = "selected">Filter an initiative attribute</option>
           <option value="mainProgramActivity">Main Program Activity</option>
         </select>

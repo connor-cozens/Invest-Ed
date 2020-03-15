@@ -18,6 +18,7 @@ class SignedInLinks extends Component {
       return (
         <nav className = "navbar navbar-expand-lg navbar-dark bg-primary">
           <div className = "container">
+            <Link to = '/visualize' className = "navbar-brand">Visualization</Link>
             <Link to = '/dashboard' className = "navbar-brand">My Dashboard</Link>
             {register}
             <Link to = '/profile' className = "navbar-brand">{userData ? userData.email : loading}</Link>

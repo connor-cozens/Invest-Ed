@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {Redirect} from 'react-router-dom';
 import { DropdownList } from 'react-widgets'
 import {connect} from 'react-redux';
@@ -6,7 +6,7 @@ import {registerUser} from '../../store/actions/dataActions';
 import './auth.css';
 
 //Component providing registration functionality for admin to register user
-class Register extends Component {
+class Register extends PureComponent {
   state = {
     firstname: '',
     lastname: '',

@@ -1,129 +1,234 @@
 import React, {Component} from 'react';
-import Network from './network';
+import Chart from './chart'
 
 class Visualize extends Component {
   state = {
-    //This is dummy data for now. When connected with backend will be get this back as json response
-    foundations:
-      {targetFunders:
-        [{name: "funder1", profitMotive: "profit", organizationForm: "private", countryOperation: [{countryName: "Egypt"}, {countryName: "Iran"}]},
-        {name: "funder2", profitMotive: "not-for-profit", organizationForm: "private", countryOperation: [{countryName: "Albania"}, {countryName: "Portugal"}]},
-        {name: "funder3", profitMotive: "not-for-profit", organizationForm: "private", countryOperation: [{countryName: "Italy"}, {countryName: "Portugal"}]},
-        {name: "funder4", profitMotive: "hybrid", organizationForm: "impact investor", countryOperation: [{countryName: "Thailand"}, {countryName: "Afghanistan"}]}],
-      implementers:
-        [{name: "implementer1", profitMotive: "profit"},
-         {name: "implementer2", profitMotive: "profit"},
-         {name: "implementer3", profitMotive: "not-for-profit"}]
+    //Data to be used for visualization - will be returned by backend as json response instead - this is dummy for now
+    TargetFunderData:
+      {profitMotives: [
+        {
+          name: "profit",
+          value: 30  //Number of targetFunders that are profit-based
+        },
+        {
+          name: "not-for-profit",
+          value: 50
+        },
+        {
+          name: "hybrid",
+          value: 10
+        }],
+        organizationForm: [
+          {
+            name: "private",
+            value: 20
+          },
+          {
+            name: "impact investor",
+            value: 20
+          }],
       },
 
-    initiatives:
-      [{name: "initiative1", mainProgramActivity: "Contracting", countryOperation: [{countryName: "China"}, {countryName: "Australia"}]},
-      {name: "initiative2", mainProgramActivity: "School Loans", countryOperation: [{countryName: "China"}, {countryName: "Australia"}]},
-      {name: "initiative3", mainProgramActivity: "Scholarships", countryOperation: [{countryName: "China"}, {countryName: "Australia"}]}],
+    ImplementerData:
+      {profitMotives: [
+          {
+            name: "profit",
+            value: 20
+          },
+          {
+            name: "not-for-profit",
+            value: 20
+          },
+          {
+            name: "hybrid",
+            value: 5
+          }],
+      },
 
-    selectedFoundations: '',
-    selectedInitiatives: '',
-    dataFoundations: '',
-    dataInitiatives: ''
+      InititativeData:
+        {mainProgramActivity: [
+            {
+              name: "Scholarships",
+              value: 10  //Number of initiatives that have "Scholarships as their main programming area"
+            },
+            {
+              name: "School Loans",
+              value: 15
+            },
+            {
+              name: "Contracting",
+              value: 5
+            }],
+        },
+
+      ProfitMotiveTargetFunderData: {
+        ProfitTargetFunders: [
+          {
+            name: "funder1",
+            value: 3 //Number of initiatives Funded
+          },
+          {
+            name: "funder2",
+            value: 5
+          },
+          {
+            name: "funder3",
+            value: 10
+          },
+          {
+            name: "funder4",
+            value: 2
+          }
+        ],
+
+        NonProfitTargetFunders: [
+          {
+            name: "funder1",
+            value: 2
+          },
+          {
+            name: "funder2",
+            value: 3
+          },
+          {
+            name: "funder3",
+            value: 2
+          }
+        ],
+      },
+
+      ProfitMotiveImplementerData: {
+        ProfitImplementers: [
+          {
+            name: "implementer1",
+            value: 4
+          },
+          {
+            name: "implementer2",
+            value: 6
+          },
+        ],
+
+        NonProfitImplementers: [
+          {
+            name: "implementer1",
+            value: 1
+          },
+          {
+            name: "implementer2",
+            value: 3
+          },
+          {
+            name: "implementer3",
+            value: 2
+          }
+        ],
+      },
+      OrgFormTargetFunderData: {
+        PrivateTargetFunders: [
+          {
+            name: "funder1",
+            value: 3 //Number of initiatives Funded
+          },
+          {
+            name: "funder2",
+            value: 5
+          },
+          {
+            name: "funder3",
+            value: 10
+          },
+          {
+            name: "funder4",
+            value: 2
+          }
+        ],
+
+        HybridTargetFunders: [
+          {
+            name: "funder1",
+            value: 2
+          },
+          {
+            name: "funder2",
+            value: 3
+          },
+          {
+            name: "funder3",
+            value: 2
+          }
+        ],
+      },
+
+      entitySelection: '',
+      attributeSelection: 'select'
   }
 
-  getProfitMotive = (entity) => {
-    var filter = {};
-    if (entity == "targetFunders" || entity == "foundations") {
-      Array.prototype.forEach.call(this.state.foundations.targetFunders, item => {
-        if (filter[item.profitMotive] == null) { filter[item.profitMotive] = 1; }
-        else { filter[item.profitMotive]++; }
-      })
-    }
+  componentDidUpdate = (prevState) => {
 
-    if (entity == "implementers" || entity == "foundations") {
-      Array.prototype.forEach.call(this.state.foundations.implementers, item => {
-        if (filter[item.profitMotive] == null) { filter[item.profitMotive] = 1; }
-        else { filter[item.profitMotive]++; }
-      })
-    }
-    return filter;
   }
 
-  getOrganizationForm = () => {
-    var filter = {};
-    Array.prototype.forEach.call(this.state.foundations.targetFunders, item => {
-      if (filter[item.organizationForm] == null) { filter[item.organizationForm] = 1; }
-      else { filter[item.organizationForm]++; }
-    })
-    return filter;
+  dataSelection = () => {
+    if (this.state.entitySelection == "targetFunders" && this.state.attributeSelection == "profitMotive") {
+      return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunderData}
+    }
+    if (this.state.entitySelection == "targetFunders" && this.state.attributeSelection == "organizationForm") {
+      return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunderData}
+    }
+    if (this.state.entitySelection == "implementers" && this.state.attributeSelection == "profitMotive") {
+      return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementerData}
+    }
+    if (this.state.entitySelection == "initiatives" && this.state.attributeSelection == "mainProgramActivity") {
+      return {main: this.state.InititativeData.mainProgramActivity}
+    }
   }
 
-  getMainProgrammingArea = () => {
-    var filter = {};
-    Array.prototype.forEach.call(this.state.initiatives, item => {
-      if (filter[item.mainProgramActivity] == null) { filter[item.mainProgramActivity] = 1; }
-      else { filter[item.mainProgramActivity]++; }
-    })
-    return filter;
+  entitySelection = (event) => {
+    this.setState({entitySelection: event.target.value});
+    this.setState({attributeSelection: 'select'});
   }
 
-  /////////USE LATER ON
-  // else if (entity == "foundations"){
-  //   var arr1 = this.targetFunders.filter((currentValue) => { return value == currentValue.profitMotive });
-  //   var arr2 = this.implementers.filter((currentValue) => { return value == currentValue.profitMotive });
-  //   return arr1.concat(arr2);
-  // }
-  // else if (entity == "implementers"){
-  //   return this.implementers.filter((currentValue) => { return value == currentValue.profitMotive });
-  // }
-
-  handleFoundationSelection = (event) => {
-    this.setState({
-      [event.target.id]: event.target.value
-    })
-    if (event.target.value == 'profitMotive') {
-      this.setState({
-        dataFoundations: this.getProfitMotive("foundations")
-      })
-    }
-    else if(event.target.value == 'organizationForm') {
-      this.setState({
-        dataFoundations: this.getOrganizationForm()
-      })
-    }
-    else if(event.target.value == 'select')
-    this.setState({
-      dataFoundations: ''
-    })
-  }
-
-  handleInitiativeSelection = (event) => {
-    this.setState({
-      [event.target.id]: event.target.value
-    })
-    if (event.target.value == 'mainProgramActivity') {
-      this.setState({
-        dataInitiatives: this.getMainProgrammingArea()
-      })
-    }
-    else if(event.target.value == 'select')
-    this.setState({
-      dataInitiatives: ''
-    })
+  attributeSelection = (event) => {
+    this.setState({attributeSelection: event.target.value });
   }
 
   render() {
-    return (
-      <div>
-        <select type="selectedFoundations" id="selectedFoundations" name="selectedFoundations" onChange={this.handleFoundationSelection} style = {{width:"22%", margin: "50px 0 0 50px"}}>
-          <option value="select" selected = "selected">Filter a foundation attribute</option>
-          <option value="profitMotive">profit Motive</option>
-          <option value="organizationForm">Organization Form</option>
-        </select>
-        <select type="selectedInitiatives" id="selectedInitiatives" name="selectedFoundations" onChange={this.handleInitiativeSelection} style = {{width:"22%", margin: "50px 0 0 50px"}}>
+    const selection = this.state.entitySelection == "targetFunders" ?
+      <select type="attributes" id="attributes" name="attributes" onChange={this.attributeSelection} style = {{width:"22%", margin: "50px 0 0 50px"}}>
+        <option value="select" selected = "selected">Filter a target funder attribute</option>
+        <option value="profitMotive">Profit Motive</option>
+        <option value="organizationForm">Organization Form</option>
+      </select> : (
+        this.state.entitySelection == "initiatives" ?
+        <select type="attributes" id="attributes" name="attributes" onChange={this.attributeSelection} style = {{width:"22%", margin: "50px 0 0 50px"}}>
           <option value="select" selected = "selected">Filter an initiative attribute</option>
-          <option value="mainProgramActivity">Main Program Activity</option>
-        </select>
-        <Network dataFoundations = {this.state.dataFoundations} dataInitiatives = {this.state.dataInitiatives}/>
-      </div>
-    );
-  }
+          <option value="mainProgramActivity">Main Programming Activity</option>
+        </select> : (
+          this.state.entitySelection == "implementers" ?
+          <select type="attributes" id="attributes" name="attributes" onChange={this.attributeSelection} style = {{width:"22%", margin: "50px 0 0 50px"}}>
+              <option value="select" selected = "selected">Filter an implementer attribute</option>
+            <option value="profitMotive">Profit Motive</option>
+          </select> :
+          null
+        )
+      )
+
+      const piechart = this.state.attributeSelection !== 'select' ?
+          <Chart data = {this.dataSelection}/> : null
+
+      return (
+        <div>
+          <select type="entity" id="entity" name="entity" onChange={this.entitySelection} style = {{width:"22%", margin: "50px 0 0 50px"}}>
+            <option value="select" selected = "selected">Filter Entity Type</option>
+            <option value="targetFunders">Target Funders</option>
+            <option value="initiatives">Initiatives</option>
+            <option value="implementers">Implementers</option>
+          </select>
+          {selection}
+          {piechart}
+        </div>
+      );
+   }
 }
 
 export default Visualize

@@ -61,104 +61,155 @@ class Visualize extends Component {
             }],
         },
 
-      ProfitMotiveTargetFunderData: {
-        ProfitTargetFunders: [
-          {
-            name: "funder1",
-            value: 3 //Number of initiatives Funded
-          },
-          {
-            name: "funder2",
-            value: 5
-          },
-          {
-            name: "funder3",
-            value: 10
-          },
-          {
-            name: "funder4",
-            value: 2
-          }
-        ],
+      ProfitMotiveTargetFunderData: [
+        {
+          id: "profit",
+          data: [
+            {
+              name: "funder1",
+              value: 3 //Number of initiatives Funded
+            },
+            {
+              name: "funder2",
+              value: 5
+            },
+            {
+              name: "funder3",
+              value: 10
+            },
+            {
+              name: "funder4",
+              value: 2
+            }
+          ]
+        },
 
-        NonProfitTargetFunders: [
-          {
-            name: "funder1",
-            value: 2
-          },
-          {
-            name: "funder2",
-            value: 3
-          },
-          {
-            name: "funder3",
-            value: 2
-          }
-        ],
-      },
+        {
+          id: "not-for-profit",
+          data: [
+            {
+              name: "funder1",
+              value: 2
+            },
+            {
+              name: "funder2",
+              value: 3
+            },
+            {
+              name: "funder3",
+              value: 2
+            }
+          ]
+        },
 
-      ProfitMotiveImplementerData: {
-        ProfitImplementers: [
-          {
-            name: "implementer1",
-            value: 4
-          },
-          {
-            name: "implementer2",
-            value: 6
-          },
-        ],
+        {
+          id: "hybrid",
+          data: [
+            {
+              name: "funder1",
+              value: 1
+            },
+            {
+              name: "funder2",
+              value: 2
+            },
+            {
+              name: "funder3",
+              value: 2
+            }
+          ]
+        }
+      ],
 
-        NonProfitImplementers: [
-          {
-            name: "implementer1",
-            value: 1
-          },
-          {
-            name: "implementer2",
-            value: 3
-          },
-          {
-            name: "implementer3",
-            value: 2
-          }
-        ],
-      },
-      OrgFormTargetFunderData: {
-        PrivateTargetFunders: [
-          {
-            name: "funder1",
-            value: 3 //Number of initiatives Funded
-          },
-          {
-            name: "funder2",
-            value: 5
-          },
-          {
-            name: "funder3",
-            value: 10
-          },
-          {
-            name: "funder4",
-            value: 2
-          }
-        ],
+      ProfitMotiveImplementerData: [
+        {
+          id: "profit",
+          data:[
+            {
+              name: "implementer1",
+              value: 4
+            },
+            {
+              name: "implementer2",
+              value: 6
+            }
+          ]
+        },
 
-        HybridTargetFunders: [
+        {
+          id: "not-for-profit",
+          data:[
+            {
+              name: "implementer1",
+              value: 2
+            },
+            {
+              name: "implementer3",
+              value: 2
+            }
+          ]
+        },
+
+        {
+          id: "hybrid",
+          data:[
+            {
+              name: "implementer1",
+              value: 1
+            },
+            {
+              name: "implementer2",
+              value: 3
+            },
+            {
+              name: "implementer3",
+              value: 2
+            }
+          ]
+        }
+      ],
+
+      OrgFormTargetFunderData: [
           {
-            name: "funder1",
-            value: 2
-          },
-          {
-            name: "funder2",
-            value: 3
-          },
-          {
-            name: "funder3",
-            value: 2
-          }
-        ],
-      },
+          id: "private",
+          data:[
+            {
+              name: "funder1",
+              value: 3 //Number of initiatives Funded
+            },
+            {
+              name: "funder2",
+              value: 5
+            },
+            {
+              name: "funder3",
+              value: 10
+            },
+            {
+              name: "funder4",
+              value: 2
+            }
+          ]
+        },
+
+        {
+          id: "impact investor",
+          data:[
+            {
+              name: "funder1",
+              value: 2
+            },
+            {
+              name: "funder2",
+              value: 3
+            },
+            {
+              name: "funder3",
+              value: 2
+            }
+          ]
+        }
+      ],
 
       entitySelection: '',
       attributeSelection: 'select'

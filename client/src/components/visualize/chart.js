@@ -99,10 +99,10 @@ class Chart extends Component {
       activeIndex={this.state.activeIndex}
       activeShape={renderActiveShape}
       data={this.state.data}
-      cx={550}
+      cx={450}
       cy={250}
-      innerRadius={130}
-      outerRadius={200}
+      innerRadius={150}
+      outerRadius={230}
       fill="#8884d8"
       paddingAngle={2}
       dataKey="value"
@@ -120,10 +120,10 @@ class Chart extends Component {
       activeIndex={this.state.activeIndex}
       activeShape={renderActiveShape}
       data={this.state.subData}
-      cx={550}
+      cx={450}
       cy={250}
-      innerRadius={110}
-      outerRadius={200}
+      innerRadius={170}
+      outerRadius={230}
       fill={this.state.subFill}
       paddingAngle={2}
       dataKey="value"
@@ -139,9 +139,11 @@ class Chart extends Component {
     </Pie>
 
     return (
-      <PieChart style = {{marginTop: "80px"}} width={1500} height={500} onMouseEnter={this.onPieEnter}>
-        {this.state.pie}
-      </PieChart>
+      <div style = {{float: "left"}} >
+        <PieChart style = {{marginTop: "80px"}} width={900} height={500} onMouseEnter={this.onPieEnter}>
+          {this.state.pie}
+        </PieChart>
+      </div>
     );
   }
 }

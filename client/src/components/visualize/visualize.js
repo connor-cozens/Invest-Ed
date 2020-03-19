@@ -215,10 +215,6 @@ class Visualize extends Component {
       attributeSelection: 'select'
   }
 
-  componentDidUpdate = (prevState) => {
-
-  }
-
   dataSelection = () => {
     if (this.state.entitySelection == "targetFunders" && this.state.attributeSelection == "profitMotive") {
       return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunderData}
@@ -245,18 +241,18 @@ class Visualize extends Component {
 
   render() {
     const selection = this.state.entitySelection == "targetFunders" ?
-      <select type="attributes" id="attributes" name="attributes" onChange={this.attributeSelection} style = {{width:"22%", margin: "50px 0 0 50px"}}>
+      <select type="attributes" id="attributes" name="attributes" onChange={this.attributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
         <option value="select" selected = "selected">Filter a target funder attribute</option>
         <option value="profitMotive">Profit Motive</option>
         <option value="organizationForm">Organization Form</option>
       </select> : (
         this.state.entitySelection == "initiatives" ?
-        <select type="attributes" id="attributes" name="attributes" onChange={this.attributeSelection} style = {{width:"22%", margin: "50px 0 0 50px"}}>
+        <select type="attributes" id="attributes" name="attributes" onChange={this.attributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
           <option value="select" selected = "selected">Filter an initiative attribute</option>
           <option value="mainProgramActivity">Main Programming Activity</option>
         </select> : (
           this.state.entitySelection == "implementers" ?
-          <select type="attributes" id="attributes" name="attributes" onChange={this.attributeSelection} style = {{width:"22%", margin: "50px 0 0 50px"}}>
+          <select type="attributes" id="attributes" name="attributes" onChange={this.attributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
               <option value="select" selected = "selected">Filter an implementer attribute</option>
             <option value="profitMotive">Profit Motive</option>
           </select> :
@@ -268,14 +264,18 @@ class Visualize extends Component {
           <Chart data = {this.dataSelection}/> : null
 
       return (
-        <div>
-          <select type="entity" id="entity" name="entity" onChange={this.entitySelection} style = {{width:"22%", margin: "50px 0 0 50px"}}>
-            <option value="select" selected = "selected">Filter Entity Type</option>
-            <option value="targetFunders">Target Funders</option>
-            <option value="initiatives">Initiatives</option>
-            <option value="implementers">Implementers</option>
-          </select>
-          {selection}
+        <div style = {{height: "100%"}}>
+          <div className = "settings" style = {{width: "25%", height: "100%", float: "left"}}>
+            <nav className = "nav flex-column navbar-dark bg-light" style = {{height: "100%"}}>
+              <select type="entity" id="entity" name="entity" onChange={this.entitySelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
+                <option value="select" selected = "selected">Filter Entity Type</option>
+                <option value="targetFunders">Target Funders</option>
+                <option value="initiatives">Initiatives</option>
+                <option value="implementers">Implementers</option>
+              </select>
+              {selection}
+            </nav>
+          </div>
           {piechart}
         </div>
       );

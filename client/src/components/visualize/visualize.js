@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import Chart from './chart'
+import Switch from "react-switch";
 
 class Visualize extends Component {
   state = {
     //Data to be used for visualization - will be returned by backend as json response instead - this is dummy for now
     TargetFunderData:
-      {profitMotives: [
+      {
+        profitMotives: [
         {
           name: "profit",
           value: 30  //Number of targetFunders that are profit-based
@@ -21,7 +23,7 @@ class Visualize extends Component {
         organizationForm: [
           {
             name: "private",
-            value: 20
+            value: 20 //Number of targetFunders that private funders
           },
           {
             name: "impact investor",
@@ -30,10 +32,11 @@ class Visualize extends Component {
       },
 
     ImplementerData:
-      {profitMotives: [
+      {
+        profitMotives: [
           {
             name: "profit",
-            value: 20
+            value: 20 //Number of implementers that are profit-based
           },
           {
             name: "not-for-profit",
@@ -46,10 +49,11 @@ class Visualize extends Component {
       },
 
       InititativeData:
-        {mainProgramActivity: [
+        {
+          mainProgramActivity: [
             {
               name: "Scholarships",
-              value: 10  //Number of initiatives that have "Scholarships as their main programming area"
+              value: 10  //Number of initiatives that have Scholarships as their main programming area
             },
             {
               name: "School Loans",
@@ -61,13 +65,13 @@ class Visualize extends Component {
             }],
         },
 
-      ProfitMotiveTargetFunderData: [
+      ProfitMotiveTargetFunder: [
         {
           id: "profit",
           data: [
             {
               name: "funder1",
-              value: 3 //Number of initiatives Funded
+              value: 3 //Number of initiatives that funder1, a profit funder, funds
             },
             {
               name: "funder2",
@@ -83,7 +87,6 @@ class Visualize extends Component {
             }
           ]
         },
-
         {
           id: "not-for-profit",
           data: [
@@ -121,21 +124,20 @@ class Visualize extends Component {
         }
       ],
 
-      ProfitMotiveImplementerData: [
+      ProfitMotiveImplementer: [
         {
           id: "profit",
           data:[
             {
               name: "implementer1",
-              value: 4
+              value: 4  //Number of initiatives that implementer1, a profit implementer, implements
             },
             {
               name: "implementer2",
               value: 6
             }
-          ]
+          ],
         },
-
         {
           id: "not-for-profit",
           data:[
@@ -149,7 +151,6 @@ class Visualize extends Component {
             }
           ]
         },
-
         {
           id: "hybrid",
           data:[
@@ -169,13 +170,13 @@ class Visualize extends Component {
         }
       ],
 
-      OrgFormTargetFunderData: [
+      OrgFormTargetFunder: [
           {
           id: "private",
           data:[
             {
               name: "funder1",
-              value: 3 //Number of initiatives Funded
+              value: 3 //Number of initiatives that funder1, a private funder, funds
             },
             {
               name: "funder2",
@@ -197,83 +198,362 @@ class Visualize extends Component {
           data:[
             {
               name: "funder1",
-              value: 2
+              value: 2,
             },
             {
               name: "funder2",
-              value: 3
+              value: 3,
             },
             {
               name: "funder3",
-              value: 2
+              value: 2,
             }
           ]
         }
       ],
 
-      entitySelection: '',
-      attributeSelection: 'select'
+      ////////
+      //Connection between Profit Funders and Initiatives
+      ProfitMotiveFunderInitiative:
+        {
+          mainProgramActivity:[
+            {
+              id: "profit",
+              data:[
+                {
+                  name: "Scholarships",
+                  value: 4 //Number of intiatives of type "scholarship" are funded by profit funders
+                },
+                {
+                  name: "School Loans",
+                  value: 5
+                },
+                {
+                  name: "Contracting",
+                  value: 9
+                }
+              ]
+            },
+            {
+              id: "not-for-profit",
+              data:[
+                {
+                  name: "Contracting",
+                  value: 5
+                }
+              ]
+            },
+            {
+              id: "hybrid",
+              data:[
+                {
+                  name: "Scholarships",
+                  value: 3
+                },
+                {
+                  name: "Contracting",
+                  value: 4
+                }
+              ]
+            }
+          ]
+        },
+
+      OrgFormFunderInitiative:
+        {
+          mainProgramActivity:[
+            {
+              id: "private",
+              data:[
+                {
+                  name: "Scholarships",
+                  value: 10 //Number of intiatives of type "scholarship" are funded by profit funders
+                },
+                {
+                  name: "School Loans",
+                  value: 9
+                },
+                {
+                  name: "Contracting",
+                  value: 9
+                }
+              ]
+            },
+            {
+              id: "impact investor",
+              data:[
+                {
+                  name: "School Loans",
+                  value: 9
+                },
+                {
+                  name: "Contracting",
+                  value: 10
+                }
+              ]
+            }
+          ]
+        },
+
+
+      //Connection between Profit Implementers and Initiatives
+      ProfitMotiveImplementerInitiative:
+        {
+          mainProgramActivity:[
+            {
+              id: "profit",
+              data:[
+                {
+                  name: "Scholarships",
+                  value: 1 //Number of intiatives of type "scholarship" are funded by profit funders
+                }
+              ]
+            },
+            {
+              id: "not-for-profit",
+              data:[
+                {
+                  name: "Contracting",
+                  value: 2
+                }
+              ]
+            },
+            {
+              id: "hybrid",
+              data:[
+                {
+                  name: "Scholarships",
+                  value: 2
+                },
+                {
+                  name: "Contracting",
+                  value: 1
+                }
+              ]
+            }
+          ]
+        },
+
+      //Funder data related to initiatives
+      FunderInitiative:
+          {
+            mainProgramActivity : [
+            {
+              id: "funder1",
+              data: [
+                {
+                  name: "Scholarships",
+                  value: 2 //Number of intiatives of type "scholarship" are funded by funder1
+                },
+                {
+                  name: "School Loans",
+                  value: 1
+                },
+                {
+                  name: "Contracting",
+                  value: 2
+                }
+              ]
+            },
+            {
+              id: "funder2",
+              data: [
+                {
+                  name: "Scholarships",
+                  value: 4 //Number of intiatives of type "scholarship" are funded by funder1
+                },
+                {
+                  name: "School Loans",
+                  value: 4
+                },
+                {
+                  name: "Contracting",
+                  value: 5
+                }
+              ]
+            },
+            {
+              id: "funder3",
+              data: [
+                {
+                  name: "Scholarships",
+                  value: 4 //Number of intiatives of type "scholarship" are funded by funder1
+                },
+                {
+                  name: "School Loans",
+                  value: 4
+                },
+                {
+                  name: "Contracting",
+                  value: 5
+                }
+              ]
+            }
+          ]
+        },
+
+      //Implementer data related to initiatives
+      ImplementerInitiative:
+        {
+          mainProgramActivity : [
+            {
+              id: "implementer1",
+              data: [
+                {
+                  name: "Scholarships",
+                  value: 1 //Number of intiatives of type "scholarship" are funded by funder1
+                },
+                {
+                  name: "Contracting",
+                  value: 2
+                }
+              ]
+            },
+            {
+              id: "implementer2",
+              data: [
+                {
+                  name: "Scholarships",
+                  value: 2 //Number of intiatives of type "scholarship" are funded by funder1
+                },
+                {
+                  name: "School Loans",
+                  value: 1
+                },
+                {
+                  name: "Contracting",
+                  value: 2
+                }
+              ]
+            }
+          ]
+        },
+
+      entitySelection: 'select',
+      attributeSelection: 'select',
+      secondaryAttributeSelection: 'select',
+      breakDownChecked: false,
+      compareChecked: false
   }
 
   dataSelection = () => {
     if (this.state.entitySelection == "targetFunders" && this.state.attributeSelection == "profitMotive") {
-      return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunderData}
+      if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
+        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: this.state.ProfitMotiveFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity }
+      }
+      return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: '', sub3: '' }
     }
     if (this.state.entitySelection == "targetFunders" && this.state.attributeSelection == "organizationForm") {
-      return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunderData}
+      return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative, sub3: this.state.FunderInitiative }
     }
     if (this.state.entitySelection == "implementers" && this.state.attributeSelection == "profitMotive") {
-      return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementerData}
+      return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative, sub3: this.state.ImplementerInitiative}
     }
     if (this.state.entitySelection == "initiatives" && this.state.attributeSelection == "mainProgramActivity") {
       return {main: this.state.InititativeData.mainProgramActivity}
     }
   }
 
-  entitySelection = (event) => {
-    this.setState({entitySelection: event.target.value});
-    this.setState({attributeSelection: 'select'});
+  handleEntitySelection = (event) => {
+    this.setState({ entitySelection: event.target.value, attributeSelection: 'select', secondaryAttributeSelection: 'select', compareChecked: false, breakDownChecked: false});
   }
 
-  attributeSelection = (event) => {
-    this.setState({attributeSelection: event.target.value });
+  handleAttributeSelection = (event) => {
+    this.setState({ attributeSelection: event.target.value });
+  }
+
+  handleSecondaryAttributeSelection = (event) => {
+    this.setState({ secondaryAttributeSelection: event.target.value });
+  }
+
+  handleBreakDownChange = (checked) =>  {
+    this.setState({ breakDownChecked: checked });
+  }
+
+  handleCompareChange = (checked) =>  {
+    this.setState({ compareChecked: checked, secondaryAttributeSelection: 'select' });
   }
 
   render() {
     const selection = this.state.entitySelection == "targetFunders" ?
-      <select type="attributes" id="attributes" name="attributes" onChange={this.attributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
+      <select value = {this.state.attributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleAttributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
         <option value="select" selected = "selected">Filter a target funder attribute</option>
         <option value="profitMotive">Profit Motive</option>
         <option value="organizationForm">Organization Form</option>
       </select> : (
         this.state.entitySelection == "initiatives" ?
-        <select type="attributes" id="attributes" name="attributes" onChange={this.attributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
+        <select value = {this.state.attributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleAttributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
           <option value="select" selected = "selected">Filter an initiative attribute</option>
           <option value="mainProgramActivity">Main Programming Activity</option>
         </select> : (
           this.state.entitySelection == "implementers" ?
-          <select type="attributes" id="attributes" name="attributes" onChange={this.attributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
-              <option value="select" selected = "selected">Filter an implementer attribute</option>
+          <select value = {this.state.attributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleAttributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
+              <option value="select">Filter an implementer attribute</option>
             <option value="profitMotive">Profit Motive</option>
           </select> :
           null
         )
       )
 
+      const secondarySelection = this.state.compareChecked ? (this.state.entitySelection == 'targetFunders' || this.state.entitySelection == 'implementers' ?
+        <select value = {this.state.secondaryAttributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleSecondaryAttributeSelection} style = {{width:"80%", margin: "25px 0 0 25px"}}>
+          <option value="select" selected = "selected">Filter an initiative attribute</option>
+          <option value="mainProgramActivity">Main Programming Activity</option>
+        </select>
+        : null
+        )
+        : null
+
+      const compareLabel = this.state.entitySelection !== 'select' ? (this.state.entitySelection == 'targetFunders' || this.state.entitySelection == 'implementers' ? 'Initiatives' : null) : null
+      const breakDownLabel = this.state.entitySelection !== 'select' ? (this.state.entitySelection == 'targetFunders' ? "Target Funders" : (this.state.entitySelection == 'initiatives' ? 'Initiatives' : (this.state.entitySelection == 'implementers' ? 'Implementers' : null))) : null
+
+      const toggleCompare = this.state.attributeSelection !== 'select' ? (this.state.entitySelection == 'targetFunders' || this.state.entitySelection == 'implementers' ?
+        <div>
+          <div style = {{margin: "50px 0 0 25px"}}>
+            <label style = {{margin: "0 25px 0 0", verticalAlign: "top"}}> Break down {breakDownLabel} </label>
+            <Switch checked={this.state.breakDownChecked} onColor="#86d3ff" onHandleColor="#2693e6"
+              handleDiameter={20} uncheckedIcon={false} checkedIcon={false} boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)" activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+              height={20} width={48} className="react-switch" id="material-switch" key="breakDownChecked" disabled
+             />
+           </div>
+           <div style = {{margin: "50px 0 0 25px"}}>
+             <label style = {{margin: "0 25px 0 0", verticalAlign: "top"}}> Compare with {compareLabel} </label>
+             <Switch checked={this.state.compareChecked} onChange={this.handleCompareChange} onColor="#86d3ff" onHandleColor="#2693e6"
+                handleDiameter={20} uncheckedIcon={false} checkedIcon={false} boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)" activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                height={20} width={48} className="react-switch" id="material-switch" key="compareChecked"
+              />
+            </div>
+          </div>
+       : (this.state.entitySelection == 'initiatives' ?
+           <div style = {{margin: "50px 0 0 25px"}}>
+             <label style = {{margin: "0 25px 0 0", verticalAlign: "top"}}> Break down {breakDownLabel} </label>
+             <Switch checked={this.state.breakDownChecked} onColor="#86d3ff" onHandleColor="#2693e6"
+               handleDiameter={20} uncheckedIcon={false} checkedIcon={false} boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)" activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+               height={20} width={48} className="react-switch" id="material-switch" key="breakDownChecked" disabled
+              />
+            </div>
+            :
+            null
+          )
+     ) :
+     null
+
       const piechart = this.state.attributeSelection !== 'select' ?
-          <Chart data = {this.dataSelection}/> : null
+          <Chart data = {this.dataSelection} toggleCompare = {this.state.compareChecked} toggleBreakDown = {this.handleBreakDownChange}/> : null
 
       return (
         <div style = {{height: "100%"}}>
           <div className = "settings" style = {{width: "25%", height: "100%", float: "left"}}>
             <nav className = "nav flex-column navbar-dark bg-light" style = {{height: "100%"}}>
-              <select type="entity" id="entity" name="entity" onChange={this.entitySelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
-                <option value="select" selected = "selected">Filter Entity Type</option>
+              <select value = {this.state.entitySelection} type="entity" id="entity" name="entity" onChange={this.handleEntitySelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
+                <option value="select">Filter Entity Type</option>
                 <option value="targetFunders">Target Funders</option>
                 <option value="initiatives">Initiatives</option>
                 <option value="implementers">Implementers</option>
               </select>
               {selection}
+              {toggleCompare}
+              {secondarySelection}
             </nav>
           </div>
           {piechart}

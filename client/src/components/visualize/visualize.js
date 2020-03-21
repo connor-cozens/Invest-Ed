@@ -439,18 +439,24 @@ class Visualize extends Component {
   dataSelection = () => {
     if (this.state.entitySelection == "targetFunders" && this.state.attributeSelection == "profitMotive") {
       if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
-        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: this.state.ProfitMotiveFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity }
+        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: this.state.ProfitMotiveFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity, header1: 'Target Funders - Profit Motives', header2: 'Initiatives - Main Programming Activity' }
       }
-      return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: '', sub3: '' }
+      return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Profit Motives', header2: '' }
     }
     if (this.state.entitySelection == "targetFunders" && this.state.attributeSelection == "organizationForm") {
-      return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative, sub3: this.state.FunderInitiative }
+      if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
+        return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity, header1: 'Target Funders - Organization Form', header2: 'Initiatives - Main Programming Activity' }
+      }
+      return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Organization Form', header2: '' }
     }
     if (this.state.entitySelection == "implementers" && this.state.attributeSelection == "profitMotive") {
-      return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative, sub3: this.state.ImplementerInitiative}
+      if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
+        return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative.mainProgramActivity, sub3: this.state.ImplementerInitiative.mainProgramActivity, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Main Programming Activity'}
+      }
+      return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: '', sub3: '', header1: 'Implementers - Profit Motives', header2: ''}
     }
     if (this.state.entitySelection == "initiatives" && this.state.attributeSelection == "mainProgramActivity") {
-      return {main: this.state.InititativeData.mainProgramActivity}
+      return {main: this.state.InititativeData.mainProgramActivity, sub: '', sub1: '', sub2: '', header1: 'Initiatives - Main Programming Area', header2: ''}
     }
   }
 
@@ -475,6 +481,7 @@ class Visualize extends Component {
   }
 
   render() {
+    //Dynamically make attribute text field appear based on entity selection
     const selection = this.state.entitySelection == "targetFunders" ?
       <select value = {this.state.attributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleAttributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
         <option value="select" selected = "selected">Filter a target funder attribute</option>
@@ -495,50 +502,50 @@ class Visualize extends Component {
         )
       )
 
+      //Dynamically make secondary comparison field appear if compare toggle on
       const secondarySelection = this.state.compareChecked ? (this.state.entitySelection == 'targetFunders' || this.state.entitySelection == 'implementers' ?
         <select value = {this.state.secondaryAttributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleSecondaryAttributeSelection} style = {{width:"80%", margin: "25px 0 0 25px"}}>
           <option value="select" selected = "selected">Filter an initiative attribute</option>
           <option value="mainProgramActivity">Main Programming Activity</option>
         </select>
         : null
-        )
-        : null
+        ) : null
 
+      //Compare toggle label
       const compareLabel = this.state.entitySelection !== 'select' ? (this.state.entitySelection == 'targetFunders' || this.state.entitySelection == 'implementers' ? 'Initiatives' : null) : null
+      //Breakdown toggle label
       const breakDownLabel = this.state.entitySelection !== 'select' ? (this.state.entitySelection == 'targetFunders' ? "Target Funders" : (this.state.entitySelection == 'initiatives' ? 'Initiatives' : (this.state.entitySelection == 'implementers' ? 'Implementers' : null))) : null
 
+      //Toggle for entity comparison - choose whether to show or not depending on the type of entity initially chosen
       const toggleCompare = this.state.attributeSelection !== 'select' ? (this.state.entitySelection == 'targetFunders' || this.state.entitySelection == 'implementers' ?
         <div>
-          <div style = {{margin: "50px 0 0 25px"}}>
-            <label style = {{margin: "0 25px 0 0", verticalAlign: "top"}}> Break down {breakDownLabel} </label>
-            <Switch checked={this.state.breakDownChecked} onColor="#86d3ff" onHandleColor="#2693e6"
-              handleDiameter={20} uncheckedIcon={false} checkedIcon={false} boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)" activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-              height={20} width={48} className="react-switch" id="material-switch" key="breakDownChecked" disabled
-             />
-           </div>
-           <div style = {{margin: "50px 0 0 25px"}}>
-             <label style = {{margin: "0 25px 0 0", verticalAlign: "top"}}> Compare with {compareLabel} </label>
-             <Switch checked={this.state.compareChecked} onChange={this.handleCompareChange} onColor="#86d3ff" onHandleColor="#2693e6"
+          <div style = {{margin: "50px 55px 0 30px"}}>
+            <div style = {{float: "left"}}>
+              <label style = {{margin: "0 25px 0 0", verticalAlign: "top", fontSize: "17px"}}> Break down {breakDownLabel} </label>
+            </div>
+            <div style = {{float: "right"}}>
+              <Switch checked={this.state.breakDownChecked} onColor="#86d3ff" onHandleColor="#2693e6"
                 handleDiameter={20} uncheckedIcon={false} checkedIcon={false} boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)" activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-                height={20} width={48} className="react-switch" id="material-switch" key="compareChecked"
-              />
+                height={20} width={48} className="react-switch" id="material-switch" key="breakDownChecked" disabled
+               />
+             </div>
+           </div>
+           <div style = {{margin: "130px 55px 0 30px"}}>
+              <div style = {{float: "left"}}>
+                <label style = {{margin: "0 25px 0 0", verticalAlign: "top", fontSize: "17px"}}> Compare with {compareLabel} </label>
+              </div>
+              <div style = {{float: "right"}}>
+               <Switch checked={this.state.compareChecked} onChange={this.handleCompareChange} onColor="#86d3ff" onHandleColor="#2693e6"
+                  handleDiameter={20} uncheckedIcon={false} checkedIcon={false} boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)" activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                  height={20} width={48} className="react-switch" id="material-switch" key="compareChecked"
+                />
+              </div>
             </div>
           </div>
-       : (this.state.entitySelection == 'initiatives' ?
-           <div style = {{margin: "50px 0 0 25px"}}>
-             <label style = {{margin: "0 25px 0 0", verticalAlign: "top"}}> Break down {breakDownLabel} </label>
-             <Switch checked={this.state.breakDownChecked} onColor="#86d3ff" onHandleColor="#2693e6"
-               handleDiameter={20} uncheckedIcon={false} checkedIcon={false} boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)" activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-               height={20} width={48} className="react-switch" id="material-switch" key="breakDownChecked" disabled
-              />
-            </div>
-            :
-            null
-          )
-     ) :
-     null
+       : null ) : null
 
-      const piechart = this.state.attributeSelection !== 'select' ?
+     //Setup Piechart child component
+     const piechart = this.state.attributeSelection !== 'select' ?
           <Chart data = {this.dataSelection} toggleCompare = {this.state.compareChecked} toggleBreakDown = {this.handleBreakDownChange}/> : null
 
       return (

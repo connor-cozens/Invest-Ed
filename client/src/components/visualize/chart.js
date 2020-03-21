@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PieChart, Pie, Sector, Cell } from 'recharts';
+import {Label, PieChart, Pie, Sector, Cell } from 'recharts';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
@@ -54,6 +54,7 @@ class Chart extends Component {
   state = {
     bar: null,
     barData: null,
+    barFill: null,
 
     activeIndex: 0,
     pie: null,
@@ -69,14 +70,17 @@ class Chart extends Component {
     }
   }
 
+  //On hover of pie chart
   onPieEnter = (data, index) => {
+    //Set up data for bar chart to appear on hover
     if (data !== null){
       if (this.state.setMainPie) {
         if (this.props.toggleCompare && this.props.data().sub2) {
           this.props.data().sub2.forEach((item) => {
             if (item.id == data.name) {
               this.setState({
-                barData: item.data
+                barData: item.data,
+                barFill: data.fill
               });
             }
           });
@@ -87,7 +91,8 @@ class Chart extends Component {
           this.props.data().sub3.forEach((item) => {
             if (item.id == data.name) {
               this.setState({
-                barData: item.data
+                barData: item.data,
+                barFill: data.fill
               });
             }
           });
@@ -95,28 +100,32 @@ class Chart extends Component {
       }
     }
 
+    //Set state index
     this.setState({
       activeIndex: index
     });
   };
 
+  //Add secondary pie chart onclick of main pie chart
   addSubPie = (data, index) => {
-    this.setState({
-      setMainPie: false,
-      subPieFill: data.fill
-    });
+    if (this.props.data().sub !== '') {
+      this.setState({
+        setMainPie: false,
+        subPieFill: data.fill
+      });
 
-    this.props.data().sub.forEach((item) => {
-      if (item.id == data.name) {
-        this.setState({
-          subPieData: item.data
-        });
-      }
-    })
-    this.props.toggleBreakDown(true)
+      this.props.data().sub.forEach((item) => {
+        if (item.id == data.name) {
+          this.setState({
+            subPieData: item.data
+          });
+        }
+      })
+      this.props.toggleBreakDown(true)
+    }
   };
 
-
+  //Remove secondary pie chart onclick of secondary pie chart, such that main pie chart appears again
   removeSubPie = () => {
     this.setState({
       setMainPie: true
@@ -125,17 +134,25 @@ class Chart extends Component {
   };
 
   render() {
-    const xPieLocation = (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ? 350 : 550
-    const xPieChartWidth = (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ? 800 : 1000
+    const xPieLocation = (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ? 425 : 550
+    const xPieChartWidth = (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ? 825 : 1000
+    const pieTitle = (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ?
+      <h3 style = {{marginTop: "50px", marginLeft: "30px" }}> {this.props.data().header1} </h3>
+      :
+      <h3 style = {{marginTop: "50px", marginLeft: "100px" }}> {this.props.data().header1} </h3>
 
-    this.state.pie = this.state.setMainPie ? <Pie
+    const barTitle = <h4 style = {{marginTop: "200px"}}> {this.props.data().header2} </h4>
+
+    //Choose whether to show main pie or secondary pie depending on state
+    this.state.pie = this.state.setMainPie ?
+    <Pie
       activeIndex={this.state.activeIndex}
       activeShape={renderActiveShape}
       data={this.state.pieData}
       cx={xPieLocation}
       cy={300}
-      innerRadius={150}
-      outerRadius={230}
+      innerRadius={130}
+      outerRadius={210}
       fill="#8884d8"
       paddingAngle={2}
       dataKey="value"
@@ -148,15 +165,16 @@ class Chart extends Component {
           key={`cell-${index}`}
           fill={COLORS[index % COLORS.length]} />
     ))}
-    </Pie> :
+    </Pie>
+  :
     <Pie
       activeIndex={this.state.activeIndex}
       activeShape={renderActiveShape}
       data={this.state.subPieData}
       cx={xPieLocation}
       cy={300}
-      innerRadius={170}
-      outerRadius={230}
+      innerRadius={150}
+      outerRadius={210}
       fill={this.state.subPieFill}
       paddingAngle={2}
       dataKey="value"
@@ -171,30 +189,33 @@ class Chart extends Component {
     ))}
     </Pie>
 
+    //Choose whether to display bar chart depending on state
     this.state.bar = (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ?
       <BarChart
         width={400}
-        height={500}
+        height={300}
         data={this.state.barData}
         layout="vertical"
-        margin={{top: 250, right: 30, left: 30}}
+        margin={{top: 20, right: 60, left: 30}}
         >
         <XAxis type="number"/>
         <YAxis type="category" dataKey="name" />
         <CartesianGrid strokeDasharray="3 3"/>
         <Tooltip/>
         <Legend />
-        <Bar dataKey="value" fill="#8884d8" />
+        <Bar dataKey="value" fill={this.state.barFill} />
       </BarChart> : null
 
     return (
       <div>
-        <div style = {{float: "left"}} >
-          <PieChart style = {{marginTop: "80px"}} width={xPieChartWidth} height={700} onMouseEnter={this.onPieEnter}>
+        <div style = {{float: "left", margin: 'auto'}} >
+          {pieTitle}
+          <PieChart width={xPieChartWidth} height={700} onMouseEnter={this.onPieEnter}>
             {this.state.pie}
           </PieChart>
         </div>
         <div style = {{float: "left"}}>
+          {barTitle}
           {this.state.bar}
         </div>
       </div>

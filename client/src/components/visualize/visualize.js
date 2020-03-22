@@ -1,16 +1,19 @@
 import React, {Component} from 'react';
 import Chart from './chart'
 import Switch from "react-switch";
+import Map from './map';
 
 class Visualize extends Component {
   state = {
     //Data to be used for visualization - will be returned by backend as json response instead - this is dummy for now
+
+//ENDPOINT 1 - TARGET FUNDER DATA
     TargetFunderData:
       {
         profitMotives: [
         {
           name: "profit",
-          value: 30  //Number of targetFunders that are profit-based
+          value: 30  //Number of target Funders that are profit-based
         },
         {
           name: "not-for-profit",
@@ -23,14 +26,16 @@ class Visualize extends Component {
         organizationForm: [
           {
             name: "private",
-            value: 20 //Number of targetFunders that private funders
+            value: 20 //Number of target Funders that private funders
           },
           {
             name: "impact investor",
             value: 20
           }],
+          //Probably will add more attributes, like countryOfOperation, etc.
       },
 
+//ENDPOINT 2 - IMPLEMENTER DATA
     ImplementerData:
       {
         profitMotives: [
@@ -46,8 +51,10 @@ class Visualize extends Component {
             name: "hybrid",
             value: 5
           }],
+          //Probably will add more attributes, like countryOfOperation, etc.
       },
 
+//ENDPOINT 3 - INITIATIVE DATA
       InititativeData:
         {
           mainProgramActivity: [
@@ -63,8 +70,23 @@ class Visualize extends Component {
               name: "Contracting",
               value: 5
             }],
+            countryOfOperation: [
+              {
+                name: "Canada",
+                value: 10  //Number of initiatives that operate in Canada
+              },
+              {
+                name: "India",
+                value: 17
+              },
+              {
+                name: "Australia",
+                value: 20
+              }],
         },
 
+//ENDPOINT 4 - AN ARRAY OF ATTRIBUTES RELATED TO TARGET FUNDERS
+      //ATTRIBUTE 1 - PROFIT MOTIVE
       ProfitMotiveTargetFunder: [
         {
           id: "profit",
@@ -124,6 +146,51 @@ class Visualize extends Component {
         }
       ],
 
+      //ATTRIBUTE 2 - ORGANIZATION FORM
+      OrgFormTargetFunder: [
+          {
+          id: "private",
+          data:[
+            {
+              name: "funder1",
+              value: 3 //Number of initiatives that funder1, a private funder, funds
+            },
+            {
+              name: "funder2",
+              value: 5
+            },
+            {
+              name: "funder3",
+              value: 10
+            },
+            {
+              name: "funder4",
+              value: 2
+            }
+          ]
+        },
+
+        {
+          id: "impact investor",
+          data:[
+            {
+              name: "funder1",
+              value: 2,
+            },
+            {
+              name: "funder2",
+              value: 3,
+            },
+            {
+              name: "funder3",
+              value: 2,
+            }
+          ]
+        }
+      ],
+
+//ENDPOINT 5 - AN ARRAY OF ATTRIBUTES RELATED TO IMPLEMENTERS
+      //ATTRIBUTE 1 - ORGANIZATION FORM
       ProfitMotiveImplementer: [
         {
           id: "profit",
@@ -170,50 +237,8 @@ class Visualize extends Component {
         }
       ],
 
-      OrgFormTargetFunder: [
-          {
-          id: "private",
-          data:[
-            {
-              name: "funder1",
-              value: 3 //Number of initiatives that funder1, a private funder, funds
-            },
-            {
-              name: "funder2",
-              value: 5
-            },
-            {
-              name: "funder3",
-              value: 10
-            },
-            {
-              name: "funder4",
-              value: 2
-            }
-          ]
-        },
-
-        {
-          id: "impact investor",
-          data:[
-            {
-              name: "funder1",
-              value: 2,
-            },
-            {
-              name: "funder2",
-              value: 3,
-            },
-            {
-              name: "funder3",
-              value: 2,
-            }
-          ]
-        }
-      ],
-
-      ////////
-      //Connection between Profit Funders and Initiatives
+  //ENDPOINT 6 - AN ARRAY OF RELATIONSHIPS BETWEEN TARGET FUNDERS AND INITIATIVES
+      //RELATIONSHIP 1 - Relationship between Target funders filtered by profit motive, and Initiatives
       ProfitMotiveFunderInitiative:
         {
           mainProgramActivity:[
@@ -256,9 +281,51 @@ class Visualize extends Component {
                 }
               ]
             }
+          ],
+          countryOfOperation:[
+            {
+              id: "profit",
+              data:[
+                {
+                  name: "Brazil",
+                  value: 11 //Number of intiatives operated in Brazil that are funded by profit funders
+                },
+                {
+                  name: "Argentina",
+                  value: 5
+                },
+                {
+                  name: "Morocco",
+                  value: 9
+                }
+              ]
+            },
+            {
+              id: "not-for-profit",
+              data:[
+                {
+                  name: "Saudi Arabia",
+                  value: 2
+                }
+              ]
+            },
+            {
+              id: "hybrid",
+              data:[
+                {
+                  name: "Iran",
+                  value: 1
+                },
+                {
+                  name: "Madagascar",
+                  value: 1
+                }
+              ]
+            }
           ]
         },
 
+      //RELATIONSHIP 2 - Relationship between Target funders filtered by organization form, and Initiatives
       OrgFormFunderInitiative:
         {
           mainProgramActivity:[
@@ -292,11 +359,44 @@ class Visualize extends Component {
                 }
               ]
             }
+          ],
+          countryOfOperation:[
+            {
+              id: "private",
+              data:[
+                {
+                  name: "Thailand",
+                  value: 10 //Number of intiatives operated in Thailand that are funded by profit funders
+                },
+                {
+                  name: "China",
+                  value: 3
+                },
+                {
+                  name: "India",
+                  value: 5
+                }
+              ]
+            },
+            {
+              id: "impact investor",
+              data:[
+                {
+                  name: "Italy",
+                  value: 7
+                },
+                {
+                  name: "Bulgaria",
+                  value: 5
+                }
+              ]
+            }
           ]
         },
 
 
-      //Connection between Profit Implementers and Initiatives
+  //ENDPOINT 7 - AN ARRAY OF RELATIONSHIPS BETWEEN iMPLEMENTERS AND INITIATIVES
+      //RELATIONSHIP 1 - Relationship between Implementers filtered by profit motive, and Initiatives
       ProfitMotiveImplementerInitiative:
         {
           mainProgramActivity:[
@@ -327,6 +427,40 @@ class Visualize extends Component {
                 },
                 {
                   name: "Contracting",
+                  value: 1
+                }
+              ]
+            }
+          ],
+
+          countryOfOperation:[
+            {
+              id: "profit",
+              data:[
+                {
+                  name: "Japan",
+                  value: 3 //Number of intiatives operated in Japan are funded by profit funders
+                }
+              ]
+            },
+            {
+              id: "not-for-profit",
+              data:[
+                {
+                  name: "Cambodia",
+                  value: 2
+                }
+              ]
+            },
+            {
+              id: "hybrid",
+              data:[
+                {
+                  name: "Philippines",
+                  value: 4
+                },
+                {
+                  name: "Bangladesh",
                   value: 1
                 }
               ]
@@ -389,7 +523,61 @@ class Visualize extends Component {
                 }
               ]
             }
-          ]
+          ],
+
+          countryOfOperation : [
+          {
+            id: "funder1",
+            data: [
+              {
+                name: "Pakistan",
+                value: 2 //Number of intiatives in Pakistan are funded by funder1
+              },
+              {
+                name: "Afghanistan",
+                value: 5
+              },
+              {
+                name: "Australia",
+                value: 6
+              }
+            ]
+          },
+          {
+            id: "funder2",
+            data: [
+              {
+                name: "Thailand",
+                value: 4 //Number of intiatives of type "scholarship" are funded by funder1
+              },
+              {
+                name: "Sudan",
+                value: 3
+              },
+              {
+                name: "Cambodia",
+                value: 5
+              }
+            ]
+          },
+          {
+            id: "funder3",
+            data: [
+              {
+                name: "Nigeria",
+                value: 4 //Number of intiatives of type "scholarship" are funded by funder1
+              },
+              {
+                name: "India",
+                value: 7
+              },
+              {
+                name: "China",
+                value: 5
+              }
+            ]
+          }
+        ]
         },
 
       //Implementer data related to initiatives
@@ -426,6 +614,38 @@ class Visualize extends Component {
                 }
               ]
             }
+          ],
+          countryOfOperation: [
+            {
+              id: "implementer1",
+              data: [
+                {
+                  name: "Canada",
+                  value: 3 //Number of intiatives in Canada that are funded by funder1
+                },
+                {
+                  name: "Spain",
+                  value: 2
+                }
+              ]
+            },
+            {
+              id: "implementer2",
+              data: [
+                {
+                  name: "India",
+                  value: 2 //Number of intiatives of type "scholarship" are funded by funder1
+                },
+                {
+                  name: "Pakistan",
+                  value: 4
+                },
+                {
+                  name: "Iran",
+                  value: 3
+                }
+              ]
+            }
           ]
         },
 
@@ -433,7 +653,8 @@ class Visualize extends Component {
       attributeSelection: 'select',
       secondaryAttributeSelection: 'select',
       breakDownChecked: false,
-      compareChecked: false
+      compareChecked: false,
+      mapViewChecked: false
   }
 
   dataSelection = () => {
@@ -443,25 +664,38 @@ class Visualize extends Component {
       }
       return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Profit Motives', header2: '' }
     }
+
     if (this.state.entitySelection == "targetFunders" && this.state.attributeSelection == "organizationForm") {
       if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
         return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity, header1: 'Target Funders - Organization Form', header2: 'Initiatives - Main Programming Activity' }
       }
       return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Organization Form', header2: '' }
     }
+
     if (this.state.entitySelection == "implementers" && this.state.attributeSelection == "profitMotive") {
       if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
         return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative.mainProgramActivity, sub3: this.state.ImplementerInitiative.mainProgramActivity, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Main Programming Activity'}
       }
       return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: '', sub3: '', header1: 'Implementers - Profit Motives', header2: ''}
     }
+
     if (this.state.entitySelection == "initiatives" && this.state.attributeSelection == "mainProgramActivity") {
       return {main: this.state.InititativeData.mainProgramActivity, sub: '', sub1: '', sub2: '', header1: 'Initiatives - Main Programming Area', header2: ''}
+    }
+
+    if (this.state.entitySelection == "initiatives" && this.state.attributeSelection == "countryOfOperation") {
+      return {main: this.state.InititativeData.countryOfOperation, sub: '', sub1: '', sub2: '', header1: 'Initiatives - Countries of Operation', header2: ''}
     }
   }
 
   handleEntitySelection = (event) => {
-    this.setState({ entitySelection: event.target.value, attributeSelection: 'select', secondaryAttributeSelection: 'select', compareChecked: false, breakDownChecked: false});
+    this.setState({
+      entitySelection: event.target.value,
+      attributeSelection: 'select',
+      secondaryAttributeSelection: 'select',
+      compareChecked: false,
+      breakDownChecked: false,
+      mapViewChecked: false});
   }
 
   handleAttributeSelection = (event) => {
@@ -477,7 +711,13 @@ class Visualize extends Component {
   }
 
   handleCompareChange = (checked) =>  {
-    this.setState({ compareChecked: checked, secondaryAttributeSelection: 'select' });
+    this.setState({
+      compareChecked: checked,
+      secondaryAttributeSelection: 'select' });
+  }
+
+  handleMapViewChange = (checked) =>  {
+    this.setState({ mapViewChecked: checked });
   }
 
   render() {
@@ -492,6 +732,7 @@ class Visualize extends Component {
         <select value = {this.state.attributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleAttributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
           <option value="select" selected = "selected">Filter an initiative attribute</option>
           <option value="mainProgramActivity">Main Programming Activity</option>
+          <option value="countryOfOperation">Country of Operation</option>
         </select> : (
           this.state.entitySelection == "implementers" ?
           <select value = {this.state.attributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleAttributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
@@ -502,11 +743,12 @@ class Visualize extends Component {
         )
       )
 
-      //Dynamically make secondary comparison field appear if compare toggle on
+      //Dynamically make secondary comparison field appear if compare toggle is on
       const secondarySelection = this.state.compareChecked ? (this.state.entitySelection == 'targetFunders' || this.state.entitySelection == 'implementers' ?
         <select value = {this.state.secondaryAttributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleSecondaryAttributeSelection} style = {{width:"80%", margin: "25px 0 0 25px"}}>
           <option value="select" selected = "selected">Filter an initiative attribute</option>
           <option value="mainProgramActivity">Main Programming Activity</option>
+          <option value="countryOfOperation">Country of Operation</option>
         </select>
         : null
         ) : null
@@ -516,7 +758,7 @@ class Visualize extends Component {
       //Breakdown toggle label
       const breakDownLabel = this.state.entitySelection !== 'select' ? (this.state.entitySelection == 'targetFunders' ? "Target Funders" : (this.state.entitySelection == 'initiatives' ? 'Initiatives' : (this.state.entitySelection == 'implementers' ? 'Implementers' : null))) : null
 
-      //Toggle for entity comparison - choose whether to show or not depending on the type of entity initially chosen
+      //Toggle for implementer/funder to initiative comparison - choose whether to show or not depending on the type of entity initially chosen
       const toggleCompare = this.state.attributeSelection !== 'select' ? (this.state.entitySelection == 'targetFunders' || this.state.entitySelection == 'implementers' ?
         <div>
           <div style = {{margin: "50px 55px 0 30px"}}>
@@ -544,9 +786,29 @@ class Visualize extends Component {
           </div>
        : null ) : null
 
+     const toggleMap = this.state.attributeSelection == 'countryOfOperation' || this.state.secondaryAttributeSelection == 'countryOfOperation' ?
+       <div style = {{margin: "50px 55px 0 30px"}}>
+          <div style = {{float: "left"}}>
+            <label style = {{margin: "0 25px 0 0", verticalAlign: "top", fontSize: "17px"}}> Map View </label>
+          </div>
+          <div style = {{float: "right"}}>
+           <Switch checked={this.state.mapViewChecked} onChange={this.handleMapViewChange} onColor="#86d3ff" onHandleColor="#2693e6"
+              handleDiameter={20} uncheckedIcon={false} checkedIcon={false} boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)" activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+              height={20} width={48} className="react-switch" id="material-switch" key="compareChecked"
+            />
+          </div>
+        </div>
+        :
+        null
+
      //Setup Piechart child component
-     const piechart = this.state.attributeSelection !== 'select' ?
+     const chart = this.state.attributeSelection !== 'select' ?
           <Chart data = {this.dataSelection} toggleCompare = {this.state.compareChecked} toggleBreakDown = {this.handleBreakDownChange}/> : null
+
+      const map = this.state.mapViewChecked ?
+        <Map data = {this.state.InititativeData.countryOfOperation}/>
+        :
+        null
 
       return (
         <div style = {{height: "100%"}}>
@@ -561,9 +823,17 @@ class Visualize extends Component {
               {selection}
               {toggleCompare}
               {secondarySelection}
+              {toggleMap}
+              <hr style={{
+                    color: "black",
+                    backgroundColor: "black",
+                    height: 2
+                }}
+            />
             </nav>
           </div>
-          {piechart}
+          {chart}
+          {map}
         </div>
       );
    }

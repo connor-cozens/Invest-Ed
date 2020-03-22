@@ -174,13 +174,22 @@ class Chart extends Component {
     const pieOuterRadius = this.props.toggleMap ? 80 : 0
     const pieInnerRadius = this.props.toggleMap ? 20 : 0
 
-    const pieTitle = (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ?
+    const title = (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ?
       <h3 style = {{marginTop: "50px", marginLeft: "30px" }}> {this.props.data().header1} </h3>
       :
       <h3 style = {{marginTop: "50px", marginLeft: "100px" }}> {this.props.data().header1} </h3>
 
-    const secondaryTitle = <h4 style = {{marginTop: "100px"}}> {this.props.data().header2} </h4>
+    const subTitle = this.props.toggleMap ?
+        <h4 style = {{marginTop: "20px", marginLeft: "200px" }}> {this.props.data().subHeader} </h4>
+        :
+        (
+          (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ?
+          <h4 style = {{marginTop: "20px", marginLeft: "315px" }}> {this.props.data().subHeader} </h4>
+          :
+          <h4 style = {{marginTop: "20px", marginLeft: "450px" }}> {this.props.data().subHeader} </h4>
+        )
 
+    const secondaryTitle = <h4 style = {{marginTop: "100px"}}> {this.props.data().header2} </h4>
 
     //Choose whether to show main pie or secondary pie depending on state
     this.state.pie = this.state.setMainPie && !(this.props.toggleMap && !this.props.toggleCompare) ?
@@ -236,7 +245,6 @@ class Chart extends Component {
       : null
     )
 
-
     //Choose whether to display bar chart depending on state
     this.state.bar = !this.props.toggleMap && this.props.toggleCompare ?
       <BarGraph data = {this.state.barData} fill = {this.state.barFill}/>
@@ -253,7 +261,8 @@ class Chart extends Component {
     return (
       <div>
         <div style = {{float: "left", margin: 'auto'}} >
-          {pieTitle}
+          {title}
+          {subTitle}
           {this.state.pie}
         </div>
         <div style = {{float: "left"}}>

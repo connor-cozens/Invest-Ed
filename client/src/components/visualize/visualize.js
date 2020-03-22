@@ -659,38 +659,38 @@ class Visualize extends Component {
   dataSelection = () => {
     if (this.state.entitySelection == "targetFunders" && this.state.attributeSelection == "profitMotive") {
       if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
-        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: this.state.ProfitMotiveFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity, header1: 'Target Funders - Profit Motives', header2: 'Initiatives - Main Programming Activity' }
+        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: this.state.ProfitMotiveFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity, header1: 'Target Funders - Profit Motives', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of initiatives' }
       }
 
       if (this.state.secondaryAttributeSelection == "countryOfOperation") {
-        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: this.state.ProfitMotiveFunderInitiative.countryOfOperation, sub3: this.state.FunderInitiative.countryOfOperation, header1: 'Target Funders - Profit Motives', header2: 'Initiatives - Country of Operation' }
+        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: this.state.ProfitMotiveFunderInitiative.countryOfOperation, sub3: this.state.FunderInitiative.countryOfOperation, header1: 'Target Funders - Profit Motives', header2: 'Initiatives - Country of Operation', subHeader: 'Number of initiatives'}
       }
 
-      return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Profit Motives', header2: '' }
+      return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Profit Motives', header2: '', subHeader: 'Number of initiatives' }
     }
 
     if (this.state.entitySelection == "targetFunders" && this.state.attributeSelection == "organizationForm") {
       if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
-        return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity, header1: 'Target Funders - Organization Form', header2: 'Initiatives - Main Programming Activity' }
+        return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity, header1: 'Target Funders - Organization Form', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of initiatives' }
       }
 
       if (this.state.secondaryAttributeSelection == "countryOfOperation") {
-        return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative.countryOfOperation, sub3: this.state.FunderInitiative.countryOfOperation, header1: 'Target Funders - Organization Form', header2: 'Initiatives - Country of Operation' }
+        return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative.countryOfOperation, sub3: this.state.FunderInitiative.countryOfOperation, header1: 'Target Funders - Organization Form', header2: 'Initiatives - Country of Operation', subHeader: 'Number of initiatives' }
       }
 
-      return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Organization Form', header2: '' }
+      return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Organization Form', header2: '', subHeader: 'Number of initiatives' }
     }
 
     if (this.state.entitySelection == "implementers" && this.state.attributeSelection == "profitMotive") {
       if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
-        return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative.mainProgramActivity, sub3: this.state.ImplementerInitiative.mainProgramActivity, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Main Programming Activity'}
+        return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative.mainProgramActivity, sub3: this.state.ImplementerInitiative.mainProgramActivity, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of initiatives'}
       }
 
       if (this.state.secondaryAttributeSelection == "countryOfOperation") {
-        return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative.countryOfOperation, sub3: this.state.ImplementerInitiative.countryOfOperation, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Country of Operation'}
+        return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative.countryOfOperation, sub3: this.state.ImplementerInitiative.countryOfOperation, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Country of Operation', subHeader: 'Number of initiatives'}
       }
 
-      return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: '', sub3: '', header1: 'Implementers - Profit Motives', header2: ''}
+      return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: '', sub3: '', header1: 'Implementers - Profit Motives', header2: '', subHeader: 'Number of initiatives'}
     }
 
     if (this.state.entitySelection == "initiatives" && this.state.attributeSelection == "mainProgramActivity") {

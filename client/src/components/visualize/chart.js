@@ -245,7 +245,7 @@ class Chart extends Component {
       : null
     )
 
-    //Choose whether to display bar chart depending on state
+    //Choose whether to display bar chart depending on toggle state
     this.state.bar = !this.props.toggleMap && this.props.toggleCompare ?
       <BarGraph data = {this.state.barData} fill = {this.state.barFill}/>
       : null

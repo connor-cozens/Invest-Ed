@@ -780,7 +780,8 @@ class Visualize extends Component {
       const breakDownLabel = this.state.entitySelection !== 'select' ? (this.state.entitySelection == 'targetFunders' ? "Target Funders" : (this.state.entitySelection == 'initiatives' ? 'Initiatives' : (this.state.entitySelection == 'implementers' ? 'Implementers' : null))) : null
 
       //Toggle for implementer/funder to initiative comparison - choose whether to show or not depending on the type of entity initially chosen
-      const toggleCompare = this.state.attributeSelection !== 'select' ? (this.state.entitySelection == 'targetFunders' || this.state.entitySelection == 'implementers' ?
+      const toggleCompare = this.state.attributeSelection !== 'select' ?
+      (this.state.entitySelection == 'targetFunders' || this.state.entitySelection == 'implementers' ?
         <div>
           <div style = {{margin: "50px 55px 0 30px"}}>
             <div style = {{float: "left"}}>
@@ -800,7 +801,7 @@ class Visualize extends Component {
               <div style = {{float: "right"}}>
                <Switch checked={this.state.compareChecked} onChange={this.handleCompareChange} onColor="#86d3ff" onHandleColor="#2693e6"
                   handleDiameter={20} uncheckedIcon={false} checkedIcon={false} boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)" activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-                  height={20} width={48} className="react-switch" id="material-switch" key="compareChecked"
+                  height={20} width={48} className="react-switch" id="material-switch" key="compareChecked" disabled = {this.state.mapViewChecked}
                 />
               </div>
             </div>

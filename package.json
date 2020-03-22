@@ -33,7 +33,9 @@
     "redis": "^3.0.2",
     "sequelize": "5.21.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "sequelize-cli": "^5.5.1"
+  },
   "description": "# Instructions",
   "repository": {
     "type": "git",

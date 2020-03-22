@@ -4,21 +4,25 @@ const cors = require('cors')
 
 const db = require("../database/invest-ed_db")
 
-dashboard.use(cors())
+dashboardOrg.use(cors())
 
-dashboard.get('/form', (req, res) =>{
+//GET form from DB
+dashboardOrg.get('/form', (req, res) =>{
     //res.send("hello!")
 })
 
-dashboard.get('/form-temp', (req, res) =>{
+//GET form from temp DB
+dashboardOrg.get('/form-temp', (req, res) =>{
     //res.send("hello!")
 })
 
-dashboard.post('/new-form', (req, res) =>{
+//POST form to temp DB
+dashboardOrg.post('/new-form', (req, res) =>{
     //res.send("hello!")
 })
 
-dashboard.post('/modified-form', (req, res) =>{
+//POST form to temp DB
+dashboardOrg.post('/modified-form', (req, res) =>{
     //res.send("hello!")
 })
 

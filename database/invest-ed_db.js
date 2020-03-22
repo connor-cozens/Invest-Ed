@@ -68,10 +68,10 @@ invest_ed_db.countries.belongsTo(invest_ed_db.regions)
 
 //Country and World Bank tables
 invest_ed_db.countries.hasOne(invest_ed_db.countryWorldBankCountries)
-invest_ed_db.invest_ed_db.countryWorldBankCountries.belongsTo(invest_ed_db.countries)
+invest_ed_db.countryWorldBankCountries.belongsTo(invest_ed_db.countries)
 
 invest_ed_db.countries.hasMany(invest_ed_db.countryWorldBankGroups)
-invest_ed_db.invest_ed_db.countryWorldBankGroups.belongsTo(invest_ed_db.countries)
+invest_ed_db.countryWorldBankGroups.belongsTo(invest_ed_db.countries)
 
 invest_ed_db.countryWorldBankCodes.hasOne(invest_ed_db.countryWorldBankGroups)
 invest_ed_db.countryWorldBankGroups.belongsTo(invest_ed_db.countryWorldBankCodes)
@@ -95,7 +95,7 @@ invest_ed_db.funderOrganizationTraits.belongsTo(invest_ed_db.funder)
 
 //Initiative Country of Operation
 invest_ed_db.countries.hasMany(invest_ed_db.initiativeCountryOfOperation)
-invest_ed_db.initiativeCountryOfOperation.belongsTo(invest_ed_db.countries)
+invest_ed_db.initiativeCountryOfOperation.belongsTo(invest_ed_db.countries, {as: 'countryName'})
 
 invest_ed_db.initiative.hasMany(invest_ed_db.initiativeCountryOfOperation)
 invest_ed_db.initiativeCountryOfOperation.belongsTo(invest_ed_db.initiative)
@@ -139,7 +139,7 @@ invest_ed_db.initiativeProgrammingActivities.belongsTo(invest_ed_db.initiative)
 //Initiative region
 
 invest_ed_db.regions.hasMany(invest_ed_db.initiativeRegion)
-invest_ed_db.initiativeRegion.belongsTo(invest_ed_db.regions)
+invest_ed_db.initiativeRegion.belongsTo(invest_ed_db.regions, {as: 'regionName'})
 
 invest_ed_db.initiative.hasMany(invest_ed_db.initiativeRegion)
 invest_ed_db.initiativeRegion.belongsTo(invest_ed_db.initiative)
@@ -168,20 +168,6 @@ invest_ed_db.implements.belongsTo(invest_ed_db.implementor)
 
 invest_ed_db.implements.hasMany(invest_ed_db.initiative)
 invest_ed_db.initiative.belongsTo(invest_ed_db.implements)
-
-// Funder - is Target Funder - Initiative
-invest_ed_db.funder.hasMany(invest_ed_db.initiativeTargetFunder)
-invest_ed_db.initiativeTargetFunder.belongsTo(invest_ed_db.funder)
-
-invest_ed_db.initiativeTargetFunder.hasMany(invest_ed_db.initiative)
-invest_ed_db.initiative.belongsTo(invest_ed_db.initiativeTargetFunder)
-
-invest_ed_db.initiativeTargetFunder.hasOne(invest_ed_db.funder)
-invest_ed_db.funder.belongsTo(invest_ed_db.initiativeTargetFunder)
-
-invest_ed_db.initiative.hasOne(invest_ed_db.initiativeTargetFunder)
-invest_ed_db.initiativeTargetFunder.belongsTo(invest_ed_db.initiative)
-
 
 //Funder - Funds - Initiative 
 invest_ed_db.funder.hasMany(invest_ed_db.funds)

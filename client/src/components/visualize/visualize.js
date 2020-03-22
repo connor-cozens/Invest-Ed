@@ -468,7 +468,7 @@ class Visualize extends Component {
           ]
         },
 
-      //Funder data related to initiatives
+//ENDPOINT 8 - TARGET FUNDER SPECIFIC DATA RELATED TO INITIATIVES
       FunderInitiative:
           {
             mainProgramActivity : [
@@ -524,7 +524,6 @@ class Visualize extends Component {
               ]
             }
           ],
-
           countryOfOperation : [
           {
             id: "funder1",
@@ -578,9 +577,9 @@ class Visualize extends Component {
             ]
           }
         ]
-        },
+      },
 
-      //Implementer data related to initiatives
+//ENDPOINT 9 - IMPLEMENTER SPECIFIC DATA RELATED TO INITIATIVES
       ImplementerInitiative:
         {
           mainProgramActivity : [

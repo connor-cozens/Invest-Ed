@@ -313,7 +313,7 @@ class Visualize extends Component {
               id: "hybrid",
               data:[
                 {
-                  name: "Iran",
+                  name: "Armenia",
                   value: 1
                 },
                 {
@@ -661,6 +661,11 @@ class Visualize extends Component {
       if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
         return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: this.state.ProfitMotiveFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity, header1: 'Target Funders - Profit Motives', header2: 'Initiatives - Main Programming Activity' }
       }
+
+      if (this.state.secondaryAttributeSelection == "countryOfOperation") {
+        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: this.state.ProfitMotiveFunderInitiative.countryOfOperation, sub3: this.state.FunderInitiative.countryOfOperation, header1: 'Target Funders - Profit Motives', header2: 'Initiatives - Country of Operation' }
+      }
+
       return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Profit Motives', header2: '' }
     }
 
@@ -668,6 +673,11 @@ class Visualize extends Component {
       if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
         return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity, header1: 'Target Funders - Organization Form', header2: 'Initiatives - Main Programming Activity' }
       }
+
+      if (this.state.secondaryAttributeSelection == "countryOfOperation") {
+        return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative.countryOfOperation, sub3: this.state.FunderInitiative.countryOfOperation, header1: 'Target Funders - Organization Form', header2: 'Initiatives - Country of Operation' }
+      }
+
       return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Organization Form', header2: '' }
     }
 
@@ -675,6 +685,11 @@ class Visualize extends Component {
       if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
         return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative.mainProgramActivity, sub3: this.state.ImplementerInitiative.mainProgramActivity, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Main Programming Activity'}
       }
+
+      if (this.state.secondaryAttributeSelection == "countryOfOperation") {
+        return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative.countryOfOperation, sub3: this.state.ImplementerInitiative.countryOfOperation, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Country of Operation'}
+      }
+
       return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: '', sub3: '', header1: 'Implementers - Profit Motives', header2: ''}
     }
 
@@ -694,15 +709,22 @@ class Visualize extends Component {
       secondaryAttributeSelection: 'select',
       compareChecked: false,
       breakDownChecked: false,
-      mapViewChecked: false});
+      mapViewChecked: false
+    });
   }
 
   handleAttributeSelection = (event) => {
-    this.setState({ attributeSelection: event.target.value });
+    this.setState({
+      attributeSelection: event.target.value,
+      mapViewChecked: false
+    });
   }
 
   handleSecondaryAttributeSelection = (event) => {
-    this.setState({ secondaryAttributeSelection: event.target.value });
+    this.setState({
+      secondaryAttributeSelection: event.target.value,
+      mapViewChecked: false
+    });
   }
 
   handleBreakDownChange = (checked) =>  {
@@ -800,14 +822,10 @@ class Visualize extends Component {
         :
         null
 
-     //Setup Piechart child component
-     const chart = this.state.attributeSelection !== 'select' ?
-          <Chart data = {this.dataSelection} toggleCompare = {this.state.compareChecked} toggleBreakDown = {this.handleBreakDownChange}/> : null
-
-      const map = this.state.mapViewChecked ?
-        <Map data = {this.state.InititativeData.countryOfOperation}/>
-        :
-        null
+      //Setup Chart as the visualization medium
+      const visual = this.state.attributeSelection !== 'select' ?
+            <Chart data = {this.dataSelection} toggleCompare = {this.state.compareChecked} toggleBreakDown = {this.handleBreakDownChange} toggleMap = {this.state.mapViewChecked}/>
+            : null
 
       return (
         <div style = {{height: "100%"}}>
@@ -831,11 +849,13 @@ class Visualize extends Component {
             />
             </nav>
           </div>
-          {chart}
-          {map}
+          {visual}
         </div>
       );
    }
 }
 
 export default Visualize
+// //(
+//   this.state.entitySelection == "initiatives" && this.state.attributeSelection == "cou"
+// )

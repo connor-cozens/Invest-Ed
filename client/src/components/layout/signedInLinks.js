@@ -15,14 +15,32 @@ class SignedInLinks extends Component {
       const {userData} = this.props;
       const loading = "Loading"
       return (
-        <nav className = "navbar navbar-expand-lg navbar-dark bg-primary">
-          <div className = "container">
-            <Link to = '/dashboard' className = "navbar-brand">My Dashboard</Link>
-            <Link to = '/register' className = "navbar-brand">Register a User</Link>
-            <Link to = '/profile' className = "navbar-brand">{userData ? userData.email : loading}</Link>
-            <Link className = "navbar-brand" onClick = {this.handleLogout}>Sign out</Link>
-          </div>
-        </nav>
+      <div className="collapse navbar-collapse" id="navbarColor03">
+        <ul className="navbar-nav mr-auto">
+          <li className="nav-item">
+            <Link to = '/' className = "nav-link">Home</Link>
+          </li>
+          <li className="nav-item">
+            <Link to = '/dashboard' className = "nav-link">My Dashboard</Link>
+          </li>
+          <li className="nav-item">
+            <Link to = '/register' className = "nav-link">Register User</Link>
+          </li>
+        </ul>
+        <div className="form-inline my-2 my-lg-0">
+          <ul className="nav nav-pills">
+            <li className="nav-item dropdown">
+              <a id="dropdownMenuButton" style = {{color: "white"}} className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{userData ? userData.firstname + ' ' + userData.lastname : loading}</a>
+              <div aria-labelledby="dropdownMenuButton" className="dropdown-menu">
+                <Link to = '/profile' className = "dropdown-item">My Account</Link>
+                <Link to = '/profile' className = "dropdown-item">Edit Account</Link>
+                <div class="dropdown-divider"></div>
+                <Link className = "dropdown-item" onClick = {this.handleLogout}>Sign out</Link>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
       );
     }
   }

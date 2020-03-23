@@ -1,0 +1,13 @@
+textarea[name=emailSubject]{
+    resize: none;
+    height: 50px;
+}
+
+textarea[name=emailSender]{
+    resize: none;
+    height: 150px;
+}
+
+input[type=email]{
+    width: 250px;
+}

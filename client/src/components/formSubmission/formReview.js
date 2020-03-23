@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './formSubmission.css';
+import './formReview.css';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom'
 
-class formSubmission extends React.Component{
+class formReview extends React.Component{
   constructor(props){
     super(props);
     this.state = {
@@ -51,7 +51,7 @@ class formSubmission extends React.Component{
       comments: null,
 
       //Review
-      needsReview: [] //32 Other sections that matter, so 0-31 in the order the appear ON THE FORM
+      needsReview: [] //34 Other sections, so 0-33 in the order the appear ON THE FORM
 
 
     };
@@ -580,7 +580,7 @@ class formSubmission extends React.Component{
       return <Redirect to='/' />
     }
     return (
-        <div className = "formSubmission" style = {{paddingTop: '50px'}}>
+        <div className = "formReview" style = {{paddingTop: '50px'}}>
             <h3>Form Submission</h3>
             <div>
             <form onSubmit={this.handleFormSubmit}>
@@ -589,20 +589,32 @@ class formSubmission extends React.Component{
 
             <p>Name</p>
               <input type="text" id="fname" name="funderName" placeholder="Funder Name" onChange={this.handleChange}/>
+              <br></br>
+            <input type="radio" id="needsReview1" name="fnameCheck" value="checked"/> <label name="accept" htmlFor="needsReview1">Accept</label>
+            <input type="radio" id="needsReview2" name="fnameCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview2">Reject</label>
 
             <p>Website</p>
               <input type="text" id="furl" name="funderWebsite" placeholder="funderWebsite.com" onChange={this.handleChange}/>
+              <br></br>
+            <input type="radio" id="needsReview3" name="fnurlCheck" value="checked"/> <label name="accept" htmlFor="needsReview3">Accept</label>
+            <input type="radio" id="needsReview4" name="furlCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview4">Reject</label>
 
             <p>Profit Motive</p>
               <input type="radio" id="motive1" name="profitMotive" value="Not-For-Profit" onChange={this.profitMotiveChange}/> <label htmlFor="motive1">Not-For-Profit</label>
               <input type="radio" id="motive2" name="profitMotive" value="Hybrid" onChange={this.profitMotiveChange}/> <label htmlFor="motive2">Hybrid</label>
               <input type="radio" id="motive3" name="profitMotive" value="For-Profit" onChange={this.profitMotiveChange}/> <label htmlFor="motive3">For-Profit</label>
+              <br></br>
+            <input type="radio" id="needsReview5" name="pmotiveCheck" value="checked"/> <label name="accept" htmlFor="needsReview5">Accept</label>
+            <input type="radio" id="needsReview6" name="pmotiveCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview6">Reject</label>
             <br></br><br></br>
 
             <p>Impact Investing?</p>
               <input type="radio" id="impact1" name="impactInvesting" value="Yes" onChange={this.impactChange}/> <label htmlFor="impact1">Yes</label>
               <input type="radio" id="impact2" name="impactInvesting" value="No" onChange={this.impactChange}/> <label htmlFor="impact2">No</label>
               <input type="radio" id="impact3" name="impactInvesting" value="Unknown" onChange={this.impactChange}/> <label htmlFor="impact3">Unknown</label>
+              <br></br>
+            <input type="radio" id="needsReview7" name="impactCheck" value="checked"/> <label name="accept" htmlFor="needsReview7">Accept</label>
+            <input type="radio" id="needsReview8" name="impactCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview8">Reject</label>
             <br></br><br></br>
 
             <p>Organizational Form</p>
@@ -615,6 +627,9 @@ class formSubmission extends React.Component{
               <input type="radio" id="organization7" name="organizationalForm" value="CSR Initiative / Unit" onChange={this.organizationChange}/> <label htmlFor="organization7">CSR Initiative / Unit</label>
               <input type="radio" id="organization8" name="organizationalForm" value="Multilateral" onChange={this.organizationChange}/> <label htmlFor="organization8">Multilateral</label>
               <input type="radio" id="organization9" name="organizationalForm" value="Other" onChange={this.organizationChange}/> <label htmlFor="organization9">Other</label>
+              <br></br>
+            <input type="radio" id="needsReview9" name="orgFormCheck" value="checked"/> <label name="accept" htmlFor="needsReview9">Accept</label>
+            <input type="radio" id="needsReview10" name="orgFormCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview10">Reject</label>
             <br></br><br></br>
 
             <p>International Base(s)</p>
@@ -844,9 +859,9 @@ class formSubmission extends React.Component{
             </select>
 
             <div id="iBases"></div>
-
-{/* OPERATIONS DOES NOT EXIST */}
-            
+            <br></br>
+            <input type="radio" id="needsReview11" name="iBaseCheck" value="checked"/> <label name="accept" htmlFor="needsReview11">Accept</label>
+            <input type="radio" id="needsReview12" name="iBaseCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview12">Reject</label>
             
             <p>Education Subsector(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="edSub1" name="educationSubsector" value="Adult" onChange={this.changeEdSub}/> <label htmlFor="edSub1" className="checkbox">Adult</label>
@@ -868,7 +883,10 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="edSub17" name="educationSubsector" value="Unclear" onChange={this.changeEdSub}/> <label htmlFor="edSub17" className="checkbox">Unclear</label>
             <input type="checkbox" id="edSub18" name="educationSubsector" value="Workforce Development and Vocational Education" onChange={this.changeEdSub}/> <label htmlFor="edSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="edSub19" name="educationSubsector" value="Workforce Development/Skills" onChange={this.changeEdSub}/> <label htmlFor="edSub19" className="checkbox">Workforce Development/Skills</label>
-                        
+            <br></br>
+            <input type="radio" id="needsReview15" name="edSubCheck" value="checked"/> <label name="accept" htmlFor="needsReview15">Accept</label>
+            <input type="radio" id="needsReview16" name="edSubCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview16">Reject</label>
+
             <p>Organizational Trait(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="orgTrait1" name="organizationalTrait" value="Aim to address issues of common good" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait1" className="checkbox">Aim to address issues of common good</label>
             <input type="checkbox" id="orgTrait2" name="organizationalTrait" value="All sector data missing or unclear" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait2" className="checkbox">All sector data missing or unclear</label>
@@ -883,7 +901,10 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="orgTrait11" name="organizationalTrait" value="Secondary Education" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait11" className="checkbox">Secondary Education</label>
             <input type="checkbox" id="orgTrait12" name="organizationalTrait" value="Use own financial resources (unlike NGOs)" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait12" className="checkbox">Use own financial resources (unlike NGOs)</label>
             <input type="checkbox" id="orgTrait13" name="organizationalTrait" value="Workforce Development/Skills" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait13" className="checkbox">Workforce Development/Skills</label>
-                          
+            <br></br>
+            <input type="radio" id="needsReview17" name="orgTraitCheck" value="checked"/> <label name="accept" htmlFor="needsReview17">Accept</label>
+            <input type="radio" id="needsReview18" name="orgTraitCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview18">Reject</label>              
+            
             <p>Asia International Base(s)</p>
             <select id="asiaInternationalBase" name="country" onChange={this.addAIBase}>
             <option value="baseCase">Choose the International Base Countries in Asia</option>
@@ -1111,10 +1132,12 @@ class formSubmission extends React.Component{
             </select>
 
             <div id="aIBases"></div>
-            {/* MAKE ASIA INTERNATIONAL BASE NOT ACCEPT BASE CASE */}
+            <br></br>
+            <input type="radio" id="needsReview19" name="aIBasesCheck" value="checked"/> <label name="accept" htmlFor="needsReview19">Accept</label>
+            <input type="radio" id="needsReview20" name="aIBasesCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview20">Reject</label>
 
             <p>Asia Operation(s)</p>
-            <select id="aOperations" name="opCountry" onChange={this.addAsiaOperation}>
+            <select id="operations" name="opCountry" onChange={this.addAsiaOperation}>
             <option value="baseCase">Choose the Countries of Operation</option>
             <option value="Afghanistan">Afghanistan</option>
             <option value="Albania">Albania</option>
@@ -1340,29 +1363,47 @@ class formSubmission extends React.Component{
             </select>
 
             <div id="asiaOperationLocations"></div>
+            <br></br>
+            <input type="radio" id="needsReview21" name="opCountryCheck" value="checked"/> <label name="accept" htmlFor="needsReview21">Accept</label>
+            <input type="radio" id="needsReview22" name="opCountryCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview22">Reject</label>
 
-        
+
             <h4>Initiative</h4>
 
             <p>Name</p>
               <input type="text" id="initName" name="initiativeName" placeholder="Initiative Name" onChange={this.handleChange}/>
+              <br></br>
+            <input type="radio" id="needsReview23" name="initNameCheck" value="checked"/> <label name="accept" htmlFor="needsReview23">Accept</label>
+            <input type="radio" id="needsReview24" name="initNameCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview24">Reject</label>
 
             <p>Website</p>
               <input type="text" id="initURL" name="initiativeWebsite" placeholder="initiativeWebsite.com" onChange={this.handleChange}/>
+              <br></br>
+            <input type="radio" id="needsReview25" name="initWebCheck" value="checked"/> <label name="accept" htmlFor="needsReview25">Accept</label>
+            <input type="radio" id="needsReview26" name="initWebCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview26">Reject</label>
 
             <p>Targets Women?</p>
               <input type="radio" id="tWomen1" name="targetsWomen" value="Yes" onChange={this.tWomenChange}/> <label htmlFor="tWomen1">Yes</label>
               <input type="radio" id="tWomen2" name="targetsWomen" value="No" onChange={this.tWomenChange}/> <label htmlFor="tWomen2">No</label>
+              <br></br>
+            <input type="radio" id="needsReview27" name="targetsWomenCheck" value="checked"/> <label name="accept" htmlFor="needsReview27">Accept</label>
+            <input type="radio" id="needsReview28" name="targetsWomenCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview28">Reject</label>
 
             <p>Start Year</p>
               <input type="number" id="initStart" name="startYear" placeholder="Start Year" onChange={this.handleChange}/>
+              <br></br>
+            <input type="radio" id="needsReview29" name="startYearCheck" value="checked"/> <label name="accept" htmlFor="needsReview29">Accept</label>
+            <input type="radio" id="needsReview30" name="startYearCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview30">Reject</label>
 
             <p>End Year</p>
               <input type="number" id="initEnd" name="endYear" placeholder="End Year" onChange={this.handleChange}/>
+              <br></br>
+            <input type="radio" id="needsReview31" name="endYearCheck" value="checked"/> <label name="accept" htmlFor="needsReview31">Accept</label>
+            <input type="radio" id="needsReview32" name="endYearCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview32">Reject</label>
 
             <p>Launch Country</p>
             <select id="launchCountry" name="launchCountry" onChange={this.addLaunchCountry}>
-            <option value="baseCase">Choose the Countries of Operation</option>
+            <option value="baseCase">Choose a Country</option>
             <option value="Afghanistan">Afghanistan</option>
             <option value="Albania">Albania</option>
             <option value="Algeria">Algeria</option>
@@ -1585,11 +1626,15 @@ class formSubmission extends React.Component{
             <option value="Zambia">Zambia</option>
             <option value="Zimbabwe">Zimbabwe</option>
             </select>
-
-            <div id="launchCountries"></div>
+            <br></br>
+            <input type="radio" id="needsReview33" name="launchCountriesCheck" value="checked"/> <label name="accept" htmlFor="needsReview33">Accept</label>
+            <input type="radio" id="needsReview34" name="launchCountriesCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview34">Reject</label>
 
             <p>Description</p>
               <textarea id="idescription" name="description" placeholder="Write a description" onChange={this.handleChange}></textarea>
+              <br></br>
+            <input type="radio" id="needsReview35" name="descriptionCheck" value="checked"/> <label name="accept" htmlFor="needsReview35">Accept</label>
+            <input type="radio" id="needsReview36" name="descriptionCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview36">Reject</label>
 
             <p>Region(s)</p>
             <select id="region" name="regions" onChange={this.addInitRegion}>
@@ -1651,6 +1696,9 @@ class formSubmission extends React.Component{
             </select>
 
             <div id="initRegions"></div>
+            <br></br>
+            <input type="radio" id="needsReview37" name="regionsCheck" value="checked"/> <label name="accept" htmlFor="needsReview37">Accept</label>
+            <input type="radio" id="needsReview38" name="regionsCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview38">Reject</label>
 
             <p>Countries</p>
             <select id="initCountry" name="initiativeCountry" onChange={this.addInitCountry}>
@@ -1879,6 +1927,9 @@ class formSubmission extends React.Component{
             </select>
 
             <div id="initCountries"></div>
+            <br></br>
+            <input type="radio" id="needsReview39" name="initCountryCheck" value="checked"/> <label name="accept" htmlFor="needsReview39">Accept</label>
+            <input type="radio" id="needsReview40" name="initCountryCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview40">Reject</label>
 
             <p>Target Geography</p>
               <input type="checkbox" id="geography1" name="targetGeo" value="Urban" onChange={this.geographyChange}/> <label htmlFor="geography1" className="checkbox">Urban</label>
@@ -1888,6 +1939,9 @@ class formSubmission extends React.Component{
               <input type="checkbox" id="geography5" name="targetGeo" value="children with special needs" onChange={this.geographyChange}/> <label htmlFor="geography5" className="checkbox">children with special needs</label>
               <input type="checkbox" id="geography6" name="targetGeo" value="Unclear" onChange={this.geographyChange}/> <label htmlFor="geography6" className="checkbox">Unclear</label>
               <input type="checkbox" id="geography7" name="targetGeo" value="Missing" onChange={this.geographyChange}/> <label htmlFor="geography7" className="checkbox">Missing</label>
+              <br></br>
+            <input type="radio" id="needsReview41" name="targetGeoCheck" value="checked"/> <label name="accept" htmlFor="needsReview41">Accept</label>
+            <input type="radio" id="needsReview42" name="targetGeoCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview42">Reject</label>
 
             <p>Main Education Subsector</p>
             <input type="checkbox" id="iEdSub1" name="educationSubsector" value="Adult" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub1" className="checkbox">Adult</label>
@@ -1909,7 +1963,9 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="iEdSub17" name="educationSubsector" value="Unclear" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub17" className="checkbox">Unclear</label>
             <input type="checkbox" id="iEdSub18" name="educationSubsector" value="Workforce Development and Vocational Education" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="iEdSub19" name="educationSubsector" value="Workforce Development/Skills" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub19" className="checkbox">Workforce Development/Skills</label>
-
+              <br></br>
+            <input type="radio" id="needsReview43" name="iEdSubCheck" value="checked"/> <label name="accept" htmlFor="needsReview43">Accept</label>
+            <input type="radio" id="needsReview44" name="iEdSubCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview44">Reject</label>
             <p>Other Education Subsector(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="oEdSub1" name="educationSubsector" value="Adult" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub1" className="checkbox">Adult</label>
             <input type="checkbox" id="oEdSub2" name="educationSubsector" value="Adult Basic and Continuing Education" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub2" className="checkbox">Adult Basic and Continuing Education</label>
@@ -1930,6 +1986,9 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="oEdSub17" name="educationSubsector" value="Unclear" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub17" className="checkbox">Unclear</label>
             <input type="checkbox" id="oEdSub18" name="educationSubsector" value="Workforce Development and Vocational Education" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="oEdSub19" name="educationSubsector" value="Workforce Development/Skills" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub19" className="checkbox">Workforce Development/Skills</label>
+            <br></br>
+            <input type="radio" id="needsReview45" name="oEdSubCheck" value="checked"/> <label name="accept" htmlFor="needsReview45">Accept</label>
+            <input type="radio" id="needsReview46" name="oEdSubCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview46">Reject</label>
 
             <p>Main Program Activity</p>
             <select id="mainProgramActivity" name="activity" onChange={this.changeProgramArea}>
@@ -2030,6 +2089,9 @@ class formSubmission extends React.Component{
             <option value=" Literacy skills">Literacy skills</option>
             <option value=" Maternal Health Education">Maternal Health Education</option>
             </select>
+              <br></br>
+            <input type="radio" id="needsReview47" name="activityCheck" value="checked"/> <label name="accept" htmlFor="needsReview47">Accept</label>
+            <input type="radio" id="needsReview48" name="activityCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview48">Reject</label>
 
             <p>Program Area</p>
             <div id="programArea"></div>
@@ -2136,10 +2198,16 @@ class formSubmission extends React.Component{
             </select>
             
             <div id="initActivities"></div>
+            <br></br>
+            <input type="radio" id="needsReview49" name="iniitActivitiesCheck" value="checked"/> <label name="accept" htmlFor="needsReview49">Accept</label>
+            <input type="radio" id="needsReview50" name="iniitActivitiesCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview50">Reject</label>
 
             <p>Fee to Access?</p>
               <input type="radio" id="feeAccess1" name="feeToAccess" value="Yes" onChange={this.feeAccessChange}/> <label htmlFor="feeAccess1">Yes</label>
               <input type="radio" id="feeAccess2" name="feeToAccess" value="No" onChange={this.feeAccessChange}/> <label htmlFor="feeAccess2">No</label>
+              <br></br>
+            <input type="radio" id="needsReview51" name="feeToAccessCheck" value="checked"/> <label name="accept" htmlFor="needsReview51">Accept</label>
+            <input type="radio" id="needsReview52" name="feeToAccessCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview52">Reject</label>
 
             <p>Target School Management Type</p>
             <select id="manType" name="managementType" onChange={this.addManagementType}>
@@ -2151,7 +2219,10 @@ class formSubmission extends React.Component{
             <option value="Missing Data">Missing Data</option>
             </select>  
 
-            <div id="managementTypes"></div>        
+            <div id="managementTypes"></div>   
+            <br></br>
+            <input type="radio" id="needsReview53" name="manTypeCheck" value="checked"/> <label name="accept" htmlFor="needsReview53">Accept</label>
+            <input type="radio" id="needsReview54" name="manTypeCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview54">Reject</label>     
 
 
             <p>Target Population Sector(s)<br></br>Select all that apply:</p>
@@ -2798,6 +2869,9 @@ class formSubmission extends React.Component{
             </select>
 
             <div id="targetPopSector"></div>
+            <br></br>
+            <input type="radio" id="needsReview55" name="targetPopSectorCheck" value="checked"/> <label name="accept" htmlFor="needsReview55">Accept</label>
+            <input type="radio" id="needsReview56" name="targetPopSectorCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview56">Reject</label>
 
             <p>Outcomes Monitored<br></br>Select all that apply:</p>
             <select id="outcome" name="outcomesMonitored" onChange={this.addOutcome}>
@@ -3350,16 +3424,25 @@ class formSubmission extends React.Component{
 
 
             <div id="sourceOfFeesList"></div>
+            <br></br>
+            <input type="radio" id="needsReview57" name="sourceOfFeesCheck" value="checked"/> <label name="accept" htmlFor="needsReview57">Accept</label>
+            <input type="radio" id="needsReview58" name="sourceOfFeesCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview58">Reject</label>
 
             <h4>Implementer</h4>
 
             <p>Name</p>
               <input type="text" id="iname" name="implementerName" placeholder="Implementer Name" onChange={this.handleChange}/>
+              <br></br>
+            <input type="radio" id="needsReview59" name="implementerCheck" value="checked"/> <label name="accept" htmlFor="needsReview59">Accept</label>
+            <input type="radio" id="needsReview60" name="implementerCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview60">Reject</label>
 
             <p>Profit Motive</p>
               <input type="radio" id="impMotive1" name="impProfitMotive" value="Not-For-Profit" onChange={this.impMotiveChange}/> <label htmlFor="impMotive1">Not-For-Profit</label>
               <input type="radio" id="impMotive2" name="impProfitMotive" value="Hybrid" onChange={this.impMotiveChange}/> <label htmlFor="impMotive2">Hybrid</label>
               <input type="radio" id="impMotive3" name="impProfitMotive" value="For-Profit" onChange={this.impMotiveChange}/> <label htmlFor="impMotive3">For-Profit</label>
+              <br></br>
+            <input type="radio" id="needsReview61" name="impProfitCheck" value="checked"/> <label name="accept" htmlFor="needsReview61">Accept</label>
+            <input type="radio" id="needsReview62" name="impProfitCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview62">Reject</label>
             <br></br><br></br>
 
             <h4>Comments about Submission</h4>
@@ -3413,4 +3496,4 @@ const mapStateToProps = (state) => {
   };
 }
 
-export default connect(mapStateToProps)(formSubmission)
+export default connect(mapStateToProps)(formReview)

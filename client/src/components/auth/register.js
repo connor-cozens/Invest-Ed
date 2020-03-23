@@ -89,7 +89,7 @@ class Register extends PureComponent {
                     {errors}
                     <input type = "firstname" id = "firstname" placeholder = "Enter first name*" onChange={this.handleChange}/>
                     <input type = "lastname" id = "lastname" placeholder = "Enter last name*" onChange={this.handleChange}/>
-                    <input type = "email" id = "email" placeholder = "Enter email*" onChange={this.handleChange}/>
+                    <input type = "email" id = "email" placeholder = "Enter email*" style = {{width: "100%"}} onChange={this.handleChange}/>
                     <input type = "username" id = "username" placeholder = "Enter username*" onChange={this.handleChange}/>
                     {selectOptions}
                     <input type = "organization" id = "organization" placeholder = "Enter organization name" onChange={this.handleChange}/>

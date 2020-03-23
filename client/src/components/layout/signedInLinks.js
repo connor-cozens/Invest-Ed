@@ -36,6 +36,9 @@ class SignedInLinks extends Component {
         </ul>
         <div className="form-inline my-2 my-lg-0">
           <ul className="nav nav-pills">
+            <li className="nav-item">
+              <Link to = '/contactUs' className = "nav-link" style = {{color: "white"}}>Contact Us</Link>
+            </li>
             <li className="nav-item dropdown">
               <a id="dropdownMenuButton" style = {{color: "white"}} className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{userData ? userData.firstname + ' ' + userData.lastname : loading}</a>
               <div aria-labelledby="dropdownMenuButton" className="dropdown-menu">

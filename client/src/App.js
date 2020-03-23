@@ -6,9 +6,11 @@ import Login from './components/auth/login';
 import Profile from './components/profile/profile';
 import Dashboard from './components/dashboard/dashboard';
 import Landing from './components/landing';
-import RegistrationSuccess from './components/auth/registrationSuccess'
-import formSubmission from './components/formSubmission/formSubmission';
+import RegistrationSuccess from './components/auth/registrationSuccess';
 import Visualize from './components/visualize/visualize';
+import formSubmission from './components/formSubmission/formSubmission';
+import contactUs from './components/contactUs/contactUs';
+import formReview from './components/formSubmission/formReview';
 
 class App extends Component {
   render() {
@@ -25,6 +27,8 @@ class App extends Component {
             <Route exact path = '/login' component = {Login} />
             <Route exact path = '/profile' component = {Profile} />
             <Route exact path = '/formsubmission' component = {formSubmission} />
+            <Route exact path = '/contactUs' component = {contactUs} />
+            <Route exact path = '/formReview' component = {formReview} />
           </Switch>
         </div>
       </BrowserRouter>

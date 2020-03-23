@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 import { DropdownList } from 'react-widgets'
-import {withCookies} from 'react-cookie';
 import {connect} from 'react-redux';
 import {loginUser, registerUser} from '../../store/actions/authActions';
 import './auth.css';
@@ -25,7 +24,6 @@ class Login extends Component {
   };
 
   render(){
-    const {cookies} = this.props
     console.log(this.props.authorized);
     const {authorized, authError} = this.props;
 
@@ -78,4 +76,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 }
 
-export default withCookies(connect(mapStateToProps, mapDispatchToProps)(Login))
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

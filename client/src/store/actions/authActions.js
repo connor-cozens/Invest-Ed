@@ -9,12 +9,13 @@ import {
 import {REGISTER_CLEAR} from '../reducers/dataReducer';
 
 export const loginUser = (user) => (dispatch) => {
+  dispatch({type: LOGIN_SUCCESS});
   axios.post(`http://localhost:4000/login`, {
     email: user.email,
     password: user.password})
     .then(response => {
       // If there are validation errors
-      if (response.data.err ==  true) {
+      if (response.data.err ==  false) {
         const errorList = response.data.errors;
         const errorMsgList = [];
         errorList.forEach(error => {

@@ -33,7 +33,7 @@ class Login extends Component {
     }
 
     const errors = [];
-    if (authError){
+    /*if (authError){
       authError.forEach((error) => {
         errors.push(
           <div key = {error} className="alert alert-danger alert-dismissible fade show" role={error}>
@@ -41,7 +41,7 @@ class Login extends Component {
           </div>
         )
       });
-    }
+    }*/
 
     return(
       <div className = "row mt-5">

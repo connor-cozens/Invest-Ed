@@ -3,7 +3,7 @@ module.exports = {
     local: {
       host:'localhost',
       user:'root',
-      password:'password',
+      password:'justin98',
       database: 'users',
       dialect: 'mysql'
     }

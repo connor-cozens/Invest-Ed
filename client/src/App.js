@@ -7,6 +7,8 @@ import Dashboard from './components/dashboard/dashboard';
 import Landing from './components/landing';
 import RegistrationSuccess from './components/auth/registrationSuccess'
 import formSubmission from './components/formSubmission/formSubmission';
+import contactUs from './components/contactUs/contactUs';
+import formReview from './components/formSubmission/formReview';
 
 class App extends Component {
   render() {
@@ -21,6 +23,8 @@ class App extends Component {
             <Route exact path = '/dashboard' component = {Dashboard} />
             <Route exact path = '/login' component = {Login} />
             <Route exact path = '/formsubmission' component = {formSubmission} />
+            <Route exact path = '/contactUs' component = {contactUs} />
+            <Route exact path = '/formReview' component = {formReview} />
           </Switch>
         </div>
       </BrowserRouter>

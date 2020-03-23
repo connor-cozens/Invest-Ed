@@ -15,6 +15,7 @@ class SignedInLinks extends Component {
         <div className = "container">
           <Link to = '/dashboard' className = "navbar-brand">My Dashboard</Link>
           <Link to = '/register' className = "navbar-brand">Register a User</Link>
+          <Link to = '/contactUs' className = "navbar-brand">Contact Us</Link>
           <Link className = "navbar-brand" onClick = {this.handleLogout}>Sign out</Link>
         </div>
       </nav>

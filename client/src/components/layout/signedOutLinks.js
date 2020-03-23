@@ -9,7 +9,7 @@ const SignedOutLinks = () => {
           <Link to = '/' className = "nav-link">Home</Link>
         </li>
         <li className="nav-item">
-          <Link to = '/visualize' className = "navbar-link">Visualization</Link>
+          <Link to = '/visualize' className = "nav-link">Visualization</Link>
         </li>
       </ul>
       <div className="form-inline my-2 my-lg-0">

@@ -14,7 +14,12 @@ class SignedInLinks extends Component {
     if (authorized) {
       const loading = "Loading";
 
-      const register = userData ? (userData.accessLevel == 0 ? null :<Link to = '/register' className = "navbar-brand">Register a User</Link>):loading;
+      const register = userData ? (userData.accessLevel == 0 ? null :
+        <li className="nav-item">
+          <Link to = '/register' className = "nav-link">Register a User</Link>
+        </li>
+        ):
+        loading;
       return (
       <div className="collapse navbar-collapse" id="navbarColor03">
         <ul className="navbar-nav mr-auto">
@@ -27,9 +32,7 @@ class SignedInLinks extends Component {
           <li className="nav-item">
             <Link to = '/dashboard' className = "nav-link">My Dashboard</Link>
           </li>
-          <li className="nav-item">
-            <Link to = '/register' className = "nav-link">Register User</Link>
-          </li>
+          {register}
         </ul>
         <div className="form-inline my-2 my-lg-0">
           <ul className="nav nav-pills">

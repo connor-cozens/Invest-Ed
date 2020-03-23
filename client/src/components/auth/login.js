@@ -51,9 +51,9 @@ class Login extends Component {
                 <div className = "loginform">
                   <br/>
                   {errors}
-                  <input type = "username" id = "username" placeholder = "Username" onChange={this.handleChange}/>
-                  <input type = "password" id = "password" placeholder = "Password" onChange={this.handleChange}/>
-                  <input type = "submit" value = "Login"/>
+                  <input type = "username" id = "username" placeholder = "Username" onChange={this.handleChange} style = {{width: "80%"}}/>
+                  <input type = "password" id = "password" placeholder = "Password" onChange={this.handleChange} style = {{width: "80%"}}/>
+                  <input type = "submit" value = "Login" style = {{width: "80%"}}/>
                 </div>
               </div>
             </form>

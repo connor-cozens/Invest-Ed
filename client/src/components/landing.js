@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getUser} from '../store/actions/dataActions';
+import WorldIcon from '../images/world.png'
 
 class Landing extends Component{
   componentDidMount(){
@@ -9,11 +10,12 @@ class Landing extends Component{
 
   render() {
     const {authorized, userData, accessError} = this.props;
-    const showAuthStatus = authorized ? (accessError ? <h3>There was an error retrieving your information</h3> : (userData ? <h3>You are logged in. Welcome {userData.username}</h3>: <h3>Loading</h3>)) : <h3>You are NOT logged in</h3>
+    const showAuthStatus = authorized ? (accessError ? <h3>There was an error retrieving your information</h3> : (userData ? <h3>You are logged in as {userData.username}</h3>: <h3>Loading</h3>)) : <h3>Log in to view your dashboard</h3>
     return (
       <div>
-        <h2 style = {{paddingTop: '50px'}}>Landing Page</h2>
+        <h2 style = {{paddingTop: '50px'}}>Welcome to the Invest-Ed Data Visualization Tool</h2>
         {showAuthStatus}
+        <img src = {WorldIcon} height = {400} width = {400} style = {{margin: "100px 0 0 650px"}} />
       </div>
     );
   }

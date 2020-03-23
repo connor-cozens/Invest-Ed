@@ -3,6 +3,8 @@ import Chart from './chart'
 import Switch from "react-switch";
 import Map from './map';
 
+import WorldIcon from '../../images/world.png'
+
 class Visualize extends Component {
   state = {
     //Data to be used for visualization - will be returned by backend as json response instead - this is dummy for now
@@ -13,15 +15,15 @@ class Visualize extends Component {
         profitMotives: [
         {
           name: "profit",
-          value: 30  //Number of target Funders that are profit-based
+          value: 4  //Number of target Funders that are profit-based
         },
         {
           name: "not-for-profit",
-          value: 50
+          value: 2
         },
         {
           name: "hybrid",
-          value: 10
+          value: 3
         }],
         organizationForm: [
           {
@@ -101,7 +103,7 @@ class Visualize extends Component {
             },
             {
               name: "funder3",
-              value: 10
+              value: 4
             },
             {
               name: "funder4",
@@ -119,10 +121,6 @@ class Visualize extends Component {
             {
               name: "funder2",
               value: 3
-            },
-            {
-              name: "funder3",
-              value: 2
             }
           ]
         },
@@ -483,10 +481,6 @@ class Visualize extends Component {
                   name: "School Loans",
                   value: 1
                 },
-                {
-                  name: "Contracting",
-                  value: 2
-                }
               ]
             },
             {
@@ -494,15 +488,15 @@ class Visualize extends Component {
               data: [
                 {
                   name: "Scholarships",
-                  value: 4 //Number of intiatives of type "scholarship" are funded by funder1
+                  value: 2 //Number of intiatives of type "scholarship" are funded by funder1
                 },
                 {
                   name: "School Loans",
-                  value: 4
+                  value: 2
                 },
                 {
                   name: "Contracting",
-                  value: 5
+                  value: 1
                 }
               ]
             },
@@ -511,15 +505,24 @@ class Visualize extends Component {
               data: [
                 {
                   name: "Scholarships",
-                  value: 4 //Number of intiatives of type "scholarship" are funded by funder1
+                  value: 1 //Number of intiatives of type "scholarship" are funded by funder1
                 },
                 {
                   name: "School Loans",
-                  value: 4
+                  value: 2
                 },
                 {
                   name: "Contracting",
-                  value: 5
+                  value: 1
+                }
+              ]
+            },
+            {
+              id: "funder4",
+              data: [
+                {
+                  name: "Contracting",
+                  value: 2
                 }
               ]
             }
@@ -530,15 +533,15 @@ class Visualize extends Component {
             data: [
               {
                 name: "Pakistan",
-                value: 2 //Number of intiatives in Pakistan are funded by funder1
+                value: 1 //Number of intiatives in Pakistan are funded by funder1
               },
               {
                 name: "Afghanistan",
-                value: 5
+                value: 1
               },
               {
                 name: "Australia",
-                value: 6
+                value: 1
               }
             ]
           },
@@ -547,15 +550,15 @@ class Visualize extends Component {
             data: [
               {
                 name: "Thailand",
-                value: 4 //Number of intiatives of type "scholarship" are funded by funder1
+                value: 2 //Number of intiatives of type "scholarship" are funded by funder1
               },
               {
                 name: "Sudan",
-                value: 3
+                value: 1
               },
               {
                 name: "Cambodia",
-                value: 5
+                value: 2
               }
             ]
           },
@@ -564,15 +567,28 @@ class Visualize extends Component {
             data: [
               {
                 name: "Nigeria",
-                value: 4 //Number of intiatives of type "scholarship" are funded by funder1
+                value: 2 //Number of intiatives of type "scholarship" are funded by funder1
               },
               {
                 name: "India",
-                value: 7
+                value: 1
               },
               {
                 name: "China",
-                value: 5
+                value: 1
+              }
+            ]
+          },
+          {
+            id: "funder4",
+            data: [
+              {
+                name: "India",
+                value: 1
+              },
+              {
+                name: "China",
+                value: 1
               }
             ]
           }
@@ -659,38 +675,38 @@ class Visualize extends Component {
   dataSelection = () => {
     if (this.state.entitySelection == "targetFunders" && this.state.attributeSelection == "profitMotive") {
       if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
-        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: this.state.ProfitMotiveFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity, header1: 'Target Funders - Profit Motives', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of initiatives' }
+        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: this.state.ProfitMotiveFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity, header1: 'Target Funders - Profit Motives', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of Target Funders' }
       }
 
       if (this.state.secondaryAttributeSelection == "countryOfOperation") {
-        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: this.state.ProfitMotiveFunderInitiative.countryOfOperation, sub3: this.state.FunderInitiative.countryOfOperation, header1: 'Target Funders - Profit Motives', header2: 'Initiatives - Country of Operation', subHeader: 'Number of initiatives'}
+        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: this.state.ProfitMotiveFunderInitiative.countryOfOperation, sub3: this.state.FunderInitiative.countryOfOperation, header1: 'Target Funders - Profit Motives', header2: 'Initiatives - Country of Operation', subHeader: 'Number of Target Funders'}
       }
 
-      return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Profit Motives', header2: '', subHeader: 'Number of initiatives' }
+      return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Profit Motives', header2: '', subHeader: 'Number of Target Funders' }
     }
 
     if (this.state.entitySelection == "targetFunders" && this.state.attributeSelection == "organizationForm") {
       if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
-        return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity, header1: 'Target Funders - Organization Form', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of initiatives' }
+        return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity, header1: 'Target Funders - Organization Form', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of Target Funders'}
       }
 
       if (this.state.secondaryAttributeSelection == "countryOfOperation") {
-        return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative.countryOfOperation, sub3: this.state.FunderInitiative.countryOfOperation, header1: 'Target Funders - Organization Form', header2: 'Initiatives - Country of Operation', subHeader: 'Number of initiatives' }
+        return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative.countryOfOperation, sub3: this.state.FunderInitiative.countryOfOperation, header1: 'Target Funders - Organization Form', header2: 'Initiatives - Country of Operation', subHeader: 'Number of Target Funders' }
       }
 
-      return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Organization Form', header2: '', subHeader: 'Number of initiatives' }
+      return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Organization Form', header2: '', subHeader: 'Number of Implementers' }
     }
 
     if (this.state.entitySelection == "implementers" && this.state.attributeSelection == "profitMotive") {
       if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
-        return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative.mainProgramActivity, sub3: this.state.ImplementerInitiative.mainProgramActivity, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of initiatives'}
+        return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative.mainProgramActivity, sub3: this.state.ImplementerInitiative.mainProgramActivity, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of Implementers'}
       }
 
       if (this.state.secondaryAttributeSelection == "countryOfOperation") {
-        return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative.countryOfOperation, sub3: this.state.ImplementerInitiative.countryOfOperation, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Country of Operation', subHeader: 'Number of initiatives'}
+        return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative.countryOfOperation, sub3: this.state.ImplementerInitiative.countryOfOperation, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Country of Operation', subHeader: 'Number of Implementers'}
       }
 
-      return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: '', sub3: '', header1: 'Implementers - Profit Motives', header2: '', subHeader: 'Number of initiatives'}
+      return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: '', sub3: '', header1: 'Implementers - Profit Motives', header2: '', subHeader: 'Number of Implementers'}
     }
 
     if (this.state.entitySelection == "initiatives" && this.state.attributeSelection == "mainProgramActivity") {
@@ -826,12 +842,12 @@ class Visualize extends Component {
       //Setup Chart as the visualization medium
       const visual = this.state.attributeSelection !== 'select' ?
             <Chart data = {this.dataSelection} toggleCompare = {this.state.compareChecked} toggleBreakDown = {this.handleBreakDownChange} toggleMap = {this.state.mapViewChecked}/>
-            : null
+            : <img src = {WorldIcon} height = {400} width = {400} style = {{margin: "150px 0 0 450px"}} />
 
       return (
         <div style = {{height: "100%"}}>
           <div className = "settings" style = {{width: "25%", height: "100%", float: "left"}}>
-            <nav className = "nav flex-column navbar-dark bg-light" style = {{height: "100%"}}>
+            <nav className = "nav flex-column navbar-dark bg-white" style = {{height: "100%"}}>
               <select value = {this.state.entitySelection} type="entity" id="entity" name="entity" onChange={this.handleEntitySelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
                 <option value="select">Filter Entity Type</option>
                 <option value="targetFunders">Target Funders</option>
@@ -857,6 +873,3 @@ class Visualize extends Component {
 }
 
 export default Visualize
-// //(
-//   this.state.entitySelection == "initiatives" && this.state.attributeSelection == "cou"
-// )

@@ -166,7 +166,6 @@ class Chart extends Component {
   };
 
   render() {
-    console.log(this.state.setMainMap);
     const xPieLocation = (!this.props.toggleMap && this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ? 425 : (this.props.toggleMap ? 300 : 550)
     const yPieLocation = this.props.toggleMap ? 200 : 300
     const xPieChartWidth = (!this.props.toggleMap && this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ? 825 : (this.props.toggleMap ? 600 : 1000)
@@ -179,15 +178,27 @@ class Chart extends Component {
       :
       <h3 style = {{marginTop: "50px", marginLeft: "100px" }}> {this.props.data().header1} </h3>
 
-    const subTitle = this.props.toggleMap ?
-        <h4 style = {{marginTop: "20px", marginLeft: "200px" }}> {this.props.data().subHeader} </h4>
+    const subTitle = this.state.setMainPie ?
+    (
+     this.props.toggleMap ?
+        <h4 style = {{marginTop: "20px", marginLeft: "180px" }}> {this.props.data().subHeader} </h4>
         :
         (
           (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ?
-          <h4 style = {{marginTop: "20px", marginLeft: "315px" }}> {this.props.data().subHeader} </h4>
+          <h4 style = {{marginTop: "20px", marginLeft: "280px" }}> {this.props.data().subHeader} </h4>
           :
-          <h4 style = {{marginTop: "20px", marginLeft: "450px" }}> {this.props.data().subHeader} </h4>
+          <h4 style = {{marginTop: "20px", marginLeft: "405px" }}> {this.props.data().subHeader} </h4>
         )
+      ) :
+      this.props.toggleMap ?
+         <h4 style = {{marginTop: "20px", marginLeft: "200px" }}> Number of Initiatives </h4>
+         :
+         (
+           (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ?
+           <h4 style = {{marginTop: "20px", marginLeft: "310px" }}> Number of Initiatives </h4>
+           :
+           <h4 style = {{marginTop: "20px", marginLeft: "425px" }}> Number of Initiatives </h4>
+         )
 
     const secondaryTitle = <h4 style = {{marginTop: "100px"}}> {this.props.data().header2} </h4>
 

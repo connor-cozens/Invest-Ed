@@ -60,7 +60,7 @@ class Map extends Component {
           containerClassName="map"
           regionStyle={{
             initial: {
-              fill: "#e4e4e4",
+              fill: "#dedede",
               "fill-opacity": 1.0,
               stroke: "none",
               "stroke-width": 0,

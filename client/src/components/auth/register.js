@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {Redirect} from 'react-router-dom';
 import { DropdownList } from 'react-widgets'
 import {connect} from 'react-redux';
@@ -6,7 +6,7 @@ import {registerUser} from '../../store/actions/dataActions';
 import './auth.css';
 
 //Component providing registration functionality for admin to register user
-class Register extends Component {
+class Register extends PureComponent {
   state = {
     firstname: '',
     lastname: '',
@@ -89,7 +89,7 @@ class Register extends Component {
                     {errors}
                     <input type = "firstname" id = "firstname" placeholder = "Enter first name*" onChange={this.handleChange}/>
                     <input type = "lastname" id = "lastname" placeholder = "Enter last name*" onChange={this.handleChange}/>
-                    <input type = "email" id = "email" placeholder = "Enter email*" onChange={this.handleChange}/>
+                    <input type = "email" id = "email" placeholder = "Enter email*" style = {{width: "100%"}} onChange={this.handleChange}/>
                     <input type = "username" id = "username" placeholder = "Enter username*" onChange={this.handleChange}/>
                     {selectOptions}
                     <input type = "organization" id = "organization" placeholder = "Enter organization name" onChange={this.handleChange}/>

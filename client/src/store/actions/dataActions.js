@@ -63,11 +63,13 @@ export const getUser = () => (dispatch) => {
           dispatch(forceLogout())
         }
         else {
+          console.log("hello");
           dispatch({type: ACCESS_ERROR, payload: response.data.message})
         }
       }
     })
     .catch(err => {
+      console.log("hello");
       dispatch({type: ACCESS_ERROR, payload: err})
     })
 }

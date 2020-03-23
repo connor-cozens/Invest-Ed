@@ -8,11 +8,9 @@ const Navbar = (props) => {
   const {authorized} = props;
   const linksToShow = authorized ? <SignedInLinks/> : <SignedOutLinks/>;
   return (
-    <nav className = "navbar navbar-dark bg-primary">
-      <div className = "container">
-        <Link to = '/' className = "navbar-brand">Home</Link>
-        { linksToShow }
-      </div>
+    <nav className = "navbar navbar-expand-lg navbar-dark bg-primary">
+      <a className="navbar-brand"><b>DataViz</b></a>
+      {linksToShow}
     </nav>
   )
 }

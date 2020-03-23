@@ -6,15 +6,9 @@ const db = require("../database/invest-ed_db")
 
 dashboardRA.use(cors())
 
-<<<<<<< HEAD
-//    FOR ACCESSING DATABASE DIRECTLY
-dashboard.get('/form', (req, res) =>{
-    //req.query.tagNum
-=======
 //GET from from DB
 dashboardRA.get('/form', (req, res) =>{
     tagnum = req.query.tagNum
->>>>>>> fd980ea1306cf04d32f16ff3135a4d46a502c04c
     
     iData = db.initiative.findAll({
         where: {
@@ -66,18 +60,6 @@ dashboardRA.get('/form', (req, res) =>{
     }
     //res.send("hello!")
 })
-<<<<<<< HEAD
-dashboard.post('/new-form', (req, res) =>{
-    //res.send("hello!")
-})
-
-dashboard.post('/modified-form', (req, res) =>{
-    //res.send("hello!")
-})
-
-//    FOR ACCESSING TEMP DATABASE
-dashboard.get('/form-temp', (req, res) =>{
-=======
 
 //GET form from temp DB
 dashboardRA.get('/form-temp', (req, res) =>{
@@ -91,7 +73,6 @@ dashboardRA.post('/new-form-temp', (req, res) =>{
 
 //POST modified form to temp DB
 dashboardRA.post('/modified-form-temp', (req, res) =>{
->>>>>>> fd980ea1306cf04d32f16ff3135a4d46a502c04c
     //res.send("hello!")
 })
 

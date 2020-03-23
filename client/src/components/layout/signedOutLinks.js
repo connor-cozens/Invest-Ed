@@ -8,6 +8,9 @@ const SignedOutLinks = () => {
         <li className="nav-item">
           <Link to = '/' className = "nav-link">Home</Link>
         </li>
+        <li className="nav-item">
+          <Link to = '/visualize' className = "navbar-link">Visualization</Link>
+        </li>
       </ul>
       <div className="form-inline my-2 my-lg-0">
         <ul className="nav nav-pills">

@@ -19,6 +19,7 @@ const authReducer = (state = initState, action) => {
     case LOGIN_ERROR:
       return {
         ...state,
+        //Change auth to true
         auth: false,
         authError: action.payload
       };

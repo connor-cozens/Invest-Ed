@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {Redirect} from 'react-router-dom';
 import { DropdownList } from 'react-widgets'
 import {connect} from 'react-redux';
@@ -6,7 +6,7 @@ import {registerUser} from '../../store/actions/dataActions';
 import './auth.css';
 
 //Component providing registration functionality for admin to register user
-class Register extends Component {
+class Register extends PureComponent {
   state = {
     firstname: '',
     lastname: '',
@@ -17,10 +17,6 @@ class Register extends Component {
     password: '',
     confirmpassword: ''
   }
-
-  // componentDidUpdate = () => {
-  //   this.props.signUp(this.state);
-  // }
 
   handleChange = (event) => {
     this.setState({
@@ -38,10 +34,15 @@ class Register extends Component {
     this.props.signUp(this.state);
   };
 
+
   render(){
     console.log(this.props.authorized);
-    const {authorized, registered, registerError} = this.props;
+    const {authorized, userData, registered, registerError} = this.props;
     if (authorized !== true){
+      return <Redirect to='/' />
+    }
+
+    if (userData.accessLevel == 0) {
       return <Redirect to='/' />
     }
 
@@ -52,6 +53,18 @@ class Register extends Component {
           state: {registration: true}
         }} />
     }
+
+    //If research user, only allow option to register organization user. If root user, can register both organization and research users
+    const selectOptions = userData.accessLevel == 1 ?
+            <select type="accesslevel" id="accesslevel" name="accesslevel" onChange={this.handleChange}>
+              <option value="Select" selected = "selected">Select a user access type*</option>
+              <option value="organization">Organization user</option>
+            </select> :
+            <select type="accesslevel" id="accesslevel" name="accesslevel" onChange={this.handleChange}>
+              <option value="Select" selected = "selected">Select a user access type*</option>
+              <option value="research">Research user</option>
+              <option value="organization">Organization user</option>
+            </select>
 
     const errors = [];
     if (registerError !== null){
@@ -78,11 +91,7 @@ class Register extends Component {
                     <input type = "lastname" id = "lastname" placeholder = "Enter last name*" onChange={this.handleChange}/>
                     <input type = "email" id = "email" placeholder = "Enter email*" onChange={this.handleChange}/>
                     <input type = "username" id = "username" placeholder = "Enter username*" onChange={this.handleChange}/>
-                    <select type="accesslevel" id="accesslevel" name="accesslevel" onChange={this.handleChange}>
-                      <option value="Select" selected = "selected">Select a user access type*</option>
-                      <option value="research">Research user</option>
-                      <option value="organization">Organization user</option>
-                    </select>
+                    {selectOptions}
                     <input type = "organization" id = "organization" placeholder = "Enter organization name" onChange={this.handleChange}/>
                     <br/><br/>
                     <input type = "password" id = "password" placeholder = "Enter password*" onChange={this.handleChange}/>
@@ -101,6 +110,7 @@ class Register extends Component {
 const mapStateToProps = (state) => {
   return {
     registered: state.data.registered,
+    userData: state.data.userInformation,
     registerError: state.data.registerError,
     authorized: state.authenticate.auth
   };

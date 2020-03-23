@@ -58,6 +58,7 @@ dashboardRA.get('/form', (req, res) =>{
         inTargetPopulationSubsector: db.initiativeTargetPopulationSector.targetPopulationSector,
         inTargetSchoolManagementType: db.initiativeTargetSchoolManagement.targetSchoolManagementType
     }
+
     //res.send("hello!")
 })
 
@@ -79,6 +80,50 @@ dashboardRA.post('/modified-form-temp', (req, res) =>{
 //POST new form to DB
 dashboardRA.post('/new-form', (req, res) =>{
     //res.send("hello!")
+    const formData = {
+        funderInternationalBases: req.body.internationalBases, //f
+        funderOperations: req.body.operations, //f
+        funderName: req.body.fname, //f
+        funderUrl: req.body.furl, //f
+        funderMotive: req.body.motive, //f
+        funderOrganizationForm: req.body.organizationForm, //f
+        funderImpact: req.body.impact, //f
+        funderEducationSubsector: req.body.edSubs, //f
+        funderOrgTraits: req.body.orgTraits, //f
+        funderAsiaBases: req.body.asialBases, //f
+        funderAsiaOperations: req.body.asiaOperations, //f
+        initiativeRegions: req.body.regions, //in
+        initiativeCountries: req.body.countries, //in
+        initiativeActivities: req.body.activities, //in
+        initiativeSourceOfFees: req.body.sourceOfFees, //in
+        initiativeName: req.body.initName, //in
+        initiativeURL: req.body.initURL, //in
+        initiativeTargetsWomen: req.body.tWomen, //in
+        initiativeStart: req.body.initStart, //in
+        initiativeEnd: req.body.initEnd, //in
+        initiativeLaunchCountry: req.body.launchCountry, //in
+        initiativeDescription: req.body.idescription, //in
+        initiativeTargetGeo: req.body.targetGeos, //in
+        initiativeMainProgramActivity: req.body.initativeMainProgramActivity, //in
+        initiativeProgramAreas: req.body.programArea, //in
+        initiativeFeeAccess: req.body.feeAccess, //in
+        initiativetargetPopulationSector: req.body.targetPopulationSectors, //in
+        initiativeOutcomesMonitored: req.body.outcomesMonitored, //in
+        initiativeMEdSubs: req.body.mEdSubs, //in
+        initiativeOEdSubs: req.body.oEdSubs, //in
+        initiativeManagementTypes: req.body.managementTypes, //in
+        implementorName: req.body.iname, //im
+        implementorMotive: req.body.impMotive, //im
+        comments: req.body.comments, //other
+        needsReview: req.body.needsReview //other
+    }
+
+    try {
+        
+    } catch(error) {
+
+    }
+
 })
 
 //Post modified form to DB

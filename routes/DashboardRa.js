@@ -411,11 +411,10 @@ dashboardRA.post('/new-form', (req, res) =>{
     })
     }
    
-    res.send("success")
 
     //Insert initative data
-    query7 = "INSERT into initiative VALUES ("+ genTagNum.currentTagNum +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"','"+ formData.initiativeTargetsWomen +
-     "','"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +"','"+ formData.initiativeProgramAreas+"','"
+    query7 = "INSERT into initiative VALUES ("+ genTagNum.currentTagNum +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"',"+ formData.initiativeTargetsWomen +
+     ",'"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +"','"+ formData.initiativeProgramAreas+"','"
      + formData.initiativeMainProgramActivity +"','"+ formData.initiativeFeeAccess+"')"
      async.parallel([
         function(queryDB) {
@@ -437,25 +436,348 @@ dashboardRA.post('/new-form', (req, res) =>{
     
         })
     
+    
+    
+     //Insert initiative region data
+   for(var i = 0; i < formData.initiativeRegions.length; i++) {
+    var query8 = "INSERT into initiativeregion VALUES (" + genTagNum.currentTagNum +",'"+ formData.initiativeRegions+"')"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query8, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
 
-    var query8 = "INSERT into funderasiaoperations VALUES (" + genTagNum.currentTagNum +",'"+ formData.funderAsiaOperations+"')"
-    var query9 = "INSERT into funderasiaoperations VALUES (" + genTagNum.currentTagNum +",'"+ formData.funderAsiaOperations+"')"
-    var query10 = "INSERT into funderasiaoperations VALUES (" + genTagNum.currentTagNum +",'"+ formData.funderAsiaOperations+"')"
-    var query11= "INSERT into funderasiaoperations VALUES (" + genTagNum.currentTagNum +",'"+ formData.funderAsiaOperations+"')"
-    var query12 =  "INSERT into funderasiaoperations VALUES (" + genTagNum.currentTagNum +",'"+ formData.funderAsiaOperations+"')"
-    var query13 = "INSERT into funderasiaoperations VALUES (" + genTagNum.currentTagNum +",'"+ formData.funderAsiaOperations+"')"
-    var query14 = "INSERT into funderasiaoperations VALUES (" + genTagNum.currentTagNum +",'"+ formData.funderAsiaOperations+"')"
-    var query15 = "INSERT into funderasiaoperations VALUES (" + genTagNum.currentTagNum +",'"+ formData.funderAsiaOperations+"')"
-    var query16= "INSERT into funderasiaoperations VALUES (" + genTagNum.currentTagNum +",'"+ formData.funderAsiaOperations+"')"
-    var query17 = "INSERT into funderasiaoperations VALUES (" + genTagNum.currentTagNum +",'"+ formData.funderAsiaOperations+"')"
-    var query18 = "INSERT into funderasiaoperations VALUES (" + genTagNum.currentTagNum +",'"+ formData.funderAsiaOperations+"')"
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+    
+    })
+    }
+    
+    
+   
+     //Insert initiative country of operation data
+   for(var i = 0; i < formData.initiativeCountries.length; i++) {
+    var query9 = "INSERT into initiativecountryofoperation VALUES (" + genTagNum.currentTagNum +",'"+ formData.initiativeCountries+"')"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query9, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
 
-    //implementor queries
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+    
+    })
+    }
+    
+    
+     //Insert initiative programming activity data
+   for(var i = 0; i < formData.initiativeActivities.length; i++) {
+    var query10 = "INSERT into initiativeprogrammingactivities VALUES (" + genTagNum.currentTagNum +",'"+ formData.initiativeActivities+"')"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query10, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
 
-   //funder queries
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+    
+    })
+    }
+    
+    
+     //Insert initiative source of fees data
+   for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
+    var query11= "INSERT into initiativefundingsource VALUES (" + genTagNum.currentTagNum +",'"+ formData.initiativeSourceOfFees+"')"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query11, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+    
+    })
+    }
+    
+    
+     //Insert initiative launch country data
+   for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
+    var query12 =  "INSERT into initiativelaunchcountry VALUES (" + genTagNum.currentTagNum +",'"+ formData.initiativeLaunchCountry+"')"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query12, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+    
+    })
+    }
+    
+    
+     //Insert funder education funder asia operations data
+   for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
+    var query13 = "INSERT into initiativetargetgeography VALUES (" + genTagNum.currentTagNum +",'"+ formData.initiativeTargetGeo+"')"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query13, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+    
+    })
+    }
+    
+    
+     //Insert initiative target population sector data
+   for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
+    var query14 = "INSERT into initiativetargetpopulationsector VALUES (" + genTagNum.currentTagNum +",'"+ formData.initiativetargetPopulationSector+"')"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query14, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+    
+    })
+    }
+    
+    
+     //Insert initiative outcomes monitored data
+   for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
+    var query15 = "INSERT into initiativemonitoredoutcomes VALUES (" + genTagNum.currentTagNum +",'"+ formData.initiativeOutcomesMonitored+"')"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query15, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+    
+    })
+    }
+    
+    
+     //Insert initiative main education subsector data
+   for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
+    var query16 = "INSERT into initiativemaineducationsubsector VALUES (" + genTagNum.currentTagNum +",'"+ formData.initiativeMEdSubs+"')"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query16, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+    
+    })
+    }
+    
+    
+     //Insert initiative education subsector data
+   for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
+    var query17 = "INSERT into initiativeeducationsubsectors VALUES (" + genTagNum.currentTagNum +",'"+ formData.initiativeOEdSubs+"')"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query17, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+    
+    })
+    }
+    
+    
+     //Insert initiative target management t data
+   for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
+    var query18 = "INSERT into initiativetargetschoolmanagement VALUES (" + genTagNum.currentTagNum +",'"+ formData.initiativeManagementTypes+"')"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query18, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+    
+    })
+    }
   
+    //implementor queries
+    var query19 = "INSERT INTO implementor VALUES ('" + formData.implementorName + "','" + formData.implementorMotive+"')"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query19, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+    
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+    
+        })
+
+
+    // funder - funds - relationship
+    var query20 = "INSERT INTO funds VALUES ("+ genTagNum.currentTagNum+ ",'"+ formData.funderName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd +"')"
+
+    //implementor - implements - initiative   
+    var query21 = "INSERT INTO implements VALUES ("+ genTagNum.currentTagNum+ ",'"+ formData.implementorName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd +"')"
+
+    async.parallel([
+        function(queryDB) {
+            pool.query(query20, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            pool.query(query21, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+    
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+    
+        })
+
+     
+       
    //AT THE VERY END
    genTagNum.add()
+   res.send("Form successfully added to the DB")
 
 })
 

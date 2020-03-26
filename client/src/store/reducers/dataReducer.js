@@ -10,7 +10,7 @@ export const ACCESS_ERROR = 'ACCESS_ERROR'
 const initState = {
   userInformation: null,
   submissionForms: null,
-  reviewForm: null,
+  reviewFormRA: null,
   registered: false,
   registerError: null,
   accessError: null
@@ -53,7 +53,7 @@ const dataReducer = (state = initState, action) => {
         ...state,
         userInformation: null,
         submissionForms: null,
-        reviewForm: null,
+        reviewFormRA: null,
         registered: false,
         registerError: null,
         accessError: null
@@ -61,7 +61,7 @@ const dataReducer = (state = initState, action) => {
     case SET_REVIEW_FORM:
       return {
         ...state,
-        reviewForm: action.payload,
+        reviewFormRA: action.payload,
         // reviewForms: [action.payload, ...state.reviewForms]
       };
 

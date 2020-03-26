@@ -73,6 +73,7 @@ export const getUser = () => (dispatch) => {
     })
 }
 
+//Get form data by tag number to be reviewed by RA
 export const getReviewForms = (tag) => (dispatch) => {
     const tagNum = tag.tagNum;
     const url = `http://localhost:4000/dashboard-ra/form/${tagNum}`;
@@ -111,6 +112,7 @@ export const getReviewForms = (tag) => (dispatch) => {
         const funders = [];
         response.data.table14.forEach((funder) => { funders.push(funder); });
 
+        //Prepare intiative object to be accessible to store
         const initiative = {
           name: response.data.table1[0].initiativeName,
           description: response.data.table1[0].description,
@@ -135,6 +137,7 @@ export const getReviewForms = (tag) => (dispatch) => {
           implementers: implementers,
           funders: funders
         }
+        //Dispatch action to store form data in store
         dispatch({type: SET_REVIEW_FORM, payload: initiative});
       })
       .catch(err =>  {

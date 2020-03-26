@@ -404,7 +404,7 @@ class formReview extends React.Component{
       ReactDOM.render(<ul>{this.state.launchCountries}</ul>, document.getElementById('launchCountries'))
     }
   }
-  
+
 
   changeProgramArea(e){
     var activity = e.currentTarget.value;
@@ -862,7 +862,7 @@ class formReview extends React.Component{
             <br></br>
             <input type="radio" id="needsReview11" name="iBaseCheck" value="checked"/> <label name="accept" htmlFor="needsReview11">Accept</label>
             <input type="radio" id="needsReview12" name="iBaseCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview12">Reject</label>
-            
+
             <p>Education Subsector(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="edSub1" name="educationSubsector" value="Adult" onChange={this.changeEdSub}/> <label htmlFor="edSub1" className="checkbox">Adult</label>
             <input type="checkbox" id="edSub2" name="educationSubsector" value="Adult Basic and Continuing Education" onChange={this.changeEdSub}/> <label htmlFor="edSub2" className="checkbox">Adult Basic and Continuing Education</label>
@@ -903,8 +903,8 @@ class formReview extends React.Component{
             <input type="checkbox" id="orgTrait13" name="organizationalTrait" value="Workforce Development/Skills" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait13" className="checkbox">Workforce Development/Skills</label>
             <br></br>
             <input type="radio" id="needsReview17" name="orgTraitCheck" value="checked"/> <label name="accept" htmlFor="needsReview17">Accept</label>
-            <input type="radio" id="needsReview18" name="orgTraitCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview18">Reject</label>              
-            
+            <input type="radio" id="needsReview18" name="orgTraitCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview18">Reject</label>
+
             <p>Asia International Base(s)</p>
             <select id="asiaInternationalBase" name="country" onChange={this.addAIBase}>
             <option value="baseCase">Choose the International Base Countries in Asia</option>
@@ -2196,7 +2196,7 @@ class formReview extends React.Component{
             <option value=" Literacy skills">Literacy skills</option>
             <option value=" Maternal Health Education">Maternal Health Education</option>
             </select>
-            
+
             <div id="initActivities"></div>
             <br></br>
             <input type="radio" id="needsReview49" name="iniitActivitiesCheck" value="checked"/> <label name="accept" htmlFor="needsReview49">Accept</label>
@@ -2217,12 +2217,12 @@ class formReview extends React.Component{
             <option value="Not Applicable">Not Applicable</option>
             <option value="Unclear">Unclear</option>
             <option value="Missing Data">Missing Data</option>
-            </select>  
+            </select>
 
-            <div id="managementTypes"></div>   
+            <div id="managementTypes"></div>
             <br></br>
             <input type="radio" id="needsReview53" name="manTypeCheck" value="checked"/> <label name="accept" htmlFor="needsReview53">Accept</label>
-            <input type="radio" id="needsReview54" name="manTypeCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview54">Reject</label>     
+            <input type="radio" id="needsReview54" name="manTypeCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview54">Reject</label>
 
 
             <p>Target Population Sector(s)<br></br>Select all that apply:</p>
@@ -3075,7 +3075,7 @@ class formReview extends React.Component{
             <option value=" success stories"> success stories</option>
             <option value=" Improvement of ECD-related knowledge and behavioral change among teachers
 
-            Monitored metrics: 
+            Monitored metrics:
             Standardized assessment performance
             Internal assessment performance
             User satisfaction
@@ -3083,7 +3083,7 @@ class formReview extends React.Component{
             Student retention
             student participation"> Improvement of ECD-related knowledge and behavioral change among teachers
 
-            Monitored metrics: 
+            Monitored metrics:
             Standardized assessment performance
             Internal assessment performance
             User satisfaction
@@ -3269,17 +3269,17 @@ class formReview extends React.Component{
             <option value=" program of study"> program of study</option>
             <option value=" and length of study"> and length of study</option>
             <option value="number of students accessing the program">number of students accessing the program</option>
-            <option value=" 
-            Internal assessment performance"> 
+            <option value="
+            Internal assessment performance">
             Internal assessment performance</option>
-            <option value=" 
-            Student attendance"> 
+            <option value="
+            Student attendance">
             Student attendance</option>
-            <option value=" 
-            Teacher retention"> 
+            <option value="
+            Teacher retention">
             Teacher retention</option>
-            <option value=" 
-            Increased enrollment"> 
+            <option value="
+            Increased enrollment">
             Increased enrollment</option>
             <option value=" Number of study hours"> Number of study hours</option>
             <option value="secondary school completion rates">secondary school completion rates</option>
@@ -3473,26 +3473,27 @@ Program Area stuff that was part of AirTable but not the cleaned data
             <option value="sRegulatory analysis focused on government policy">Regulatory analysis focused on government policy</option>
             <option value="sRegulatory analysis focused on school policy">Regulatory analysis focused on school policy</option>
 
-            
+
 
             <option value=" Capacity Building of Non-Education Professionals">Capacity Building of Non-Education Professionals</option>
             <option value=" Enrichment/New Pedagogical or Curricular Programs">Enrichment/New Pedagogical or Curricular Programs</option>
             <option value=" Academic research/academic exchange">Academic research/academic exchange</option>
-           
-            
+
+
             <option value=" Education finance (system-level)">Education finance (system-level)</option>
             <option value=" school finance">school finance</option>
 
             <option value="pPrivate schools">Private schools</option>
             <option value="pFormal public-private partnership">Formal public-private partnership</option>
 
-            
+
             */
 
 
 const mapStateToProps = (state) => {
   return {
-    authorized: state.authenticate.auth
+    authorized: state.authenticate.auth,
+    form: state.data.reviewForm
   };
 }
 

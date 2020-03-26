@@ -5,6 +5,7 @@ import {
   REGISTER_CLEAR,
   REGISTER_CLEAR_ERROR,
   SET_USER,
+  SET_REVIEW_FORM,
   ACCESS_ERROR
 } from '../reducers/dataReducer';
 
@@ -72,15 +73,6 @@ export const getUser = () => (dispatch) => {
     })
 }
 
-// const getData = ((array, key) => {
-//   arr = []
-//   array.forEach((item) => {
-//     key
-//   })
-//   return arr;
-// })
-
-
 export const getReviewForms = (tag) => (dispatch) => {
     const tagNum = tag.tagNum;
     const url = `http://localhost:4000/dashboard-ra/form/${tagNum}`;
@@ -119,7 +111,6 @@ export const getReviewForms = (tag) => (dispatch) => {
         const funders = [];
         response.data.table14.forEach((funder) => { funders.push(funder); });
 
-        const initiatives = [];
         const initiative = {
           name: response.data.table1[0].initiativeName,
           description: response.data.table1[0].description,
@@ -144,9 +135,7 @@ export const getReviewForms = (tag) => (dispatch) => {
           implementers: implementers,
           funders: funders
         }
-
-        console.log(initiative);
-        console.log(response.data.table14);
+        dispatch({type: SET_REVIEW_FORM, payload: initiative});
       })
       .catch(err =>  {
         console.log(err);

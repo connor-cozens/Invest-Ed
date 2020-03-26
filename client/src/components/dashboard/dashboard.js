@@ -14,11 +14,18 @@ class dashboard extends Component {
     //
 
     this.tagNumChange = this.tagNumChange.bind(this);
+    this.tagNumEntered = this.tagNumEntered.bind(this)
   }
+
+  tagNumEntered(e) {
+    if(this.state.tagNum !== null && this.state.tagNum !== ""){
+      this.props.reviewForms(this.state);
+    }
+  }
+
   tagNumChange(e){
     this.state.tagNum = e.currentTarget.value
     if(this.state.tagNum !== null && this.state.tagNum !== ""){
-      this.props.reviewForms(this.state);
       ReactDOM.render(<h5>Modify an Existing Submission Form</h5>, document.getElementById("modifyFormActive"))
       ReactDOM.render(<div></div>, document.getElementById("modifyFormInactive"))
     }
@@ -50,7 +57,7 @@ class dashboard extends Component {
           <div className = "row mt-5">
             <div className = "col-md-8 m-auto text-center">
             <p>Tag Number of Form to Modify</p>
-                <input type="number" id="tagNum" name="tagNum" placeholder="Tag#" onChange={this.tagNumChange}/><br></br><br></br>
+                <input type="number" id="tagNum" name="tagNum" placeholder="Tag#" onChange={this.tagNumChange} onBlur={this.tagNumEntered}/><br></br><br></br>
               <div className = "card card-body">
                 <Link to="/formReview"><div id="modifyFormActive"></div></Link>
                 <div id="modifyFormInactive"><font color="grey"><h5>Modify an Existing Submission Form</h5></font></div>

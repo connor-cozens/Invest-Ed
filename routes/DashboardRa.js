@@ -1,66 +1,219 @@
 const express = require("express")
+const sql = require("mysql2")
+var async      = require('async');
 const dashboardRA = express.Router()
 const cors = require('cors')
-
-const db = require("../database/invest-ed_db")
-
 dashboardRA.use(cors())
 
-//GET from from DB
-dashboardRA.get('/form', (req, res) =>{
-    tagnum = req.query.tagNum
-    
-    iData = db.initiative.findAll({
-        where: {
-            tagNumber: tagnum
-        }
-    });
+//const db = require("../database/invest-ed_db")
 
-    console.log(iData)
-
-    const form = {
-        // Funder Single Types
-        fName: db.funder.funderName,
-        fWebsite: db.funder.funderWebsite,
-        fProfitMotive: db.funder.funderProfitMotive,
-        fImpactInvesting: db.funder.impactInvesting,
-        fOrganizationalForm: db.funder.organizationForm,
-        // Funder Multivalued Types
-        fAsiaBases: db.funderAsiaBases.asiaBase,
-        fAsiaOperations: db.funderAsiaOperations.asiaOperatons,
-        fEducationSubsectors: db.funderEducationSubsectors.educationSubsector,
-        fInternationalBases: db.funderInternationalBases.baseLocation,
-        fOrganizationalTraits: db.funderOrganizationTraits.trait,
-        // Implementors Single Types
-        imName: db.implementor.implementorName,
-        imProfitMotive: db.implementor.profitMotive,
-        // Initiative Single Types
-        inTagNumber: db.initiative.tagNumber,
-        inName: db.initiative.initiativeName,
-        inWebsite: db.initiative.initiativeWebsite,
-        inTargetsWomen: db.initiative.targetsWomen,
-        inStartYear: db.initiative.startYear,
-        inEndYear: db.initiative.endYear,
-        inDescription: db.initiative.description,
-        inMainProgrammingArea: db.initiative.mainProgrammingArea,
-        inMainProgrammingActivity: db.initiative.mainProgrammingActivity,
-        inFeeToAccess: db.initiative.feeToAccess,
-        // Initiative Multivalued Types
-        inCountryOfOperation: db.initiativeCountryOfOperation.country,
-        inEducationSubsector: db.initiativeEducationSubsectors.educationSubsector,
-        inFundingSource: db.initiativeFundingSource.sourceOfFunding,
-        inLaunchCountry: db.initiativeLaunchCountry.launchCountry,
-        inMainEducationSubsector: db.initiativeMainEducationSubsector.mainEducationSubsector,
-        inMonitoredOutcomes: db.initiativeMonitoredOutcomes.monitoredOutcome,
-        inProgrammingActivities: db.initiativeProgrammingActivities.programmingActivity,
-        inRegion: db.initiativeRegion.region,
-        inTargetGeography: db.initiativeTargetGeography.targetGeography,
-        inTargetPopulationSubsector: db.initiativeTargetPopulationSector.targetPopulationSector,
-        inTargetSchoolManagementType: db.initiativeTargetSchoolManagement.targetSchoolManagementType
-    }
-
-    //res.send("hello!")
+const pool = sql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: 'PASSWORD66^',
+    database: 'inves431_girlsEd',
+    waitForConnections: true,
+    connectionLimit: 20,
+    queueLimit: 0
 })
+
+//GET from from DB
+dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
+
+    var tagNum = req.params.tagNum
+    
+    //initiative queries
+    var query1 = "SELECT * FROM initiative WHERE tagNumber =" + tagNum
+    var query2 = "SELECT * FROM initiativeregion WHERE tagNumber =" + tagNum
+    var query3 = "SELECT * FROM initiativecountryofoperation WHERE tagNumber =" + tagNum
+    var query4 = "SELECT * FROM initiativeprogrammingactivities WHERE tagNumber =" + tagNum
+    var query5 = "SELECT * FROM initiativefundingsource WHERE tagNumber =" + tagNum
+    var query6 = "SELECT * FROM initiativelaunchcountry WHERE tagNumber =" + tagNum
+    var query7 = "SELECT * FROM initiativetargetgeography WHERE tagNumber =" + tagNum
+    var query8 = "SELECT * FROM initiativetargetpopulationsector WHERE tagNumber =" + tagNum
+    var query9 = "SELECT * FROM initiativemonitoredoutcomes WHERE tagNumber =" + tagNum
+    var query10 = "SELECT * FROM initiativemaineducationsubsector WHERE tagNumber =" + tagNum
+    var query11 = "SELECT * FROM initiativeeducationsubsector WHERE initiativeTagNumber =" + tagNum
+    var query11 = "SELECT * FROM initiativetargetschoolmanagement WHERE tagNumber =" + tagNum
+
+     //implementor queries
+     var query12 = "SELECT * FROM implements INNER JOIN implementor USING (implementorName) WHERE tagNum =" + tagNum
+
+    //funder queries
+    var query13 = "SELECT * FROM funds INNER JOIN funder USING (funderName) WHERE tagNum =" + tagNum
+
+
+    var formData = {}
+
+
+    async.parallel([
+        function(queryDB) {
+            pool.query(query1, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            pool.query(query2, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table2 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            pool.query(query3, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table3 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            pool.query(query4, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table4 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            pool.query(query5, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table5 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            pool.query(query6, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table6 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            pool.query(query7, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table7 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            pool.query(query8, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table8 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            pool.query(query9, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table9 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            pool.query(query10, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table10 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            pool.query(query11, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table11 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            pool.query(query12, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table12 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            pool.query(query13, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table13 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+    
+     ], function(err) {
+          if (err){
+            console.log(err)
+          }else{
+            pool.end()
+            res.send(formData)
+          } 
+          
+     })
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
 
 //GET form from temp DB
 dashboardRA.get('/form-temp', (req, res) =>{

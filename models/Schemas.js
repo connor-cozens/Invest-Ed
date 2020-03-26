@@ -27,7 +27,7 @@ const userDataSchema = Joi.object().keys({
 
 const userLoginScheme = Joi.object().keys({
     username: username.required(),
-    password: password.strict().required()
+    //password: password.strict().required()
 })
 
 module.exports = userDataSchema

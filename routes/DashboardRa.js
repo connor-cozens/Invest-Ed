@@ -10,7 +10,7 @@ dashboardRA.use(cors())
 const pool = sql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'PASSWORD66^',
+    password: 'password',  //change password to the one you use
     database: 'inves431_girlsEd',
     waitForConnections: true,
     connectionLimit: 20,
@@ -21,7 +21,7 @@ const pool = sql.createPool({
 dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
 
     var tagNum = req.params.tagNum
-    
+
     //initiative queries
     var query1 = "SELECT * FROM initiative WHERE tagNumber =" + tagNum
     var query2 = "SELECT * FROM initiativeregion WHERE tagNumber =" + tagNum
@@ -33,14 +33,14 @@ dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
     var query8 = "SELECT * FROM initiativetargetpopulationsector WHERE tagNumber =" + tagNum
     var query9 = "SELECT * FROM initiativemonitoredoutcomes WHERE tagNumber =" + tagNum
     var query10 = "SELECT * FROM initiativemaineducationsubsector WHERE tagNumber =" + tagNum
-    var query11 = "SELECT * FROM initiativeeducationsubsector WHERE initiativeTagNumber =" + tagNum
-    var query11 = "SELECT * FROM initiativetargetschoolmanagement WHERE tagNumber =" + tagNum
+    var query11 = "SELECT * FROM initiativeeducationsubsectors WHERE initiativeTagNumber =" + tagNum
+    var query12 = "SELECT * FROM initiativetargetschoolmanagement WHERE tagNumber =" + tagNum
 
      //implementor queries
-     var query12 = "SELECT * FROM implements INNER JOIN implementor USING (implementorName) WHERE tagNum =" + tagNum
+     var query13 = "SELECT * FROM implements INNER JOIN implementor USING (implementorName) WHERE tagNum =" + tagNum
 
     //funder queries
-    var query13 = "SELECT * FROM funds INNER JOIN funder USING (funderName) WHERE tagNum =" + tagNum
+    var query14 = "SELECT * FROM funds INNER JOIN funder USING (funderName) WHERE tagNum =" + tagNum
 
 
     var formData = {}
@@ -54,8 +54,8 @@ dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
                 }else{
                     formData.table1 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -65,8 +65,8 @@ dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
                 }else{
                     formData.table2 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -76,8 +76,8 @@ dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
                 }else{
                     formData.table3 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -87,8 +87,8 @@ dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
                 }else{
                     formData.table4 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -98,8 +98,8 @@ dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
                 }else{
                     formData.table5 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -109,8 +109,8 @@ dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
                 }else{
                     formData.table6 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -120,8 +120,8 @@ dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
                 }else{
                     formData.table7 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -131,8 +131,8 @@ dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
                 }else{
                     formData.table8 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -142,8 +142,8 @@ dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
                 }else{
                     formData.table9 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -153,8 +153,8 @@ dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
                 }else{
                     formData.table10 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -164,8 +164,8 @@ dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
                 }else{
                     formData.table11 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -175,8 +175,8 @@ dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
                 }else{
                     formData.table12 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -186,21 +186,30 @@ dashboardRA.get('/form/:tagNum', cors(),(req, res) =>{
                 }else{
                     formData.table13 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
-    
+        function(queryDB) {
+            pool.query(query14, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table14 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
      ], function(err) {
           if (err){
             console.log(err)
           }else{
-            pool.end()
-            res.send(formData)
-          } 
-          
+            // pool.end()
+            res.json(formData)
+          }
      })
-
 })
 
 
@@ -277,7 +286,7 @@ dashboardRA.post('/new-form', (req, res) =>{
     }
 
     try {
-        
+
     } catch(error) {
 
     }

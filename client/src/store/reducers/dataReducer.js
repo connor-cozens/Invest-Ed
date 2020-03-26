@@ -9,6 +9,7 @@ export const ACCESS_ERROR = 'ACCESS_ERROR'
 const initState = {
   userInformation: null,
   formSubmissions: null,
+  formReviews: null,
   registered: false,
   registerError: null,
   accessError: null

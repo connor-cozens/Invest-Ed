@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import ReactDOM from 'react-dom';
+import {getReviewForms} from '../../store/actions/dataActions'
 
 class dashboard extends Component {
   constructor(props){
@@ -17,6 +18,7 @@ class dashboard extends Component {
   tagNumChange(e){
     this.state.tagNum = e.currentTarget.value
     if(this.state.tagNum !== null && this.state.tagNum !== ""){
+      this.props.reviewForms(this.state);
       ReactDOM.render(<h5>Modify an Existing Submission Form</h5>, document.getElementById("modifyFormActive"))
       ReactDOM.render(<div></div>, document.getElementById("modifyFormInactive"))
     }
@@ -67,4 +69,10 @@ const mapStateToProps = (state) => {
   };
 }
 
-export default connect(mapStateToProps)(dashboard)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    reviewForms: (tag) => dispatch(getReviewForms(tag))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(dashboard)

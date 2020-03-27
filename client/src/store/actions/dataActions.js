@@ -6,6 +6,8 @@ import {
   REGISTER_CLEAR_ERROR,
   SET_USER,
   SET_REVIEW_FORM,
+  SET_MODIFY_FORM,
+  SET_ADD_FORM,
   ACCESS_ERROR
 } from '../reducers/dataReducer';
 
@@ -73,74 +75,182 @@ export const getUser = () => (dispatch) => {
     })
 }
 
-//Get form data by tag number to be reviewed by RA
-export const getReviewForms = (tag) => (dispatch) => {
-    const tagNum = tag.tagNum;
-    const url = `http://localhost:4000/dashboard-ra/form/${tagNum}`;
-    axios.get(url, null, {tagNum})
-      .then(response => {
-        const initiativeRegions = [];
-        response.data.table2.forEach((item) => { initiativeRegions.push(item.region); });
+const readForm = (response => {
+  const initiativeRegions = [];
+  response.data.table2.forEach((item) => { initiativeRegions.push(item.region); });
 
-        const initiativeCountries = [];  //Countries of Operation
-        response.data.table3.forEach((item) => { initiativeCountries.push(item.country); });
+  const initiativeCountries = [];  //Countries of Operation
+  response.data.table3.forEach((item) => { initiativeCountries.push(item.country); });
 
-        const initiativeProgrammingActivities = [];
-        response.data.table4.forEach((item) => { initiativeProgrammingActivities.push(item.programmingActivity); });
+  const initiativeProgrammingActivities = [];
+  response.data.table4.forEach((item) => { initiativeProgrammingActivities.push(item.programmingActivity); });
 
-        const initiativeSourcesOfFunding = [];
-        response.data.table5.forEach((item) => { initiativeSourcesOfFunding.push(item.sourceOfFunding); });
+  const initiativeSourcesOfFunding = [];
+  response.data.table5.forEach((item) => { initiativeSourcesOfFunding.push(item.sourceOfFunding); });
 
-        const initiativeTargetGeographies = [];
-        response.data.table7.forEach((item) => { initiativeTargetGeographies.push(item.targetGeography); });
+  const initiativeTargetGeographies = [];
+  response.data.table7.forEach((item) => { initiativeTargetGeographies.push(item.targetGeography); });
 
-        const initiativeTargetPopulationSectors = [];
-        response.data.table8.forEach((item) => { initiativeTargetPopulationSectors.push(item.targetPopulationSector); });
+  const initiativeTargetPopulationSectors = [];
+  response.data.table8.forEach((item) => { initiativeTargetPopulationSectors.push(item.targetPopulationSector); });
 
-        const initiativeMonitoredOutcomes = [];
-        response.data.table9.forEach((item) => { initiativeMonitoredOutcomes.push(item.monitoredOutcome); });
+  const initiativeMonitoredOutcomes = [];
+  response.data.table9.forEach((item) => { initiativeMonitoredOutcomes.push(item.monitoredOutcome); });
 
-        const initiativeMainEducationSubsectors = [];
-        response.data.table10.forEach((item) => { initiativeMainEducationSubsectors.push(item.mainEducationSubsector); });
+  const initiativeMainEducationSubsectors = [];
+  response.data.table10.forEach((item) => { initiativeMainEducationSubsectors.push(item.mainEducationSubsector); });
 
-        const initiativeEducationSubsectors = [];
-        response.data.table11.forEach((item) => { initiativeEducationSubsectors.push(item.educationSubsector); });
+  const initiativeEducationSubsectors = [];
+  response.data.table11.forEach((item) => { initiativeEducationSubsectors.push(item.educationSubsector); });
 
-        const implementers = [];
-        response.data.table13.forEach((implementer) => { implementers.push(implementer); });
+  const implementers = [];
+  response.data.table13.forEach((implementer) => { implementers.push(implementer); });
 
-        const funders = [];
-        response.data.table14.forEach((funder) => { funders.push(funder); });
+  const funders = [];
+  response.data.table14.forEach((funder) => { funders.push(funder); });
 
-        //Prepare intiative object to be accessible to store
-        const initiative = {
-          name: response.data.table1[0].initiativeName,
-          description: response.data.table1[0].description,
-          website: response.data.table1[0].initiativeWebsite,
-          startYear: response.data.table1[0].startYear,
-          endYear: response.data.table1[0].endYear,
-          mainProgrammingArea: response.data.table1[0].mainProgrammingArea,
-          mainProgrammingActivity: response.data.table1[0].mainProgrammingActivity,
-          targetsWomen: response.data.table1[0].startYear == 0 ? false : true,
-          feeToAccess: response.data.table1[0].feeToAccess == 0 ? false: true,
-          regions: initiativeRegions,
-          countriesOfOperation: initiativeCountries,
-          programmingActivities: initiativeProgrammingActivities,
-          sourcesOfFunding: initiativeSourcesOfFunding,
-          launchCountry: response.data.table6[0].launchCountry,
-          targetGeographies: initiativeTargetGeographies,
-          targetPopulationSectors: initiativeTargetPopulationSectors,
-          monitoredOutcomes:initiativeMonitoredOutcomes,
-          mainEducationSubsectors: initiativeMainEducationSubsectors,
-          educationSubSectors: initiativeEducationSubsectors,
-          targetSchoolManagementType: response.data.table12[0].targetSchoolManagementType,
-          implementers: implementers,
-          funders: funders
-        }
-        //Dispatch action to store form data in store
+  //Prepare intiative object to be accessible to store
+  const initiative = {
+    name: response.data.table1[0].initiativeName,
+    description: response.data.table1[0].description,
+    website: response.data.table1[0].initiativeWebsite,
+    startYear: response.data.table1[0].startYear,
+    endYear: response.data.table1[0].endYear,
+    mainProgrammingArea: response.data.table1[0].mainProgrammingArea,
+    mainProgrammingActivity: response.data.table1[0].mainProgrammingActivity,
+    targetsWomen: response.data.table1[0].startYear == 0 ? false : true,
+    feeToAccess: response.data.table1[0].feeToAccess == 0 ? false: true,
+    regions: initiativeRegions,
+    countriesOfOperation: initiativeCountries,
+    programmingActivities: initiativeProgrammingActivities,
+    sourcesOfFunding: initiativeSourcesOfFunding,
+    launchCountry: response.data.table6[0].launchCountry,  //change to list
+    targetGeographies: initiativeTargetGeographies,
+    targetPopulationSectors: initiativeTargetPopulationSectors,
+    monitoredOutcomes:initiativeMonitoredOutcomes,
+    mainEducationSubsectors: initiativeMainEducationSubsectors,
+    educationSubSectors: initiativeEducationSubsectors,
+    targetSchoolManagementType: response.data.table12[0].targetSchoolManagementType,  //change to list
+    implementers: implementers,
+    funders: funders
+  };
+  return initiative;
+})
+
+//Get approved forms from main DB
+export const getApprovedForm = (tag, getType) => (dispatch) => {
+  const tagNum = tag.tagNum;
+  const url = `http://localhost:4000/dashboard-ra/form/${tagNum}`;
+  axios.get(url, null, {tagNum})
+    .then(response => {
+      const initiative = readForm(response);
+      //Dispatch action to store form data in store
+      if (getType == 'modify') {
+        dispatch({type: SET_MODIFY_FORM, payload: initiative});
+      }
+      else if (getType == 'review') {
         dispatch({type: SET_REVIEW_FORM, payload: initiative});
+      }
+    })
+    .catch(err =>  {
+      console.log(err);
+    })
+}
+
+//Get non-approved forms from temp DB for organization/RA user to modify
+export const getNonApprovedForm = (tag, getType) => (dispatch) => {
+  const tagNum = tag.tagNum;
+  const url = `http://localhost:4000/dashboard-ra/form/${tagNum}`;
+  axios.get(url, null, {tagNum})
+    .then(response => {
+      const initiative = readForm(response);
+      //Dispatch action to store form data in store
+      if (getType == 'modify') {
+        dispatch({type: SET_MODIFY_FORM, payload: initiative});
+      }
+      else if (getType == 'review') {
+        dispatch({type: SET_REVIEW_FORM, payload: initiative});
+      }
+    })
+    .catch(err =>  {
+      console.log(err);
+    })
+}
+
+//RA to review approved forms from main DB
+export const reviewApprovedForm = (tag) => (dispatch) => {
+///
+}
+
+//RA to review non-approved forms from temp DB
+export const reviewNonApprovedForm = (tag) => (dispatch) => {
+///
+}
+
+//RA/Organization user to modify approved forms from main DB
+export const modifyApprovedForm = (tag) => (dispatch) => {
+///
+}
+
+//RA/Organization user to modify non-approved forms from temp DB
+export const modifyNonApprovedForm = (tag) => (dispatch) => {
+///
+}
+
+//Organization user to add new form to temp DB
+export const addForm = (tag) => (dispatch) => {
+///
+}
+
+//RA user to add new form to main DB
+export const addFormRA = (form) => (dispatch) => {
+    const reqBody = {
+      fname: form.fname,
+      furl: form.furl,
+      motive: form.motive,
+      impact: form.impact,
+      organizationForm: form.organizationForm,
+      // multi val funder
+      internationalBases: form.internationalBases,
+      edSubs: form.edSubs,
+      orgTraits: form.orgTraits,
+      asialBases: form.asiaIBases,
+      asiaOperations: form.asiaOperations,
+      // single val initiative
+      initName: form.initName,
+      initURL: form.initURL,
+      tWomen: form.tWomen,
+      initStart: form.initStart,
+      initEnd: form.initEnd,
+      idescription: form.idescription,
+      programArea: form.programArea,
+      initativeMainProgramActivity: form.mainProgramActivity,
+      feeAccess: form.feeAccess,
+      // multi val initiative
+      regions: form.regions,
+      countries: form.countries,
+      activities: form.activities,
+      sourceOfFees: form.sourceOfFees,
+      launchCountry: form.launchCountries,
+      targetGeos: form.targetGeos,
+      targetPopulationSectors: form.targetPopulationSectors,
+      outcomesMonitored: form.outcomesMonitored,
+      mEdSubs: form.mEdSubs,
+      oEdSubs: form.oEdSubs,
+      managementTypes: form.managementTypes,
+      // single val implementer
+      iname: form.iname,
+      impMotive: form.impMotive,
+      // single val other
+      comments: form.comments,
+      needsReview: form.needsReview
+    }
+
+    axios.post(`http://localhost:4000/dashboard-ra/new-form`, reqBody)
+      .then(response => {
+        console.log(response)
       })
-      .catch(err =>  {
+      .catch(err => {
         console.log(err);
       })
 }

@@ -5,12 +5,14 @@ export const REGISTER_ERROR = 'REGISTER_ERROR';
 export const SET_USER = 'SET_USER'
 export const UNSET_USER = 'UNSET_USER';
 export const SET_REVIEW_FORM = 'SET_REVIEW_FORMS';
-export const ACCESS_ERROR = 'ACCESS_ERROR'
+export const SET_ADD_FORM = 'SET_ADD_FORM';
+export const SET_MODIFY_FORM = 'SET_MODIFY_FORM';
+export const ACCESS_ERROR = 'ACCESS_ERROR';
 
 const initState = {
   userInformation: null,
-  submissionForms: null,
-  reviewFormRA: null,
+  form: null,
+  formStatus: null,
   registered: false,
   registerError: null,
   accessError: null
@@ -52,8 +54,8 @@ const dataReducer = (state = initState, action) => {
       return {
         ...state,
         userInformation: null,
-        submissionForms: null,
-        reviewFormRA: null,
+        form: null,
+        formStatus: null,
         registered: false,
         registerError: null,
         accessError: null
@@ -61,8 +63,21 @@ const dataReducer = (state = initState, action) => {
     case SET_REVIEW_FORM:
       return {
         ...state,
-        reviewFormRA: action.payload,
-        // reviewForms: [action.payload, ...state.reviewForms]
+        form: action.payload,
+        formStatus: 'review',
+      };
+    case SET_MODIFY_FORM:
+      return {
+        ...state,
+        form: action.payload,
+        formStatus: 'modify'
+      };
+
+    case SET_ADD_FORM:
+      return {
+        ...state,
+        form: action.payload,
+        formStatus: 'add'
       };
 
     case ACCESS_ERROR:

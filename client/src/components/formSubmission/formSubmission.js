@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './formSubmission.css';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom'
+import {addForm, addFormRA} from '../../store/actions/dataActions'
 
 class formSubmission extends React.Component{
   constructor(props){
@@ -82,6 +83,8 @@ class formSubmission extends React.Component{
     this.addAIBase = this.addAIBase.bind(this);
     this.addAsiaOperation = this.addAsiaOperation.bind(this);
     this.addLaunchCountry = this.addLaunchCountry.bind(this);
+    this.startYearChange = this.startYearChange.bind(this);
+    this.endYearChange = this.endYearChange.bind(this);
   }
 
   buttonMaker(props){
@@ -404,7 +407,7 @@ class formSubmission extends React.Component{
       ReactDOM.render(<ul>{this.state.launchCountries}</ul>, document.getElementById('launchCountries'))
     }
   }
-  
+
 
   changeProgramArea(e){
     var activity = e.currentTarget.value;
@@ -535,7 +538,7 @@ class formSubmission extends React.Component{
   }
 
   tWomenChange(e){
-    this.state.tWomen = e.currentTarget.value;
+    this.state.tWomen = e.currentTarget.value == "Yes" ? 1 : 0;
   }
 
   geographyChange(e){
@@ -555,11 +558,21 @@ class formSubmission extends React.Component{
   }
 
   feeAccessChange(e){
-    this.state.feeAccess = e.currentTarget.value;
+    this.state.feeAccess = e.currentTarget.value == "Yes" ? 1 : 0;
   }
 
   impMotiveChange(e){
     this.state.impMotive = e.currentTarget.value;
+  }
+
+  startYearChange(e) {
+    let date = e.target.value + '-01-01'
+    this.state.initStart = date
+  }
+
+  endYearChange(e) {
+    let date = e.target.value + '-01-01'
+    this.state.initEnd = date
   }
 
   handleChange(e){
@@ -570,7 +583,7 @@ class formSubmission extends React.Component{
 
   handleFormSubmit(e) {
     e.preventDefault();
-    console.log(this.state);
+    this.props.submitForm(this.state);
   }
 
 
@@ -846,8 +859,8 @@ class formSubmission extends React.Component{
             <div id="iBases"></div>
 
 {/* OPERATIONS DOES NOT EXIST */}
-            
-            
+
+
             <p>Education Subsector(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="edSub1" name="educationSubsector" value="Adult" onChange={this.changeEdSub}/> <label htmlFor="edSub1" className="checkbox">Adult</label>
             <input type="checkbox" id="edSub2" name="educationSubsector" value="Adult Basic and Continuing Education" onChange={this.changeEdSub}/> <label htmlFor="edSub2" className="checkbox">Adult Basic and Continuing Education</label>
@@ -868,7 +881,7 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="edSub17" name="educationSubsector" value="Unclear" onChange={this.changeEdSub}/> <label htmlFor="edSub17" className="checkbox">Unclear</label>
             <input type="checkbox" id="edSub18" name="educationSubsector" value="Workforce Development and Vocational Education" onChange={this.changeEdSub}/> <label htmlFor="edSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="edSub19" name="educationSubsector" value="Workforce Development/Skills" onChange={this.changeEdSub}/> <label htmlFor="edSub19" className="checkbox">Workforce Development/Skills</label>
-                        
+
             <p>Organizational Trait(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="orgTrait1" name="organizationalTrait" value="Aim to address issues of common good" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait1" className="checkbox">Aim to address issues of common good</label>
             <input type="checkbox" id="orgTrait2" name="organizationalTrait" value="All sector data missing or unclear" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait2" className="checkbox">All sector data missing or unclear</label>
@@ -883,7 +896,7 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="orgTrait11" name="organizationalTrait" value="Secondary Education" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait11" className="checkbox">Secondary Education</label>
             <input type="checkbox" id="orgTrait12" name="organizationalTrait" value="Use own financial resources (unlike NGOs)" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait12" className="checkbox">Use own financial resources (unlike NGOs)</label>
             <input type="checkbox" id="orgTrait13" name="organizationalTrait" value="Workforce Development/Skills" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait13" className="checkbox">Workforce Development/Skills</label>
-                          
+
             <p>Asia International Base(s)</p>
             <select id="asiaInternationalBase" name="country" onChange={this.addAIBase}>
             <option value="baseCase">Choose the International Base Countries in Asia</option>
@@ -1341,7 +1354,7 @@ class formSubmission extends React.Component{
 
             <div id="asiaOperationLocations"></div>
 
-        
+
             <h4>Initiative</h4>
 
             <p>Name</p>
@@ -1355,10 +1368,10 @@ class formSubmission extends React.Component{
               <input type="radio" id="tWomen2" name="targetsWomen" value="No" onChange={this.tWomenChange}/> <label htmlFor="tWomen2">No</label>
 
             <p>Start Year</p>
-              <input type="number" id="initStart" name="startYear" placeholder="Start Year" onChange={this.handleChange}/>
+              <input type="number" id="initStart" name="startYear" placeholder="Start Year" onChange={this.startYearChange}/>
 
             <p>End Year</p>
-              <input type="number" id="initEnd" name="endYear" placeholder="End Year" onChange={this.handleChange}/>
+              <input type="number" id="initEnd" name="endYear" placeholder="End Year" onChange={this.endYearChange}/>
 
             <p>Launch Country</p>
             <select id="launchCountry" name="launchCountry" onChange={this.addLaunchCountry}>
@@ -2134,7 +2147,7 @@ class formSubmission extends React.Component{
             <option value=" Literacy skills">Literacy skills</option>
             <option value=" Maternal Health Education">Maternal Health Education</option>
             </select>
-            
+
             <div id="initActivities"></div>
 
             <p>Fee to Access?</p>
@@ -2149,9 +2162,9 @@ class formSubmission extends React.Component{
             <option value="Not Applicable">Not Applicable</option>
             <option value="Unclear">Unclear</option>
             <option value="Missing Data">Missing Data</option>
-            </select>  
+            </select>
 
-            <div id="managementTypes"></div>        
+            <div id="managementTypes"></div>
 
 
             <p>Target Population Sector(s)<br></br>Select all that apply:</p>
@@ -3001,7 +3014,7 @@ class formSubmission extends React.Component{
             <option value=" success stories"> success stories</option>
             <option value=" Improvement of ECD-related knowledge and behavioral change among teachers
 
-            Monitored metrics: 
+            Monitored metrics:
             Standardized assessment performance
             Internal assessment performance
             User satisfaction
@@ -3009,7 +3022,7 @@ class formSubmission extends React.Component{
             Student retention
             student participation"> Improvement of ECD-related knowledge and behavioral change among teachers
 
-            Monitored metrics: 
+            Monitored metrics:
             Standardized assessment performance
             Internal assessment performance
             User satisfaction
@@ -3195,17 +3208,17 @@ class formSubmission extends React.Component{
             <option value=" program of study"> program of study</option>
             <option value=" and length of study"> and length of study</option>
             <option value="number of students accessing the program">number of students accessing the program</option>
-            <option value=" 
-            Internal assessment performance"> 
+            <option value="
+            Internal assessment performance">
             Internal assessment performance</option>
-            <option value=" 
-            Student attendance"> 
+            <option value="
+            Student attendance">
             Student attendance</option>
-            <option value=" 
-            Teacher retention"> 
+            <option value="
+            Teacher retention">
             Teacher retention</option>
-            <option value=" 
-            Increased enrollment"> 
+            <option value="
+            Increased enrollment">
             Increased enrollment</option>
             <option value=" Number of study hours"> Number of study hours</option>
             <option value="secondary school completion rates">secondary school completion rates</option>
@@ -3368,7 +3381,7 @@ class formSubmission extends React.Component{
             <br></br><br></br>
 
 
-            <input type="submit"value="Submit"/>
+            <input type="submit"value="Submit" onChange/>
             </form>
             </div>
         </div>
@@ -3390,20 +3403,20 @@ Program Area stuff that was part of AirTable but not the cleaned data
             <option value="sRegulatory analysis focused on government policy">Regulatory analysis focused on government policy</option>
             <option value="sRegulatory analysis focused on school policy">Regulatory analysis focused on school policy</option>
 
-            
+
 
             <option value=" Capacity Building of Non-Education Professionals">Capacity Building of Non-Education Professionals</option>
             <option value=" Enrichment/New Pedagogical or Curricular Programs">Enrichment/New Pedagogical or Curricular Programs</option>
             <option value=" Academic research/academic exchange">Academic research/academic exchange</option>
-           
-            
+
+
             <option value=" Education finance (system-level)">Education finance (system-level)</option>
             <option value=" school finance">school finance</option>
 
             <option value="pPrivate schools">Private schools</option>
             <option value="pFormal public-private partnership">Formal public-private partnership</option>
 
-            
+
             */
 
 
@@ -3413,4 +3426,10 @@ const mapStateToProps = (state) => {
   };
 }
 
-export default connect(mapStateToProps)(formSubmission)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    submitForm: (form) => {dispatch(addFormRA(form))}
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(formSubmission)

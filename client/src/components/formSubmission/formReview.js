@@ -3493,7 +3493,8 @@ Program Area stuff that was part of AirTable but not the cleaned data
 const mapStateToProps = (state) => {
   return {
     authorized: state.authenticate.auth,
-    form: state.data.reviewFormRA  //data to populate form with when RA reviews it
+    form: state.data.form,  //data to populate form with when RA reviews it
+    formStatus: state.data.formStatus
   };
 }
 

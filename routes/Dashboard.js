@@ -29,9 +29,11 @@ const poolTemp = sql.createPool({
     queueLimit: 0
 })
 
+
+global.tempStore = []
+
 //GET from from DB
 dashboard.get('/form/:tagNum', cors(),(req, res) =>{
-
     var tagNum = req.params.tagNum
     
     //initiative queries
@@ -44,270 +46,15 @@ dashboard.get('/form/:tagNum', cors(),(req, res) =>{
     var query7 = "SELECT * FROM initiativetargetgeography WHERE tagNumber =" + tagNum
     var query8 = "SELECT * FROM initiativetargetpopulationsector WHERE tagNumber =" + tagNum
     var query9 = "SELECT * FROM initiativemonitoredoutcomes WHERE tagNumber =" + tagNum
-    var query10 = "SELECT * FROM initiativemaineducationsubsector WHERE tagNumber =" + tagNum
-    var query11 = "SELECT * FROM initiativeeducationsubsector WHERE initiativeTagNumber =" + tagNum
-    var query11 = "SELECT * FROM initiativetargetschoolmanagement WHERE tagNumber =" + tagNum
+    var query10 = "SELECT * FROM initiativeMainEducationSubsector WHERE tagNumber =" + tagNum
+    var query11 = "SELECT * FROM initiativeEducationSubsectors WHERE initiativeTagNumber =" + tagNum
+    var query12 = "SELECT * FROM initiativetargetschoolmanagement WHERE tagNumber =" + tagNum
 
      //implementor queries
-     var query12 = "SELECT * FROM implements INNER JOIN implementor USING (implementorName) WHERE tagNum =" + tagNum
+     var query13 = "SELECT * FROM implements INNER JOIN implementor USING (implementorName) WHERE tagNum =" + tagNum
 
     //funder queries
-    var query13 = "SELECT * FROM funds INNER JOIN funder USING (funderName) WHERE tagNum =" + tagNum
-    
-    //WHICH funderName to use??
-    var query14 = "SELECT * FROM funderasiabases WHERE funderName =" 
-    var query15 = "SELECT * FROM funderasiaoperations WHERE funderName =" 
-    var query16 = "SELECT * FROM fundereducationsubsectors WHERE funderName =" 
-    var query17 = "SELECT * FROM funderinternationalbases WHERE funderName =" 
-    var query18 = "SELECT * FROM funderorganizationtraits WHERE funderName =" 
-
-
-    var formData = {}
-
-    async.parallel([
-        function(queryDB) {
-            pool.query(query1, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    formData.table1 = results;
-                    queryDB()
-                } 
-                
-            })
-        },
-        function(queryDB) {
-            pool.query(query2, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    formData.table2 = results;
-                    queryDB()
-                } 
-                
-            })
-        },
-        function(queryDB) {
-            pool.query(query3, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    formData.table3 = results;
-                    queryDB()
-                } 
-                
-            })
-        },
-        function(queryDB) {
-            pool.query(query4, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    formData.table4 = results;
-                    queryDB()
-                } 
-                
-            })
-        },
-        function(queryDB) {
-            pool.query(query5, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    formData.table5 = results;
-                    queryDB()
-                } 
-                
-            })
-        },
-        function(queryDB) {
-            pool.query(query6, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    formData.table6 = results;
-                    queryDB()
-                } 
-                
-            })
-        },
-        function(queryDB) {
-            pool.query(query7, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    formData.table7 = results;
-                    queryDB()
-                } 
-                
-            })
-        },
-        function(queryDB) {
-            pool.query(query8, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    formData.table8 = results;
-                    queryDB()
-                } 
-                
-            })
-        },
-        function(queryDB) {
-            pool.query(query9, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    formData.table9 = results;
-                    queryDB()
-                } 
-                
-            })
-        },
-        function(queryDB) {
-            pool.query(query10, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    formData.table10 = results;
-                    queryDB()
-                } 
-                
-            })
-        },
-        function(queryDB) {
-            pool.query(query11, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    formData.table11 = results;
-                    queryDB()
-                } 
-                
-            })
-        },
-        function(queryDB) {
-            pool.query(query12, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    formData.table12 = results;
-                    queryDB()
-                } 
-                
-            })
-        },
-        function(queryDB) {
-            pool.query(query13, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    formData.table13 = results;
-                    queryDB()
-                } 
-                
-            })
-        },
-        // function(queryDB) {
-        //     pool.query(query14, {}, function(err, results) {
-        //         if (err){
-        //             return queryDB(err)
-        //         }else{
-        //             formData.table14 = results;
-        //             queryDB()
-        //         } 
-                
-        //     })
-        // },
-        // function(queryDB) {
-        //     pool.query(query15, {}, function(err, results) {
-        //         if (err){
-        //             return queryDB(err)
-        //         }else{
-        //             formData.table15 = results;
-        //             queryDB()
-        //         } 
-                
-        //     })
-        // },
-        // function(queryDB) {
-        //     pool.query(query16, {}, function(err, results) {
-        //         if (err){
-        //             return queryDB(err)
-        //         }else{
-        //             formData.table16 = results;
-        //             queryDB()
-        //         } 
-                
-        //     })
-        // },
-        // function(queryDB) {
-        //     pool.query(query17, {}, function(err, results) {
-        //         if (err){
-        //             return queryDB(err)
-        //         }else{
-        //             formData.table17 = results;
-        //             queryDB()
-        //         } 
-                
-        //     })
-        // },
-        // function(queryDB) {
-        //     pool.query(query18, {}, function(err, results) {
-        //         if (err){
-        //             return queryDB(err)
-        //         }else{
-        //             formData.table18 = results;
-        //             queryDB()
-        //         } 
-                
-        //     })
-        // },
-    
-     ], function(err) {
-          if (err){
-            console.log(err)
-          }else{
-            //pool.end()
-            res.send(formData)
-          } 
-          
-     })
-
-})
-
-
-//GET form from temp DB
-dashboard.get('/form-temp/:tagNum', (req, res) =>{
-    var tagNum = req.params.tagNum
-    
-    //initiative queries
-    var query1 = "SELECT * FROM initiative WHERE tagNumber =" + tagNum
-    var query2 = "SELECT * FROM initiativeregion WHERE tagNumber =" + tagNum
-    var query3 = "SELECT * FROM initiativecountryofoperation WHERE tagNumber =" + tagNum
-    var query4 = "SELECT * FROM initiativeprogrammingactivities WHERE tagNumber =" + tagNum
-    var query5 = "SELECT * FROM initiativefundingsource WHERE tagNumber =" + tagNum
-    var query6 = "SELECT * FROM initiativelaunchcountry WHERE tagNumber =" + tagNum
-    var query7 = "SELECT * FROM initiativetargetgeography WHERE tagNumber =" + tagNum
-    var query8 = "SELECT * FROM initiativetargetpopulationsector WHERE tagNumber =" + tagNum
-    var query9 = "SELECT * FROM initiativemonitoredoutcomes WHERE tagNumber =" + tagNum
-    var query10 = "SELECT * FROM initiativemaineducationsubsector WHERE tagNumber =" + tagNum
-    var query11 = "SELECT * FROM initiativeeducationsubsector WHERE initiativeTagNumber =" + tagNum
-    var query11 = "SELECT * FROM initiativetargetschoolmanagement WHERE tagNumber =" + tagNum
-
-     //implementor queries
-     var query12 = "SELECT * FROM implements INNER JOIN implementor USING (implementorName) WHERE tagNum =" + tagNum
-
-    //funder queries
-    var query13 = "SELECT * FROM funds INNER JOIN funder USING (funderName) WHERE tagNum =" + tagNum
-    
-    //WHICH funderName to use??
-  
-
-    //status & comments queries
-    var query19 = "SELECT * FROM status INNER JOIN comments USING (tagNumber) WHERE tagNumber=" + tagNum
-
-    var query20 = "SELECT * FROM sectionReviews WHERE tagNumber="+tagNum
+    var query14 = "SELECT * FROM funds INNER JOIN funder USING (funderName) WHERE tagNum =" + tagNum  
 
 
     var formData = {}
@@ -454,115 +201,448 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
                     return queryDB(err)
                 }else{
                     formData.table13 = results;
-                    fundersData.table1 = results;
                     queryDB()
+                    
                 } 
 
-                
-                //nest them here 
-                for(var i = 0; i < fundersData.table1.length; i++){
-                    //console.log(fundersData.table1[i].funderName)
-                    var query14 = "SELECT * FROM funderasiabases WHERE funderName ='" +fundersData.table1[i].funderName+"'"
-                    var query15 = "SELECT * FROM funderasiaoperations WHERE funderName ='" +fundersData.table1[i].funderName+"'"
-                    var query16 = "SELECT * FROM fundereducationsubsectors WHERE funderName ='" +fundersData.table1[i].funderName+"'"
-                    var query17 = "SELECT * FROM funderinternationalbases WHERE funderName ='" +fundersData.table1[i].funderName+"'"
-                    var query18 = "SELECT * FROM funderorganizationtraits WHERE funderName ='" +fundersData.table1[i].funderName+"'"
-                
-
-                    async.parallel([
-                        function(queryDB) {
-                            pool.query(query14, {}, function(err, results) {
-                                if (err){
-                                    return queryDB(err)
-                                }else{
-                                    funderIndividual.push(results)
-                                    queryDB()
-                                } 
-                                
-                            })
-                        },
-                        function(queryDB) {
-                            pool.query(query15, {}, function(err, results) {
-                                if (err){
-                                    return queryDB(err)
-                                }else{
-                                    funderIndividual.push(results)
-                                    queryDB()
-                                } 
-                                
-                            })
-                        },
-                        function(queryDB) {
-                            pool.query(query16, {}, function(err, results) {
-                                if (err){
-                                    return queryDB(err)
-                                }else{
-                                    funderIndividual.push(results)
-                                    queryDB()
-                                } 
-                                
-                            })
-                        },
-                        function(queryDB) {
-                            pool.query(query17, {}, function(err, results) {
-                                if (err){
-                                    return queryDB(err)
-                                }else{
-                                    funderIndividual.push(results)
-                                    queryDB()
-                                } 
-                                
-                            })
-                        },
-                        function(queryDB) {
-                            pool.query(query18, {}, function(err, results) {
-                                if (err){
-                                    return queryDB(err)
-                                }else{
-                                    funderIndividual.push(results)
-                                    queryDB()
-                                } 
-                                
-                            })
-                        }
-                    
-                    ],
-                        
-                    function(err) {
-                        if (err){
-                        console.log(err)
-                        }else{
-                            //console.log(funderIndividual)
-                            //formData.table14 = funderIndividual
-                            test.push(funderIndividual)
-                        } 
-                    
-                    })
-                }
-    
-                console.log(funderIndividual) 
-                //formData.table14 = funderIndividual
-
-          
-
-            })   
-            
+            })    
         },
-    
+        function(queryDB) {
+            pool.query(query14, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table14 = results;
+                    queryDB()
+                    
+                } 
+
+            })    
+        }     
+         
      ], function(err) {
           if (err){
             console.log(err)
           }else{
             //pool.end()
-            formData.table14 = test
-            res.send(formData)
+            funderQueries(formData.table14)   
+
           } 
           
      })
 
+  
+     function funderQueries(funderData){
+  
+        var final = 0
+        //nest them here 
+        for(var i = 0; i < funderData.length; i++){
+       
+            var query15 = "SELECT * FROM funderasiabases WHERE funderName ='" +funderData[i].funderName+"'"
+            var query16 = "SELECT * FROM funderasiaoperations WHERE funderName ='" +funderData[i].funderName+"'"
+            var query17 = "SELECT * FROM fundereducationsubsectors WHERE funderName ='" +funderData[i].funderName+"'"
+            var query18 = "SELECT * FROM funderinternationalbases WHERE funderName ='" +funderData[i].funderName+"'"
+            var query19 = "SELECT * FROM funderorganizationtraits WHERE funderName ='" +funderData[i].funderName+"'"
+        
+           
+            async.parallel([
+                function(queryDB) {
+                    pool.query(query15, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            funderIndividual.push(results)
+                            queryDB()
+                        } 
+                        
+                    })
+                },
+                function(queryDB) {
+                    pool.query(query16, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            funderIndividual.push(results)
+                            queryDB()
+                        } 
+                        
+                    })
+                },
+                function(queryDB) {
+                    pool.query(query17, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            funderIndividual.push(results)
+                            queryDB()
+                        } 
+                        
+                    })
+                },
+                function(queryDB) {
+                    pool.query(query18, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            funderIndividual.push(results)
+                            queryDB()
+                        } 
+                        
+                    })
+                },
+                function(queryDB) {
+                    pool.query(query19, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            funderIndividual.push(results)
+                            queryDB()
+                        } 
+                        
+                    })
+                }
+            
+            ],
+                
+            function(err) {
+                if (err){
+                console.log(err)
+                }else{
+                    var temp = {}
+                    final++;
+                    test.push(funderIndividual)
+                    temp.table1 = test
+                    Object.assign(formData, temp.table1)
+                  
+               
+                    if(final == funderData.length)
+                        res.send(formData)
 
+                } 
+            
+            })
+        }
+
+
+    } 
+ 
+
+})
+
+
+//GET form from temp DB
+dashboard.get('/form-temp/:tagNum', (req, res) =>{
+    var tagNum = req.params.tagNum
     
 
+    //status & comments queries
+    var query1 = "SELECT * FROM status INNER JOIN comments USING (tagNumber) WHERE tagNumber=" + tagNum
+    var query2 = "SELECT * FROM sectionReviews WHERE tagNumber="+tagNum
+    
+    //initiative queries
+    var query3 = "SELECT * FROM initiative WHERE tagNumber =" + tagNum
+    var query4 = "SELECT * FROM initiativeregion WHERE tagNumber =" + tagNum
+    var query5 = "SELECT * FROM initiativecountryofoperation WHERE tagNumber =" + tagNum
+    var query6 = "SELECT * FROM initiativeprogrammingactivities WHERE tagNumber =" + tagNum
+    var query7 = "SELECT * FROM initiativefundingsource WHERE tagNumber =" + tagNum
+    var query8 = "SELECT * FROM initiativelaunchcountry WHERE tagNumber =" + tagNum
+    var query8 = "SELECT * FROM initiativetargetgeography WHERE tagNumber =" + tagNum
+    var query9 = "SELECT * FROM initiativetargetpopulationsector WHERE tagNumber =" + tagNum
+    var query10 = "SELECT * FROM initiativemonitoredoutcomes WHERE tagNumber =" + tagNum
+    var query11 = "SELECT * FROM initiativemaineducationsubsector WHERE tagNumber =" + tagNum
+    var query12 = "SELECT * FROM initiativeeducationsubsectors WHERE initiativeTagNumber =" + tagNum
+    var query13 = "SELECT * FROM initiativetargetschoolmanagement WHERE tagNumber =" + tagNum
+
+     //implementor queries
+     var query14 = "SELECT * FROM implements INNER JOIN implementor USING (implementorName) WHERE tagNum =" + tagNum
+
+    //funder queries
+    var query15 = "SELECT * FROM funds INNER JOIN funder USING (funderName) WHERE tagNum =" + tagNum  
+
+ 
+
+
+    var formData = {}
+    var fundersData = {}
+    var test = []
+    var funderIndividual = []
+
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query1, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table1 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            poolTemp.query(query2, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table2 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            poolTemp.query(query3, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table3 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            poolTemp.query(query4, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table4 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            poolTemp.query(query5, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table5 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            poolTemp.query(query6, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table6 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            poolTemp.query(query7, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table7 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            poolTemp.query(query8, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table8 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            poolTemp.query(query9, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table9 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            poolTemp.query(query10, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table10 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            poolTemp.query(query11, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table11 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            poolTemp.query(query12, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table12 = results;
+                    queryDB()
+                } 
+                
+            })
+        },
+        function(queryDB) {
+            poolTemp.query(query13, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table13 = results;
+                    queryDB()
+                    
+                } 
+
+            })    
+        },
+        function(queryDB) {
+            poolTemp.query(query14, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table14 = results;
+                    queryDB()
+                    
+                } 
+
+            })    
+        }, 
+        function(queryDB) {
+            poolTemp.query(query15, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table15 = results;
+                    queryDB()
+                    
+                } 
+
+            })    
+        }     
+         
+     ], function(err) {
+          if (err){
+            console.log(err)
+          }else{
+            //poolTemp.end()
+            funderQueries(formData.table15)   
+
+          } 
+          
+     })
+
+  
+     function funderQueries(funderData){
+  
+        var final = 0
+        //nest them here 
+        for(var i = 0; i < funderData.length; i++){
+       
+            var query15 = "SELECT * FROM funderasiabases WHERE funderName ='" +funderData[i].funderName+"'"
+            var query16 = "SELECT * FROM funderasiaoperations WHERE funderName ='" +funderData[i].funderName+"'"
+            var query17 = "SELECT * FROM fundereducationsubsectors WHERE funderName ='" +funderData[i].funderName+"'"
+            var query18 = "SELECT * FROM funderinternationalbases WHERE funderName ='" +funderData[i].funderName+"'"
+            var query19 = "SELECT * FROM funderorganizationtraits WHERE funderName ='" +funderData[i].funderName+"'"
+        
+           
+            async.parallel([
+                function(queryDB) {
+                    poolTemp.query(query15, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            funderIndividual.push(results)
+                            queryDB()
+                        } 
+                        
+                    })
+                },
+                function(queryDB) {
+                    poolTemp.query(query16, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            funderIndividual.push(results)
+                            queryDB()
+                        } 
+                        
+                    })
+                },
+                function(queryDB) {
+                    poolTemp.query(query17, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            funderIndividual.push(results)
+                            queryDB()
+                        } 
+                        
+                    })
+                },
+                function(queryDB) {
+                    poolTemp.query(query18, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            funderIndividual.push(results)
+                            queryDB()
+                        } 
+                        
+                    })
+                },
+                function(queryDB) {
+                    poolTemp.query(query19, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            funderIndividual.push(results)
+                            queryDB()
+                        } 
+                        
+                    })
+                }
+            
+            ],
+                
+            function(err) {
+                if (err){
+                console.log(err)
+                }else{
+                    var temp = {}
+                    final++;
+                    test.push(funderIndividual)
+                    temp.table1 = test
+                    Object.assign(formData, temp.table1)
+                  
+               
+                    if(final == funderData.length)
+                        res.send(formData)
+
+                } 
+            
+            })
+        }
+
+
+    } 
+     
 
 })
 

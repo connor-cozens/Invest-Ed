@@ -8,7 +8,10 @@ import {
   SET_REVIEW_FORM,
   SET_MODIFY_FORM,
   SET_ADD_FORM,
-  ACCESS_ERROR
+  PULLED_APPROVED_FORM,
+  NOT_PULLED_APPROVED_FORM,
+  ACCESS_ERROR,
+  CLEAR_ACCESS_ERROR
 } from '../reducers/dataReducer';
 
 import {forceLogout} from './authActions';
@@ -140,7 +143,7 @@ const readForm = (response => {
 //Get approved forms from main DB
 export const getApprovedForm = (tag, getType) => (dispatch) => {
   const tagNum = tag.tagNum;
-  const url = `http://localhost:4000/dashboard-ra/form/${tagNum}`;
+  const url = `http://localhost:4000/dashboard/form/${tagNum}`;
   axios.get(url, null, {tagNum})
     .then(response => {
       const initiative = readForm(response);
@@ -151,29 +154,36 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
       else if (getType == 'review') {
         dispatch({type: SET_REVIEW_FORM, payload: initiative});
       }
+      dispatch({type: CLEAR_ACCESS_ERROR});
     })
     .catch(err =>  {
-      console.log(err);
+      dispatch({type: ACCESS_ERROR, payload: err});
     })
 }
 
 //Get non-approved forms from temp DB for organization/RA user to modify
 export const getNonApprovedForm = (tag, getType) => (dispatch) => {
   const tagNum = tag.tagNum;
-  const url = `http://localhost:4000/dashboard-ra/form/${tagNum}`;
+  const url = `http://localhost:4000/dashboard/form-temp/${tagNum}`;
   axios.get(url, null, {tagNum})
     .then(response => {
       const initiative = readForm(response);
       //Dispatch action to store form data in store
       if (getType == 'modify') {
         dispatch({type: SET_MODIFY_FORM, payload: initiative});
+        dispatch({type: PULLED_APPROVED_FORM});
       }
       else if (getType == 'review') {
         dispatch({type: SET_REVIEW_FORM, payload: initiative});
+        dispatch({type: PULLED_APPROVED_FORM});
       }
+      dispatch({type: CLEAR_ACCESS_ERROR});
     })
     .catch(err =>  {
       console.log(err);
+      dispatch({type: NOT_PULLED_APPROVED_FORM});
+      //If couldn't find form in temp db, then check for form in main db
+      dispatch(getApprovedForm(tag, getType));
     })
 }
 
@@ -246,7 +256,7 @@ export const addFormRA = (form) => (dispatch) => {
       needsReview: form.needsReview
     }
 
-    axios.post(`http://localhost:4000/dashboard-ra/new-form`, reqBody)
+    axios.post(`http://localhost:4000/dashboard/submitform`, reqBody)
       .then(response => {
         console.log(response)
       })

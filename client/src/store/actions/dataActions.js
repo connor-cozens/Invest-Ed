@@ -96,6 +96,9 @@ const readForm = (response => {
   const initiativeSourcesOfFunding = [];
   response.data.table5.forEach((item) => { initiativeSourcesOfFunding.push(item.sourceOfFunding); });
 
+  const initiativeLaunchCountries = [];
+  response.data.table6.forEach((item) => { initiativeLaunchCountries.push(item.launchCountry); });
+
   const initiativeTargetGeographies = [];
   response.data.table7.forEach((item) => { initiativeTargetGeographies.push(item.targetGeography); });
 
@@ -111,11 +114,24 @@ const readForm = (response => {
   const initiativeEducationSubsectors = [];
   response.data.table11.forEach((item) => { initiativeEducationSubsectors.push(item.educationSubsector); });
 
+  const initiativeTargetSchoolManagement = [];
+  response.data.table12.forEach((item) => { initiativeTargetSchoolManagement.push(item.targetSchoolManagementType); });
+
   const implementers = [];
   response.data.table13.forEach((implementer) => { implementers.push(implementer); });
 
   const funders = [];
   response.data.table14.forEach((funder) => { funders.push(funder); });
+
+  const status = [];
+  if (response.data.table15 !== undefined) {
+    status.push(response.data.table15);
+  }
+
+  const reviews = [];
+  if (response.data.table16 !== undefined) {
+    reviews.push(response.data.table16);
+  }
 
   //Prepare intiative object to be accessible to store
   const initiative = {
@@ -132,15 +148,17 @@ const readForm = (response => {
     countriesOfOperation: initiativeCountries,
     programmingActivities: initiativeProgrammingActivities,
     sourcesOfFunding: initiativeSourcesOfFunding,
-    launchCountry: response.data.table6[0].launchCountry,  //change to list
+    launchCountry: initiativeLaunchCountries,
     targetGeographies: initiativeTargetGeographies,
     targetPopulationSectors: initiativeTargetPopulationSectors,
     monitoredOutcomes:initiativeMonitoredOutcomes,
     mainEducationSubsectors: initiativeMainEducationSubsectors,
     educationSubSectors: initiativeEducationSubsectors,
-    targetSchoolManagementType: response.data.table12[0].targetSchoolManagementType,  //change to list
+    targetSchoolManagementType: initiativeTargetSchoolManagement,
     implementers: implementers,
-    funders: funders
+    funders: funders,
+    status: status,
+    reviews: reviews
   };
   return initiative;
 })

@@ -3,62 +3,138 @@ import {Link} from 'react-router-dom'
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import ReactDOM from 'react-dom';
-import {getApprovedForm, getNonApprovedForm, clearFormStatus} from '../../store/actions/dataActions'
+import {getApprovedForm, getNonApprovedForm, clearFormStatus, setNewFormStatus} from '../../store/actions/dataActions'
 
 class dashboard extends Component {
   constructor(props){
     super(props);
     this.state = {
-      tagNum: null,
-      clicked: false
+      modifyTagNum: null,
+      reviewTagNum: null,
+      addClicked: false,
+      modifyClicked: false,
+      reviewClicked: false
     }
 
     this.tagNumChange = this.tagNumChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleModifyClick = this.handleModifyClick.bind(this);
+    this.handleReviewClick = this.handleReviewClick.bind(this);
+    this.handleAddClick = this.handleAddClick.bind(this);
   }
 
-  handleClick(e) {
+  handleModifyClick(e){
     e.preventDefault();
-    if (this.state.tagNum !== null && this.state.tagNum !== ""){
+    if (this.state.modifyTagNum !== null && this.state.modifyTagNum !== ""){
       //Get form
-      this.props.getForm(this.state, 'modify');
-      this.state.clicked = true;
+      this.props.getForm(this.state.modifyTagNum, 'modify');
+      this.state.modifyClicked = true;
     }
+  }
+
+  handleReviewClick(e){
+    e.preventDefault();
+    if (this.state.reviewTagNum !== null && this.state.reviewTagNum !== ""){
+      //Get form
+      this.props.getForm(this.state.reviewTagNum, 'review');
+      this.state.reviewClicked = true;
+    }
+  }
+
+  handleAddClick(e){
+    e.preventDefault();
+    this.props.newForm();
+    this.state.addClicked = true;
   }
 
   tagNumChange(e){
-    this.state.tagNum = e.target.value;
+    if (e.target.id == 'modifyTagNum') {
+      this.state.modifyTagNum = e.target.value;
 
-    if (this.state.tagNum !== null && this.state.tagNum !== ""){
-      ReactDOM.render(<h5>Modify an Existing Submission Form</h5>, document.getElementById("modifyFormActive"))
-      ReactDOM.render(<div></div>, document.getElementById("modifyFormInactive"))
+      if (this.state.modifyTagNum !== null && this.state.modifyTagNum !== ""){
+        ReactDOM.render(<h5>Modify an Existing Submission Form</h5>, document.getElementById("modifyFormActive"))
+        ReactDOM.render(<div></div>, document.getElementById("modifyFormInactive"))
+      }
+      else {
+        ReactDOM.render(<font color="grey"><h5>Modify an Existing Submission Form</h5></font>, document.getElementById("modifyFormInactive"))
+        ReactDOM.render(<div></div>, document.getElementById("modifyFormActive"))
+      }
     }
-    else {
-      ReactDOM.render(<font color="grey"><h5>Modify an Existing Submission Form</h5></font>, document.getElementById("modifyFormInactive"))
-      ReactDOM.render(<div></div>, document.getElementById("modifyFormActive"))
+    else if (e.target.id == 'reviewTagNum') {
+      this.state.reviewTagNum = e.target.value;
+      console.log(this.state.reviewTagNum)
+      if (this.state.reviewTagNum !== null && this.state.reviewTagNum !== ""){
+        ReactDOM.render(<h5>Review a Submission Form</h5>, document.getElementById("reviewFormActive"))
+        ReactDOM.render(<div></div>, document.getElementById("reviewFormInactive"))
+      }
+      else {
+        ReactDOM.render(<font color="grey"><h5>Review a Submission Form</h5></font>, document.getElementById("reviewFormInactive"))
+        ReactDOM.render(<div></div>, document.getElementById("reviewFormActive"))
+      }
     }
-    console.log(this.state.tagNum);
+
   }
 
   render() {
-    const {authorized, accessError, formStatus} = this.props;
+    const {authorized, accessError, formStatus, clearForm, userData} = this.props;
     if (authorized === false){
       return <Redirect to='/' />
     }
 
     if (accessError == null) {
-      if (this.state.clicked) {
-        this.setState({
-          clicked: false
-        });
-        return <Redirect to='/formReview'/>
+      if (this.state.modifyClicked || this.state.reviewClicked || this.state.addClicked) {
+        //If user selects option to modify form
+        if (this.state.modifyClicked) {
+          this.setState({
+            modifyClicked: false
+          });
+          return <Redirect to='/formsubmission'/>
+        //If user selects option to add a new form
+        }
+        else if (this.state.addClicked) {
+          this.setState({
+            addClicked: false
+          });
+          return <Redirect to='/formsubmission'/>
+        }
+        //If user selects option to review form
+        else if (this.state.reviewClicked){
+          this.setState({
+            reviewClicked: false
+          });
+          return <Redirect to='/formReview'/>
+        }
+      }
+      else {
+        clearForm();
       }
     }
     //If could not access form from either db, then return error message
     const error = accessError ?
-    <div className="alert alert-danger alert-dismissible fade show">
-      Could not find requested form
+    <div className="alert alert-danger alert-dismissible fade show" style = {{width: "25%", margin: "0 auto", marginTop: "50px"}}>
+      {accessError}
     </div> : null
+
+    //Handle click
+    const click = (num) => (e) => {
+      this.handleClick(e, num);
+    }
+
+    //Render review option only if RA or root user
+    const review = userData ? (userData.accessLevel !== 0 ?
+      <div className = "container">
+        <p></p>
+        <div className = "row mt-5">
+          <div className = "col-md-8 m-auto text-center">
+            <p>Tag Number of Form to Review</p>
+            <input type="number" id="reviewTagNum" name="reviewTagNum" placeholder="Tag#" onChange={this.tagNumChange}/><br></br><br></br>
+            <div className = "card card-body">
+              <Link onClick={this.handleReviewClick}><div id="reviewFormActive"></div></Link>
+              <div id="reviewFormInactive"><font color="grey"><h5>Review a Submission Form</h5></font></div>
+            </div>
+          </div>
+        </div>
+      </div>: null
+    ) : null
 
     return (
       <div>
@@ -66,7 +142,7 @@ class dashboard extends Component {
           <div className = "row mt-5">
             <div className = "col-md-8 m-auto">
               <div className = "card card-body text-center">
-                <Link to="/formsubmission"><h5>Create an Information Submission Form</h5></Link>
+                <Link onClick={this.handleAddClick}><h5>Create an Information Submission Form</h5></Link>
               </div>
             </div>
           </div>
@@ -75,16 +151,17 @@ class dashboard extends Component {
           <p></p>
           <div className = "row mt-5">
             <div className = "col-md-8 m-auto text-center">
-            <p>Tag Number of Form to Modify</p>
-                <input type="number" id="modifyTagNum" name="modifyTagNum" placeholder="Tag#" onChange={this.tagNumChange}/><br></br><br></br>
+              <p>Tag Number of Form to Modify</p>
+              <input type="number" id="modifyTagNum" name="modifyTagNum" placeholder="Tag#" onChange={this.tagNumChange}/><br></br><br></br>
               <div className = "card card-body">
-                <Link onClick={this.handleClick}><div id="modifyFormActive"></div></Link>
+                <Link onClick={this.handleModifyClick}><div id="modifyFormActive"></div></Link>
                 <div id="modifyFormInactive"><font color="grey"><h5>Modify an Existing Submission Form</h5></font></div>
-                {error}
               </div>
             </div>
           </div>
         </div>
+        {review}
+        {error}
       </div>
     )
   }
@@ -94,13 +171,16 @@ const mapStateToProps = (state) => {
   return {
     authorized: state.authenticate.auth,
     accessError: state.data.accessError,
-    formStatus: state.data.formStatus
+    formStatus: state.data.formStatus,
+    userData: state.data.userInformation
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getForm: (tag, getType) => dispatch(getNonApprovedForm(tag, getType))
+    getForm: (tag, getType) => dispatch(getNonApprovedForm(tag, getType)),
+    clearForm: () => dispatch(clearFormStatus()),
+    newForm: () => dispatch(setNewFormStatus())
   }
 }
 

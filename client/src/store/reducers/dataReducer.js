@@ -86,7 +86,6 @@ const dataReducer = (state = initState, action) => {
     case SET_ADD_FORM:
       return {
         ...state,
-        form: action.payload,
         formStatus: 'add'
       };
 
@@ -105,6 +104,7 @@ const dataReducer = (state = initState, action) => {
     case CLEAR_FORM_STATUS:
       return {
         ...state,
+        form: null,
         formStatus: null,
         pulledformApproved: false
       };

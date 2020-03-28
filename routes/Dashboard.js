@@ -68,6 +68,10 @@ dashboard.get('/form/:tagNum', cors(),(req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
+                    //If no results back for initiative, then form doesn't exist for corresponding tag number
+                    if (results.length === 0) {
+                      return queryDB("Could not find requested form")
+                    }
                     formData.table1 = results;
                     queryDB()
                 }
@@ -222,7 +226,7 @@ dashboard.get('/form/:tagNum', cors(),(req, res) =>{
 
      ], function(err) {
           if (err){
-            console.log(err)
+            res.json({error: err})
           }else{
             //pool.end()
             funderQueries(formData.table14)
@@ -306,7 +310,7 @@ dashboard.get('/form/:tagNum', cors(),(req, res) =>{
 
             function(err) {
                 if (err){
-                console.log(err)
+                  res.json(err)
                 }else{
                     var temp = {}
                     final++;
@@ -369,6 +373,10 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
+                    //If no results back for initiative, then form doesn't exist for corresponding tag number
+                    if (results.length === 0) {
+                      return queryDB("Could not find requested form")
+                    }
                     formData.table1 = results;
                     queryDB()
                 }
@@ -547,22 +555,18 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
 
      ], function(err) {
           if (err){
-            console.log(err)
+            res.json({error: err})
           }else{
             //poolTemp.end()
             funderQueries(formData.table14)
-
           }
-
      })
 
 
      function funderQueries(funderData){
-
         var final = 0
         //nest them here
         for(var i = 0; i < funderData.length; i++){
-
             var query15 = "SELECT * FROM funderasiabases WHERE funderName ='" +funderData[i].funderName+"'"
             var query16 = "SELECT * FROM funderasiaoperations WHERE funderName ='" +funderData[i].funderName+"'"
             var query17 = "SELECT * FROM fundereducationsubsectors WHERE funderName ='" +funderData[i].funderName+"'"
@@ -631,7 +635,7 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
 
             function(err) {
                 if (err){
-                console.log(err)
+                  res.json(err)
                 }else{
                     var temp = {}
                     final++;
@@ -639,19 +643,13 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
                     temp.table1 = test
                     Object.assign(formData, temp.table1)
 
-
                     if(final == funderData.length)
                         res.json(formData)
-
                 }
-
             })
         }
 
-
     }
-
-
 })
 
 //POST new form to temp DB

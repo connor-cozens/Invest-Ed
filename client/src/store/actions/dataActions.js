@@ -83,6 +83,10 @@ export const clearFormStatus = () => (dispatch) => {
   dispatch({type: CLEAR_FORM_STATUS});
 }
 
+export const setNewFormStatus = () => (dispatch) => {
+  dispatch({type: SET_ADD_FORM});
+}
+
 const readForm = (response => {
   const initiativeRegions = [];
   response.data.table2.forEach((item) => { initiativeRegions.push(item.region); });
@@ -133,7 +137,7 @@ const readForm = (response => {
     reviews.push(response.data.table16);
   }
 
-  //Prepare intiative object to be accessible to store
+  //Prepare initiative object to be dispatched to store
   const initiative = {
     name: response.data.table1[0].initiativeName,
     description: response.data.table1[0].description,
@@ -165,45 +169,57 @@ const readForm = (response => {
 
 //Get approved forms from main DB
 export const getApprovedForm = (tag, getType) => (dispatch) => {
-  const tagNum = tag.tagNum;
+  console.log(tag);
+  const tagNum = tag
   const url = `http://localhost:4000/dashboard/form/${tagNum}`;
   axios.get(url, null, {tagNum})
     .then(response => {
-      const initiative = readForm(response);
-      //Dispatch action to store form data in store
-      if (getType == 'modify') {
-        dispatch({type: SET_MODIFY_FORM, payload: initiative});
+      if (response.data.error !== undefined) {
+        dispatch({type: ACCESS_ERROR, payload: response.data.error});
       }
-      else if (getType == 'review') {
-        dispatch({type: SET_REVIEW_FORM, payload: initiative});
+      else {
+        const initiative = readForm(response);
+        //Dispatch action to store form data in store
+        if (getType == 'modify') {
+          dispatch({type: SET_MODIFY_FORM, payload: initiative});
+        }
+        else if (getType == 'review') {
+          dispatch({type: SET_REVIEW_FORM, payload: initiative});
+        }
+        dispatch({type: CLEAR_ACCESS_ERROR});
       }
-      dispatch({type: CLEAR_ACCESS_ERROR});
     })
     .catch(err =>  {
-      dispatch({type: ACCESS_ERROR, payload: err});
+      dispatch({type: ACCESS_ERROR, payload: "Error retrieving form"});
     })
 }
 
 //Get non-approved forms from temp DB for organization/RA user to modify
 export const getNonApprovedForm = (tag, getType) => (dispatch) => {
-  const tagNum = tag.tagNum;
+  const tagNum = tag
   const url = `http://localhost:4000/dashboard/form-temp/${tagNum}`;
   axios.get(url, null, {tagNum})
     .then(response => {
-      const initiative = readForm(response);
-      //Dispatch action to store form data in store
-      if (getType == 'modify') {
-        dispatch({type: SET_MODIFY_FORM, payload: initiative});
-        dispatch({type: PULLED_APPROVED_FORM});
+      if (response.data.error !== undefined) {
+        dispatch({type: NOT_PULLED_APPROVED_FORM});
+        //If couldn't find form in temp db, then check for form in main db
+        dispatch(getApprovedForm(tag, getType));
       }
-      else if (getType == 'review') {
-        dispatch({type: SET_REVIEW_FORM, payload: initiative});
-        dispatch({type: PULLED_APPROVED_FORM});
+      else {
+        const initiative = readForm(response);
+        //Dispatch action to store form data in store
+        if (getType == 'modify') {
+          dispatch({type: SET_MODIFY_FORM, payload: initiative});
+          dispatch({type: PULLED_APPROVED_FORM});
+        }
+        else if (getType == 'review') {
+          dispatch({type: SET_REVIEW_FORM, payload: initiative});
+          dispatch({type: PULLED_APPROVED_FORM});
+        }
+        dispatch({type: CLEAR_ACCESS_ERROR});
       }
-      dispatch({type: CLEAR_ACCESS_ERROR});
     })
     .catch(err =>  {
-      console.log(err);
       dispatch({type: NOT_PULLED_APPROVED_FORM});
       //If couldn't find form in temp db, then check for form in main db
       dispatch(getApprovedForm(tag, getType));

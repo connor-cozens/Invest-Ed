@@ -10,6 +10,7 @@ import {
   SET_ADD_FORM,
   PULLED_APPROVED_FORM,
   NOT_PULLED_APPROVED_FORM,
+  CLEAR_FORM_STATUS,
   ACCESS_ERROR,
   CLEAR_ACCESS_ERROR
 } from '../reducers/dataReducer';
@@ -76,6 +77,10 @@ export const getUser = () => (dispatch) => {
     .catch(err => {
       dispatch({type: ACCESS_ERROR, payload: err})
     })
+}
+
+export const clearFormStatus = () => (dispatch) => {
+  dispatch({type: CLEAR_FORM_STATUS});
 }
 
 const readForm = (response => {

@@ -11,6 +11,7 @@ export const PULLED_APPROVED_FORM = 'PULLED_APPROVED_FORM';
 export const NOT_PULLED_APPROVED_FORM = 'NOT_PULLED_APPROVED_FORM';
 export const CLEAR_ACCESS_ERROR = 'CLEAR_ACCESS_ERROR';
 export const ACCESS_ERROR = 'ACCESS_ERROR';
+export const CLEAR_FORM_STATUS = 'CLEAR_FORM_STATUS';
 
 const initState = {
   userInformation: null,
@@ -98,6 +99,13 @@ const dataReducer = (state = initState, action) => {
     case NOT_PULLED_APPROVED_FORM:
       return {
         ...state,
+        pulledformApproved: false
+      };
+
+    case CLEAR_FORM_STATUS:
+      return {
+        ...state,
+        formStatus: null,
         pulledformApproved: false
       };
 

@@ -3,23 +3,33 @@ import {Link} from 'react-router-dom'
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import ReactDOM from 'react-dom';
-import {getApprovedForm, getNonApprovedForm} from '../../store/actions/dataActions'
+import {getApprovedForm, getNonApprovedForm, clearFormStatus} from '../../store/actions/dataActions'
 
 class dashboard extends Component {
   constructor(props){
     super(props);
     this.state = {
       tagNum: null,
-      error: null
+      clicked: false
     }
-    //
 
     this.tagNumChange = this.tagNumChange.bind(this);
-    this.tagNumEntered = this.tagNumEntered.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  componentDidUpdate = () => {
-    if (this.state.tagNum !== null && this.state.tagNum !== "" && this.state.error == null){
+  handleClick(e) {
+    e.preventDefault();
+    if (this.state.tagNum !== null && this.state.tagNum !== ""){
+      //Get form
+      this.props.getForm(this.state, 'modify');
+      this.state.clicked = true;
+    }
+  }
+
+  tagNumChange(e){
+    this.state.tagNum = e.target.value;
+
+    if (this.state.tagNum !== null && this.state.tagNum !== ""){
       ReactDOM.render(<h5>Modify an Existing Submission Form</h5>, document.getElementById("modifyFormActive"))
       ReactDOM.render(<div></div>, document.getElementById("modifyFormInactive"))
     }
@@ -30,29 +40,22 @@ class dashboard extends Component {
     console.log(this.state.tagNum);
   }
 
-  tagNumEntered(e) {
-    if(e.target.id == "modifyTagNum") {
-      if (this.state.modifyTagNum !== null && this.state.modifyTagNum !== ""){
-        //Get form
-        this.props.getForm(this.state, 'modify');
-      }
-    }
-  }
-
-  tagNumChange(e){
-    this.setState({
-      tagNum: e.target.value
-    });
-  }
-
   render() {
-    const {authorized, accessError} = this.props;
+    const {authorized, accessError, formStatus} = this.props;
     if (authorized === false){
       return <Redirect to='/' />
     }
 
+    if (accessError == null) {
+      if (this.state.clicked) {
+        this.setState({
+          clicked: false
+        });
+        return <Redirect to='/formReview'/>
+      }
+    }
     //If could not access form from either db, then return error message
-    this.state.error = accessError ?
+    const error = accessError ?
     <div className="alert alert-danger alert-dismissible fade show">
       Could not find requested form
     </div> : null
@@ -73,11 +76,11 @@ class dashboard extends Component {
           <div className = "row mt-5">
             <div className = "col-md-8 m-auto text-center">
             <p>Tag Number of Form to Modify</p>
-                <input type="number" id="modifyTagNum" name="modifyTagNum" placeholder="Tag#" onChange={this.tagNumChange} onBlur={this.tagNumEntered}/><br></br><br></br>
+                <input type="number" id="modifyTagNum" name="modifyTagNum" placeholder="Tag#" onChange={this.tagNumChange}/><br></br><br></br>
               <div className = "card card-body">
-                <Link to="/formReview"><div id="modifyFormActive"></div></Link>
+                <Link onClick={this.handleClick}><div id="modifyFormActive"></div></Link>
                 <div id="modifyFormInactive"><font color="grey"><h5>Modify an Existing Submission Form</h5></font></div>
-                {this.state.error}
+                {error}
               </div>
             </div>
           </div>
@@ -90,7 +93,8 @@ class dashboard extends Component {
 const mapStateToProps = (state) => {
   return {
     authorized: state.authenticate.auth,
-    accessError: state.data.accessError
+    accessError: state.data.accessError,
+    formStatus: state.data.formStatus
   };
 }
 

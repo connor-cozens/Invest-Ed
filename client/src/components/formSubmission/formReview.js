@@ -1447,13 +1447,13 @@ class formReview extends React.Component{
             <input type="radio" id="needsReview28" name="targetsWomenCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview28">Reject</label>
 
             <p>Start Year</p>
-              <input type="number" id="initStart" name="startYear" value = {this.state.initStart} placeholder="Start Year" onChange={this.handleChange}/>
+              <input type="number" id="initStart" name="startYear" defaultValue = {this.state.initStart} placeholder="Start Year" onChange={this.handleChange}/>
               <br></br>
             <input type="radio" id="needsReview29" name="startYearCheck" value="checked"/> <label name="accept" htmlFor="needsReview29">Accept</label>
             <input type="radio" id="needsReview30" name="startYearCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview30">Reject</label>
 
             <p>End Year</p>
-              <input type="number" id="initEnd" name="endYear" value = {this.state.initEnd} placeholder="End Year" onChange={this.handleChange}/>
+              <input type="number" id="initEnd" name="endYear" defaultValue = {this.state.initEnd} placeholder="End Year" onChange={this.handleChange}/>
               <br></br>
             <input type="radio" id="needsReview31" name="endYearCheck" value="checked"/> <label name="accept" htmlFor="needsReview31">Accept</label>
             <input type="radio" id="needsReview32" name="endYearCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview32">Reject</label>

@@ -625,12 +625,16 @@ class formSubmission extends React.Component{
 
   startYearChange(e) {
     let date = e.target.value + '-01-01'
-    this.state.initStart = date
+    this.setState({
+      initStart: date
+    });
   }
 
   endYearChange(e) {
     let date = e.target.value + '-01-01'
-    this.state.initEnd = date
+    this.setState({
+      initEnd: date
+    });
   }
 
   handleChange(e){
@@ -1427,10 +1431,10 @@ class formSubmission extends React.Component{
               <input type="radio" id="tWomen2" name="targetsWomen" value="No" defaultChecked = {!this.state.tWomen} onClick={this.tWomenChange}/> <label htmlFor="tWomen2">No</label>
 
             <p>Start Year</p>
-              <input type="number" id="initStart" name="startYear" value={this.state.initStart} placeholder="Start Year" onChange={this.startYearChange}/>
+              <input type="number" id="initStart" name="startYear" defaultValue={this.state.initStart} placeholder="Start Year" onChange={this.startYearChange}/>
 
             <p>End Year</p>
-              <input type="number" id="initEnd" name="endYear" value={this.state.initEnd} placeholder="End Year" onChange={this.endYearChange}/>
+              <input type="number" id="initEnd" name="endYear" defaultValue={this.state.initEnd} placeholder="End Year" onChange={this.endYearChange}/>
 
             <p>Launch Country</p>
             <select id="launchCountry" name="launchCountry" onChange={this.addLaunchCountry}>

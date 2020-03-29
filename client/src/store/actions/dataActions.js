@@ -137,15 +137,16 @@ const readForm = (response => {
     reviews.push(response.data.table16);
   }
 
-  console.log(response.data[0]);
+  const startYear = parseInt(response.data.table1[0].startYear);
+  const endYear = parseInt(response.data.table1[0].endYear);
 
   //Prepare initiative object to be dispatched to store
   const initiative = {
     name: response.data.table1[0].initiativeName,
     description: response.data.table1[0].description,
     website: response.data.table1[0].initiativeWebsite,
-    startYear: response.data.table1[0].startYear,
-    endYear: response.data.table1[0].endYear,
+    startYear: startYear,
+    endYear: endYear,
     mainProgrammingArea: response.data.table1[0].mainProgrammingArea,
     mainProgrammingActivity: response.data.table1[0].mainProgrammingActivity,
     targetsWomen: response.data.table1[0].startYear == 0 ? false : true,

@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import ReactDOM from 'react-dom';
+import './dashboard.css';
 import {getApprovedForm, getNonApprovedForm, clearFormStatus, setNewFormStatus} from '../../store/actions/dataActions'
 
 class dashboard extends Component {
@@ -122,12 +123,11 @@ class dashboard extends Component {
     //Render review option only if RA or root user
     const review = userData ? (userData.accessLevel !== 0 ?
       <div className = "container">
-        <p></p>
-        <div className = "row mt-5">
+        <div className = "row mt-4">
           <div className = "col-md-8 m-auto text-center">
-            <p>Tag Number of Form to Review</p>
-            <input type="number" id="reviewTagNum" name="reviewTagNum" placeholder="Tag#" onChange={this.tagNumChange}/><br></br><br></br>
             <div className = "card card-body">
+              <h3>Review Form</h3>
+              <input type="number" id="reviewTagNum" name="reviewTagNum" placeholder="Tag Number of Form to Review" onChange={this.tagNumChange}/><br></br>
               <Link onClick={this.handleReviewClick}><div id="reviewFormActive"></div></Link>
               <div id="reviewFormInactive"><font color="grey"><h5>Review a Submission Form</h5></font></div>
             </div>
@@ -137,23 +137,25 @@ class dashboard extends Component {
     ) : null
 
     return (
-      <div>
+      <div id = "dashboard">
+        <h2>My Dashboard</h2>
+        {error}
         <div className = "container">
-          <div className = "row mt-5">
+          <div className = "row mt-4">
             <div className = "col-md-8 m-auto">
               <div className = "card card-body text-center">
+                <h3>Add a New Form</h3>
                 <Link onClick={this.handleAddClick}><h5>Create an Information Submission Form</h5></Link>
               </div>
             </div>
           </div>
         </div>
         <div className = "container">
-          <p></p>
-          <div className = "row mt-5">
+          <div className = "row mt-4">
             <div className = "col-md-8 m-auto text-center">
-              <p>Tag Number of Form to Modify</p>
-              <input type="number" id="modifyTagNum" name="modifyTagNum" placeholder="Tag#" onChange={this.tagNumChange}/><br></br><br></br>
               <div className = "card card-body">
+                <h3>Modify Form</h3>
+                <input type="number" id="modifyTagNum" name="modifyTagNum" placeholder="Tag Number of Form to Modify" onChange={this.tagNumChange}/><br></br>
                 <Link onClick={this.handleModifyClick}><div id="modifyFormActive"></div></Link>
                 <div id="modifyFormInactive"><font color="grey"><h5>Modify an Existing Submission Form</h5></font></div>
               </div>
@@ -161,7 +163,6 @@ class dashboard extends Component {
           </div>
         </div>
         {review}
-        {error}
       </div>
     )
   }

@@ -632,8 +632,16 @@ class formReview extends React.Component{
 
 
   render(){
-    const {authorized} = this.props;
+    const {authorized, accessLevel, formStatus} = this.props;
     if (authorized === false) {
+      return <Redirect to='/' />
+    }
+    //If an organization user, shouldn't access form review page
+    if (accessLevel === 0) {
+      return <Redirect to='/' />
+    }
+    //If form status hasn't been set to review, shouldn't allow user to access form review page
+    if (formStatus !== 'review') {
       return <Redirect to='/' />
     }
     return (
@@ -3550,6 +3558,7 @@ Program Area stuff that was part of AirTable but not the cleaned data
 const mapStateToProps = (state) => {
   return {
     authorized: state.authenticate.auth,
+    accessLevel: state.data.userInformation.accessLevel,
     form: state.data.form,  //data to populate form with when RA reviews it
     formStatus: state.data.formStatus
   };

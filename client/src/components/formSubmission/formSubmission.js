@@ -594,7 +594,10 @@ class formSubmission extends React.Component{
   }
 
   tWomenChange(e){
-    this.state.tWomen = e.currentTarget.value == "Yes" ? 1 : 0;
+    let targetsWomen = e.currentTarget.value == "Yes" ? 1 : 0;
+    this.setState({
+      tWomen: targetsWomen
+    });
   }
 
   geographyChange(e){
@@ -614,7 +617,10 @@ class formSubmission extends React.Component{
   }
 
   feeAccessChange(e){
-    this.state.feeAccess = e.currentTarget.value == "Yes" ? 1 : 0;
+    let feeToAccess = e.currentTarget.value == "Yes" ? 1 : 0;
+    this.setState({
+      feeAccess: feeToAccess
+    });
   }
 
   impMotiveChange(e){
@@ -678,7 +684,7 @@ class formSubmission extends React.Component{
             <p>Impact Investing?</p>
               <input type="radio" id="impact1" name="impactInvesting" value="Yes" checked = {this.state.impact == 'Yes'} onChange={this.impactChange}/> <label htmlFor="impact1">Yes</label>
               <input type="radio" id="impact2" name="impactInvesting" value="No" checked = {this.state.impact == 'No'} onChange={this.impactChange}/> <label htmlFor="impact2">No</label>
-              <input type="radio" id="impact3" name="impactInvesting" value="Unknown" checked = {this.state.impact !== 'No' && this.state.impact !== 'Yes'} onChange={this.impactChange}/> <label htmlFor="impact3">Unknown</label>
+              <input type="radio" id="impact3" name="impactInvesting" value="Unknown" checked = {this.state.impact == 'Unknown'} onChange={this.impactChange}/> <label htmlFor="impact3">Unknown</label>
             <br></br><br></br>
 
             <p>Organizational Form</p>
@@ -1427,8 +1433,8 @@ class formSubmission extends React.Component{
               <input type="text" id="initURL" name="initiativeWebsite" value = {this.state.initURL} placeholder="initiativeWebsite.com" onChange={this.handleChange}/>
 
             <p>Targets Women?</p>
-              <input type="radio" id="tWomen1" name="targetsWomen" value="Yes" defaultChecked = {this.state.tWomen} onClick={this.tWomenChange}/> <label htmlFor="tWomen1">Yes</label>
-              <input type="radio" id="tWomen2" name="targetsWomen" value="No" defaultChecked = {!this.state.tWomen} onClick={this.tWomenChange}/> <label htmlFor="tWomen2">No</label>
+              <input type="radio" id="tWomen1" name="targetsWomen" value="Yes" checked = {this.state.tWomen == true} onChange={this.tWomenChange}/> <label htmlFor="tWomen1">Yes</label>
+              <input type="radio" id="tWomen2" name="targetsWomen" value="No" checked = {this.state.tWomen == false} onChange={this.tWomenChange}/> <label htmlFor="tWomen2">No</label>
 
             <p>Start Year</p>
               <input type="number" id="initStart" name="startYear" defaultValue={this.state.initStart} placeholder="Start Year" onChange={this.startYearChange}/>
@@ -2214,8 +2220,8 @@ class formSubmission extends React.Component{
             <div id="initActivities"></div>
 
             <p>Fee to Access?</p>
-              <input type="radio" id="feeAccess1" name="feeToAccess" value="Yes" defaultChecked = {this.state.feeAccess} onClick={this.feeAccessChange}/> <label htmlFor="feeAccess1">Yes</label>
-              <input type="radio" id="feeAccess2" name="feeToAccess" value="No" defaultChecked = {!this.state.feeAccess} onClick={this.feeAccessChange}/> <label htmlFor="feeAccess2">No</label>
+              <input type="radio" id="feeAccess1" name="feeToAccess" value="Yes" checked = {this.state.feeAccess == true} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess1">Yes</label>
+              <input type="radio" id="feeAccess2" name="feeToAccess" value="No" checked = {this.state.feeAccess == false} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess2">No</label>
 
             <p>Target School Management Type</p>
             <select id="manType" name="managementType" onChange={this.addManagementType}>

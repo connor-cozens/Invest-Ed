@@ -676,7 +676,7 @@ class formReview extends React.Component{
             <p>Impact Investing?</p>
             <input type="radio" id="impact1" name="impactInvesting" value="Yes" checked = {this.state.impact == 'Yes'} onChange={this.impactChange}/> <label htmlFor="impact1">Yes</label>
             <input type="radio" id="impact2" name="impactInvesting" value="No" checked = {this.state.impact == 'No'} onChange={this.impactChange}/> <label htmlFor="impact2">No</label>
-            <input type="radio" id="impact3" name="impactInvesting" value="Unknown" checked = {this.state.impact !== 'No' && this.state.impact !== 'Yes'} onChange={this.impactChange}/> <label htmlFor="impact3">Unknown</label>
+            <input type="radio" id="impact3" name="impactInvesting" value="Unknown" checked = {this.state.impact == 'Unknown'} onChange={this.impactChange}/> <label htmlFor="impact3">Unknown</label>
               <br></br>
             <input type="radio" id="needsReview7" name="impactCheck" value="checked"/> <label name="accept" htmlFor="needsReview7">Accept</label>
             <input type="radio" id="needsReview8" name="impactCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview8">Reject</label>

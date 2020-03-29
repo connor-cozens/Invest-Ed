@@ -35,7 +35,7 @@ class formSubmission extends React.Component{
       launchCountries: [],
       idescription: null,
       targetGeos: [],
-      mainProgramActivity: null,
+      mainProgramActivity: null, //This isnt being set
       programArea: null,
       feeAccess: null,
       targetPopulationSectors: [], //
@@ -3422,7 +3422,8 @@ Program Area stuff that was part of AirTable but not the cleaned data
 
 const mapStateToProps = (state) => {
   return {
-    authorized: state.authenticate.auth
+    authorized: state.authenticate.auth,
+    formStatus: state.data.formStatus
   };
 }
 

@@ -1345,6 +1345,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
             })
    //AT THE VERY END
    genTagNum.add()
+
    res.json("Form successfully added to the DB")
 
 })
@@ -1396,7 +1397,7 @@ dashboard.post('/submitform', (req, res) =>{
         needsReview: req.body.needsReview //other
     }
 
-
+  console.log(formData);
    //Insert funder data
    var query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
    async.parallel([
@@ -1723,7 +1724,7 @@ dashboard.post('/submitform', (req, res) =>{
 
      //Insert initiative target population sector data
    for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
-    var query14 = "INSERT into initiativetargetpopulationsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativetargetPopulationSector+"')"
+    var query14 = "INSERT into initiativetargetpopulationsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativetargetPopulationSector[i]+"')"
     async.parallel([
         function(queryDB) {
             pool.query(query14, {}, function(err, results) {
@@ -1748,7 +1749,7 @@ dashboard.post('/submitform', (req, res) =>{
 
      //Insert initiative outcomes monitored data
    for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
-    var query15 = "INSERT into initiativemonitoredoutcomes VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +"),'"+ formData.initiativeOutcomesMonitored+"')"
+    var query15 = "INSERT into initiativemonitoredoutcomes VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +"),'"+ formData.initiativeOutcomesMonitored[i]+"')"
     async.parallel([
         function(queryDB) {
             pool.query(query15, {}, function(err, results) {
@@ -1774,7 +1775,7 @@ dashboard.post('/submitform', (req, res) =>{
      //Insert initiative main education subsector data
    for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
     var query16 = "INSERT into initiativemaineducationsubsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +
-    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs+"'))"
+    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
     async.parallel([
         function(queryDB) {
             pool.query(query16, {}, function(err, results) {
@@ -1800,7 +1801,7 @@ dashboard.post('/submitform', (req, res) =>{
      //Insert initiative education subsector data
    for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
     var query17 = "INSERT into initiativeeducationsubsectors VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +
-    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs+"'))"
+    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
     async.parallel([
         function(queryDB) {
             pool.query(query17, {}, function(err, results) {
@@ -1825,7 +1826,7 @@ dashboard.post('/submitform', (req, res) =>{
 
      //Insert initiative target management t data
    for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
-    var query18 = "INSERT into initiativetargetschoolmanagement VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +"),'"+ formData.initiativeManagementTypes+"')"
+    var query18 = "INSERT into initiativetargetschoolmanagement VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +"),'"+ formData.initiativeManagementTypes[i]+"')"
     async.parallel([
         function(queryDB) {
             pool.query(query18, {}, function(err, results) {

@@ -253,6 +253,77 @@ export const addForm = (tag) => (dispatch) => {
 
 //RA user to add new form to main DB
 export const addFormRA = (form) => (dispatch) => {
+
+    //Setting up multi val initatives
+    const regions = [];
+    form.regions.forEach((item) => {
+      regions.push(item.key);
+    });
+    const countries = [];
+    form.countries.forEach((item) => {
+      countries.push(item.key);
+    });
+    const activities = [];
+    form.activities.forEach((item) => {
+      activities.push(item.key);
+    });
+    const sourceOfFees = [];
+    form.sourceOfFees.forEach((item) => {
+      sourceOfFees.push(item.key);
+    });
+    const launchCountries = [];
+    form.launchCountries.forEach((item) => {
+      launchCountries.push(item.key);
+    });
+    const targetGeos = [];
+    form.targetGeos.forEach((item) => {
+      targetGeos.push(item.key);
+    });
+    const targetPopulationSectors = [];
+    form.targetPopulationSectors.forEach((item) => {
+      targetPopulationSectors.push(item.key);
+    });
+    const outcomesMonitored = [];
+    form.outcomesMonitored.forEach((item) => {
+      outcomesMonitored.push(item.key);
+    });
+    const mEdSubs = [];
+    form.mEdSubs.forEach((item) => {
+      mEdSubs.push(item.key);
+    });
+    const oEdSubs = [];
+    form.oEdSubs.forEach((item) => {
+      oEdSubs.push(item.key);
+    });
+    const managementTypes = [];
+    form.managementTypes.forEach((item) => {
+      managementTypes.push(item.key);
+    });
+
+    //Setting up multi val funders
+    const internationalBases = [];
+    form.internationalBases.forEach((item) => {
+      internationalBases.push(item.key);
+    });
+    const edSubs = [];
+    form.edSubs.forEach((item) => {
+      edSubs.push(item.key);
+    });
+    const orgTraits = [];
+    form.orgTraits.forEach((item) => {
+      orgTraits.push(item.key);
+    });
+    const asiaIBases = [];
+    form.asiaIBases.forEach((item) => {
+      asiaIBases.push(item.key);
+    });
+    const asiaOperations = [];
+    form.asiaOperations.forEach((item) => {
+      asiaOperations.push(item.key);
+    });
+
+    console.log(form);
+
     const reqBody = {
       fname: form.fname,
       furl: form.furl,
@@ -260,11 +331,11 @@ export const addFormRA = (form) => (dispatch) => {
       impact: form.impact,
       organizationForm: form.organizationForm,
       // multi val funder
-      internationalBases: form.internationalBases,
+      internationalBases: internationalBases,
       edSubs: form.edSubs,
       orgTraits: form.orgTraits,
-      asialBases: form.asiaIBases,
-      asiaOperations: form.asiaOperations,
+      asialBases: asiaIBases,
+      asiaOperations: asiaOperations,
       // single val initiative
       initName: form.initName,
       initURL: form.initURL,
@@ -276,17 +347,17 @@ export const addFormRA = (form) => (dispatch) => {
       initativeMainProgramActivity: form.mainProgramActivity,
       feeAccess: form.feeAccess,
       // multi val initiative
-      regions: form.regions,
-      countries: form.countries,
-      activities: form.activities,
-      sourceOfFees: form.sourceOfFees,
-      launchCountry: form.launchCountries,
+      regions: regions,
+      countries: countries,
+      activities: activities,
+      sourceOfFees: sourceOfFees,
+      launchCountry: launchCountries,
       targetGeos: form.targetGeos,
-      targetPopulationSectors: form.targetPopulationSectors,
-      outcomesMonitored: form.outcomesMonitored,
+      targetPopulationSectors: targetPopulationSectors,
+      outcomesMonitored: outcomesMonitored,
       mEdSubs: form.mEdSubs,
       oEdSubs: form.oEdSubs,
-      managementTypes: form.managementTypes,
+      managementTypes: managementTypes,
       // single val implementer
       iname: form.iname,
       impMotive: form.impMotive,

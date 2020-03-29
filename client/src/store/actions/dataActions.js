@@ -137,6 +137,8 @@ const readForm = (response => {
     reviews.push(response.data.table16);
   }
 
+  console.log(response.data[0]);
+
   //Prepare initiative object to be dispatched to store
   const initiative = {
     name: response.data.table1[0].initiativeName,

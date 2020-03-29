@@ -84,6 +84,55 @@ class formReview extends React.Component{
     this.addLaunchCountry = this.addLaunchCountry.bind(this);
   }
 
+  componentDidMount = () => {
+    if (this.props.formStatus === 'review') {
+      this.setState({
+        //Initiative setters
+        initName: this.props.form.name,
+        initURL: this.props.form.website,
+        tWomen: this.props.form.targetsWomen,
+        initStart: this.props.form.startYear,
+        initEnd: this.props.form.endYear,
+        launchCountries: this.props.form.launchCountry,  //Not used yet
+        idescription: this.props.form.description,
+        targetGeos: this.props.form.targetGeographies,  //Not used yet
+        mainProgramActivity: this.props.form.mainProgrammingActivity,  //Not used yet
+        programArea: this.props.form.mainProgrammingArea,  //Not used yet
+        feeAccess: this.props.form.feeToAccess,
+        targetPopulationSectors: this.props.form.targetPopulationSectors,  //Not used yet
+        outcomesMonitored: this.props.form.monitoredOutcomes,  //Not used yet
+        mEdSubs: this.props.form.mainEducationSubSectors,  //Not used yet
+        oEdSubs: this.props.form.educationSubSectors,  //Not used yet
+        managementTypes: this.props.form.targetSchoolManagementType,  //Not used yet
+        regions: this.props.form.regions, //Not used yet
+        countries: this.props.form.countriesOfOperation, //Not used yet
+        activities: this.props.form.programmingActivities, //Not used yet
+        sourceOfFees: this.props.form.sourcesOfFunding, //Not used yet
+
+        //Funder Setters
+        fname: this.props.form.funders[0].funderName,
+        furl: this.props.form.funders[0].funderWebsite,
+        motive: this.props.form.funders[0].profitMotive,
+        organizationForm: this.props.form.funders[0].organizationalForm,
+        impact: this.props.form.funders[0].impactInvesting,
+        //Still need to retrieve this data for funders:
+        // edSubs: ,
+        // orgTraits: ,
+        // asiaIBases: ,
+        // asiaOperations: ,
+        //internationalBases: ,
+
+        //Implementer setters
+        iname: this.props.form.implementers[0].implementorName,
+        impMotive: this.props.form.implementers[0].profitMotive,
+
+        //Other Setters
+        comments: this.props.form.reviews, //Not used yet
+        needsReview: this.props.form.status //Not used yet
+      });
+    }
+  }
+
   buttonMaker(props){
     return <button type="button" onClick={() => {this.removeButton(props)}} ><b>X</b> {props.name}</button>
   }
@@ -491,15 +540,21 @@ class formReview extends React.Component{
   }
 
   profitMotiveChange(e){
-    this.state.motive = e.currentTarget.value;
+    this.setState({
+      motive: e.currentTarget.value
+    });
   }
 
   organizationChange(e){
-    this.state.organizationForm = e.currentTarget.value;
+    this.setState({
+      organizationForm: e.currentTarget.value
+    });
   }
 
   impactChange(e){
-    this.state.impact = e.currentTarget.value;
+    this.setState({
+      impact: e.currentTarget.value
+    });
   }
 
   mEdSubChange(e){
@@ -535,7 +590,7 @@ class formReview extends React.Component{
   }
 
   tWomenChange(e){
-    this.state.tWomen = e.currentTarget.value;
+    this.state.tWomen = e.currentTarget.value == "Yes" ? 1 : 0;
   }
 
   geographyChange(e){
@@ -555,11 +610,13 @@ class formReview extends React.Component{
   }
 
   feeAccessChange(e){
-    this.state.feeAccess = e.currentTarget.value;
+    this.state.feeAccess = e.currentTarget.value == "Yes" ? 1 : 0;
   }
 
   impMotiveChange(e){
-    this.state.impMotive = e.currentTarget.value;
+    this.setState({
+      impMotive: e.currentTarget.value
+    });
   }
 
   handleChange(e){
@@ -588,45 +645,45 @@ class formReview extends React.Component{
             <h4>Funder</h4>
 
             <p>Name</p>
-              <input type="text" id="fname" name="funderName" placeholder="Funder Name" onChange={this.handleChange}/>
+              <input type="text" id="fname" name="funderName" value = {this.state.fname} placeholder="Funder Name" onChange={this.handleChange}/>
               <br></br>
             <input type="radio" id="needsReview1" name="fnameCheck" value="checked"/> <label name="accept" htmlFor="needsReview1">Accept</label>
             <input type="radio" id="needsReview2" name="fnameCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview2">Reject</label>
 
             <p>Website</p>
-              <input type="text" id="furl" name="funderWebsite" placeholder="funderWebsite.com" onChange={this.handleChange}/>
+              <input type="text" id="furl" name="funderWebsite"  value = {this.state.furl} placeholder="funderWebsite.com" onChange={this.handleChange}/>
               <br></br>
             <input type="radio" id="needsReview3" name="fnurlCheck" value="checked"/> <label name="accept" htmlFor="needsReview3">Accept</label>
             <input type="radio" id="needsReview4" name="furlCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview4">Reject</label>
 
             <p>Profit Motive</p>
-              <input type="radio" id="motive1" name="profitMotive" value="Not-For-Profit" onChange={this.profitMotiveChange}/> <label htmlFor="motive1">Not-For-Profit</label>
-              <input type="radio" id="motive2" name="profitMotive" value="Hybrid" onChange={this.profitMotiveChange}/> <label htmlFor="motive2">Hybrid</label>
-              <input type="radio" id="motive3" name="profitMotive" value="For-Profit" onChange={this.profitMotiveChange}/> <label htmlFor="motive3">For-Profit</label>
+            <input type="radio" id="motive1" name="profitMotive" value="Not-for-profit" checked = {this.state.motive == 'Not-for-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive1">Not-For-Profit</label>
+            <input type="radio" id="motive2" name="profitMotive" value="Hybrid" checked = {this.state.motive == 'Hybrid'} onChange={this.profitMotiveChange}/> <label htmlFor="motive2">Hybrid</label>
+            <input type="radio" id="motive3" name="profitMotive" value="For-profit" checked = {this.state.motive == 'For-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive3">For-Profit</label>
               <br></br>
             <input type="radio" id="needsReview5" name="pmotiveCheck" value="checked"/> <label name="accept" htmlFor="needsReview5">Accept</label>
             <input type="radio" id="needsReview6" name="pmotiveCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview6">Reject</label>
             <br></br><br></br>
 
             <p>Impact Investing?</p>
-              <input type="radio" id="impact1" name="impactInvesting" value="Yes" onChange={this.impactChange}/> <label htmlFor="impact1">Yes</label>
-              <input type="radio" id="impact2" name="impactInvesting" value="No" onChange={this.impactChange}/> <label htmlFor="impact2">No</label>
-              <input type="radio" id="impact3" name="impactInvesting" value="Unknown" onChange={this.impactChange}/> <label htmlFor="impact3">Unknown</label>
+            <input type="radio" id="impact1" name="impactInvesting" value="Yes" checked = {this.state.impact == 'Yes'} onChange={this.impactChange}/> <label htmlFor="impact1">Yes</label>
+            <input type="radio" id="impact2" name="impactInvesting" value="No" checked = {this.state.impact == 'No'} onChange={this.impactChange}/> <label htmlFor="impact2">No</label>
+            <input type="radio" id="impact3" name="impactInvesting" value="Unknown" checked = {this.state.impact !== 'No' && this.state.impact !== 'Yes'} onChange={this.impactChange}/> <label htmlFor="impact3">Unknown</label>
               <br></br>
             <input type="radio" id="needsReview7" name="impactCheck" value="checked"/> <label name="accept" htmlFor="needsReview7">Accept</label>
             <input type="radio" id="needsReview8" name="impactCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview8">Reject</label>
             <br></br><br></br>
 
             <p>Organizational Form</p>
-              <input type="radio" id="organization1" name="organizationalForm" value="Private Foundation" onChange={this.organizationChange}/> <label htmlFor="organization1">Private Foundation</label>
-              <input type="radio" id="organization2" name="organizationalForm" value="Impact Investor" onChange={this.organizationChange}/> <label htmlFor="organization2">Impact Investor</label>
-              <input type="radio" id="organization3" name="organizationalForm" value="Invenstment Firm / Fund Manager / Fund Advisor or Consultancy Services" onChange={this.organizationChange}/> <label htmlFor="organization3">Investment Firm / Fund Manager / Fund Advisor or Consultancy Services</label>
-              <input type="radio" id="organization4" name="organizationalForm" value="Charity / NGO" onChange={this.organizationChange}/> <label htmlFor="organization4">Charity / NGO</label>
-              <input type="radio" id="organization5" name="organizationalForm" value="State / Government" onChange={this.organizationChange}/> <label htmlFor="organization5">State / Government</label>
-              <input type="radio" id="organization6" name="organizationalForm" value="Network or Platform" onChange={this.organizationChange}/> <label htmlFor="organization6">Network or Platform</label>
-              <input type="radio" id="organization7" name="organizationalForm" value="CSR Initiative / Unit" onChange={this.organizationChange}/> <label htmlFor="organization7">CSR Initiative / Unit</label>
-              <input type="radio" id="organization8" name="organizationalForm" value="Multilateral" onChange={this.organizationChange}/> <label htmlFor="organization8">Multilateral</label>
-              <input type="radio" id="organization9" name="organizationalForm" value="Other" onChange={this.organizationChange}/> <label htmlFor="organization9">Other</label>
+            <input type="radio" id="organization1" name="organizationalForm" value="Private Foundation" checked = {this.state.organizationForm == 'Private Foundation'} onChange={this.organizationChange}/> <label htmlFor="organization1">Private Foundation</label>
+            <input type="radio" id="organization2" name="organizationalForm" value="Impact Investor" checked = {this.state.organizationForm == 'Impact Investor'} onChange={this.organizationChange}/> <label htmlFor="organization2">Impact Investor</label>
+            <input type="radio" id="organization3" name="organizationalForm" value="Invenstment Firm / Fund Manager / Fund Advisor or Consultancy Services" checked = {this.state.organizationForm == 'Invenstment Firm / Fund Manager / Fund Advisor or Consultancy Services'} onChange={this.organizationChange}/> <label htmlFor="organization3">Investment Firm / Fund Manager / Fund Advisor or Consultancy Services</label>
+            <input type="radio" id="organization4" name="organizationalForm" value="Charity / NGO" checked = {this.state.organizationForm == 'Charity / NGO'} onChange={this.organizationChange}/> <label htmlFor="organization4">Charity / NGO</label>
+            <input type="radio" id="organization5" name="organizationalForm" value="State / Government" checked = {this.state.organizationForm == 'State / Government'} onChange={this.organizationChange}/> <label htmlFor="organization5">State / Government</label>
+            <input type="radio" id="organization6" name="organizationalForm" value="Network or Platform" checked = {this.state.organizationForm == 'Network or Platform'} onChange={this.organizationChange}/> <label htmlFor="organization6">Network or Platform</label>
+            <input type="radio" id="organization7" name="organizationalForm" value="CSR Initiative / unit" checked = {this.state.organizationForm == 'CSR initiative / unit'} onChange={this.organizationChange}/> <label htmlFor="organization7">CSR Initiative / Unit</label>
+            <input type="radio" id="organization8" name="organizationalForm" value="Multilateral" checked = {this.state.organizationForm == 'Multilateral'} onChange={this.organizationChange}/> <label htmlFor="organization8">Multilateral</label>
+            <input type="radio" id="organization9" name="organizationalForm" value="Other" checked = {this.state.organizationForm == 'Other'} onChange={this.organizationChange}/> <label htmlFor="organization9">Other</label>
               <br></br>
             <input type="radio" id="needsReview9" name="orgFormCheck" value="checked"/> <label name="accept" htmlFor="needsReview9">Accept</label>
             <input type="radio" id="needsReview10" name="orgFormCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview10">Reject</label>
@@ -1371,32 +1428,32 @@ class formReview extends React.Component{
             <h4>Initiative</h4>
 
             <p>Name</p>
-              <input type="text" id="initName" name="initiativeName" placeholder="Initiative Name" onChange={this.handleChange}/>
+              <input type="text" id="initName" name="initiativeName" value = {this.state.initName} placeholder="Initiative Name" onChange={this.handleChange}/>
               <br></br>
             <input type="radio" id="needsReview23" name="initNameCheck" value="checked"/> <label name="accept" htmlFor="needsReview23">Accept</label>
             <input type="radio" id="needsReview24" name="initNameCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview24">Reject</label>
 
             <p>Website</p>
-              <input type="text" id="initURL" name="initiativeWebsite" placeholder="initiativeWebsite.com" onChange={this.handleChange}/>
+              <input type="text" id="initURL" name="initiativeWebsite" value = {this.state.initURL} placeholder="initiativeWebsite.com" onChange={this.handleChange}/>
               <br></br>
             <input type="radio" id="needsReview25" name="initWebCheck" value="checked"/> <label name="accept" htmlFor="needsReview25">Accept</label>
             <input type="radio" id="needsReview26" name="initWebCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview26">Reject</label>
 
             <p>Targets Women?</p>
-              <input type="radio" id="tWomen1" name="targetsWomen" value="Yes" onChange={this.tWomenChange}/> <label htmlFor="tWomen1">Yes</label>
-              <input type="radio" id="tWomen2" name="targetsWomen" value="No" onChange={this.tWomenChange}/> <label htmlFor="tWomen2">No</label>
-              <br></br>
+            <input type="radio" id="tWomen1" name="targetsWomen" value="Yes" defaultChecked = {this.state.tWomen} onClick={this.tWomenChange}/> <label htmlFor="tWomen1">Yes</label>
+            <input type="radio" id="tWomen2" name="targetsWomen" value="No" defaultChecked = {!this.state.tWomen} onClick={this.tWomenChange}/> <label htmlFor="tWomen2">No</label>
+            <br></br>
             <input type="radio" id="needsReview27" name="targetsWomenCheck" value="checked"/> <label name="accept" htmlFor="needsReview27">Accept</label>
             <input type="radio" id="needsReview28" name="targetsWomenCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview28">Reject</label>
 
             <p>Start Year</p>
-              <input type="number" id="initStart" name="startYear" placeholder="Start Year" onChange={this.handleChange}/>
+              <input type="number" id="initStart" name="startYear" value = {this.state.initStart} placeholder="Start Year" onChange={this.handleChange}/>
               <br></br>
             <input type="radio" id="needsReview29" name="startYearCheck" value="checked"/> <label name="accept" htmlFor="needsReview29">Accept</label>
             <input type="radio" id="needsReview30" name="startYearCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview30">Reject</label>
 
             <p>End Year</p>
-              <input type="number" id="initEnd" name="endYear" placeholder="End Year" onChange={this.handleChange}/>
+              <input type="number" id="initEnd" name="endYear" value = {this.state.initEnd} placeholder="End Year" onChange={this.handleChange}/>
               <br></br>
             <input type="radio" id="needsReview31" name="endYearCheck" value="checked"/> <label name="accept" htmlFor="needsReview31">Accept</label>
             <input type="radio" id="needsReview32" name="endYearCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview32">Reject</label>
@@ -1631,7 +1688,7 @@ class formReview extends React.Component{
             <input type="radio" id="needsReview34" name="launchCountriesCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview34">Reject</label>
 
             <p>Description</p>
-              <textarea id="idescription" name="description" placeholder="Write a description" onChange={this.handleChange}></textarea>
+              <textarea id="idescription" name="description" value = {this.state.idescription} placeholder="Write a description" onChange={this.handleChange}></textarea>
               <br></br>
             <input type="radio" id="needsReview35" name="descriptionCheck" value="checked"/> <label name="accept" htmlFor="needsReview35">Accept</label>
             <input type="radio" id="needsReview36" name="descriptionCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview36">Reject</label>
@@ -2203,8 +2260,8 @@ class formReview extends React.Component{
             <input type="radio" id="needsReview50" name="iniitActivitiesCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview50">Reject</label>
 
             <p>Fee to Access?</p>
-              <input type="radio" id="feeAccess1" name="feeToAccess" value="Yes" onChange={this.feeAccessChange}/> <label htmlFor="feeAccess1">Yes</label>
-              <input type="radio" id="feeAccess2" name="feeToAccess" value="No" onChange={this.feeAccessChange}/> <label htmlFor="feeAccess2">No</label>
+            <input type="radio" id="feeAccess1" name="feeToAccess" value="Yes" defaultChecked = {this.state.feeAccess} onClick={this.feeAccessChange}/> <label htmlFor="feeAccess1">Yes</label>
+            <input type="radio" id="feeAccess2" name="feeToAccess" value="No" defaultChecked = {!this.state.feeAccess} onClick={this.feeAccessChange}/> <label htmlFor="feeAccess2">No</label>
               <br></br>
             <input type="radio" id="needsReview51" name="feeToAccessCheck" value="checked"/> <label name="accept" htmlFor="needsReview51">Accept</label>
             <input type="radio" id="needsReview52" name="feeToAccessCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview52">Reject</label>
@@ -3431,15 +3488,15 @@ class formReview extends React.Component{
             <h4>Implementer</h4>
 
             <p>Name</p>
-              <input type="text" id="iname" name="implementerName" placeholder="Implementer Name" onChange={this.handleChange}/>
+              <input type="text" id="iname" name="implementerName" value = {this.state.iname} placeholder="Implementer Name" onChange={this.handleChange}/>
               <br></br>
             <input type="radio" id="needsReview59" name="implementerCheck" value="checked"/> <label name="accept" htmlFor="needsReview59">Accept</label>
             <input type="radio" id="needsReview60" name="implementerCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview60">Reject</label>
 
             <p>Profit Motive</p>
-              <input type="radio" id="impMotive1" name="impProfitMotive" value="Not-For-Profit" onChange={this.impMotiveChange}/> <label htmlFor="impMotive1">Not-For-Profit</label>
-              <input type="radio" id="impMotive2" name="impProfitMotive" value="Hybrid" onChange={this.impMotiveChange}/> <label htmlFor="impMotive2">Hybrid</label>
-              <input type="radio" id="impMotive3" name="impProfitMotive" value="For-Profit" onChange={this.impMotiveChange}/> <label htmlFor="impMotive3">For-Profit</label>
+            <input type="radio" id="impMotive1" name="impProfitMotive" value="Not-for-profit" checked = {this.state.impMotive == "Not-for-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive1">Not-For-Profit</label>
+            <input type="radio" id="impMotive2" name="impProfitMotive" value="Hybrid" checked = {this.state.impMotive == "Hybrid"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive2">Hybrid</label>
+            <input type="radio" id="impMotive3" name="impProfitMotive" value="For-profit" checked = {this.state.impMotive == "For-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive3">For-Profit</label>
               <br></br>
             <input type="radio" id="needsReview61" name="impProfitCheck" value="checked"/> <label name="accept" htmlFor="needsReview61">Accept</label>
             <input type="radio" id="needsReview62" name="impProfitCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview62">Reject</label>

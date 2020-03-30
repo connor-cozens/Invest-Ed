@@ -12,7 +12,9 @@ import {
   NOT_PULLED_APPROVED_FORM,
   CLEAR_FORM_STATUS,
   ACCESS_ERROR,
-  CLEAR_ACCESS_ERROR
+  CLEAR_ACCESS_ERROR,
+  FORM_SUBMIT_SUCCESS,
+  FORM_SUBMIT_ERROR
 } from '../reducers/dataReducer';
 
 import {forceLogout} from './authActions';
@@ -85,6 +87,7 @@ export const clearFormStatus = () => (dispatch) => {
 
 export const setNewFormStatus = () => (dispatch) => {
   dispatch({type: SET_ADD_FORM});
+  dispatch({type: CLEAR_ACCESS_ERROR})
 }
 
 const readForm = (response => {
@@ -122,10 +125,14 @@ const readForm = (response => {
   response.data.table12.forEach((item) => { initiativeTargetSchoolManagement.push(item.targetSchoolManagementType); });
 
   const implementers = [];
-  response.data.table13.forEach((implementer) => { implementers.push(implementer); });
+  if (response.data.table13.length > 0) {
+    response.data.table13.forEach((implementer) => { implementers.push(implementer); });
+  }
 
   const funders = [];
-  response.data.table14.forEach((funder) => { funders.push(funder); });
+  if (response.data.table14.length > 0) {
+    response.data.table14.forEach((funder) => { funders.push(funder); });
+  }
 
   const status = [];
   if (response.data.table15 !== undefined) {
@@ -185,9 +192,11 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
         //Dispatch action to store form data in store
         if (getType == 'modify') {
           dispatch({type: SET_MODIFY_FORM, payload: initiative});
+          dispatch({type: PULLED_APPROVED_FORM});
         }
         else if (getType == 'review') {
           dispatch({type: SET_REVIEW_FORM, payload: initiative});
+          dispatch({type: PULLED_APPROVED_FORM});
         }
         dispatch({type: CLEAR_ACCESS_ERROR});
       }
@@ -213,11 +222,9 @@ export const getNonApprovedForm = (tag, getType) => (dispatch) => {
         //Dispatch action to store form data in store
         if (getType == 'modify') {
           dispatch({type: SET_MODIFY_FORM, payload: initiative});
-          dispatch({type: PULLED_APPROVED_FORM});
         }
         else if (getType == 'review') {
           dispatch({type: SET_REVIEW_FORM, payload: initiative});
-          dispatch({type: PULLED_APPROVED_FORM});
         }
         dispatch({type: CLEAR_ACCESS_ERROR});
       }
@@ -229,151 +236,307 @@ export const getNonApprovedForm = (tag, getType) => (dispatch) => {
     })
 }
 
-//RA to review approved forms from main DB
-export const reviewApprovedForm = (tag) => (dispatch) => {
-///
+const changeRequestRA = (form) => {
+  //Setting up multi val initatives
+  const regions = [];
+  form.regions.forEach((item) => {
+    regions.push(item.key);
+  });
+  const countries = [];
+  form.countries.forEach((item) => {
+    countries.push(item.key);
+  });
+  const activities = [];
+  form.activities.forEach((item) => {
+    activities.push(item.key);
+  });
+  const sourceOfFees = [];
+  form.sourceOfFees.forEach((item) => {
+    sourceOfFees.push(item.key);
+  });
+  const launchCountries = [];
+  form.launchCountries.forEach((item) => {
+    launchCountries.push(item.key);
+  });
+  const targetGeos = [];
+  form.targetGeos.forEach((item) => {
+    targetGeos.push(item.key);
+  });
+  const targetPopulationSectors = [];
+  form.targetPopulationSectors.forEach((item) => {
+    targetPopulationSectors.push(item.key);
+  });
+  const outcomesMonitored = [];
+  form.outcomesMonitored.forEach((item) => {
+    outcomesMonitored.push(item.key);
+  });
+  const mEdSubs = [];
+  form.mEdSubs.forEach((item) => {
+    mEdSubs.push(item.key);
+  });
+  const oEdSubs = [];
+  form.oEdSubs.forEach((item) => {
+    oEdSubs.push(item.key);
+  });
+  const managementTypes = [];
+  form.managementTypes.forEach((item) => {
+    managementTypes.push(item.key);
+  });
+
+  //Setting up multi val funders
+  const internationalBases = [];
+  form.internationalBases.forEach((item) => {
+    internationalBases.push(item.key);
+  });
+  const edSubs = [];
+  form.edSubs.forEach((item) => {
+    edSubs.push(item.key);
+  });
+  const orgTraits = [];
+  form.orgTraits.forEach((item) => {
+    orgTraits.push(item.key);
+  });
+  const asiaIBases = [];
+  form.asiaIBases.forEach((item) => {
+    asiaIBases.push(item.key);
+  });
+  const asiaOperations = [];
+  form.asiaOperations.forEach((item) => {
+    asiaOperations.push(item.key);
+  });
+
+  const reqBody = {
+    fname: form.fname,
+    furl: form.furl,
+    motive: form.motive,
+    impact: form.impact,
+    organizationForm: form.organizationForm,
+    // multi val funder
+    internationalBases: internationalBases,
+    edSubs: form.edSubs,
+    orgTraits: form.orgTraits,
+    asialBases: asiaIBases,
+    asiaOperations: asiaOperations,
+    // single val initiative
+    initName: form.initName,
+    initURL: form.initURL,
+    tWomen: form.tWomen,
+    initStart: form.initStart,
+    initEnd: form.initEnd,
+    idescription: form.idescription,
+    programArea: form.programArea,
+    initativeMainProgramActivity: form.mainProgramActivity,
+    feeAccess: form.feeAccess,
+    // multi val initiative
+    regions: regions,
+    countries: countries,
+    activities: activities,
+    sourceOfFees: sourceOfFees,
+    launchCountry: launchCountries,
+    targetGeos: form.targetGeos,
+    targetPopulationSectors: targetPopulationSectors,
+    outcomesMonitored: outcomesMonitored,
+    mEdSubs: form.mEdSubs,
+    oEdSubs: form.oEdSubs,
+    managementTypes: managementTypes,
+    // single val implementer
+    iname: form.iname,
+    impMotive: form.impMotive,
+  }
+  return reqBody;
 }
 
-//RA to review non-approved forms from temp DB
-export const reviewNonApprovedForm = (tag) => (dispatch) => {
-///
+const changeRequest = (form, inDB) => {
+  //Setting up multi val initatives
+  const regions = [];
+  form.regions.forEach((item) => {
+    regions.push(item.key);
+  });
+  const countries = [];
+  form.countries.forEach((item) => {
+    countries.push(item.key);
+  });
+  const activities = [];
+  form.activities.forEach((item) => {
+    activities.push(item.key);
+  });
+  const sourceOfFees = [];
+  form.sourceOfFees.forEach((item) => {
+    sourceOfFees.push(item.key);
+  });
+  const launchCountries = [];
+  form.launchCountries.forEach((item) => {
+    launchCountries.push(item.key);
+  });
+  const targetGeos = [];
+  form.targetGeos.forEach((item) => {
+    targetGeos.push(item.key);
+  });
+  const targetPopulationSectors = [];
+  form.targetPopulationSectors.forEach((item) => {
+    targetPopulationSectors.push(item.key);
+  });
+  const outcomesMonitored = [];
+  form.outcomesMonitored.forEach((item) => {
+    outcomesMonitored.push(item.key);
+  });
+  const mEdSubs = [];
+  form.mEdSubs.forEach((item) => {
+    mEdSubs.push(item.key);
+  });
+  const oEdSubs = [];
+  form.oEdSubs.forEach((item) => {
+    oEdSubs.push(item.key);
+  });
+  const managementTypes = [];
+  form.managementTypes.forEach((item) => {
+    managementTypes.push(item.key);
+  });
+
+  //Setting up multi val funders
+  const internationalBases = [];
+  form.internationalBases.forEach((item) => {
+    internationalBases.push(item.key);
+  });
+  const edSubs = [];
+  form.edSubs.forEach((item) => {
+    edSubs.push(item.key);
+  });
+  const orgTraits = [];
+  form.orgTraits.forEach((item) => {
+    orgTraits.push(item.key);
+  });
+  const asiaIBases = [];
+  form.asiaIBases.forEach((item) => {
+    asiaIBases.push(item.key);
+  });
+  const asiaOperations = [];
+  form.asiaOperations.forEach((item) => {
+    asiaOperations.push(item.key);
+  });
+
+  console.log(form);
+
+  const reqBody = {
+    fname: form.fname,
+    furl: form.furl,
+    motive: form.motive,
+    impact: form.impact,
+    organizationForm: form.organizationForm,
+    // multi val funder
+    internationalBases: internationalBases,
+    edSubs: form.edSubs,
+    orgTraits: form.orgTraits,
+    asialBases: asiaIBases,
+    asiaOperations: asiaOperations,
+    // single val initiative
+    initName: form.initName,
+    initURL: form.initURL,
+    tWomen: form.tWomen,
+    initStart: form.initStart,
+    initEnd: form.initEnd,
+    idescription: form.idescription,
+    programArea: form.programArea,
+    initativeMainProgramActivity: form.mainProgramActivity,
+    feeAccess: form.feeAccess,
+    // multi val initiative
+    regions: regions,
+    countries: countries,
+    activities: activities,
+    sourceOfFees: sourceOfFees,
+    launchCountry: launchCountries,
+    targetGeos: form.targetGeos,
+    targetPopulationSectors: targetPopulationSectors,
+    outcomesMonitored: outcomesMonitored,
+    mEdSubs: form.mEdSubs,
+    oEdSubs: form.oEdSubs,
+    managementTypes: managementTypes,
+    // single val implementer
+    iname: form.iname,
+    impMotive: form.impMotive,
+
+    //Section Reviews - Only to be used when submitting into temp db
+    fnameA: 0,
+    furlA: 0,
+    motiveA: 0,
+    impactA: 0,
+    organizationFormA: 0,
+    // multi val funder
+    internationalBasesA: 0,
+    edSubsA: 0,
+    orgTraitsA: 0,
+    asialBasesA: 0,
+    asiaOperationsA: 0,
+    // single val initiative
+    initNameA: 0,
+    initURLA: 0,
+    tWomenA: 0,
+    initStartA: 0,
+    initEndA: 0,
+    idescriptionA: 0,
+    programAreaA: 0,
+    initiativeMainProgramActivityA: 0,
+    feeAccessA: 0,
+    // multi val initiative
+    regionsA: 0,
+    countriesA: 0,
+    activitiesA: 0,
+    sourceOfFeesA: 0,
+    launchCountryA: 0,
+    targetGeosA: 0,
+    targetPopulationSectorsA: 0,
+    outcomesMonitoredA: 0,
+    mEdSubsA: 0,
+    oEdSubsA: 0,
+    managementTypesA: 0,
+    // single val implementer
+    inameA: 0,
+    impMotiveA: 0,
+    // single val other
+    comments: form.comments,
+    needsReview: 1,
+    inDB: (inDB == true) ? 1 : 0
+  }
+  return reqBody;
 }
 
-//RA/Organization user to modify approved forms from main DB
-export const modifyApprovedForm = (tag) => (dispatch) => {
-///
-}
+//Might require this, depending on how the endpoints are setup
+// //RA/Organization user to modify approved forms from main DB
+// export const modifyApprovedForm = (tag) => (dispatch) => {
+//   console.log("Sending modified data from approved form");
+// }
+//
+// //RA/Organization user to modify non-approved forms from temp DB
+// export const modifyNonApprovedForm = (tag) => (dispatch) => {
+//   console.log("Sending modified data from non-approved form");
+// }
 
-//RA/Organization user to modify non-approved forms from temp DB
-export const modifyNonApprovedForm = (tag) => (dispatch) => {
-///
+export const modifyForm = (form) => (dispatch) => {
+  console.log("Sending modified data from non-approved form");
 }
 
 //Organization user to add new form to temp DB
-export const addForm = (tag) => (dispatch) => {
-///
+export const addForm = (form, inDB) => (dispatch) => {
+  const req = changeRequest(form, inDB);
+  axios.post(`http://localhost:4000/dashboard/submit-form-temp`, req)
+    .then(response => {
+      console.log(response)
+    })
+    .catch(err => {
+      console.log(err);
+    })
 }
 
 //RA user to add new form to main DB
 export const addFormRA = (form) => (dispatch) => {
-
-    //Setting up multi val initatives
-    const regions = [];
-    form.regions.forEach((item) => {
-      regions.push(item.key);
-    });
-    const countries = [];
-    form.countries.forEach((item) => {
-      countries.push(item.key);
-    });
-    const activities = [];
-    form.activities.forEach((item) => {
-      activities.push(item.key);
-    });
-    const sourceOfFees = [];
-    form.sourceOfFees.forEach((item) => {
-      sourceOfFees.push(item.key);
-    });
-    const launchCountries = [];
-    form.launchCountries.forEach((item) => {
-      launchCountries.push(item.key);
-    });
-    const targetGeos = [];
-    form.targetGeos.forEach((item) => {
-      targetGeos.push(item.key);
-    });
-    const targetPopulationSectors = [];
-    form.targetPopulationSectors.forEach((item) => {
-      targetPopulationSectors.push(item.key);
-    });
-    const outcomesMonitored = [];
-    form.outcomesMonitored.forEach((item) => {
-      outcomesMonitored.push(item.key);
-    });
-    const mEdSubs = [];
-    form.mEdSubs.forEach((item) => {
-      mEdSubs.push(item.key);
-    });
-    const oEdSubs = [];
-    form.oEdSubs.forEach((item) => {
-      oEdSubs.push(item.key);
-    });
-    const managementTypes = [];
-    form.managementTypes.forEach((item) => {
-      managementTypes.push(item.key);
-    });
-
-    //Setting up multi val funders
-    const internationalBases = [];
-    form.internationalBases.forEach((item) => {
-      internationalBases.push(item.key);
-    });
-    const edSubs = [];
-    form.edSubs.forEach((item) => {
-      edSubs.push(item.key);
-    });
-    const orgTraits = [];
-    form.orgTraits.forEach((item) => {
-      orgTraits.push(item.key);
-    });
-    const asiaIBases = [];
-    form.asiaIBases.forEach((item) => {
-      asiaIBases.push(item.key);
-    });
-    const asiaOperations = [];
-    form.asiaOperations.forEach((item) => {
-      asiaOperations.push(item.key);
-    });
-
-    console.log(form);
-
-    const reqBody = {
-      fname: form.fname,
-      furl: form.furl,
-      motive: form.motive,
-      impact: form.impact,
-      organizationForm: form.organizationForm,
-      // multi val funder
-      internationalBases: internationalBases,
-      edSubs: form.edSubs,
-      orgTraits: form.orgTraits,
-      asialBases: asiaIBases,
-      asiaOperations: asiaOperations,
-      // single val initiative
-      initName: form.initName,
-      initURL: form.initURL,
-      tWomen: form.tWomen,
-      initStart: form.initStart,
-      initEnd: form.initEnd,
-      idescription: form.idescription,
-      programArea: form.programArea,
-      initativeMainProgramActivity: form.mainProgramActivity,
-      feeAccess: form.feeAccess,
-      // multi val initiative
-      regions: regions,
-      countries: countries,
-      activities: activities,
-      sourceOfFees: sourceOfFees,
-      launchCountry: launchCountries,
-      targetGeos: form.targetGeos,
-      targetPopulationSectors: targetPopulationSectors,
-      outcomesMonitored: outcomesMonitored,
-      mEdSubs: form.mEdSubs,
-      oEdSubs: form.oEdSubs,
-      managementTypes: managementTypes,
-      // single val implementer
-      iname: form.iname,
-      impMotive: form.impMotive,
-      // single val other
-      comments: form.comments,
-      needsReview: form.needsReview
-    }
-
-    axios.post(`http://localhost:4000/dashboard/submitform`, reqBody)
+    const req = changeRequestRA(form);
+    axios.post(`http://localhost:4000/dashboard/submitform`, req)
       .then(response => {
-        console.log(response)
+        console.log(response);
+        dispatch({type: FORM_SUBMIT_SUCCESS});
       })
       .catch(err => {
         console.log(err);
+        dispatch({type: FORM_SUBMIT_ERROR, payload: err});
       })
 }

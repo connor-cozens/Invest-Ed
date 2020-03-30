@@ -1,5 +1,5 @@
 var genTagNum = module.exports = {
-    currentTagNum: 1521,
+    currentTagNum: 1543,  //Change depending on tagNum entries currently in db
 
     current: function(){
         genTagNum.currentTagNum = genTagNum.currentTagNum

@@ -700,8 +700,8 @@ dashboard.post('/submit-form-temp', (req, res) =>{
         //section Reviews
         funderNameApproval: req.body.fnameA,
         funderUrlApproval: req.body.furlA,
-        funderMotiveApproval:req.body.motiveA,
-        funderImpactApproval:req.body.impactA,
+        funderMotiveApproval: req.body.motiveA,
+        funderImpactApproval: req.body.impactA,
         funderOrganizationFormApproval: req.body.organizationFormA,
         funderInternationalBaseApproval: req.body.internationalBasesA,
         funderEdSubsApproval: req.body.edSubsA,
@@ -725,14 +725,15 @@ dashboard.post('/submit-form-temp', (req, res) =>{
         initTargetGeoApproval: req.body.targetGeosA,
         initTargetPopulationSectorApproval: req.body.targetPopulationSectorsA,
         initOutcomesMonitoredApproval: req.body.outcomesMonitoredA,
-        initMEdSubsApproval: req.body.mEdSubs,
-        initOEdSubsApproval:  req.body.oEdSubs,
+        initMEdSubsApproval: req.body.mEdSubsA,
+        initOEdSubsApproval:  req.body.oEdSubsA,
         initManagementTypesApproval: req.body.managementTypesA,
         implementorNameApproval: req.body.inameA,
-        implementorMotiveApproval: req.body.implementorMotiveA
+        implementorMotiveApproval: req.body.impMotiveA
 
     }
 
+    console.log(formData);
 
    //Insert funder data
    var query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
@@ -1060,7 +1061,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
      //Insert initiative target population sector data
    for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
-    var query14 = "INSERT into initiativetargetpopulationsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativetargetPopulationSector+"')"
+    var query14 = "INSERT into initiativetargetpopulationsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativetargetPopulationSector[i]+"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query14, {}, function(err, results) {
@@ -1085,7 +1086,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
      //Insert initiative outcomes monitored data
    for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
-    var query15 = "INSERT into initiativemonitoredoutcomes VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +"),'"+ formData.initiativeOutcomesMonitored+"')"
+    var query15 = "INSERT into initiativemonitoredoutcomes VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +"),'"+ formData.initiativeOutcomesMonitored[i]+"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query15, {}, function(err, results) {
@@ -1111,7 +1112,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
      //Insert initiative main education subsector data
    for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
     var query16 = "INSERT into initiativemaineducationsubsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +
-    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs+"'))"
+    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query16, {}, function(err, results) {
@@ -1137,7 +1138,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
      //Insert initiative education subsector data
    for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
     var query17 = "INSERT into initiativeeducationsubsectors VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +
-    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs+"'))"
+    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query17, {}, function(err, results) {
@@ -1162,7 +1163,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
      //Insert initiative target management t data
    for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
-    var query18 = "INSERT into initiativetargetschoolmanagement VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +"),'"+ formData.initiativeManagementTypes+"')"
+    var query18 = "INSERT into initiativetargetschoolmanagement VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +"),'"+ formData.initiativeManagementTypes[i]+"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query18, {}, function(err, results) {
@@ -1268,7 +1269,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
         })
 
 
-        var query23 = "INSERT INTO needsReview VALUES ("+ genTagNum.currentTagNum+ ","+ formData.inDB + ","+ formData.needsReview+")"
+        var query23 = "INSERT INTO status VALUES ("+ genTagNum.currentTagNum+ ","+ formData.inDB + "," + formData.needsReview +")"
         async.parallel([
             function(queryDB) {
                 poolTemp.query(query23, {}, function(err, results) {
@@ -1289,44 +1290,44 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
             })
 
-        var query23 = "INSERT INTO sectionReviews VALUES ("+ genTagNum.currentTagNum+
-        funderNameApproval + ","
-        funderUrlApproval +","
-        funderMotiveApproval +","
-        funderImpactApproval+","
-        funderOrganizationFormApproval +","
-        funderInternationalBaseApproval +","
-        funderEdSubsApproval +","
-        funderOrgTraitsApproval+","
-        funderAsiaBasesApproval+","
-        funderAsiaOperationsApproval+","
-        initNameApproval +","
-        initUrlApproval+","
-        initTargetsWomenApproval+","
-        initStartApproval+","
-        initEndApproval+","
-        initDescriptionApproval+","
-        initProgramAreasApproval+","
-        initMainProgramActivityApproval+","
-        initFeeAccessApproval+","
-        initRegionsApproval+","
-        initCountriesApproval+","
-        initActivitiesApproval +","
-        initSourceOfFeesApproval+","
-        initLaunchCountryApproval+","
-        initTargetGeoApproval+","
-        initTargetPopulationSectorApproval+","
-        initOutcomesMonitoredApproval+","
-        initMEdSubsApproval+","
-        initOEdSubsApproval +","
-        initManagementTypesApproval+","
-        implementorNameApproval+","
-        implementorMotiveApproval +")"
+        var query24 = "INSERT INTO sectionreviews VALUES ("+ genTagNum.currentTagNum + "," +
+        formData.funderNameApproval + "," +
+        formData.funderUrlApproval + "," +
+        formData.funderMotiveApproval + "," +
+        formData.funderImpactApproval + "," +
+        formData.funderOrganizationFormApproval + "," +
+        formData.funderInternationalBaseApproval + "," +
+        formData.funderEdSubsApproval + "," +
+        formData.funderOrgTraitsApproval+ "," +
+        formData.funderAsiaBasesApproval+ "," +
+        formData.funderAsiaOperationsApproval+ "," +
+        formData.initNameApproval + "," +
+        formData.initUrlApproval+ "," +
+        formData.initTargetsWomenApproval+ "," +
+        formData.initStartApproval+ "," +
+        formData.initEndApproval+ "," +
+        formData.initDescriptionApproval+ "," +
+        formData.initProgramAreasApproval+ "," +
+        formData.initMainProgramActivityApproval+ "," +
+        formData.initFeeAccessApproval+ "," +
+        formData.initRegionsApproval+ "," +
+        formData.initCountriesApproval+ "," +
+        formData.initActivitiesApproval + "," +
+        formData.initSourceOfFeesApproval+ "," +
+        formData.initLaunchCountryApproval+ "," +
+        formData.initTargetGeoApproval+ "," +
+        formData.initTargetPopulationSectorApproval+ "," +
+        formData.initOutcomesMonitoredApproval+ "," +
+        formData.initMEdSubsApproval+ "," +
+        formData.initOEdSubsApproval + "," +
+        formData.initManagementTypesApproval+ "," +
+        formData.implementorNameApproval+ "," +
+        formData.implementorMotiveApproval +")"
 
 
         async.parallel([
             function(queryDB) {
-                poolTemp.query(query23, {}, function(err, results) {
+                poolTemp.query(query24, {}, function(err, results) {
                     if (err){
                         return queryDB(err)
                     }else{
@@ -1392,9 +1393,6 @@ dashboard.post('/submitform', (req, res) =>{
         // single val implementer
         implementorName: req.body.iname, //im
         implementorMotive: req.body.impMotive, //im
-        // single val other
-        comments: req.body.comments, //other
-        needsReview: req.body.needsReview //other
     }
 
   console.log(formData);

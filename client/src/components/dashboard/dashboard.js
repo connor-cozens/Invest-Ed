@@ -112,7 +112,7 @@ class dashboard extends Component {
     //If could not access form from either db, then return error message
     const error = accessError ?
     <div className="alert alert-danger alert-dismissible fade show" style = {{width: "25%", margin: "0 auto", marginTop: "50px"}}>
-      {accessError}
+      <p style = {{textAlign: "center"}}> {accessError}</p>
     </div> : null
 
     //Handle click

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './formSubmission.css';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom'
-import {addForm, addFormRA} from '../../store/actions/dataActions'
+import {addForm, addFormRA, modifyForm} from '../../store/actions/dataActions'
 
 class formSubmission extends React.Component{
   constructor(props){
@@ -52,9 +52,8 @@ class formSubmission extends React.Component{
       comments: null,
 
       //Review
-      needsReview: [] //32 Other sections that matter, so 0-31 in the order the appear ON THE FORM
-
-
+      reviews: [], //32 Other sections that matter, so 0-31 in the order the appear ON THE FORM
+      status: null
     };
 
     this.addIBase = this.addIBase.bind(this);
@@ -113,11 +112,11 @@ class formSubmission extends React.Component{
         sourceOfFees: this.props.form.sourcesOfFunding, //Not used yet
 
         //Funder Setters
-        fname: this.props.form.funders[0].funderName,
-        furl: this.props.form.funders[0].funderWebsite,
-        motive: this.props.form.funders[0].profitMotive,
-        organizationForm: this.props.form.funders[0].organizationalForm,
-        impact: this.props.form.funders[0].impactInvesting,
+        fname: this.props.form.funders.length > 0 ? this.props.form.funders[0].funderName : null,
+        furl: this.props.form.funders.length > 0 ? this.props.form.funders[0].funderWebsite : null,
+        motive: this.props.form.funders.length > 0 ? this.props.form.funders[0].profitMotive : null,
+        organizationForm: this.props.form.funders.length > 0 ? this.props.form.funders[0].organizationalForm : null,
+        impact: this.props.form.funders.length > 0 ? this.props.form.funders[0].impactInvesting : null,
         //Still need to retrieve this data for funders:
         // edSubs: ,
         // orgTraits: ,
@@ -126,12 +125,14 @@ class formSubmission extends React.Component{
         //internationalBases: ,
 
         //Implementer setters
-        iname: this.props.form.implementers[0].implementorName,
-        impMotive: this.props.form.implementers[0].profitMotive,
+        iname: this.props.form.implementers.length > 0 ? this.props.form.implementers[0].implementorName : null,
+        impMotive: this.props.form.implementers.length > 0 ? this.props.form.implementers[0].profitMotive : null,
 
         //Other Setters
         comments: this.props.form.reviews, //Not used yet
-        needsReview: this.props.form.status //Not used yet
+        status: this.props.form.status.length > 0 ? this.props.form.status[0][0].needsReview : null, //not used yet,
+        reviews: this.props.form.reviews.length > 0 ? this.props.form.reviews[0][0] : null
+
       });
     }
   }
@@ -652,9 +653,23 @@ class formSubmission extends React.Component{
 
   handleFormSubmit(e) {
     e.preventDefault();
-    this.props.submitForm(this.state);
+    //If submitting a new form
+    if (this.props.formStatus == 'add') {
+      //If an organization user, then submit to temp db for review
+      if (this.props.accessLevel == 0) {
+        this.props.submitNonRA(this.state, this.props.inDB);
+      }
+      //Otherwise, if an RA or root user, submit directly to main db
+      else {
+        this.props.submitRA(this.state);
+      }
+    }
+    else {
+      if (this.props.formStatus == 'modify') {
+        this.props.submitModifiedForm(this.state);
+      }
+    }
   }
-
 
   render(){
     const {authorized} = this.props;
@@ -3492,14 +3507,18 @@ Program Area stuff that was part of AirTable but not the cleaned data
 const mapStateToProps = (state) => {
   return {
     authorized: state.authenticate.auth,
+    accessLevel: state.data.userInformation.accessLevel,
     form: state.data.form,
-    formStatus: state.data.formStatus
+    formStatus: state.data.formStatus,
+    inDB: state.data.pulledformApproved
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    submitForm: (form) => {dispatch(addFormRA(form))}
+    submitRA: (form) => {dispatch(addFormRA(form))},
+    submitNonRA: (form) => {dispatch(addForm(form))},
+    submitModifiedForm: (form) => {dispatch(modifyForm(form))},
   };
 }
 

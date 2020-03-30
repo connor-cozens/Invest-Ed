@@ -130,9 +130,8 @@ class formSubmission extends React.Component{
 
         //Other Setters
         comments: this.props.form.reviews, //Not used yet
-        status: this.props.form.status.length > 0 ? this.props.form.status[0][0].needsReview : null, //not used yet,
-        reviews: this.props.form.reviews.length > 0 ? this.props.form.reviews[0][0] : null
-
+        status: this.props.form.status === undefined ? (this.props.form.status.length > 0 ? this.props.form.status[0][0].needsReview : null) : null, //not used yet
+        reviews: this.props.form.reviews === undefined ? (this.props.form.reviews.length > 0 ? this.props.form.reviews[0][0] : null) : null //not used yet
       });
     }
   }
@@ -653,29 +652,46 @@ class formSubmission extends React.Component{
 
   handleFormSubmit(e) {
     e.preventDefault();
+    const {formStatus, userData} = this.props;
     //If submitting a new form
-    if (this.props.formStatus == 'add') {
-      //If an organization user, then submit to temp db for review
-      if (this.props.accessLevel == 0) {
-        this.props.submitNonRA(this.state, this.props.inDB);
-      }
-      //Otherwise, if an RA or root user, submit directly to main db
-      else {
-        this.props.submitRA(this.state);
+    if (formStatus == 'add') {
+      if (userData) {
+        //If an organization user, then submit to temp db for review
+        if (userData.accessLevel == 0) {
+          this.props.submitNonRA(this.state, this.props.inDB);
+        }
+        //Otherwise, if an RA or root user, submit directly to main db
+        else {
+          this.props.submitRA(this.state);
+        }
       }
     }
     else {
-      if (this.props.formStatus == 'modify') {
+      if (formStatus == 'modify') {
         this.props.submitModifiedForm(this.state);
       }
     }
   }
 
   render(){
-    const {authorized} = this.props;
+    const {authorized, formSubmitted, formSubmitError} = this.props;
     if (authorized === false) {
       return <Redirect to='/' />
     }
+
+    if (formSubmitted === true){
+      return <Redirect to=
+        {{
+          pathname: '/form-submission-success',
+          state: {submission: true}
+        }} />
+    }
+
+    const submitError = formSubmitError ?
+    <div className="alert alert-danger alert-dismissible fade show" style = {{width: "25%"}}>
+      <h5 style = {{textAlign: "center"}}> {formSubmitError} </h5>
+    </div> : null
+
     return (
         <div className = "formSubmission" style = {{paddingTop: '50px'}}>
             <h3>Form Submission</h3>
@@ -3466,6 +3482,8 @@ class formSubmission extends React.Component{
 
 
             <input type="submit"value="Submit" onChange/>
+            <br/><br/>
+            {submitError}
             </form>
             </div>
         </div>
@@ -3507,10 +3525,14 @@ Program Area stuff that was part of AirTable but not the cleaned data
 const mapStateToProps = (state) => {
   return {
     authorized: state.authenticate.auth,
-    accessLevel: state.data.userInformation.accessLevel,
+    userData: state.data.userInformation,
+
     form: state.data.form,
     formStatus: state.data.formStatus,
-    inDB: state.data.pulledformApproved
+    inDB: state.data.pulledformApproved,
+
+    formSubmitted: state.data.formSubmitted,
+    formSubmitError: state.data.formSubmitData
   };
 }
 

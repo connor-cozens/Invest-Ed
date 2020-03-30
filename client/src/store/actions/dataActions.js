@@ -11,10 +11,11 @@ import {
   PULLED_APPROVED_FORM,
   NOT_PULLED_APPROVED_FORM,
   CLEAR_FORM_STATUS,
-  ACCESS_ERROR,
-  CLEAR_ACCESS_ERROR,
   FORM_SUBMIT_SUCCESS,
-  FORM_SUBMIT_ERROR
+  FORM_SUBMIT_ERROR,
+  FORM_SUBMIT_CLEAR,
+  ACCESS_ERROR,
+  CLEAR_ACCESS_ERROR
 } from '../reducers/dataReducer';
 
 import {forceLogout} from './authActions';
@@ -520,10 +521,10 @@ export const addForm = (form, inDB) => (dispatch) => {
   const req = changeRequest(form, inDB);
   axios.post(`http://localhost:4000/dashboard/submit-form-temp`, req)
     .then(response => {
-      console.log(response)
+      dispatch({type: FORM_SUBMIT_SUCCESS});
     })
     .catch(err => {
-      console.log(err);
+      dispatch({type: FORM_SUBMIT_ERROR, payload: err});
     })
 }
 
@@ -532,11 +533,13 @@ export const addFormRA = (form) => (dispatch) => {
     const req = changeRequestRA(form);
     axios.post(`http://localhost:4000/dashboard/submitform`, req)
       .then(response => {
-        console.log(response);
         dispatch({type: FORM_SUBMIT_SUCCESS});
       })
       .catch(err => {
-        console.log(err);
         dispatch({type: FORM_SUBMIT_ERROR, payload: err});
       })
+}
+
+export const setFormSubmissionComplete = () => (dispatch) => {
+  dispatch({type: FORM_SUBMIT_CLEAR});
 }

@@ -14,6 +14,7 @@ export const NOT_PULLED_APPROVED_FORM = 'NOT_PULLED_APPROVED_FORM';
 export const CLEAR_FORM_STATUS = 'CLEAR_FORM_STATUS';
 export const FORM_SUBMIT_SUCCESS = 'FORM_SUBMIT_SUCCESS';
 export const FORM_SUBMIT_ERROR = 'FORM_SUBMIT_ERROR';
+export const FORM_SUBMIT_CLEAR = 'FORM_SUBMIT_CLEAR';
 
 export const CLEAR_ACCESS_ERROR = 'CLEAR_ACCESS_ERROR';
 export const ACCESS_ERROR = 'ACCESS_ERROR';
@@ -50,13 +51,12 @@ const dataReducer = (state = initState, action) => {
         registered: true,
         registerError: null
       };
-    //If sign out occurs during registration process
-      case REGISTER_CLEAR:
-        return {
-          ...state,
-          registered: false,
-          registerError: null
-        };
+    case REGISTER_CLEAR:
+      return {
+        ...state,
+        registered: false,
+        registerError: null
+      };
     case REGISTER_CLEAR_ERROR:
       return {
         ...state,
@@ -83,6 +83,10 @@ const dataReducer = (state = initState, action) => {
         form: null,
         formStatus: null,
         pulledformApproved: false,
+        formSubmitted: false,
+        formSubmitError: null,
+        formReviewed: false,
+        formReviewError: null,
         registered: false,
         registerError: null,
         accessError: null
@@ -129,9 +133,16 @@ const dataReducer = (state = initState, action) => {
         formSubmitted: true,
         formSubmitError: null
       }
+    case FORM_SUBMIT_CLEAR:
+      return {
+        ...state,
+        formSubmitted: false,
+        formSubmitError: null
+      }
     case FORM_SUBMIT_ERROR:
       return {
         ...state,
+        formSubmitted: false,
         formSubmitError: action.payload
       }
 
@@ -142,7 +153,7 @@ const dataReducer = (state = initState, action) => {
         ...state,
         accessError: action.payload
       };
-
+    //If error shouldnt appear anymore, then clear error from session state
     case CLEAR_ACCESS_ERROR:
       return {
         ...state,

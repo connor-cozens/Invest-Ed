@@ -150,6 +150,7 @@ const readForm = (response => {
 
   //Prepare initiative object to be dispatched to store
   const initiative = {
+    tagNumber: response.data.table1[0].tagNumber,
     name: response.data.table1[0].initiativeName,
     description: response.data.table1[0].description,
     website: response.data.table1[0].initiativeWebsite,
@@ -175,6 +176,9 @@ const readForm = (response => {
     status: status,
     reviews: reviews
   };
+
+  console.log(initiative);
+  
   return initiative;
 })
 
@@ -237,74 +241,42 @@ export const getNonApprovedForm = (tag, getType) => (dispatch) => {
     })
 }
 
-const changeRequestRA = (form) => {
+const changeRequestRA = (form, isModified) => {
   //Setting up multi val initatives
   const regions = [];
-  form.regions.forEach((item) => {
-    regions.push(item.key);
-  });
+  if (form.regions !== undefined) { form.regions.forEach((item) => {regions.push(item.key); }); }
   const countries = [];
-  form.countries.forEach((item) => {
-    countries.push(item.key);
-  });
+  if (form.countries !== undefined) { form.countries.forEach((item) => {countries.push(item.key); }); }
   const activities = [];
-  form.activities.forEach((item) => {
-    activities.push(item.key);
-  });
+  if (form.activities !== undefined) { form.activities.forEach((item) => {activities.push(item.key); }); }
   const sourceOfFees = [];
-  form.sourceOfFees.forEach((item) => {
-    sourceOfFees.push(item.key);
-  });
+  if (form.sourceOfFees !== undefined) { form.sourceOfFees.forEach((item) => {sourceOfFees.push(item.key); }); }
   const launchCountries = [];
-  form.launchCountries.forEach((item) => {
-    launchCountries.push(item.key);
-  });
+  if (form.launchCountries !== undefined) { form.launchCountries.forEach((item) => {launchCountries.push(item.key); }); }
   const targetGeos = [];
-  form.targetGeos.forEach((item) => {
-    targetGeos.push(item.key);
-  });
+  if (form.targetGeos !== undefined) { form.targetGeos.forEach((item) => {targetGeos.push(item.key); }); }
   const targetPopulationSectors = [];
-  form.targetPopulationSectors.forEach((item) => {
-    targetPopulationSectors.push(item.key);
-  });
+  if (form.targetPopulationSectors !== undefined) { form.targetPopulationSectors.forEach((item) => {targetPopulationSectors.push(item.key); }); }
   const outcomesMonitored = [];
-  form.outcomesMonitored.forEach((item) => {
-    outcomesMonitored.push(item.key);
-  });
+  if (form.outcomesMonitored !== undefined) { form.outcomesMonitored.forEach((item) => {outcomesMonitored.push(item.key); }); }
   const mEdSubs = [];
-  form.mEdSubs.forEach((item) => {
-    mEdSubs.push(item.key);
-  });
+  if (form.mEdSubs !== undefined) { form.mEdSubs.forEach((item) => {mEdSubs.push(item.key); }); }
   const oEdSubs = [];
-  form.oEdSubs.forEach((item) => {
-    oEdSubs.push(item.key);
-  });
+  if (form.oEdSubs !== undefined) { form.oEdSubs.forEach((item) => {oEdSubs.push(item.key); }); }
   const managementTypes = [];
-  form.managementTypes.forEach((item) => {
-    managementTypes.push(item.key);
-  });
+  if (form.managementTypes !== undefined) { form.managementTypes.forEach((item) => {managementTypes.push(item.key); }); }
 
   //Setting up multi val funders
   const internationalBases = [];
-  form.internationalBases.forEach((item) => {
-    internationalBases.push(item.key);
-  });
+  if (form.internationalBases !== undefined) { form.internationalBases.forEach((item) => {internationalBases.push(item.key); }); }
   const edSubs = [];
-  form.edSubs.forEach((item) => {
-    edSubs.push(item.key);
-  });
+  if (form.edSubs !== undefined) { form.edSubs.forEach((item) => {edSubs.push(item.key); }); }
   const orgTraits = [];
-  form.orgTraits.forEach((item) => {
-    orgTraits.push(item.key);
-  });
+  if (form.orgTraits !== undefined) { form.orgTraits.forEach((item) => {orgTraits.push(item.key); }); }
   const asiaIBases = [];
-  form.asiaIBases.forEach((item) => {
-    asiaIBases.push(item.key);
-  });
+  if (form.asiaIBases !== undefined) { form.asiaIBases.forEach((item) => {asiaIBases.push(item.key); }); }
   const asiaOperations = [];
-  form.asiaOperations.forEach((item) => {
-    asiaOperations.push(item.key);
-  });
+  if (form.asiaOperations !== undefined) { form.asiaOperations.forEach((item) => {asiaOperations.push(item.key);}); }
 
   const reqBody = {
     fname: form.fname,
@@ -344,79 +316,52 @@ const changeRequestRA = (form) => {
     iname: form.iname,
     impMotive: form.impMotive,
   }
+
+  if (isModified) {
+    reqBody.tagNum = form.tagNum;
+    reqBody.ofname = form.originalFunderName;
+    reqBody.oiname = form.originalImplementerName;
+  }
+
   return reqBody;
 }
 
-const changeRequest = (form, inDB) => {
+const changeRequest = (form, inDB, isModified) => {
   //Setting up multi val initatives
   const regions = [];
-  form.regions.forEach((item) => {
-    regions.push(item.key);
-  });
+  if (form.regions !== undefined) { form.regions.forEach((item) => {regions.push(item.key); }); }
   const countries = [];
-  form.countries.forEach((item) => {
-    countries.push(item.key);
-  });
+  if (form.countries !== undefined) { form.countries.forEach((item) => {countries.push(item.key); }); }
   const activities = [];
-  form.activities.forEach((item) => {
-    activities.push(item.key);
-  });
+  if (form.activities !== undefined) { form.activities.forEach((item) => {activities.push(item.key); }); }
   const sourceOfFees = [];
-  form.sourceOfFees.forEach((item) => {
-    sourceOfFees.push(item.key);
-  });
+  if (form.sourceOfFees !== undefined) { form.sourceOfFees.forEach((item) => {sourceOfFees.push(item.key); }); }
   const launchCountries = [];
-  form.launchCountries.forEach((item) => {
-    launchCountries.push(item.key);
-  });
+  if (form.launchCountries !== undefined) { form.launchCountries.forEach((item) => {launchCountries.push(item.key); }); }
   const targetGeos = [];
-  form.targetGeos.forEach((item) => {
-    targetGeos.push(item.key);
-  });
+  if (form.targetGeos !== undefined) { form.targetGeos.forEach((item) => {targetGeos.push(item.key); }); }
   const targetPopulationSectors = [];
-  form.targetPopulationSectors.forEach((item) => {
-    targetPopulationSectors.push(item.key);
-  });
+  if (form.targetPopulationSectors !== undefined) { form.targetPopulationSectors.forEach((item) => {targetPopulationSectors.push(item.key); }); }
   const outcomesMonitored = [];
-  form.outcomesMonitored.forEach((item) => {
-    outcomesMonitored.push(item.key);
-  });
+  if (form.outcomesMonitored !== undefined) { form.outcomesMonitored.forEach((item) => {outcomesMonitored.push(item.key); }); }
   const mEdSubs = [];
-  form.mEdSubs.forEach((item) => {
-    mEdSubs.push(item.key);
-  });
+  if (form.mEdSubs !== undefined) { form.mEdSubs.forEach((item) => {mEdSubs.push(item.key); }); }
   const oEdSubs = [];
-  form.oEdSubs.forEach((item) => {
-    oEdSubs.push(item.key);
-  });
+  if (form.oEdSubs !== undefined) { form.oEdSubs.forEach((item) => {oEdSubs.push(item.key); }); }
   const managementTypes = [];
-  form.managementTypes.forEach((item) => {
-    managementTypes.push(item.key);
-  });
+  if (form.managementTypes !== undefined) { form.managementTypes.forEach((item) => {managementTypes.push(item.key); }); }
 
   //Setting up multi val funders
   const internationalBases = [];
-  form.internationalBases.forEach((item) => {
-    internationalBases.push(item.key);
-  });
+  if (form.internationalBases !== undefined) { form.internationalBases.forEach((item) => {internationalBases.push(item.key); }); }
   const edSubs = [];
-  form.edSubs.forEach((item) => {
-    edSubs.push(item.key);
-  });
+  if (form.edSubs !== undefined) { form.edSubs.forEach((item) => {edSubs.push(item.key); }); }
   const orgTraits = [];
-  form.orgTraits.forEach((item) => {
-    orgTraits.push(item.key);
-  });
+  if (form.orgTraits !== undefined) { form.orgTraits.forEach((item) => {orgTraits.push(item.key); }); }
   const asiaIBases = [];
-  form.asiaIBases.forEach((item) => {
-    asiaIBases.push(item.key);
-  });
+  if (form.asiaIBases !== undefined) { form.asiaIBases.forEach((item) => {asiaIBases.push(item.key); }); }
   const asiaOperations = [];
-  form.asiaOperations.forEach((item) => {
-    asiaOperations.push(item.key);
-  });
-
-  console.log(form);
+  if (form.asiaOperations !== undefined) { form.asiaOperations.forEach((item) => {asiaOperations.push(item.key);}); }
 
   const reqBody = {
     fname: form.fname,
@@ -496,29 +441,45 @@ const changeRequest = (form, inDB) => {
     // single val other
     comments: form.comments,
     needsReview: 1,
-    inDB: (inDB == true) ? 1 : 0
+    inDB: (inDB === true) ? 1 : 0
   }
+
+  if (isModified) {
+    reqBody.tagNum = form.tagNum;
+    reqBody.ofname = form.originalFunderName;
+    reqBody.oiname = form.originalImplementerName;
+  }
+
   return reqBody;
 }
 
-//Might require this, depending on how the endpoints are setup
-// //RA/Organization user to modify approved forms from main DB
-// export const modifyApprovedForm = (tag) => (dispatch) => {
-//   console.log("Sending modified data from approved form");
-// }
-//
-// //RA/Organization user to modify non-approved forms from temp DB
-// export const modifyNonApprovedForm = (tag) => (dispatch) => {
-//   console.log("Sending modified data from non-approved form");
-// }
+//Organization user to modify existing form in either main or temp DB (could be in main DB since might have been approved)
+export const modifyForm = (form, inDB, isModified) => (dispatch) => {
+  const req = changeRequest(form, inDB, isModified);
+  axios.post(`http://localhost:4000/dashboard/update-test-temp`, req)
+    .then(response => {
+      dispatch({type: FORM_SUBMIT_SUCCESS});
+    })
+    .catch(err => {
+      dispatch({type: FORM_SUBMIT_ERROR, payload: err});
+    })
+}
 
-export const modifyForm = (form) => (dispatch) => {
-  console.log("Sending modified data from non-approved form");
+//RA user to modify existing form in main DB
+export const modifyFormRA = (form, isModified) => (dispatch) => {
+  const req = changeRequestRA(form, isModified);
+  axios.post(`http://localhost:4000/dashboard/update-test`, req)
+    .then(response => {
+      dispatch({type: FORM_SUBMIT_SUCCESS});
+    })
+    .catch(err => {
+      dispatch({type: FORM_SUBMIT_ERROR, payload: err});
+    })
 }
 
 //Organization user to add new form to temp DB
-export const addForm = (form, inDB) => (dispatch) => {
-  const req = changeRequest(form, inDB);
+export const addForm = (form, inDB, isModified) => (dispatch) => {
+  const req = changeRequest(form, inDB, isModified);
   axios.post(`http://localhost:4000/dashboard/submit-form-temp`, req)
     .then(response => {
       dispatch({type: FORM_SUBMIT_SUCCESS});
@@ -529,8 +490,8 @@ export const addForm = (form, inDB) => (dispatch) => {
 }
 
 //RA user to add new form to main DB
-export const addFormRA = (form) => (dispatch) => {
-    const req = changeRequestRA(form);
+export const addFormRA = (form, isModified) => (dispatch) => {
+    const req = changeRequestRA(form, isModified);
     axios.post(`http://localhost:4000/dashboard/submitform`, req)
       .then(response => {
         dispatch({type: FORM_SUBMIT_SUCCESS});

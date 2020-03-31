@@ -909,27 +909,29 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
      //Insert initiative region data
    for(var i = 0; i < formData.initiativeRegions.length; i++) {
-       //INSERT into initiativeregion VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = 1521), (SELECT regionName from regions WHERE regionName = "Missing"))
-    var query8 = "INSERT into initiativeregion VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
-    async.parallel([
-        function(queryDB) {
-            poolTemp.query(query8, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    //formData.table1 = results;
-                    queryDB()
-                }
 
-            })
-        },
+        var query8 = "INSERT into initiativeregion VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
+        console.log(formData.initiativeRegions[i])
+        async.parallel([
+            function(queryDB) {
+                poolTemp.query(query8, {}, function(err, results) {
+                    if (err){
+                        return queryDB(err)
+                    }else{
+                        //formData.table1 = results;
+                        console.log("here")
+                        queryDB()
+                    }
 
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
+                })
+            },
 
-    })
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
     }
 
 
@@ -1350,7 +1352,6 @@ dashboard.post('/submit-form-temp', (req, res) =>{
    res.json("Form successfully added to the DB")
 
 })
-
 
 //POST new form to DB
 dashboard.post('/submitform', (req, res) =>{
@@ -1915,11 +1916,1910 @@ dashboard.post('/submitform', (req, res) =>{
 
 })
 
-dashboard.get('/delete-form/:tagNum', (req, res) =>{
+dashboard.post('/update-form/:tagNum', (req, res) =>{
+
+    const formData = {
+
+        //original values
+        tagNum: req.body.tagNum,
+        OfunderName: req.body.ofname,
+        OimplementorName: req.body.oiname,
+        // single val funder
+        funderName: req.body.fname, //f
+        funderUrl: req.body.furl, //f
+        funderMotive: req.body.motive, //f
+        funderImpact: req.body.impact, //f
+        funderOrganizationForm: req.body.organizationForm, //f
+        // multi val funder
+        funderInternationalBases: req.body.internationalBases, //f
+        funderEducationSubsector: req.body.edSubs, //f
+        funderOrgTraits: req.body.orgTraits, //f
+        funderAsiaBases: req.body.asialBases, //f
+        funderAsiaOperations: req.body.asiaOperations, //f
+        // single val initiative
+        initiativeName: req.body.initName, //in
+        initiativeURL: req.body.initURL, //in
+        initiativeTargetsWomen: req.body.tWomen, //in
+        initiativeStart: req.body.initStart, //in
+        initiativeEnd: req.body.initEnd, //in
+        initiativeDescription: req.body.idescription, //in
+        initiativeProgramAreas: req.body.programArea, //in
+        initiativeMainProgramActivity: req.body.initativeMainProgramActivity, //in
+        initiativeFeeAccess: req.body.feeAccess, //in
+        // multi val initiative
+        initiativeRegions: req.body.regions, //in
+        initiativeCountries: req.body.countries, //in
+        initiativeActivities: req.body.activities, //in
+        initiativeSourceOfFees: req.body.sourceOfFees, //in
+        initiativeLaunchCountry: req.body.launchCountry, //in
+        initiativeTargetGeo: req.body.targetGeos, //in
+        initiativetargetPopulationSector: req.body.targetPopulationSectors, //in
+        initiativeOutcomesMonitored: req.body.outcomesMonitored, //in
+        initiativeMEdSubs: req.body.mEdSubs, //in
+        initiativeOEdSubs: req.body.oEdSubs, //in
+        initiativeManagementTypes: req.body.managementTypes, //in
+        // single val implementer
+        implementorName: req.body.iname, //im
+        implementorMotive: req.body.impMotive, //im
+    }
+
+    console.log(formData);
+
+    //Update funder data
+   var query1 = "UPDATE funder SET funderName = '" + formData.funderName + "', funderWebsite ='"+ formData.funderUrl +"', profitMotive ='"+ formData.funderMotive +"', impactInvesting ='"+ formData.funderImpact
+   +"', organizationalForm ='"+ formData.funderOrganizationForm +"' WHERE funderName = '" + formData.OfunderName + "'"
+   async.parallel([
+    function(queryDB) {
+        pool.query(query1, {}, function(err, results) {
+            if (err){
+                return queryDB(err)
+            }else{
+
+                queryDB()
+            }
+
+        })
+    },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+
+    //delete all funder international base
+    var query2 = "DELETE FROM funderinternationalbases WHERE funderName = '"+ formData.OfunderName+ "'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query2, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+     //Insert funder international bases data
+   for(var i = 0; i <formData.funderInternationalBases.length; i++) {
+    var query3 = "INSERT into funderinternationalbases VALUES ('" + formData.funderName +"','"+ formData.funderInternationalBases[i] +"')"
+    //console.log(query2)
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query3, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete all funder fundereducationsubsectors
+    var query4 = "DELETE FROM fundereducationsubsectors WHERE funderName = '"+ formData.OfunderName + "'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query4, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    //Insert funder education subsector data
+    for(var i = 0; i <formData.funderEducationSubsector.length; i++) {
+    var query5 = "INSERT into fundereducationsubsectors VALUES ('" + formData.funderName +"','"+ formData.funderEducationSubsector[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query5, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete all funder funderorganizationtraits
+    var query6 = "DELETE FROM funderorganizationtraits WHERE funderName = '"+ formData.OfunderName + "'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query6, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert funder education organizational traits data
+    for(var i = 0; i <formData.funderOrgTraits.length; i++) {
+    var query7 = "INSERT into funderorganizationtraits VALUES ('" + formData.funderName +"','"+ formData.funderOrgTraits[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query7, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete all funder asiabases
+    var query8 = "DELETE FROM funderasiabases WHERE funderName = '"+ formData.OfunderName + "'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query8, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert funder asia bases data
+    for(var i = 0; i <formData.funderAsiaBases.length; i++) {
+    var query9 = "INSERT into funderasiabases VALUES ('" + formData.funderName +"','"+ formData.funderAsiaBases[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query9, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete all funder asia operations
+    var query10= "DELETE FROM funderasiaoperations WHERE funderName = '"+ formData.OfunderName + "'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query10, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert funder education funder asia operations data
+    for(var i = 0; i < formData.funderAsiaOperations.length; i++) {
+    var query11 = "INSERT into funderasiaoperations VALUES ('" + formData.funderName +"','"+ formData.funderAsiaOperations[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query11, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+
+    //Insert initative data
+    query12 = "UPDATE initiative SET initiativeName = '" + formData.initiativeName +"', initiativeWebsite ='"+ formData.initiativeURL +"', targetsWomen ="+ formData.initiativeTargetsWomen +
+    ", startYear ='"+ formData.initiativeStart +"',endYear='"+ formData.initiativeEnd +"', description ='"+ formData.initiativeDescription +
+    "', mainProgrammingArea = (SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas
+    +"') , mainProgrammingActivity = (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'), feeToAccess ="+ formData.initiativeFeeAccess
+    +" WHERE tagNumber = " + formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query12, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+
+    //delete initiative region data
+    var query13= "DELETE FROM initiativeregion WHERE tagNumber = "+ formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            pool.query(query13, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert initiative region data
+    for(var i = 0; i < formData.initiativeRegions.length; i++) {
+
+        var query14 = "INSERT into initiativeregion VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
+        console.log(formData.initiativeRegions[i])
+        async.parallel([
+            function(queryDB) {
+                poolTemp.query(query14, {}, function(err, results) {
+                    if (err){
+                        return queryDB(err)
+                    }else{
+                        console.log("here")
+                        queryDB()
+                    }
+
+                })
+            },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    }
+
+    console.log("here1")
+    //delete initiativecountryofoperation data
+    var query15= "DELETE FROM initiativecountryofoperation WHERE tagNumber = "+ formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            pool.query(query15, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert initiative country of operation data
+    for(var i = 0; i < formData.initiativeCountries.length; i++) {
+    var query16 = "INSERT into initiativecountryofoperation VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query16, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete initiativeprogrammingactivities data
+    var query17= "DELETE FROM initiativeprogrammingactivities WHERE tagNumber = "+ formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            pool.query(query17, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+        console.log("here2")
+    //Insert initiative programming activity data
+    for(var i = 0; i < formData.initiativeActivities.length; i++) {
+    var query18 = "INSERT into initiativeprogrammingactivities VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeActivities[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query18, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+      //delete initiativefundingsource data
+      var query19= "DELETE FROM initiativefundingsource WHERE tagNumber = "+ formData.tagNum
+      async.parallel([
+          function(queryDB) {
+              pool.query(query19, {}, function(err, results) {
+                  if (err){
+                      return queryDB(err)
+                  }else{
+
+                      queryDB()
+                  }
+
+              })
+          },
+
+          ], function(err) {
+              if (err){
+                  console.log(err)
+              }
+
+          })
+
+          console.log("here4")
+    //Insert initiative source of fees data
+    for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
+    var query20= "INSERT into initiativefundingsource VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeSourceOfFees[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query20, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+     //delete launchcountry data
+     var query21= "DELETE FROM initiativelaunchcountry WHERE tagNumber = "+ formData.tagNum
+     async.parallel([
+         function(queryDB) {
+             pool.query(query21, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+
+                     queryDB()
+                 }
+
+             })
+         },
+
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+    //Insert initiative launch country data
+    for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
+    var query22 =  "INSERT into initiativelaunchcountry VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query22, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+     //delete initiativetargetgeography data
+     var query23= "DELETE FROM initiativetargetgeography WHERE tagNumber = "+ formData.tagNum
+     async.parallel([
+         function(queryDB) {
+             pool.query(query23, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+
+                     queryDB()
+                 }
+
+             })
+         },
+
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+    //Insert initiative target geo data
+    for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
+    var query24 = "INSERT into initiativetargetgeography VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeTargetGeo[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query24, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete INSERT into initiativetargetpopulationsector data
+    var query25= "DELETE FROM initiativetargetpopulationsector WHERE tagNumber = "+ formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            pool.query(query25, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert initiative target population sector data
+    for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
+    var query26 = "INSERT into initiativetargetpopulationsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativetargetPopulationSector[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query26, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete initiativemonitoredoutcomes data
+    var query27= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            pool.query(query27, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert initiative outcomes monitored data
+    for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
+    var query28 = "INSERT into initiativemonitoredoutcomes VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeOutcomesMonitored[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query28, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+     //delete initiativemonitoredoutcomes data
+     var query29= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ formData.tagNum
+     async.parallel([
+         function(queryDB) {
+             pool.query(query29, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+
+                     queryDB()
+                 }
+
+             })
+         },
+
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+    //Insert initiative main education subsector data
+    for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
+    var query30 = "INSERT into initiativemaineducationsubsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +
+    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query30, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete initiativeeducationsubsectors data
+    var query31= "DELETE FROM initiativeeducationsubsectors WHERE initiativeTagNumber = "+ formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            pool.query(query31, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert initiative education subsector data
+    for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
+    var query32 = "INSERT into initiativeeducationsubsectors VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +
+    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query32, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete initiativetargetschoolmanagement data
+    var query33= "DELETE FROM initiativetargetschoolmanagement WHERE tagNumber = "+ formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            pool.query(query33, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert initiative target management t data
+    for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
+    var query34 = "INSERT into initiativetargetschoolmanagement VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeManagementTypes[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query34, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //implementor queries
+    var query35 = "UPDATE implementor SET implementorName ='" + formData.implementorName + "', profitMotive ='" + formData.implementorMotive+"' WHERE implementorName = '"+ formData.OimplementorName +"'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query35, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+
+    // funder - funds - relationship
+    var query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
+    + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"') WHERE (tagNum =" + formData.tagNum + ") AND (funderName = '"
+    + formData.ofname +"')"
+
+    // //implementor - implements - initiative
+    var query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "'), startYear ='"
+    + formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (implementorName = '" + formData.OimplementorName + "')"
+
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query36, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+        function(queryDB) {
+            poolTemp.query(query37, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    res.send("Inves431_girlsEd updated successfully!")
+
 
 })
 
-dashboard.get('/delete-form-temp/:tagNum', (req, res) =>{
+dashboard.post('/update-form-temp/', (req, res) =>{
+
+    const formData = {
+
+        //original values
+        tagNum: req.body.tagNum,
+        OfunderName: req.body.ofname,
+        OimplementorName: req.body.oiname,
+        // single val funder
+        funderName: req.body.fname, //f
+        funderUrl: req.body.furl, //f
+        funderMotive: req.body.motive, //f
+        funderImpact: req.body.impact, //f
+        funderOrganizationForm: req.body.organizationForm, //f
+        // multi val funder
+        funderInternationalBases: req.body.internationalBases, //f
+        funderEducationSubsector: req.body.edSubs, //f
+        funderOrgTraits: req.body.orgTraits, //f
+        funderAsiaBases: req.body.asialBases, //f
+        funderAsiaOperations: req.body.asiaOperations, //f
+        // single val initiative
+        initiativeName: req.body.initName, //in
+        initiativeURL: req.body.initURL, //in
+        initiativeTargetsWomen: req.body.tWomen, //in
+        initiativeStart: req.body.initStart, //in
+        initiativeEnd: req.body.initEnd, //in
+        initiativeDescription: req.body.idescription, //in
+        initiativeProgramAreas: req.body.programArea, //in
+        initiativeMainProgramActivity: req.body.initativeMainProgramActivity, //in
+        initiativeFeeAccess: req.body.feeAccess, //in
+        // multi val initiative
+        initiativeRegions: req.body.regions, //in
+        initiativeCountries: req.body.countries, //in
+        initiativeActivities: req.body.activities, //in
+        initiativeSourceOfFees: req.body.sourceOfFees, //in
+        initiativeLaunchCountry: req.body.launchCountry, //in
+        initiativeTargetGeo: req.body.targetGeos, //in
+        initiativetargetPopulationSector: req.body.targetPopulationSectors, //in
+        initiativeOutcomesMonitored: req.body.outcomesMonitored, //in
+        initiativeMEdSubs: req.body.mEdSubs, //in
+        initiativeOEdSubs: req.body.oEdSubs, //in
+        initiativeManagementTypes: req.body.managementTypes, //in
+        // single val implementer
+        implementorName: req.body.iname, //im
+        implementorMotive: req.body.impMotive, //im
+
+        // single val other
+        comments: req.body.comments, //other
+        needsReview: req.body.needsReview, //other
+        inDB: req.body.inDB,
+
+        //section Reviews
+        funderNameApproval: req.body.fnameA,
+        funderUrlApproval: req.body.furlA,
+        funderMotiveApproval: req.body.motiveA,
+        funderImpactApproval: req.body.impactA,
+        funderOrganizationFormApproval: req.body.organizationFormA,
+        funderInternationalBaseApproval: req.body.internationalBasesA,
+        funderEdSubsApproval: req.body.edSubsA,
+        funderOrgTraitsApproval: req.body.orgTraitsA,
+        funderAsiaBasesApproval: req.body.asialBasesA,
+        funderAsiaOperationsApproval: req.body.asiaOperationsA,
+        initNameApproval:req.body.initNameA,
+        initUrlApproval: req.body.initURLA,
+        initTargetsWomenApproval: req.body.tWomenA,
+        initStartApproval: req.body.initStartA,
+        initEndApproval: req.body.initEndA,
+        initDescriptionApproval: req.body.idescriptionA,
+        initProgramAreasApproval: req.body.programAreaA,
+        initMainProgramActivityApproval: req.body.initiativeMainProgramActivityA,
+        initFeeAccessApproval: req.body.feeAccessA,
+        initRegionsApproval: req.body.regionsA,
+        initCountriesApproval: req.body.countriesA,
+        initActivitiesApproval:  req.body.activitiesA,
+        initSourceOfFeesApproval: req.body.sourceOfFeesA,
+        initLaunchCountryApproval: req.body.launchCountryA,
+        initTargetGeoApproval: req.body.targetGeosA,
+        initTargetPopulationSectorApproval: req.body.targetPopulationSectorsA,
+        initOutcomesMonitoredApproval: req.body.outcomesMonitoredA,
+        initMEdSubsApproval: req.body.mEdSubsA,
+        initOEdSubsApproval:  req.body.oEdSubsA,
+        initManagementTypesApproval: req.body.managementTypesA,
+        implementorNameApproval: req.body.inameA,
+        implementorMotiveApproval: req.body.impMotiveA
+    }
+
+    console.log(formData);
+
+    //Update funder data
+   var query1 = "UPDATE funder SET funderName = '" + formData.funderName + "', funderWebsite ='"+ formData.funderUrl +"', profitMotive ='"+ formData.funderMotive +"', impactInvesting ='"+ formData.funderImpact
+   +"', organizationalForm ='"+ formData.funderOrganizationForm +"' WHERE funderName = '" + formData.OfunderName + "'"
+   async.parallel([
+    function(queryDB) {
+        pool.query(query1, {}, function(err, results) {
+            if (err){
+                return queryDB(err)
+            }else{
+
+                queryDB()
+            }
+
+        })
+    },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+
+    //delete all funder international base
+    var query2 = "DELETE FROM funderinternationalbases WHERE funderName = '"+ formData.OfunderName+ "'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query2, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+     //Insert funder international bases data
+   for(var i = 0; i <formData.funderInternationalBases.length; i++) {
+    var query3 = "INSERT into funderinternationalbases VALUES ('" + formData.funderName +"','"+ formData.funderInternationalBases[i] +"')"
+    //console.log(query2)
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query3, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete all funder fundereducationsubsectors
+    var query4 = "DELETE FROM fundereducationsubsectors WHERE funderName = '"+ formData.OfunderName + "'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query4, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    //Insert funder education subsector data
+    for(var i = 0; i <formData.funderEducationSubsector.length; i++) {
+    var query5 = "INSERT into fundereducationsubsectors VALUES ('" + formData.funderName +"','"+ formData.funderEducationSubsector[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query5, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete all funder funderorganizationtraits
+    var query6 = "DELETE FROM funderorganizationtraits WHERE funderName = '"+ formData.OfunderName + "'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query6, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert funder education organizational traits data
+    for(var i = 0; i <formData.funderOrgTraits.length; i++) {
+    var query7 = "INSERT into funderorganizationtraits VALUES ('" + formData.funderName +"','"+ formData.funderOrgTraits[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query7, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete all funder asiabases
+    var query8 = "DELETE FROM funderasiabases WHERE funderName = '"+ formData.OfunderName + "'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query8, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert funder asia bases data
+    for(var i = 0; i <formData.funderAsiaBases.length; i++) {
+    var query9 = "INSERT into funderasiabases VALUES ('" + formData.funderName +"','"+ formData.funderAsiaBases[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query9, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete all funder asia operations
+    var query10= "DELETE FROM funderasiaoperations WHERE funderName = '"+ formData.OfunderName + "'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query10, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert funder education funder asia operations data
+    for(var i = 0; i < formData.funderAsiaOperations.length; i++) {
+    var query11 = "INSERT into funderasiaoperations VALUES ('" + formData.funderName +"','"+ formData.funderAsiaOperations[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query11, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    //formData.table1 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+
+    //Insert initative data
+    query12 = "UPDATE initiative SET initiativeName = '" + formData.initiativeName +"', initiativeWebsite ='"+ formData.initiativeURL +"', targetsWomen ="+ formData.initiativeTargetsWomen +
+    ", startYear ='"+ formData.initiativeStart +"',endYear='"+ formData.initiativeEnd +"', description ='"+ formData.initiativeDescription +
+    "', mainProgrammingArea = (SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas
+    +"') , mainProgrammingActivity = (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'), feeToAccess ="+ formData.initiativeFeeAccess
+    +" WHERE tagNumber = " + formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query12, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+
+    //delete initiative region data
+    var query13= "DELETE FROM initiativeregion WHERE tagNumber = "+ formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            pool.query(query13, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert initiative region data
+    for(var i = 0; i < formData.initiativeRegions.length; i++) {
+
+        var query14 = "INSERT into initiativeregion VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
+        console.log(formData.initiativeRegions[i])
+        async.parallel([
+            function(queryDB) {
+                poolTemp.query(query14, {}, function(err, results) {
+                    if (err){
+                        return queryDB(err)
+                    }else{
+                        console.log("here")
+                        queryDB()
+                    }
+
+                })
+            },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    }
+
+    console.log("here1")
+    //delete initiativecountryofoperation data
+    var query15= "DELETE FROM initiativecountryofoperation WHERE tagNumber = "+ formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            pool.query(query15, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert initiative country of operation data
+    for(var i = 0; i < formData.initiativeCountries.length; i++) {
+    var query16 = "INSERT into initiativecountryofoperation VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query16, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete initiativeprogrammingactivities data
+    var query17= "DELETE FROM initiativeprogrammingactivities WHERE tagNumber = "+ formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            pool.query(query17, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+        console.log("here2")
+    //Insert initiative programming activity data
+    for(var i = 0; i < formData.initiativeActivities.length; i++) {
+    var query18 = "INSERT into initiativeprogrammingactivities VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeActivities[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query18, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+      //delete initiativefundingsource data
+      var query19= "DELETE FROM initiativefundingsource WHERE tagNumber = "+ formData.tagNum
+      async.parallel([
+          function(queryDB) {
+              pool.query(query19, {}, function(err, results) {
+                  if (err){
+                      return queryDB(err)
+                  }else{
+
+                      queryDB()
+                  }
+
+              })
+          },
+
+          ], function(err) {
+              if (err){
+                  console.log(err)
+              }
+
+          })
+
+          console.log("here4")
+    //Insert initiative source of fees data
+    for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
+    var query20= "INSERT into initiativefundingsource VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeSourceOfFees[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query20, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+     //delete launchcountry data
+     var query21= "DELETE FROM initiativelaunchcountry WHERE tagNumber = "+ formData.tagNum
+     async.parallel([
+         function(queryDB) {
+             pool.query(query21, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+
+                     queryDB()
+                 }
+
+             })
+         },
+
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+    //Insert initiative launch country data
+    for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
+    var query22 =  "INSERT into initiativelaunchcountry VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query22, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+     //delete initiativetargetgeography data
+     var query23= "DELETE FROM initiativetargetgeography WHERE tagNumber = "+ formData.tagNum
+     async.parallel([
+         function(queryDB) {
+             pool.query(query23, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+
+                     queryDB()
+                 }
+
+             })
+         },
+
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+    //Insert initiative target geo data
+    for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
+    var query24 = "INSERT into initiativetargetgeography VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeTargetGeo[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query24, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete INSERT into initiativetargetpopulationsector data
+    var query25= "DELETE FROM initiativetargetpopulationsector WHERE tagNumber = "+ formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            pool.query(query25, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert initiative target population sector data
+    for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
+    var query26 = "INSERT into initiativetargetpopulationsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativetargetPopulationSector[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query26, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete initiativemonitoredoutcomes data
+    var query27= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            pool.query(query27, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert initiative outcomes monitored data
+    for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
+    var query28 = "INSERT into initiativemonitoredoutcomes VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeOutcomesMonitored[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query28, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+     //delete initiativemonitoredoutcomes data
+     var query29= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ formData.tagNum
+     async.parallel([
+         function(queryDB) {
+             pool.query(query29, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+
+                     queryDB()
+                 }
+
+             })
+         },
+
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+    //Insert initiative main education subsector data
+    for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
+    var query30 = "INSERT into initiativemaineducationsubsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +
+    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query30, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete initiativeeducationsubsectors data
+    var query31= "DELETE FROM initiativeeducationsubsectors WHERE initiativeTagNumber = "+ formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            pool.query(query31, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert initiative education subsector data
+    for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
+    var query32 = "INSERT into initiativeeducationsubsectors VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +
+    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query32, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //delete initiativetargetschoolmanagement data
+    var query33= "DELETE FROM initiativetargetschoolmanagement WHERE tagNumber = "+ formData.tagNum
+    async.parallel([
+        function(queryDB) {
+            pool.query(query33, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //Insert initiative target management t data
+    for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
+    var query34 = "INSERT into initiativetargetschoolmanagement VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeManagementTypes[i]+"')"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query34, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+    ], function(err) {
+        if (err){
+            console.log(err)
+        }
+
+    })
+    }
+
+    //implementor queries
+    var query35 = "UPDATE implementor SET implementorName ='" + formData.implementorName + "', profitMotive ='" + formData.implementorMotive+"' WHERE implementorName = '"+ formData.OimplementorName +"'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query35, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+
+    // funder - funds - relationship
+    var query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
+    + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (funderName = '"
+    + formData.ofname +"')"
+
+    // //implementor - implements - initiative
+    var query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "'), startYear ='"
+    + formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (implementorName = '" + formData.OimplementorName + "')"
+
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query36, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+        function(queryDB) {
+            poolTemp.query(query37, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+
+
+
+        var query38 = "UPDATE comments SET comment = '"+ formData.comments +"' WHERE tagNumber = "+formData.tagNum
+        async.parallel([
+            function(queryDB) {
+                poolTemp.query(query38, {}, function(err, results) {
+                    if (err){
+                        return queryDB(err)
+                    }else{
+                        //formData.table1 = results;
+                        queryDB()
+                    }
+
+                })
+            },
+
+            ], function(err) {
+                if (err){
+                    console.log(err)
+                }
+
+            })
+
+
+            var query39 = "UPDATE status SET inDB = " +formData.inDB + ", needsReview =" + formData.needsReview +" WHERE tagNumber = "+formData.tagNum
+            async.parallel([
+                function(queryDB) {
+                    poolTemp.query(query39, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            //formData.table1 = results;
+                            queryDB()
+                        }
+
+                    })
+                },
+
+                ], function(err) {
+                    if (err){
+                        console.log(err)
+                    }
+
+                })
+
+            var query40 = "UPDATE sectionreviews SET funderNameApproval = "+
+            formData.funderNameApproval + ",funderUrlApproval = " +
+            formData.funderUrlApproval + ",funderMotiveApproval = " +
+            formData.funderMotiveApproval + ",funderImpactApproval = " +
+            formData.funderImpactApproval + ",funderOrganizationFormApproval = " +
+            formData.funderOrganizationFormApproval + ",funderInternationalBaseApproval = " +
+            formData.funderInternationalBaseApproval + ",funderEdSubsApproval  = " +
+            formData.funderEdSubsApproval + ",funderOrgTraitsApproval = " +
+            formData.funderOrgTraitsApproval+ ",funderAsiaBasesApproval= " +
+            formData.funderAsiaBasesApproval+ ",funderAsiaOperationsApproval= " +
+            formData.funderAsiaOperationsApproval+ ",initNameApproval = " +
+            formData.initNameApproval + ",initUrlApproval  = " +
+            formData.initUrlApproval+ ",initTargetsWomenApproval = " +
+            formData.initTargetsWomenApproval+ ",initStartApproval = " +
+            formData.initStartApproval+ ",initEndApproval = " +
+            formData.initEndApproval+ ",initDescriptionApproval = " +
+            formData.initDescriptionApproval+ ",initProgramAreasApproval = " +
+            formData.initProgramAreasApproval+ ",initMainProgramActivityApproval = " +
+            formData.initMainProgramActivityApproval+ ",initFeeAccessApproval = " +
+            formData.initFeeAccessApproval+ ",initRegionsApproval = " +
+            formData.initRegionsApproval+ ",initCountriesApproval = " +
+            formData.initCountriesApproval+ ",initActivitiesApproval = " +
+            formData.initActivitiesApproval + ", initSourceOfFeesApproval = " +
+            formData.initSourceOfFeesApproval+ ",initLaunchCountryApproval = " +
+            formData.initLaunchCountryApproval+ ",initTargetGeoApproval = " +
+            formData.initTargetGeoApproval+ ",initTargetPopulationSectorApproval = " +
+            formData.initTargetPopulationSectorApproval+ ",initOutcomesMonitoredApproval = " +
+            formData.initOutcomesMonitoredApproval+ ",initMEdSubsApproval = " +
+            formData.initMEdSubsApproval+ ",initOEdSubsApproval = " +
+            formData.initOEdSubsApproval + ", initManagementTypesApproval = " +
+            formData.initManagementTypesApproval+ ",implementorNameApproval = " +
+            formData.implementorNameApproval+ ",implementorMotiveApproval = " +
+            formData.implementorMotiveApproval
+
+
+            async.parallel([
+                function(queryDB) {
+                    poolTemp.query(query40, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            queryDB()
+                        }
+
+                    })
+                },
+
+                ], function(err) {
+                    if (err){
+                        console.log(err)
+                    }
+
+                })
+    res.send("Inves431_girlsEd updated successfully!")
 
 })
 

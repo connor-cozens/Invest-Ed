@@ -3,12 +3,18 @@ import ReactDOM from 'react-dom';
 import './formSubmission.css';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom'
-import {addForm, addFormRA, modifyForm} from '../../store/actions/dataActions'
+import {addForm, addFormRA, modifyForm, modifyFormRA} from '../../store/actions/dataActions'
 
 class formSubmission extends React.Component{
   constructor(props){
     super(props);
     this.state = {
+      //Original values
+      tagNum: null,
+      originalFunderName: null,
+      originalImplementerName: null,
+
+      //
       internationalBases: [], //Funder International Bases
       regions: [], //Initiative Regions
       countries: [], //Initiative Countries
@@ -90,6 +96,11 @@ class formSubmission extends React.Component{
   componentDidMount = () => {
     if (this.props.formStatus === 'modify') {
       this.setState({
+        //Original value Setters
+        tagNum: this.props.form.tagNumber,
+        originalFunderName: this.props.form.funders.length > 0 ? this.props.form.funders[0].funderName : null,
+        originalImplementerName: this.props.form.name,
+
         //Initiative setters
         initName: this.props.form.name,
         initURL: this.props.form.website,
@@ -777,17 +788,26 @@ class formSubmission extends React.Component{
       if (userData) {
         //If an organization user, then submit to temp db for review
         if (userData.accessLevel === 0) {
-          this.props.submitNonRA(this.state, this.props.inDB);
+          this.props.submitNonRA(this.state, this.props.inDB, false);
         }
         //Otherwise, if an RA or root user, submit directly to main db
         else {
-          this.props.submitRA(this.state);
+          this.props.submitRA(this.state, false);
         }
       }
     }
     else {
-      if (formStatus === 'modify') {
-        this.props.submitModifiedForm(this.state);
+      if (formStatus == 'modify') {
+        if (userData) {
+          //If an organization user, then submit modified form to temp db for review
+          if (userData.accessLevel == 0) {
+            this.props.submitModifiedNonRA(this.state, this.props.inDB, true);
+          }
+          //Otherwise, if an RA or root user, submit modified form directly to main db
+          else {
+            this.props.submitModifiedRA(this.state, true);
+          }
+        }
       }
     }
   }
@@ -3672,9 +3692,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    submitRA: (form) => {dispatch(addFormRA(form))},
-    submitNonRA: (form) => {dispatch(addForm(form))},
-    submitModifiedForm: (form) => {dispatch(modifyForm(form))},
+    submitRA: (form, isModified) => {dispatch(addFormRA(form, isModified))},
+    submitNonRA: (form, inDB, isModified) => {dispatch(addForm(form, inDB, isModified))},
+    submitModifiedRA: (form, isModified) => {dispatch(modifyFormRA(form, isModified))},
+    submitModifiedNonRA: (form, inDB, isModified) => {dispatch(modifyForm(form, inDB, isModified))},
   };
 }
 

@@ -16,6 +16,13 @@ export const FORM_SUBMIT_SUCCESS = 'FORM_SUBMIT_SUCCESS';
 export const FORM_SUBMIT_ERROR = 'FORM_SUBMIT_ERROR';
 export const FORM_SUBMIT_CLEAR = 'FORM_SUBMIT_CLEAR';
 
+export const SET_FUNDER_DATA = 'SET_FUNDER_DATA';
+export const SET_IMPLEMENTER_DATA = 'SET_IMPLEMENTER_DATA';
+export const SET_INITIATIVE_DATA = 'SET_INITIATIVE_DATA';
+export const SET_FUNDER_ATTRIBUTES = 'SET_FUNDER_ATTRIBUTES';
+export const SET_IMPLEMENTER_ATTRIBUTES = 'SET_IMPLEMENTER_ATTRIBUTES';
+export const UNSET_VISUALIZED_DATA = 'UNSET_VISUALIZED_DATA';
+
 export const CLEAR_ACCESS_ERROR = 'CLEAR_ACCESS_ERROR';
 export const ACCESS_ERROR = 'ACCESS_ERROR';
 
@@ -39,7 +46,14 @@ const initState = {
   //On register
   registered: false,
   registerError: null,
-  accessError: null
+  accessError: null,
+
+  //Visualization data
+  FunderData: null,
+  ImplementerData: null,
+  InititativeData: null,
+  FunderAttributes: null,
+  ImplementerAttributes: null
 }
 
 const dataReducer = (state = initState, action) => {
@@ -89,8 +103,14 @@ const dataReducer = (state = initState, action) => {
         formReviewError: null,
         registered: false,
         registerError: null,
-        accessError: null
+        accessError: null,
+        FunderData: null,
+        ImplementerData: null,
+        InititativeData: null,
+        FunderAttributes: null,
+        ImplementerAttributes: null
       };
+
 
     //FORM DISPATCH HANDLERS
     case SET_REVIEW_FORM:
@@ -145,6 +165,43 @@ const dataReducer = (state = initState, action) => {
         formSubmitted: false,
         formSubmitError: action.payload
       }
+
+
+    //VISUALIZE DISPATCH HANDLERS
+    case SET_FUNDER_DATA:
+      return {
+        ...state,
+        FunderData: action.payload
+      };
+    case SET_IMPLEMENTER_DATA:
+      return {
+        ...state,
+        ImplementerData: action.payload
+      };
+    case SET_INITIATIVE_DATA:
+      return {
+        ...state,
+        InititativeData: action.payload
+      };
+    case SET_FUNDER_ATTRIBUTES:
+      return {
+        ...state,
+        FunderAttributes: action.payload
+      };
+    case SET_IMPLEMENTER_ATTRIBUTES:
+      return {
+        ...state,
+        ImplementerAttributes: action.payload
+      };
+    case UNSET_VISUALIZED_DATA:
+      return {
+        ...state,
+        FunderData: null,
+        ImplementerData: null,
+        InititativeData: null,
+        FunderAttributes: null,
+        ImplementerAttributes: null
+      };
 
 
     //GENERAL ACCESS DISPATCH HANDLERS

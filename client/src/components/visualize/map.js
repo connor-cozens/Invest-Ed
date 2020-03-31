@@ -8,32 +8,46 @@ class Map extends Component {
   };
 
   componentDidUpdate = (prevProps) => {
-    if (this.props.data !== null && this.props.data !== prevProps.data) {
-      let temp = {};
-      this.props.data.forEach((item) => {
-        //Convert country name to code name
-        let codeName = getCode(item.name);
-        //Add country code name and value to mapData object
-        temp[codeName] = item.value;
-        this.setState(() => ({
-          mapData: temp
-        }));
-      });
+    try {
+      if (this.props.data !== null && this.props.data !== prevProps.data) {
+        let temp = {};
+        this.props.data.forEach((item) => {
+          if (item !== null) {
+            //Convert country name to code name
+            let codeName = getCode(item.name);
+            //Add country code name and value to mapData object
+            temp[codeName] = item.value;
+            this.setState(() => ({
+              mapData: temp
+            }));
+          }
+        });
+      }
+    }
+    catch(err) {
+      console.log(err);
     }
   }
 
   componentDidMount = () => {
-    if (this.props.data !== null) {
-      let temp = {};
-      this.props.data.forEach((item) => {
-        //Convert country name to code name
-        let codeName = getCode(item.name);
-        //Add country code name and value to mapData object
-        temp[codeName] = item.value;
-        this.setState(() => ({
-          mapData: temp
-        }));
-      });
+    try {
+      if (this.props.data !== null) {
+        let temp = {};
+        this.props.data.forEach((item) => {
+          if (item !== null) {
+            //Convert country name to code name
+            let codeName = getCode(item.name);
+            //Add country code name and value to mapData object
+            temp[codeName] = item.value;
+            this.setState(() => ({
+              mapData: temp
+            }));
+          }
+        });
+      }
+    }
+    catch(err) {
+      console.log(err);
     }
   }
 

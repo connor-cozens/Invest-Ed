@@ -181,13 +181,13 @@ class Chart extends Component {
     const subTitle = this.state.setMainPie ?
     (
      this.props.toggleMap ?
-        <h4 style = {{marginTop: "20px", marginLeft: "180px" }}> {this.props.data().subHeader} </h4>
+        <h4 style = {{marginTop: "20px", marginLeft: "200px" }}> {this.props.data().subHeader} </h4>
         :
         (
           (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ?
-          <h4 style = {{marginTop: "20px", marginLeft: "280px" }}> {this.props.data().subHeader} </h4>
+          <h4 style = {{marginTop: "20px", marginLeft: "325px" }}> {this.props.data().subHeader} </h4>
           :
-          <h4 style = {{marginTop: "20px", marginLeft: "405px" }}> {this.props.data().subHeader} </h4>
+          <h4 style = {{marginTop: "20px", marginLeft: "440px" }}> {this.props.data().subHeader} </h4>
         )
       ) :
       this.props.toggleMap ?
@@ -197,7 +197,7 @@ class Chart extends Component {
            (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ?
            <h4 style = {{marginTop: "20px", marginLeft: "310px" }}> Number of Initiatives </h4>
            :
-           <h4 style = {{marginTop: "20px", marginLeft: "425px" }}> Number of Initiatives </h4>
+           <h4 style = {{marginTop: "20px", marginLeft: "430px" }}> Number of Initiatives </h4>
          )
 
     const secondaryTitle = <h4 style = {{marginTop: "100px"}}> {this.props.data().header2} </h4>
@@ -214,7 +214,7 @@ class Chart extends Component {
         innerRadius={130 - pieInnerRadius}
         outerRadius={210 - pieOuterRadius}
         fill="#8884d8"
-        paddingAngle={2}
+        paddingAngle={0.5}
         dataKey="value"
         onMouseOver={this.onPieEnter}
         onClick = {this.addSubPie}
@@ -237,10 +237,10 @@ class Chart extends Component {
           data={this.state.subPieData}
           cx={xPieLocation}
           cy={yPieLocation}
-          innerRadius={140 - pieInnerRadius}
+          innerRadius={160 - pieInnerRadius}
           outerRadius={210 - pieOuterRadius}
           fill={this.state.subPieFill}
-          paddingAngle={2}
+          paddingAngle={0.5}
           dataKey="value"
           onMouseOver={this.onPieEnter}
           onClick={this.removeSubPie}

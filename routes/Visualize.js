@@ -9,7 +9,7 @@ visualize.use(cors())
 const pool = sql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'PASSWORD66^',
+    password: 'password',
     database: 'inves431_girlsEd',
     waitForConnections: true,
     connectionLimit: 20,
@@ -19,9 +19,6 @@ const pool = sql.createPool({
 
 //ENDPOINT 1 - TARGET FUNDER DATA
 visualize.get('/target-funder', (req,res, next) => {
-    
-    var tagNum = req.params.tagNum
-
     //funder queries
     var query1 = "SELECT * FROM funder"
     var query2 = "SELECT * FROM funderasiabases"
@@ -32,7 +29,6 @@ visualize.get('/target-funder', (req,res, next) => {
 
     var formData = {}
 
-
     async.parallel([
         function(queryDB) {
             pool.query(query1, {}, function(err, results) {
@@ -41,8 +37,8 @@ visualize.get('/target-funder', (req,res, next) => {
                 }else{
                     formData.table1 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -52,8 +48,8 @@ visualize.get('/target-funder', (req,res, next) => {
                 }else{
                     formData.table2 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -63,8 +59,8 @@ visualize.get('/target-funder', (req,res, next) => {
                 }else{
                     formData.table3 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -74,8 +70,8 @@ visualize.get('/target-funder', (req,res, next) => {
                 }else{
                     formData.table4 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -85,8 +81,8 @@ visualize.get('/target-funder', (req,res, next) => {
                 }else{
                     formData.table5 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -96,32 +92,30 @@ visualize.get('/target-funder', (req,res, next) => {
                 }else{
                     formData.table6 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
- 
-    
+
+
      ], function(err) {
           if (err){
             console.log(err)
+            res.json(err)
           }else{
             //pool.end()
-            res.send(formData)
-          } 
-          
+            res.json(formData)
+          }
+
      })
 })
 
 //ENDPOINT 2 - IMPLEMENTER DATA
 visualize.get('/implementor', (req,res, next) => {
-    var tagNum = req.params.tagNum
-
-    //funder queries
+    //implementor queries
     var query1 = "SELECT * FROM implementor"
 
     var formData = {}
-
 
     async.parallel([
         function(queryDB) {
@@ -131,40 +125,38 @@ visualize.get('/implementor', (req,res, next) => {
                 }else{
                     formData.table1 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
- 
-    
+
+
      ], function(err) {
           if (err){
             console.log(err)
           }else{
             //pool.end()
             res.send(formData)
-          } 
-          
+          }
+
      })
 })
 
 //ENDPOINT 3 - INITIATIVE DATA
 visualize.get('/initiative', (req,res, next) => {
-    var tagNum = req.params.tagNum
-    
     //initiative queries
-    var query1 = "SELECT * FROM initiative WHERE tagNumber =" + tagNum
-    var query2 = "SELECT * FROM initiativeregion WHERE tagNumber =" + tagNum
-    var query3 = "SELECT * FROM initiativecountryofoperation WHERE tagNumber =" + tagNum
-    var query4 = "SELECT * FROM initiativeprogrammingactivities WHERE tagNumber =" + tagNum
-    var query5 = "SELECT * FROM initiativefundingsource WHERE tagNumber =" + tagNum
-    var query6 = "SELECT * FROM initiativelaunchcountry WHERE tagNumber =" + tagNum
-    var query7 = "SELECT * FROM initiativetargetgeography WHERE tagNumber =" + tagNum
-    var query8 = "SELECT * FROM initiativetargetpopulationsector WHERE tagNumber =" + tagNum
-    var query9 = "SELECT * FROM initiativemonitoredoutcomes WHERE tagNumber =" + tagNum
-    var query10 = "SELECT * FROM initiativemaineducationsubsector WHERE tagNumber =" + tagNum
-    var query11 = "SELECT * FROM initiativeeducationsubsector WHERE initiativeTagNumber =" + tagNum
-    var query11 = "SELECT * FROM initiativetargetschoolmanagement WHERE tagNumber =" + tagNum
+    var query1 = "SELECT * FROM initiative"
+    var query2 = "SELECT * FROM initiativeregion"
+    var query3 = "SELECT * FROM initiativecountryofoperation"
+    var query4 = "SELECT * FROM initiativeprogrammingactivities"
+    var query5 = "SELECT * FROM initiativefundingsource"
+    var query6 = "SELECT * FROM initiativelaunchcountry"
+    var query7 = "SELECT * FROM initiativetargetgeography"
+    var query8 = "SELECT * FROM initiativetargetpopulationsector"
+    var query9 = "SELECT * FROM initiativemonitoredoutcomes"
+    var query10 = "SELECT * FROM initiativemaineducationsubsector"
+    var query11 = "SELECT * FROM initiativeeducationsubsector"
+    var query11 = "SELECT * FROM initiativetargetschoolmanagement"
 
     var formData = {}
 
@@ -176,8 +168,8 @@ visualize.get('/initiative', (req,res, next) => {
                 }else{
                     formData.table1 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -187,8 +179,8 @@ visualize.get('/initiative', (req,res, next) => {
                 }else{
                     formData.table2 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -198,8 +190,8 @@ visualize.get('/initiative', (req,res, next) => {
                 }else{
                     formData.table3 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -209,8 +201,8 @@ visualize.get('/initiative', (req,res, next) => {
                 }else{
                     formData.table4 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -220,8 +212,8 @@ visualize.get('/initiative', (req,res, next) => {
                 }else{
                     formData.table5 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -231,8 +223,8 @@ visualize.get('/initiative', (req,res, next) => {
                 }else{
                     formData.table6 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -242,8 +234,8 @@ visualize.get('/initiative', (req,res, next) => {
                 }else{
                     formData.table7 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -253,8 +245,8 @@ visualize.get('/initiative', (req,res, next) => {
                 }else{
                     formData.table8 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -264,8 +256,8 @@ visualize.get('/initiative', (req,res, next) => {
                 }else{
                     formData.table9 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -275,8 +267,8 @@ visualize.get('/initiative', (req,res, next) => {
                 }else{
                     formData.table10 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -286,32 +278,33 @@ visualize.get('/initiative', (req,res, next) => {
                 }else{
                     formData.table11 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
-      
-    
+
+
      ], function(err) {
           if (err){
             console.log(err)
           }else{
             //pool.end()
             res.send(formData)
-          } 
-          
+          }
+
      })
 
 })
 
 //ENDPOINT 4 - AN ARRAY OF ATTRIBUTES RELATED TO TARGET FUNDERS
 visualize.get('/target-funder-attributes', (req,res, next) => {
-    var tagNum = req.params.tagNum
-
     //funder queries
     var query1 = "SELECT profitMotive, funderName FROM funder ORDER BY profitMotive"
     var query2 = "SELECT organizationalForm, funderName from funder ORDER BY organizationalForm"
-    var query3 = "SELECT * FROM funds ORDER BY funderName"
+    var query3 = "SELECT impactInvesting, funderName from funder ORDER BY impactInvesting"
+    var query4 = "SELECT educationSubsector, funderName from fundereducationsubsectors ORDER BY educationSubsector"
+    var query5 = "SELECT baseLocation, funderName from funderinternationalbases ORDER BY baseLocation"
+    var query6 = "SELECT * FROM funds ORDER BY funderName"
 
     var formData = {}
 
@@ -323,8 +316,8 @@ visualize.get('/target-funder-attributes', (req,res, next) => {
                 }else{
                     formData.table1 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -334,8 +327,8 @@ visualize.get('/target-funder-attributes', (req,res, next) => {
                 }else{
                     formData.table2 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
         function(queryDB) {
@@ -345,31 +338,61 @@ visualize.get('/target-funder-attributes', (req,res, next) => {
                 }else{
                     formData.table3 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
- 
-    
+        function(queryDB) {
+            pool.query(query4, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table4 = results;
+                    queryDB()
+                }
+
+            })
+        },
+        function(queryDB) {
+            pool.query(query5, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table5 = results;
+                    queryDB()
+                }
+
+            })
+        },
+        function(queryDB) {
+            pool.query(query6, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table6 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+
      ], function(err) {
           if (err){
             console.log(err)
           }else{
             //pool.end()
             res.send(formData)
-          } 
-          
-     })
-   
+          }
 
+     })
 })
 
 //ENDPOINT 5 - AN ARRAY OF ATTRIBUTES RELATED TO IMPLEMENTERS
-visualize.get('/implementor-attributes', (req,res, next) => {
-    var tagNum = req.params.tagNum
-
+visualize.get('/implementor-attributes', (req, res, next) => {
     //funder queries
     var query1 = "SELECT * FROM implementor ORDER by profitMotive"
+    var query2 = "SELECT tagNum, implementorName FROM implements ORDER BY implementorName"
 
     var formData = {}
 
@@ -381,28 +404,33 @@ visualize.get('/implementor-attributes', (req,res, next) => {
                 }else{
                     formData.table1 = results;
                     queryDB()
-                } 
-                
+                }
+
             })
         },
- 
-    
+        function(queryDB) {
+            pool.query(query2, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table2 = results;
+                    queryDB()
+                }
+            })
+        },
      ], function(err) {
           if (err){
             console.log(err)
           }else{
             //pool.end()
             res.send(formData)
-          } 
-          
+          }
      })
-   
 })
 
  //ENDPOINT 6 - AN ARRAY OF RELATIONSHIPS BETWEEN TARGET FUNDERS AND INITIATIVES
 visualize.get('/target-funder-initiatives', (req,res, next) => {
-    var tagNum = req.params.tagNum
-   
+
 })
 
 //ENDPOINT 7 - AN ARRAY OF RELATIONSHIPS BETWEEN iMPLEMENTERS AND INITIATIVES

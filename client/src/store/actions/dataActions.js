@@ -14,6 +14,13 @@ import {
   FORM_SUBMIT_SUCCESS,
   FORM_SUBMIT_ERROR,
   FORM_SUBMIT_CLEAR,
+
+  SET_FUNDER_DATA,
+  SET_IMPLEMENTER_DATA,
+  SET_INITIATIVE_DATA,
+  SET_FUNDER_ATTRIBUTES,
+  SET_IMPLEMENTER_ATTRIBUTES,
+  UNSET_VISUALIZED_DATA,
   ACCESS_ERROR,
   CLEAR_ACCESS_ERROR
 } from '../reducers/dataReducer';
@@ -178,7 +185,7 @@ const readForm = (response => {
   };
 
   console.log(initiative);
-  
+
   return initiative;
 })
 
@@ -503,4 +510,441 @@ export const addFormRA = (form, isModified) => (dispatch) => {
 
 export const setFormSubmissionComplete = () => (dispatch) => {
   dispatch({type: FORM_SUBMIT_CLEAR});
+}
+
+/////VISUALIZATION REQUESTS//////////////////////////////////////////////////////////
+
+//FUNDERS
+//Single-Valued Funder Attributes
+const singleValFunderAttr = (response, attribute) => {
+  const funderAttribute = [];
+  if (response.data.table1) {
+    response.data.table1.forEach((funder) => {
+      const name = attribute == 'profitMotive' ? funder.profitMotive : (
+      attribute == 'organizationalForm' ? funder.organizationalForm: (
+        attribute == 'impactInvesting' ? funder.impactInvesting: null)
+      );
+
+      var object = funderAttribute.find((obj) => { return obj.name == name });
+
+      //If object exists in profitMotives object
+      if (object !== undefined){
+        object.value++;
+      }
+      //Otherwise, add new key and value pair
+      else{
+        funderAttribute.push({name: name, value: 1})
+      }
+    });
+  }
+  return funderAttribute
+}
+
+//Multi-Valued Funder Attributes
+const multiValFunderAttr = (response, attribute) => {
+  const funderAttribute = [];
+
+  const arr = attribute == 'educationSubsector' ? response.data.table4 : (
+  attribute == 'baseLocation' ? response.data.table5 : null )
+
+  if (arr) {
+    arr.forEach((funder) => {
+      const name = attribute == 'educationSubsector' ? funder.educationSubsector : (
+        attribute == 'baseLocation' ? funder.baseLocation : null
+      );
+      var object = funderAttribute.find((obj) => { return obj.name == name });
+
+      //If object already exists
+      if (object !== undefined){
+        object.value++;
+      }
+      //Otherwise, add new key and value pair
+      else{
+        funderAttribute.push({name: name, value: 1})
+      }
+    });
+  }
+  return funderAttribute
+}
+
+export const getFunderData = () => (dispatch) => {
+  axios.get(`http://localhost:4000/visualize/target-funder`)
+    .then(response => {
+      const FunderData = {};
+
+      //Funder Attributes
+      FunderData.profitMotives = singleValFunderAttr(response, 'profitMotive');
+      FunderData.organizationForm = singleValFunderAttr(response, 'organizationalForm');
+
+      FunderData.impactInvesting = singleValFunderAttr(response, 'impactInvesting');
+      FunderData.educationSubsector = multiValFunderAttr(response, 'educationSubsector');
+      FunderData.baseLocation = multiValFunderAttr(response, 'baseLocation');
+
+      dispatch({type: SET_FUNDER_DATA, payload: FunderData});
+    })
+    .catch(err => {
+      console.log(err);
+      //dispatch({type: ACCESS_ERROR, payload: "Error retrieving data"});
+    })
+}
+
+
+
+//IMPLEMENTERS
+const singleValImplementerAttr = (response) => {
+  const impAttribute = [];
+  if (response.data.table1) {
+    response.data.table1.forEach((imp) => {
+      const name = imp.profitMotive;
+
+      var object = impAttribute.find((obj) => { return obj.name == name });
+
+      //If object exists in profitMotives object
+      if (object !== undefined){
+        object.value++;
+      }
+      //Otherwise, add new key and value pair
+      else{
+        impAttribute.push({name: name, value: 1})
+      }
+    });
+  }
+  return impAttribute
+}
+
+export const getImplementerData = () => (dispatch) => {
+  axios.get(`http://localhost:4000/visualize/implementor`)
+    .then(response => {
+      const ImplementerData = {};
+
+      //Implementer Attributes
+      ImplementerData.profitMotives = singleValImplementerAttr(response);
+      dispatch({type: SET_IMPLEMENTER_DATA, payload: ImplementerData});
+    })
+    .catch(err => {
+      console.log(err);
+    })
+}
+
+
+
+//INITIATIVES
+const singleValInitAttr = (response, attribute) => {
+  const initAttribute = [];
+  if (response.data.table1) {
+    response.data.table1.forEach((init) => {
+      const name = attribute == 'mainProgrammingArea' ? init.mainProgrammingActivity : (
+      attribute == 'mainProgrammingActivity' ? init.mainProgrammingActivity: null
+      );
+
+      var object = initAttribute.find((obj) => { return obj.name == name });
+
+      //If object exists in profitMotives object
+      if (object !== undefined){
+        object.value++;
+      }
+      //Otherwise, add new key and value pair
+      else{
+        initAttribute.push({name: name, value: 1})
+      }
+    });
+  }
+  return initAttribute
+}
+
+const multiValInitAttr = (response, attribute) => {
+  const initAttribute = [];
+
+  const arr = attribute == 'region' ? response.data.table2 : (
+  attribute == 'country' ? response.data.table3 : (
+      attribute == 'programmingActivity' ? response.data.table4 : (
+          attribute == 'sourceOfFunding' ? response.data.table5 : (
+              attribute == 'targetGeography' ? response.data.table7 : (
+                  attribute == 'targetPopulationSector' ? response.data.table8 : (
+                      attribute == 'monitoredOutcome' ? response.data.table9 : (
+                          attribute == 'mainEducationSubsector' ? response.data.table10 : (
+                              attribute == 'targetSchoolManagementType' ? response.data.table11 : null
+                          )
+                      )
+                  )
+              )
+          )
+      )
+  ));
+
+  if (arr) {
+    arr.forEach((init) => {
+      const name = attribute == 'region' ? init.region : (
+      attribute == 'country' ? init.country : (
+          attribute == 'programmingActivity' ? init.programmingActivity : (
+              attribute == 'sourceOfFunding' ? init.sourceOfFunding : (
+                  attribute == 'targetGeography' ? init.targetGeography : (
+                      attribute == 'targetPopulationSector' ? init.targetPopulationSector : (
+                          attribute == 'monitoredOutcome' ? init.monitoredOutcome : (
+                              attribute == 'mainEducationSubsector' ? init.mainEducationSubsector : (
+                                  attribute == 'targetSchoolManagementType' ? init.targetSchoolManagementType : null
+                              )
+                          )
+                      )
+                  )
+              )
+          )
+      ));
+
+      var object = initAttribute.find((obj) => { return obj.name == name });
+
+      //If object already exists
+      if (object !== undefined){
+        object.value++;
+      }
+      //Otherwise, add new key and value pair
+      else{
+        initAttribute.push({name: name, value: 1})
+      }
+    });
+  }
+  return initAttribute
+}
+
+export const getInitiativeData = () => (dispatch) => {
+  axios.get(`http://localhost:4000/visualize/initiative`)
+    .then(response => {
+      const InitiativeData = {};
+
+      //Initiative Attributes
+      InitiativeData.mainProgrammingArea = singleValInitAttr(response, 'mainProgrammingArea');
+      InitiativeData.mainProgrammingActivity = singleValInitAttr(response, 'mainProgrammingActivity');
+
+      InitiativeData.region = multiValInitAttr(response, 'region');
+      InitiativeData.countryOfOperation = multiValInitAttr(response, 'country');
+      InitiativeData.programmingActivity = multiValInitAttr(response, 'programmingActivity');
+      InitiativeData.sourceOfFunding = multiValInitAttr(response, 'sourceOfFunding');
+      InitiativeData.targetGeography = multiValInitAttr(response, 'targetGeography');
+      InitiativeData.targetPopulationSector = multiValInitAttr(response, 'targetPopulationSector');
+      InitiativeData.monitoredOutcome = multiValInitAttr(response, 'monitoredOutcome');
+      InitiativeData.mainEducationSubsector = multiValInitAttr(response, 'mainEducationSubsector');
+      InitiativeData.targetSchoolManagementType = multiValInitAttr(response, 'targetSchoolManagementType');
+
+      dispatch({type: SET_INITIATIVE_DATA, payload: InitiativeData});
+    })
+    .catch(err => {
+      console.log(err);
+    })
+}
+
+
+
+//INITIATIVE FUNDERS BY ATTRIBUTE
+const fundersPerFunderAttrType = (response, attribute) => {
+  const funders = [];
+
+  const arr = attribute == 'profitMotive' ? response.data.table1 : (
+  attribute == 'organizationalForm' ? response.data.table2 : (
+    attribute == 'impactInvesting' ? response.data.table3 : (
+      attribute == 'educationSubsector' ? response.data.table4 : (
+          attribute == 'baseLocation' ? response.data.table5 : null
+        )
+      )
+    )
+  );
+
+  if (arr) {
+    arr.forEach((funder) => {
+      const name = attribute == 'profitMotive' ? funder.profitMotive : (
+      attribute == 'organizationalForm' ? funder.organizationalForm: (
+        attribute == 'impactInvesting' ? funder.impactInvesting: (
+          attribute == 'educationSubsector' ? funder.educationSubsector: (
+            attribute == 'baseLocation' ? funder.baseLocation: null
+            )
+          )
+        )
+      );
+
+      var object = funders.find((obj) => { return obj.name == name });
+
+      //If object exists in profitMotives object
+      if (object !== undefined){
+        object.value.push(funder.funderName);
+      }
+      //Otherwise, add new key and value pair
+      else{
+        funders.push({name: name, value: [funder.funderName]});
+      }
+    });
+  }
+  return funders;
+}
+
+const numInitativesPerFunder = (response, funder) => {
+  const initiatives = [];
+  response.data.table6.forEach(funds => {
+    //Only get current funder instances
+    if (funds.funderName == funder) {
+      const currentTag = funds.tagNum;
+      var object = initiatives.find(obj => { return obj.initiative == currentTag });
+
+      if (object === undefined) {
+        initiatives.push({initiative: currentTag});
+      }
+    }
+  });
+  return initiatives;
+}
+
+export const getInitiativeFundersByAttr = () => (dispatch) => {
+  axios.get(`http://localhost:4000/visualize/target-funder-attributes`)
+    .then(response => {
+
+      const FunderAttributes = {};
+
+      //ATTRIBUTE 1 - PROFIT MOTIVE
+      const ProfitMotiveTargetFunder = [];
+      const fundersByProfitMotive = fundersPerFunderAttrType(response, 'profitMotive');
+      fundersByProfitMotive.forEach(attrType => {
+        const data = [];
+        attrType.value.forEach(funder => {
+          var numInitativesFunded = numInitativesPerFunder(response, funder).length;
+          if (numInitativesFunded !== 0) {
+            data.push({name: funder, value: numInitativesFunded});
+          }
+        });
+        ProfitMotiveTargetFunder.push({id: attrType.name, data: data});
+      });
+
+      //ATTRIBUTE 2 - ORGANIZATION FORM
+      const OrgFormTargetFunder = [];
+      const fundersByOrgForm = fundersPerFunderAttrType(response, 'organizationalForm');
+      fundersByOrgForm.forEach(attrType => {
+        const data = [];
+        attrType.value.forEach(funder => {
+          var numInitativesFunded = numInitativesPerFunder(response, funder).length;
+          if (numInitativesFunded !== 0) {
+            data.push({name: funder, value: numInitativesFunded});
+          }
+        });
+        OrgFormTargetFunder.push({id: attrType.name, data: data});
+      });
+
+      //ATTRIBUTE 3 - IMPACT INVESTING
+      const ImpactInvestingTargetFunder = [];
+      const fundersByImpactInvesting = fundersPerFunderAttrType(response, 'impactInvesting');
+      fundersByImpactInvesting.forEach(attrType => {
+        const data = [];
+        attrType.value.forEach(funder => {
+          var numInitativesFunded = numInitativesPerFunder(response, funder).length;
+          if (numInitativesFunded !== 0) {
+            data.push({name: funder, value: numInitativesFunded});
+          }
+        });
+        ImpactInvestingTargetFunder.push({id: attrType.name, data: data});
+      });
+
+      //ATTRIBUTE 4 - EDUCATION SUBSECTORS
+      const EduSubsectorsTargetFunder = [];
+      const fundersByEduSubsector = fundersPerFunderAttrType(response, 'educationSubsector');
+      fundersByEduSubsector.forEach(attrType => {
+        const data = [];
+        attrType.value.forEach(funder => {
+          var numInitativesFunded = numInitativesPerFunder(response, funder).length;
+          if (numInitativesFunded !== 0) {
+            data.push({name: funder, value: numInitativesFunded});
+          }
+        });
+        EduSubsectorsTargetFunder.push({id: attrType.name, data: data});
+      });
+
+      //ATTRIBUTE 5 - BASE LOCATION
+      const BaseLocationTargetFunder = [];
+      const fundersByBaseLocation = fundersPerFunderAttrType(response, 'baseLocation');
+      fundersByBaseLocation.forEach(attrType => {
+        const data = [];
+        attrType.value.forEach(funder => {
+          var numInitativesFunded = numInitativesPerFunder(response, funder).length;
+          if (numInitativesFunded !== 0) {
+            data.push({name: funder, value: numInitativesFunded});
+          }
+        });
+        BaseLocationTargetFunder.push({id: attrType.name, data: data});
+      });
+
+      //Set attributes to funder attributes object
+      FunderAttributes.ProfitMotiveTargetFunder = ProfitMotiveTargetFunder;
+      FunderAttributes.OrgFormTargetFunder = OrgFormTargetFunder;
+      FunderAttributes.ImpactInvestingTargetFunder = ImpactInvestingTargetFunder;
+      FunderAttributes.EduSubsectorsTargetFunder = EduSubsectorsTargetFunder;
+      FunderAttributes.BaseLocationTargetFunder = BaseLocationTargetFunder;
+
+      dispatch({type: SET_FUNDER_ATTRIBUTES, payload: FunderAttributes});
+    })
+    .catch(err => {
+      console.log(err);
+    })
+}
+
+
+//INITIATIVE IMPLEMENTERS BY ATTRIBUTE
+const implementersPerFunderAttrType = (response) => {
+  const implementers = [];
+  const arr = response.data.table1;
+  if (arr) {
+    arr.forEach((implementer) => {
+      const name = implementer.profitMotive;
+      var object = implementers.find((obj) => { return obj.name == name });
+      //If object exists in profitMotives object
+      if (object !== undefined){
+        object.value.push(implementer.implementorName);
+      }
+      //Otherwise, add new key and value pair
+      else{
+        implementers.push({name: name, value: [implementer.implementorName]});
+      }
+    });
+  }
+  return implementers;
+}
+
+const numInitativesPerImplementer = (response, implementer) => {
+  const initiatives = [];
+  response.data.table2.forEach(_implements => {
+    //Only get current funder instances
+    if (_implements.implementorName == implementer) {
+      const currentTag = _implements.tagNum;
+      var object = initiatives.find(obj => { return obj.initiative == currentTag });
+
+      if (object === undefined) {
+        initiatives.push({initiative: currentTag});
+      }
+    }
+  });
+  return initiatives;
+}
+
+export const getInitiativeImplementersByAttr = () => (dispatch) => {
+  axios.get(`http://localhost:4000/visualize/implementor-attributes`)
+    .then(response => {
+      console.log(response.data);
+
+      const ImplementerAttributes = {};
+
+      //ATTRIBUTE 1 - PROFIT MOTIVE
+      const ProfitMotiveImplementer = [];
+      const implementersByProfitMotive = implementersPerFunderAttrType(response);
+      implementersByProfitMotive.forEach(attrType => {
+        const data = [];
+        attrType.value.forEach(implementer => {
+          var numInitativesFunded = numInitativesPerImplementer(response, implementer).length;
+          if (numInitativesFunded !== 0) {
+            data.push({name: implementer, value: numInitativesFunded});
+          }
+        });
+        ProfitMotiveImplementer.push({id: attrType.name, data: data});
+      });
+
+      ImplementerAttributes.ProfitMotiveImplementer = ProfitMotiveImplementer;
+
+      dispatch({type: SET_IMPLEMENTER_ATTRIBUTES, payload: ImplementerAttributes});
+    })
+    .catch(err => {
+      console.log(err);
+    });
 }

@@ -20,10 +20,11 @@ const renderActiveShape = (props) => {
   const ex = mx + (cos >= 0 ? 1 : -1) * 22;
   const ey = my;
   const textAnchor = cos >= 0 ? 'start' : 'end';
+  const font = payload.name.length < 16 ? "30px" : (payload.name.length < 30 ? "20px" : "10px")
 
   return (
     <g>
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fontSize = "30px" fill={fill}>{payload.name}</text>
+      <text x={cx} y={cy} dy={8} textAnchor="middle" fontSize = {font} fill={fill}>{payload.name}</text>
       <Sector
         cx={cx}
         cy={cy}

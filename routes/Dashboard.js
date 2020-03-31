@@ -12,7 +12,7 @@ dashboard.use(cors())
 const pool = sql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'PASSWORD66^',
+    password: 'password',
     database: 'inves431_girlsEd',
     waitForConnections: true,
     connectionLimit: 20,
@@ -22,7 +22,7 @@ const pool = sql.createPool({
 const poolTemp = sql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'PASSWORD66^',
+    password: 'password',
     database: 'inves431_girlsEd_temp',
     waitForConnections: true,
     connectionLimit: 20,
@@ -909,7 +909,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
      //Insert initiative region data
    for(var i = 0; i < formData.initiativeRegions.length; i++) {
-       
+
         var query8 = "INSERT into initiativeregion VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
         console.log(formData.initiativeRegions[i])
         async.parallel([
@@ -1352,7 +1352,6 @@ dashboard.post('/submit-form-temp', (req, res) =>{
    res.json("Form successfully added to the DB")
 
 })
-
 
 //POST new form to DB
 dashboard.post('/submitform', (req, res) =>{
@@ -1965,9 +1964,9 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
     }
 
     console.log(formData);
-   
+
     //Update funder data
-   var query1 = "UPDATE funder SET funderName = '" + formData.funderName + "', funderWebsite ='"+ formData.funderUrl +"', profitMotive ='"+ formData.funderMotive +"', impactInvesting ='"+ formData.funderImpact 
+   var query1 = "UPDATE funder SET funderName = '" + formData.funderName + "', funderWebsite ='"+ formData.funderUrl +"', profitMotive ='"+ formData.funderMotive +"', impactInvesting ='"+ formData.funderImpact
    +"', organizationalForm ='"+ formData.funderOrganizationForm +"' WHERE funderName = '" + formData.OfunderName + "'"
    async.parallel([
     function(queryDB) {
@@ -1975,7 +1974,7 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
             if (err){
                 return queryDB(err)
             }else{
-                
+
                 queryDB()
             }
 
@@ -1997,20 +1996,20 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
-    
+
      //Insert funder international bases data
    for(var i = 0; i <formData.funderInternationalBases.length; i++) {
     var query3 = "INSERT into funderinternationalbases VALUES ('" + formData.funderName +"','"+ formData.funderInternationalBases[i] +"')"
@@ -2044,18 +2043,18 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
 
     //Insert funder education subsector data
@@ -2090,18 +2089,18 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
     //Insert funder education organizational traits data
     for(var i = 0; i <formData.funderOrgTraits.length; i++) {
@@ -2135,18 +2134,18 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
     //Insert funder asia bases data
     for(var i = 0; i <formData.funderAsiaBases.length; i++) {
@@ -2180,18 +2179,18 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
     //Insert funder education funder asia operations data
     for(var i = 0; i < formData.funderAsiaOperations.length; i++) {
@@ -2252,22 +2251,22 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
     //Insert initiative region data
     for(var i = 0; i < formData.initiativeRegions.length; i++) {
-    
+
         var query14 = "INSERT into initiativeregion VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
         console.log(formData.initiativeRegions[i])
         async.parallel([
@@ -2300,18 +2299,18 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
     //Insert initiative country of operation data
     for(var i = 0; i < formData.initiativeCountries.length; i++) {
@@ -2344,20 +2343,20 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
-        console.log("here2")    
+        console.log("here2")
     //Insert initiative programming activity data
     for(var i = 0; i < formData.initiativeActivities.length; i++) {
     var query18 = "INSERT into initiativeprogrammingactivities VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeActivities[i]+"')"
@@ -2389,21 +2388,21 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                   if (err){
                       return queryDB(err)
                   }else{
-                      
+
                       queryDB()
                   }
-      
+
               })
           },
-      
+
           ], function(err) {
               if (err){
                   console.log(err)
               }
-      
+
           })
 
-          console.log("here4")         
+          console.log("here4")
     //Insert initiative source of fees data
     for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
     var query20= "INSERT into initiativefundingsource VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeSourceOfFees[i]+"')"
@@ -2435,18 +2434,18 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                  if (err){
                      return queryDB(err)
                  }else{
-                     
+
                      queryDB()
                  }
-     
+
              })
          },
-     
+
          ], function(err) {
              if (err){
                  console.log(err)
              }
-     
+
          })
     //Insert initiative launch country data
     for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
@@ -2479,18 +2478,18 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                  if (err){
                      return queryDB(err)
                  }else{
-                     
+
                      queryDB()
                  }
-     
+
              })
          },
-     
+
          ], function(err) {
              if (err){
                  console.log(err)
              }
-     
+
          })
     //Insert initiative target geo data
     for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
@@ -2523,7 +2522,7 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
 
@@ -2558,7 +2557,7 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
 
     })
     }
-   
+
     //delete initiativemonitoredoutcomes data
     var query27= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ formData.tagNum
     async.parallel([
@@ -2567,7 +2566,7 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
 
@@ -2611,18 +2610,18 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                  if (err){
                      return queryDB(err)
                  }else{
-                     
+
                      queryDB()
                  }
- 
+
              })
          },
- 
+
          ], function(err) {
              if (err){
                  console.log(err)
              }
- 
+
          })
     //Insert initiative main education subsector data
     for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
@@ -2656,7 +2655,7 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
 
@@ -2701,7 +2700,7 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
 
@@ -2765,7 +2764,7 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
     + formData.ofname +"')"
 
     // //implementor - implements - initiative
-    var query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "'), startYear ='" 
+    var query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "'), startYear ='"
     + formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (implementorName = '" + formData.OimplementorName + "')"
 
     async.parallel([
@@ -2795,8 +2794,8 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
                 console.log(err)
             }
 
-        })    
-    
+        })
+
     res.send("Inves431_girlsEd updated successfully!")
 
 
@@ -2847,7 +2846,7 @@ dashboard.post('/update-form-temp/', (req, res) =>{
         // single val implementer
         implementorName: req.body.iname, //im
         implementorMotive: req.body.impMotive, //im
-        
+
         // single val other
         comments: req.body.comments, //other
         needsReview: req.body.needsReview, //other
@@ -2889,9 +2888,9 @@ dashboard.post('/update-form-temp/', (req, res) =>{
     }
 
     console.log(formData);
-   
+
     //Update funder data
-   var query1 = "UPDATE funder SET funderName = '" + formData.funderName + "', funderWebsite ='"+ formData.funderUrl +"', profitMotive ='"+ formData.funderMotive +"', impactInvesting ='"+ formData.funderImpact 
+   var query1 = "UPDATE funder SET funderName = '" + formData.funderName + "', funderWebsite ='"+ formData.funderUrl +"', profitMotive ='"+ formData.funderMotive +"', impactInvesting ='"+ formData.funderImpact
    +"', organizationalForm ='"+ formData.funderOrganizationForm +"' WHERE funderName = '" + formData.OfunderName + "'"
    async.parallel([
     function(queryDB) {
@@ -2899,7 +2898,7 @@ dashboard.post('/update-form-temp/', (req, res) =>{
             if (err){
                 return queryDB(err)
             }else{
-                
+
                 queryDB()
             }
 
@@ -2921,20 +2920,20 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
-    
+
      //Insert funder international bases data
    for(var i = 0; i <formData.funderInternationalBases.length; i++) {
     var query3 = "INSERT into funderinternationalbases VALUES ('" + formData.funderName +"','"+ formData.funderInternationalBases[i] +"')"
@@ -2968,18 +2967,18 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
 
     //Insert funder education subsector data
@@ -3014,18 +3013,18 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
     //Insert funder education organizational traits data
     for(var i = 0; i <formData.funderOrgTraits.length; i++) {
@@ -3059,18 +3058,18 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
     //Insert funder asia bases data
     for(var i = 0; i <formData.funderAsiaBases.length; i++) {
@@ -3104,18 +3103,18 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
     //Insert funder education funder asia operations data
     for(var i = 0; i < formData.funderAsiaOperations.length; i++) {
@@ -3176,22 +3175,22 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
     //Insert initiative region data
     for(var i = 0; i < formData.initiativeRegions.length; i++) {
-    
+
         var query14 = "INSERT into initiativeregion VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
         console.log(formData.initiativeRegions[i])
         async.parallel([
@@ -3224,18 +3223,18 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
     //Insert initiative country of operation data
     for(var i = 0; i < formData.initiativeCountries.length; i++) {
@@ -3268,20 +3267,20 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
-    
+
             })
         },
-    
+
         ], function(err) {
             if (err){
                 console.log(err)
             }
-    
+
         })
-        console.log("here2")    
+        console.log("here2")
     //Insert initiative programming activity data
     for(var i = 0; i < formData.initiativeActivities.length; i++) {
     var query18 = "INSERT into initiativeprogrammingactivities VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeActivities[i]+"')"
@@ -3313,21 +3312,21 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                   if (err){
                       return queryDB(err)
                   }else{
-                      
+
                       queryDB()
                   }
-      
+
               })
           },
-      
+
           ], function(err) {
               if (err){
                   console.log(err)
               }
-      
+
           })
 
-          console.log("here4")         
+          console.log("here4")
     //Insert initiative source of fees data
     for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
     var query20= "INSERT into initiativefundingsource VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeSourceOfFees[i]+"')"
@@ -3359,18 +3358,18 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                  if (err){
                      return queryDB(err)
                  }else{
-                     
+
                      queryDB()
                  }
-     
+
              })
          },
-     
+
          ], function(err) {
              if (err){
                  console.log(err)
              }
-     
+
          })
     //Insert initiative launch country data
     for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
@@ -3403,18 +3402,18 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                  if (err){
                      return queryDB(err)
                  }else{
-                     
+
                      queryDB()
                  }
-     
+
              })
          },
-     
+
          ], function(err) {
              if (err){
                  console.log(err)
              }
-     
+
          })
     //Insert initiative target geo data
     for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
@@ -3447,7 +3446,7 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
 
@@ -3482,7 +3481,7 @@ dashboard.post('/update-form-temp/', (req, res) =>{
 
     })
     }
-   
+
     //delete initiativemonitoredoutcomes data
     var query27= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ formData.tagNum
     async.parallel([
@@ -3491,7 +3490,7 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
 
@@ -3535,18 +3534,18 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                  if (err){
                      return queryDB(err)
                  }else{
-                     
+
                      queryDB()
                  }
- 
+
              })
          },
- 
+
          ], function(err) {
              if (err){
                  console.log(err)
              }
- 
+
          })
     //Insert initiative main education subsector data
     for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
@@ -3580,7 +3579,7 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
 
@@ -3625,7 +3624,7 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    
+
                     queryDB()
                 }
 
@@ -3689,7 +3688,7 @@ dashboard.post('/update-form-temp/', (req, res) =>{
     + formData.ofname +"')"
 
     // //implementor - implements - initiative
-    var query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "'), startYear ='" 
+    var query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "'), startYear ='"
     + formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (implementorName = '" + formData.OimplementorName + "')"
 
     async.parallel([
@@ -3720,8 +3719,8 @@ dashboard.post('/update-form-temp/', (req, res) =>{
             }
 
         })
-        
-        
+
+
 
 
         var query38 = "UPDATE comments SET comment = '"+ formData.comments +"' WHERE tagNumber = "+formData.tagNum
@@ -3734,18 +3733,18 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                         //formData.table1 = results;
                         queryDB()
                     }
-    
+
                 })
             },
-    
+
             ], function(err) {
                 if (err){
                     console.log(err)
                 }
-    
+
             })
-    
-    
+
+
             var query39 = "UPDATE status SET inDB = " +formData.inDB + ", needsReview =" + formData.needsReview +" WHERE tagNumber = "+formData.tagNum
             async.parallel([
                 function(queryDB) {
@@ -3756,17 +3755,17 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                             //formData.table1 = results;
                             queryDB()
                         }
-    
+
                     })
                 },
-    
+
                 ], function(err) {
                     if (err){
                         console.log(err)
                     }
-    
+
                 })
-    
+
             var query40 = "UPDATE sectionreviews SET funderNameApproval = "+
             formData.funderNameApproval + ",funderUrlApproval = " +
             formData.funderUrlApproval + ",funderMotiveApproval = " +
@@ -3800,8 +3799,8 @@ dashboard.post('/update-form-temp/', (req, res) =>{
             formData.initManagementTypesApproval+ ",implementorNameApproval = " +
             formData.implementorNameApproval+ ",implementorMotiveApproval = " +
             formData.implementorMotiveApproval
-    
-    
+
+
             async.parallel([
                 function(queryDB) {
                     poolTemp.query(query40, {}, function(err, results) {
@@ -3810,17 +3809,17 @@ dashboard.post('/update-form-temp/', (req, res) =>{
                         }else{
                             queryDB()
                         }
-    
+
                     })
                 },
-    
+
                 ], function(err) {
                     if (err){
                         console.log(err)
                     }
-    
+
                 })
-    res.send("Inves431_girlsEd updated successfully!")                
+    res.send("Inves431_girlsEd updated successfully!")
 
 })
 

@@ -1,7 +1,11 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getUser} from '../store/actions/dataActions';
-import WorldIcon from '../images/world.png'
+
+import PieIcon from '../images/visualization.PNG'
+import BarIcon from '../images/barChart.PNG'
+import FormIcon from '../images/forms.png'
+import MapIcon from '../images/map.PNG'
 
 class Landing extends Component{
   componentDidMount(){
@@ -10,12 +14,28 @@ class Landing extends Component{
 
   render() {
     const {authorized, userData, accessError} = this.props;
-    const showAuthStatus = authorized ? (accessError ? <h3>There was an error retrieving your information</h3> : (userData ? <h3>You are logged in as {userData.username}</h3>: <h3>Loading</h3>)) : <h3>Log in to view your dashboard</h3>
+    const showAuthStatus = authorized ? (accessError ? <h3 style = {{paddingTop: '50px', textAlign: "left"}}>There was an error retrieving your information</h3> : (userData ? <h3 style = {{paddingTop: '50px', textAlign: "left"}}>Welcome, {userData.firstname}</h3>: <h3>Loading</h3>)) : null
     return (
-      <div>
-        <h2 style = {{paddingTop: '50px'}}>Welcome to the Invest-Ed Data Visualization Tool</h2>
+      <div className = "container">
         {showAuthStatus}
-        <img src = {WorldIcon} height = {400} width = {400} style = {{margin: "100px 0 0 650px"}} />
+        <br></br><br></br>
+        <div>
+          <div style = {{ display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <img src = {PieIcon} height = {250} width = {285} style = {{display: "inline-block"}}/>
+            <img src = {BarIcon} height = {200} width = {235} style = {{display: "inline-block"}}/>
+          </div>
+          <br></br>
+          <h2 style = {{textAlign: "center", paddingLeft: "200px", paddingRight: "200px"}}>Visualize Data Pertaining to Actors in Girls' Education Initiatives</h2>
+        </div>
+        <br></br><br></br><br></br><br></br>
+        <div>
+          <div style = {{ display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <img src = {FormIcon} height = {200} width = {200} style = {{display: "inline-block"}}/>
+          </div>
+          <br></br>
+          <h2 style = {{textAlign: "center", paddingLeft: "200px", paddingRight: "200px"}}>Submit New Data and Make Modification to Existing Data</h2>
+        </div>
+        <br></br><br></br><br></br><br></br>
       </div>
     );
   }

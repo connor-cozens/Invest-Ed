@@ -9,7 +9,7 @@ const Navbar = (props) => {
   const linksToShow = authorized ? <SignedInLinks/> : <SignedOutLinks/>;
   return (
     <nav className = "navbar navbar-expand-lg navbar-dark bg-primary">
-      <a className="navbar-brand"><b>DataViz</b></a>
+      <a className="navbar-brand"><b>Invest-Ed Data Visualization Tool</b></a>
       {linksToShow}
     </nav>
   )

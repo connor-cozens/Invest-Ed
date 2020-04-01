@@ -21,7 +21,7 @@ class Landing extends Component{
         <br></br><br></br>
         <div>
           <div style = {{ display: "flex", justifyContent: "center", alignItems: "center"}}>
-            <img src = {PieIcon} height = {250} width = {285} style = {{display: "inline-block"}}/>
+            <img src = {PieIcon} height = {250} width = {295} style = {{display: "inline-block"}}/>
             <img src = {BarIcon} height = {200} width = {235} style = {{display: "inline-block"}}/>
           </div>
           <br></br>

@@ -1916,7 +1916,7 @@ dashboard.post('/submitform', (req, res) =>{
 
 })
 
-dashboard.post('/update-form/:tagNum', (req, res) =>{
+dashboard.post('/update-form', (req, res) =>{
 
     const formData = {
 
@@ -2801,7 +2801,7 @@ dashboard.post('/update-form/:tagNum', (req, res) =>{
 
 })
 
-dashboard.post('/update-form-temp/', (req, res) =>{
+dashboard.post('/update-form-temp', (req, res) =>{
 
     const formData = {
 

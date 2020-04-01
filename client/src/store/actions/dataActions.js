@@ -463,7 +463,7 @@ const changeRequest = (form, inDB, isModified) => {
 //Organization user to modify existing form in either main or temp DB (could be in main DB since might have been approved)
 export const modifyForm = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequest(form, inDB, isModified);
-  axios.post(`http://localhost:4000/dashboard/update-test-temp`, req)
+  axios.post(`http://localhost:4000/dashboard//update-form-temp`, req)
     .then(response => {
       dispatch({type: FORM_SUBMIT_SUCCESS});
     })
@@ -475,7 +475,7 @@ export const modifyForm = (form, inDB, isModified) => (dispatch) => {
 //RA user to modify existing form in main DB
 export const modifyFormRA = (form, isModified) => (dispatch) => {
   const req = changeRequestRA(form, isModified);
-  axios.post(`http://localhost:4000/dashboard/update-test`, req)
+  axios.post(`http://localhost:4000/dashboard/update-form`, req)
     .then(response => {
       dispatch({type: FORM_SUBMIT_SUCCESS});
     })

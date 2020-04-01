@@ -155,8 +155,8 @@ visualize.get('/initiative', (req,res, next) => {
     var query8 = "SELECT * FROM initiativetargetpopulationsector"
     var query9 = "SELECT * FROM initiativemonitoredoutcomes"
     var query10 = "SELECT * FROM initiativemaineducationsubsector"
-    var query11 = "SELECT * FROM initiativeeducationsubsector"
-    var query11 = "SELECT * FROM initiativetargetschoolmanagement"
+    var query11 = "SELECT * FROM initiativeeducationsubsectors"
+    var query12 = "SELECT * FROM initiativetargetschoolmanagement"
 
     var formData = {}
 
@@ -282,7 +282,17 @@ visualize.get('/initiative', (req,res, next) => {
 
             })
         },
+        function(queryDB) {
+            pool.query(query12, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table11 = results;
+                    queryDB()
+                }
 
+            })
+        },
 
      ], function(err) {
           if (err){
@@ -305,6 +315,18 @@ visualize.get('/target-funder-attributes', (req,res, next) => {
     var query4 = "SELECT educationSubsector, funderName from fundereducationsubsectors ORDER BY educationSubsector"
     var query5 = "SELECT baseLocation, funderName from funderinternationalbases ORDER BY baseLocation"
     var query6 = "SELECT * FROM funds ORDER BY funderName"
+    var query7 = "SELECT * FROM initiative"
+    var query8 = "SELECT * FROM initiativeregion"
+    var query9 = "SELECT * FROM initiativecountryofoperation"
+    var query10 = "SELECT * FROM initiativeprogrammingactivities"
+    var query11 = "SELECT * FROM initiativefundingsource"
+    var query12 = "SELECT * FROM initiativelaunchcountry"
+    var query13 = "SELECT * FROM initiativetargetgeography"
+    var query14 = "SELECT * FROM initiativetargetpopulationsector"
+    var query15 = "SELECT * FROM initiativemonitoredoutcomes"
+    var query16 = "SELECT * FROM initiativemaineducationsubsector"
+    var query17 = "SELECT * FROM initiativeeducationsubsectors"
+    var query18 = "SELECT * FROM initiativetargetschoolmanagement"
 
     var formData = {}
 
@@ -375,7 +397,147 @@ visualize.get('/target-funder-attributes', (req,res, next) => {
 
             })
         },
+        function(queryDB) {
+            pool.query(query7, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table7 = results;
+                    queryDB()
+                }
 
+            })
+        },
+        function(queryDB) {
+            pool.query(query8, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table8 = results;
+                    queryDB()
+                }
+
+            })
+        },
+        function(queryDB) {
+            pool.query(query9, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table9 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+        function(queryDB) {
+            pool.query(query10, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table10 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+        function(queryDB) {
+            pool.query(query11, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table11 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+        function(queryDB) {
+            pool.query(query12, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table12 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+        function(queryDB) {
+            pool.query(query13, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table13 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+        function(queryDB) {
+            pool.query(query14, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table14 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+        function(queryDB) {
+            pool.query(query15, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table15 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+        function(queryDB) {
+            pool.query(query16, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table16 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+        function(queryDB) {
+            pool.query(query17, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table17 = results;
+                    queryDB()
+                }
+
+            })
+        },
+
+        function(queryDB) {
+            pool.query(query18, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table18 = results;
+                    queryDB()
+                }
+
+            })
+        },
 
      ], function(err) {
           if (err){
@@ -393,6 +555,8 @@ visualize.get('/implementor-attributes', (req, res, next) => {
     //funder queries
     var query1 = "SELECT * FROM implementor ORDER by profitMotive"
     var query2 = "SELECT tagNum, implementorName FROM implements ORDER BY implementorName"
+    var query3 = "SELECT * FROM initiative"
+    var query4 = "SELECT * FROM initiativecountryofoperation"
 
     var formData = {}
 
@@ -418,6 +582,26 @@ visualize.get('/implementor-attributes', (req, res, next) => {
                 }
             })
         },
+        function(queryDB) {
+            pool.query(query3, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table3 = results;
+                    queryDB()
+                }
+            })
+        },
+        function(queryDB) {
+            pool.query(query4, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table4 = results;
+                    queryDB()
+                }
+            })
+        },
      ], function(err) {
           if (err){
             console.log(err)
@@ -428,25 +612,25 @@ visualize.get('/implementor-attributes', (req, res, next) => {
      })
 })
 
- //ENDPOINT 6 - AN ARRAY OF RELATIONSHIPS BETWEEN TARGET FUNDERS AND INITIATIVES
-visualize.get('/target-funder-initiatives', (req,res, next) => {
-
-})
-
-//ENDPOINT 7 - AN ARRAY OF RELATIONSHIPS BETWEEN iMPLEMENTERS AND INITIATIVES
-visualize.get('/implementors-initiatives', (req,res, next) => {
-    res.send('Visualize')
-})
-
-//ENDPOINT 8 - TARGET FUNDER SPECIFIC DATA RELATED TO INITIATIVES
-visualize.get('/target-funder-initiative-specific', (req,res, next) => {
-    res.send('Visualize')
-})
-
-//ENDPOINT 9 - IMPLEMENTER SPECIFIC DATA RELATED TO INITIATIVES
-visualize.get('/implementor-initiative-specific', (req,res, next) => {
-    res.send('Visualize')
-})
+//  //ENDPOINT 6 - AN ARRAY OF RELATIONSHIPS BETWEEN TARGET FUNDERS AND INITIATIVES
+// visualize.get('/target-funder-initiatives', (req,res, next) => {
+//
+// })
+//
+// //ENDPOINT 7 - AN ARRAY OF RELATIONSHIPS BETWEEN iMPLEMENTERS AND INITIATIVES
+// visualize.get('/implementors-initiatives', (req,res, next) => {
+//     res.send('Visualize')
+// })
+//
+// //ENDPOINT 8 - TARGET FUNDER SPECIFIC DATA RELATED TO INITIATIVES
+// visualize.get('/target-funder-initiative-specific', (req,res, next) => {
+//     res.send('Visualize')
+// })
+//
+// //ENDPOINT 9 - IMPLEMENTER SPECIFIC DATA RELATED TO INITIATIVES
+// visualize.get('/implementor-initiative-specific', (req,res, next) => {
+//     res.send('Visualize')
+// })
 
 
 module.exports = visualize

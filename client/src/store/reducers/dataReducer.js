@@ -21,6 +21,10 @@ export const SET_IMPLEMENTER_DATA = 'SET_IMPLEMENTER_DATA';
 export const SET_INITIATIVE_DATA = 'SET_INITIATIVE_DATA';
 export const SET_FUNDER_ATTRIBUTES = 'SET_FUNDER_ATTRIBUTES';
 export const SET_IMPLEMENTER_ATTRIBUTES = 'SET_IMPLEMENTER_ATTRIBUTES';
+export const SET_FUNDERTYPE_INITIATIVE = 'SET_FUNDERTYPE_INITIATIVE';
+export const SET_IMPLEMENTERTYPE_INITIATIVE = 'SET_IMPLEMENTERTYPE_INITIATIVE';
+export const SET_FUNDER_INITIATIVE = 'SET_FUNDER_INITIATIVE';
+export const SET_IMPLEMENTER_INITIATIVE = 'SET_IMPLEMENTER_INITIATIVE';
 export const UNSET_VISUALIZED_DATA = 'UNSET_VISUALIZED_DATA';
 
 export const CLEAR_ACCESS_ERROR = 'CLEAR_ACCESS_ERROR';
@@ -53,7 +57,12 @@ const initState = {
   ImplementerData: null,
   InititativeData: null,
   FunderAttributes: null,
-  ImplementerAttributes: null
+  ImplementerAttributes: null,
+
+  FunderTypeInitiative: null,
+  ImplementerTypeInitiative: null,
+  FunderInitiative: null,
+  ImplementerInitiative: null
 }
 
 const dataReducer = (state = initState, action) => {
@@ -108,7 +117,11 @@ const dataReducer = (state = initState, action) => {
         ImplementerData: null,
         InititativeData: null,
         FunderAttributes: null,
-        ImplementerAttributes: null
+        ImplementerAttributes: null,
+        FunderTypeInitiative: null,
+        ImplementerTypeInitiative: null,
+        FunderInitiative: null,
+        ImplementerInitiative: null
       };
 
 
@@ -193,6 +206,27 @@ const dataReducer = (state = initState, action) => {
         ...state,
         ImplementerAttributes: action.payload
       };
+    case SET_FUNDERTYPE_INITIATIVE:
+      return {
+        ...state,
+        FunderTypeInitiative: action.payload
+      };
+    case SET_IMPLEMENTERTYPE_INITIATIVE:
+      return {
+        ...state,
+        ImplementerTypeInitiative: action.payload
+      };
+    case SET_FUNDER_INITIATIVE:
+      return {
+        ...state,
+        FunderInitiative: action.payload
+      };
+    case SET_IMPLEMENTER_INITIATIVE:
+      return {
+        ...state,
+        ImplementerInitiative: action.payload
+      };
+
     case UNSET_VISUALIZED_DATA:
       return {
         ...state,
@@ -200,7 +234,11 @@ const dataReducer = (state = initState, action) => {
         ImplementerData: null,
         InititativeData: null,
         FunderAttributes: null,
-        ImplementerAttributes: null
+        ImplementerAttributes: null,
+        FunderTypeInitiative: null,
+        ImplementerTypeInitiative: null,
+        FunderInitiative: null,
+        ImplementerInitiative: null
       };
 
 

@@ -20,7 +20,7 @@ const renderActiveShape = (props) => {
   const ex = mx + (cos >= 0 ? 1 : -1) * 22;
   const ey = my;
   const textAnchor = cos >= 0 ? 'start' : 'end';
-  const font = payload.name.length < 16 ? "30px" : (payload.name.length < 30 ? "20px" : "10px")
+  const font = payload.name.length < 16 ? "30px" : (payload.name.length < 26 ? "20px" : "8px")
 
   return (
     <g>
@@ -238,7 +238,7 @@ class Chart extends Component {
           data={this.state.subPieData}
           cx={xPieLocation}
           cy={yPieLocation}
-          innerRadius={160 - pieInnerRadius}
+          innerRadius={140 - pieInnerRadius}
           outerRadius={210 - pieOuterRadius}
           fill={this.state.subPieFill}
           paddingAngle={0.5}

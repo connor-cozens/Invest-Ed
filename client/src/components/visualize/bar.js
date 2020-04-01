@@ -6,14 +6,14 @@ class BarGraph extends Component {
     return (
       <BarChart
         width={400}
-        height={300}
+        height={600}
         data={this.props.data}
         layout="vertical"
-        margin={{top: 20, right: 60, left: 30}}
+        margin={{top: 30, right: 90, left: 90}}
         >
         <XAxis type="number"/>
-        <YAxis type="category" dataKey="name" />
-        <CartesianGrid strokeDasharray="3 3"/>
+        <YAxis type="category" dataKey="name" tick={{fontSize: 8}}/>
+        <CartesianGrid strokeDasharray="4 3"/>
         <Tooltip/>
         <Legend />
         <Bar dataKey="value" fill={this.props.fill} />

@@ -1,716 +1,131 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Chart from './chart'
 import Switch from "react-switch";
 import Map from './map';
+
+import {getFunderData, getImplementerData, getInitiativeData, getInitiativeFundersByAttr, getInitiativeImplementersByAttr} from '../../store/actions/dataActions';
 
 import WorldIcon from '../../images/world.png'
 
 class Visualize extends Component {
   state = {
-    //Data to be used for visualization - will be returned by backend as json response instead - this is dummy for now
-
-//ENDPOINT 1 - TARGET FUNDER DATA
-    TargetFunderData:
-      {
-        profitMotives: [
-        {
-          name: "profit",
-          value: 4  //Number of target Funders that are profit-based
-        },
-        {
-          name: "not-for-profit",
-          value: 2
-        },
-        {
-          name: "hybrid",
-          value: 3
-        }],
-        organizationForm: [
-          {
-            name: "private",
-            value: 20 //Number of target Funders that private funders
-          },
-          {
-            name: "impact investor",
-            value: 20
-          }],
-          //Probably will add more attributes, like countryOfOperation, etc.
-      },
-
-//ENDPOINT 2 - IMPLEMENTER DATA
-    ImplementerData:
-      {
-        profitMotives: [
-          {
-            name: "profit",
-            value: 20 //Number of implementers that are profit-based
-          },
-          {
-            name: "not-for-profit",
-            value: 20
-          },
-          {
-            name: "hybrid",
-            value: 5
-          }],
-          //Probably will add more attributes, like countryOfOperation, etc.
-      },
-
-//ENDPOINT 3 - INITIATIVE DATA
-      InititativeData:
-        {
-          mainProgramActivity: [
-            {
-              name: "Scholarships",
-              value: 10  //Number of initiatives that have Scholarships as their main programming area
-            },
-            {
-              name: "School Loans",
-              value: 15
-            },
-            {
-              name: "Contracting",
-              value: 5
-            }],
-            countryOfOperation: [
-              {
-                name: "Canada",
-                value: 10  //Number of initiatives that operate in Canada
-              },
-              {
-                name: "India",
-                value: 17
-              },
-              {
-                name: "Australia",
-                value: 20
-              }],
-        },
-
-//ENDPOINT 4 - AN ARRAY OF ATTRIBUTES RELATED TO TARGET FUNDERS
-      //ATTRIBUTE 1 - PROFIT MOTIVE
-      ProfitMotiveTargetFunder: [
-        {
-          id: "profit",
-          data: [
-            {
-              name: "funder1",
-              value: 3 //Number of initiatives that funder1, a profit funder, funds
-            },
-            {
-              name: "funder2",
-              value: 5
-            },
-            {
-              name: "funder3",
-              value: 4
-            },
-            {
-              name: "funder4",
-              value: 2
-            }
-          ]
-        },
-        {
-          id: "not-for-profit",
-          data: [
-            {
-              name: "funder1",
-              value: 2
-            },
-            {
-              name: "funder2",
-              value: 3
-            }
-          ]
-        },
-
-        {
-          id: "hybrid",
-          data: [
-            {
-              name: "funder1",
-              value: 1
-            },
-            {
-              name: "funder2",
-              value: 2
-            },
-            {
-              name: "funder3",
-              value: 2
-            }
-          ]
-        }
-      ],
-
-      //ATTRIBUTE 2 - ORGANIZATION FORM
-      OrgFormTargetFunder: [
-          {
-          id: "private",
-          data:[
-            {
-              name: "funder1",
-              value: 3 //Number of initiatives that funder1, a private funder, funds
-            },
-            {
-              name: "funder2",
-              value: 5
-            },
-            {
-              name: "funder3",
-              value: 10
-            },
-            {
-              name: "funder4",
-              value: 2
-            }
-          ]
-        },
-
-        {
-          id: "impact investor",
-          data:[
-            {
-              name: "funder1",
-              value: 2,
-            },
-            {
-              name: "funder2",
-              value: 3,
-            },
-            {
-              name: "funder3",
-              value: 2,
-            }
-          ]
-        }
-      ],
-
-//ENDPOINT 5 - AN ARRAY OF ATTRIBUTES RELATED TO IMPLEMENTERS
-      //ATTRIBUTE 1 - ORGANIZATION FORM
-      ProfitMotiveImplementer: [
-        {
-          id: "profit",
-          data:[
-            {
-              name: "implementer1",
-              value: 4  //Number of initiatives that implementer1, a profit implementer, implements
-            },
-            {
-              name: "implementer2",
-              value: 6
-            }
-          ],
-        },
-        {
-          id: "not-for-profit",
-          data:[
-            {
-              name: "implementer1",
-              value: 2
-            },
-            {
-              name: "implementer3",
-              value: 2
-            }
-          ]
-        },
-        {
-          id: "hybrid",
-          data:[
-            {
-              name: "implementer1",
-              value: 1
-            },
-            {
-              name: "implementer2",
-              value: 3
-            },
-            {
-              name: "implementer3",
-              value: 2
-            }
-          ]
-        }
-      ],
-
-  //ENDPOINT 6 - AN ARRAY OF RELATIONSHIPS BETWEEN TARGET FUNDERS AND INITIATIVES
-      //RELATIONSHIP 1 - Relationship between Target funders filtered by profit motive, and Initiatives
-      ProfitMotiveFunderInitiative:
-        {
-          mainProgramActivity:[
-            {
-              id: "profit",
-              data:[
-                {
-                  name: "Scholarships",
-                  value: 4 //Number of intiatives of type "scholarship" are funded by profit funders
-                },
-                {
-                  name: "School Loans",
-                  value: 5
-                },
-                {
-                  name: "Contracting",
-                  value: 9
-                }
-              ]
-            },
-            {
-              id: "not-for-profit",
-              data:[
-                {
-                  name: "Contracting",
-                  value: 5
-                }
-              ]
-            },
-            {
-              id: "hybrid",
-              data:[
-                {
-                  name: "Scholarships",
-                  value: 3
-                },
-                {
-                  name: "Contracting",
-                  value: 4
-                }
-              ]
-            }
-          ],
-          countryOfOperation:[
-            {
-              id: "profit",
-              data:[
-                {
-                  name: "Brazil",
-                  value: 11 //Number of intiatives operated in Brazil that are funded by profit funders
-                },
-                {
-                  name: "Argentina",
-                  value: 5
-                },
-                {
-                  name: "Morocco",
-                  value: 9
-                }
-              ]
-            },
-            {
-              id: "not-for-profit",
-              data:[
-                {
-                  name: "Saudi Arabia",
-                  value: 2
-                }
-              ]
-            },
-            {
-              id: "hybrid",
-              data:[
-                {
-                  name: "Armenia",
-                  value: 1
-                },
-                {
-                  name: "Madagascar",
-                  value: 1
-                }
-              ]
-            }
-          ]
-        },
-
-      //RELATIONSHIP 2 - Relationship between Target funders filtered by organization form, and Initiatives
-      OrgFormFunderInitiative:
-        {
-          mainProgramActivity:[
-            {
-              id: "private",
-              data:[
-                {
-                  name: "Scholarships",
-                  value: 10 //Number of intiatives of type "scholarship" are funded by profit funders
-                },
-                {
-                  name: "School Loans",
-                  value: 9
-                },
-                {
-                  name: "Contracting",
-                  value: 9
-                }
-              ]
-            },
-            {
-              id: "impact investor",
-              data:[
-                {
-                  name: "School Loans",
-                  value: 9
-                },
-                {
-                  name: "Contracting",
-                  value: 10
-                }
-              ]
-            }
-          ],
-          countryOfOperation:[
-            {
-              id: "private",
-              data:[
-                {
-                  name: "Thailand",
-                  value: 10 //Number of intiatives operated in Thailand that are funded by profit funders
-                },
-                {
-                  name: "China",
-                  value: 3
-                },
-                {
-                  name: "India",
-                  value: 5
-                }
-              ]
-            },
-            {
-              id: "impact investor",
-              data:[
-                {
-                  name: "Italy",
-                  value: 7
-                },
-                {
-                  name: "Bulgaria",
-                  value: 5
-                }
-              ]
-            }
-          ]
-        },
-
-
-  //ENDPOINT 7 - AN ARRAY OF RELATIONSHIPS BETWEEN iMPLEMENTERS AND INITIATIVES
-      //RELATIONSHIP 1 - Relationship between Implementers filtered by profit motive, and Initiatives
-      ProfitMotiveImplementerInitiative:
-        {
-          mainProgramActivity:[
-            {
-              id: "profit",
-              data:[
-                {
-                  name: "Scholarships",
-                  value: 1 //Number of intiatives of type "scholarship" are funded by profit funders
-                }
-              ]
-            },
-            {
-              id: "not-for-profit",
-              data:[
-                {
-                  name: "Contracting",
-                  value: 2
-                }
-              ]
-            },
-            {
-              id: "hybrid",
-              data:[
-                {
-                  name: "Scholarships",
-                  value: 2
-                },
-                {
-                  name: "Contracting",
-                  value: 1
-                }
-              ]
-            }
-          ],
-
-          countryOfOperation:[
-            {
-              id: "profit",
-              data:[
-                {
-                  name: "Japan",
-                  value: 3 //Number of intiatives operated in Japan are funded by profit funders
-                }
-              ]
-            },
-            {
-              id: "not-for-profit",
-              data:[
-                {
-                  name: "Cambodia",
-                  value: 2
-                }
-              ]
-            },
-            {
-              id: "hybrid",
-              data:[
-                {
-                  name: "Philippines",
-                  value: 4
-                },
-                {
-                  name: "Bangladesh",
-                  value: 1
-                }
-              ]
-            }
-          ]
-        },
-
-//ENDPOINT 8 - TARGET FUNDER SPECIFIC DATA RELATED TO INITIATIVES
-      FunderInitiative:
-          {
-            mainProgramActivity : [
-            {
-              id: "funder1",
-              data: [
-                {
-                  name: "Scholarships",
-                  value: 2 //Number of intiatives of type "scholarship" are funded by funder1
-                },
-                {
-                  name: "School Loans",
-                  value: 1
-                },
-              ]
-            },
-            {
-              id: "funder2",
-              data: [
-                {
-                  name: "Scholarships",
-                  value: 2 //Number of intiatives of type "scholarship" are funded by funder1
-                },
-                {
-                  name: "School Loans",
-                  value: 2
-                },
-                {
-                  name: "Contracting",
-                  value: 1
-                }
-              ]
-            },
-            {
-              id: "funder3",
-              data: [
-                {
-                  name: "Scholarships",
-                  value: 1 //Number of intiatives of type "scholarship" are funded by funder1
-                },
-                {
-                  name: "School Loans",
-                  value: 2
-                },
-                {
-                  name: "Contracting",
-                  value: 1
-                }
-              ]
-            },
-            {
-              id: "funder4",
-              data: [
-                {
-                  name: "Contracting",
-                  value: 2
-                }
-              ]
-            }
-          ],
-          countryOfOperation : [
-          {
-            id: "funder1",
-            data: [
-              {
-                name: "Pakistan",
-                value: 1 //Number of intiatives in Pakistan are funded by funder1
-              },
-              {
-                name: "Afghanistan",
-                value: 1
-              },
-              {
-                name: "Australia",
-                value: 1
-              }
-            ]
-          },
-          {
-            id: "funder2",
-            data: [
-              {
-                name: "Thailand",
-                value: 2 //Number of intiatives of type "scholarship" are funded by funder1
-              },
-              {
-                name: "Sudan",
-                value: 1
-              },
-              {
-                name: "Cambodia",
-                value: 2
-              }
-            ]
-          },
-          {
-            id: "funder3",
-            data: [
-              {
-                name: "Nigeria",
-                value: 2 //Number of intiatives of type "scholarship" are funded by funder1
-              },
-              {
-                name: "India",
-                value: 1
-              },
-              {
-                name: "China",
-                value: 1
-              }
-            ]
-          },
-          {
-            id: "funder4",
-            data: [
-              {
-                name: "India",
-                value: 1
-              },
-              {
-                name: "China",
-                value: 1
-              }
-            ]
-          }
-        ]
-      },
-
-//ENDPOINT 9 - IMPLEMENTER SPECIFIC DATA RELATED TO INITIATIVES
-      ImplementerInitiative:
-        {
-          mainProgramActivity : [
-            {
-              id: "implementer1",
-              data: [
-                {
-                  name: "Scholarships",
-                  value: 1 //Number of intiatives of type "scholarship" are funded by funder1
-                },
-                {
-                  name: "Contracting",
-                  value: 2
-                }
-              ]
-            },
-            {
-              id: "implementer2",
-              data: [
-                {
-                  name: "Scholarships",
-                  value: 2 //Number of intiatives of type "scholarship" are funded by funder1
-                },
-                {
-                  name: "School Loans",
-                  value: 1
-                },
-                {
-                  name: "Contracting",
-                  value: 2
-                }
-              ]
-            }
-          ],
-          countryOfOperation: [
-            {
-              id: "implementer1",
-              data: [
-                {
-                  name: "Canada",
-                  value: 3 //Number of intiatives in Canada that are funded by funder1
-                },
-                {
-                  name: "Spain",
-                  value: 2
-                }
-              ]
-            },
-            {
-              id: "implementer2",
-              data: [
-                {
-                  name: "India",
-                  value: 2 //Number of intiatives of type "scholarship" are funded by funder1
-                },
-                {
-                  name: "Pakistan",
-                  value: 4
-                },
-                {
-                  name: "Iran",
-                  value: 3
-                }
-              ]
-            }
-          ]
-        },
-
       entitySelection: 'select',
       attributeSelection: 'select',
       secondaryAttributeSelection: 'select',
       breakDownChecked: false,
       compareChecked: false,
-      mapViewChecked: false
+      mapViewChecked: false,
+
+      TargetFunderData: null,
+      ImplementerData: null,
+      InititativeData: null,
+      FunderAttributes: null,
+      ImplementerAttributes: null,
+
+      FunderTypeInitiative: null,
+      ImplementerTypeInitiative: null,
+      FunderInitiative: null,
+      ImplementerInitiative: null
+  }
+
+  componentDidMount = () => {
+    this.props.getFunderData();
+    this.props.getImplementerData();
+    this.props.getInitiativeData();
+    this.props.getInitiativeFundersByAttr();
+    this.props.getInitiativeImplementersByAttr();
+
+    const {FunderData, ImplementerData, InititativeData, FunderAttributes, ImplementerAttributes, FunderTypeInitiative, ImplementerTypeInitiative, FunderInitiative, ImplementerInitiative} = this.props;
+    this.setState({
+      TargetFunderData: FunderData,
+      ImplementerData: ImplementerData,
+      InititativeData: InititativeData,
+      FunderAttributes: FunderAttributes,
+      ImplementerAttributes: ImplementerAttributes,
+
+      FunderTypeInitiative: FunderTypeInitiative,
+      ImplementerTypeInitiative: ImplementerTypeInitiative,
+      FunderInitiative: FunderInitiative,
+      ImplementerInitiative: ImplementerInitiative
+    });
   }
 
   dataSelection = () => {
-    if (this.state.entitySelection == "targetFunders" && this.state.attributeSelection == "profitMotive") {
+    if (this.state.entitySelection == "funders" && this.state.attributeSelection == "profitMotive") {
       if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
-        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: this.state.ProfitMotiveFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity, header1: 'Target Funders - Profit Motives', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of Target Funders' }
+        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.FunderAttributes.ProfitMotiveTargetFunder, sub2: this.state.FunderTypeInitiative[0].ProfitMotiveInitiative.mainProgramActivity, sub3: this.state.FunderInitiative[0].ProfitMotiveFunderInitiative.mainProgramActivity, header1: 'Funders - Profit Motives', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of Funders' }
       }
 
       if (this.state.secondaryAttributeSelection == "countryOfOperation") {
-        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: this.state.ProfitMotiveFunderInitiative.countryOfOperation, sub3: this.state.FunderInitiative.countryOfOperation, header1: 'Target Funders - Profit Motives', header2: 'Initiatives - Country of Operation', subHeader: 'Number of Target Funders'}
+        return {main: this.state.TargetFunderData.profitMotives, sub: this.state.FunderAttributes.ProfitMotiveTargetFunder, sub2: this.state.FunderTypeInitiative[0].ProfitMotiveInitiative.countryOfOperation, sub3: this.state.FunderInitiative[0].ProfitMotiveFunderInitiative.countryOfOperation, header1: 'Funders - Profit Motives', header2: 'Initiatives - Country of Operation', subHeader: 'Number of Funders'}
       }
 
-      return {main: this.state.TargetFunderData.profitMotives, sub: this.state.ProfitMotiveTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Profit Motives', header2: '', subHeader: 'Number of Target Funders' }
+      return {main: this.state.TargetFunderData.profitMotives, sub: this.state.FunderAttributes.ProfitMotiveTargetFunder, sub2: '', sub3: '', header1: 'Funders - Profit Motives', header2: '', subHeader: 'Number of Funders' }
     }
 
-    if (this.state.entitySelection == "targetFunders" && this.state.attributeSelection == "organizationForm") {
+    if (this.state.entitySelection == "funders" && this.state.attributeSelection == "organizationForm") {
       if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
-        return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative.mainProgramActivity, sub3: this.state.FunderInitiative.mainProgramActivity, header1: 'Target Funders - Organization Form', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of Target Funders'}
+        return {main: this.state.TargetFunderData.organizationForm, sub: this.state.FunderAttributes.OrgFormTargetFunder, sub2: this.state.FunderTypeInitiative[0].OrgFormInitiative.mainProgramActivity, sub3: this.state.FunderInitiative[0].OrgFormFunderInitiative.mainProgramActivity, header1: 'Funders - Organization Form', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of Funders'}
       }
 
       if (this.state.secondaryAttributeSelection == "countryOfOperation") {
-        return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: this.state.OrgFormFunderInitiative.countryOfOperation, sub3: this.state.FunderInitiative.countryOfOperation, header1: 'Target Funders - Organization Form', header2: 'Initiatives - Country of Operation', subHeader: 'Number of Target Funders' }
+        return {main: this.state.TargetFunderData.organizationForm, sub: this.state.FunderAttributes.OrgFormTargetFunder, sub2: this.state.FunderTypeInitiative[0].OrgFormInitiative.countryOfOperation, sub3: this.state.FunderInitiative[0].OrgFormFunderInitiative.countryOfOperation, header1: 'Funders - Organization Form', header2: 'Initiatives - Country of Operation', subHeader: 'Number of Funders' }
       }
 
-      return {main: this.state.TargetFunderData.organizationForm, sub: this.state.OrgFormTargetFunder, sub2: '', sub3: '', header1: 'Target Funders - Organization Form', header2: '', subHeader: 'Number of Implementers' }
+      return {main: this.state.TargetFunderData.organizationForm, sub: this.state.FunderAttributes.OrgFormTargetFunder, sub2: '', sub3: '', header1: 'Funders - Organization Form', header2: '', subHeader: 'Number of Funders' }
+    }
+
+    if (this.state.entitySelection == "funders" && this.state.attributeSelection == "impactInvestor") {
+      if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
+        return {main: this.state.TargetFunderData.impactInvesting, sub: this.state.FunderAttributes.ImpactInvestingTargetFunder, sub2: this.state.FunderTypeInitiative[0].ImpactInvestorInitiative.mainProgramActivity, sub3: this.state.FunderInitiative[0].ImpactInvestorFunderInitiative.mainProgramActivity, header1: 'Funders - Impacting Investing', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of Funders'}
+      }
+
+      if (this.state.secondaryAttributeSelection == "countryOfOperation") {
+        return {main: this.state.TargetFunderData.impactInvesting, sub: this.state.FunderAttributes.ImpactInvestingTargetFunder, sub2: this.state.FunderTypeInitiative[0].ImpactInvestorInitiative.countryOfOperation, sub3: this.state.FunderInitiative[0].ImpactInvestorFunderInitiative.countryOfOperation, header1: 'Funders - Impacting Investing', header2: 'Initiatives - Country of Operation', subHeader: 'Number of Funders' }
+      }
+
+      return {main: this.state.TargetFunderData.impactInvesting, sub: this.state.FunderAttributes.ImpactInvestingTargetFunder, sub2: '', sub3: '', header1: 'Funders - Impacting Investing', header2: '', subHeader: 'Number of Funders' }
+    }
+
+    if (this.state.entitySelection == "funders" && this.state.attributeSelection == "eSubsectors") {
+      if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
+        return {main: this.state.TargetFunderData.educationSubsector, sub: this.state.FunderAttributes.EduSubsectorsTargetFunder, sub2: this.state.FunderTypeInitiative[0].ESubsectorInitiative.mainProgramActivity, sub3: this.state.FunderInitiative[0].ESubsectorFunderInitiative.mainProgramActivity, header1: 'Funders - Education Subsectors', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of Funders'}
+      }
+
+      if (this.state.secondaryAttributeSelection == "countryOfOperation") {
+        return {main: this.state.TargetFunderData.educationSubsector, sub: this.state.FunderAttributes.EduSubsectorsTargetFunder, sub2: this.state.FunderTypeInitiative[0].ESubsectorInitiative.countryOfOperation, sub3: this.state.FunderInitiative[0].ESubsectorFunderInitiative.countryOfOperation, header1: 'Funders - Education Subsectors', header2: 'Initiatives - Country of Operation', subHeader: 'Number of Funders' }
+      }
+
+      return {main: this.state.TargetFunderData.educationSubsector, sub: this.state.FunderAttributes.EduSubsectorsTargetFunder, sub2: '', sub3: '', header1: 'Funders - Education Subsectors', header2: '', subHeader: 'Number of Funders' }
+    }
+
+    if (this.state.entitySelection == "funders" && this.state.attributeSelection == "baseLocations") {
+      if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
+        return {main: this.state.TargetFunderData.baseLocation, sub: this.state.FunderAttributes.BaseLocationTargetFunder, sub2: this.state.FunderTypeInitiative[0].BaseLocInitiative.mainProgramActivity, sub3: this.state.FunderInitiative[0].BaseLocFunderInitiative.mainProgramActivity, header1: 'Funders - Base Locations', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of Funders'}
+      }
+
+      if (this.state.secondaryAttributeSelection == "countryOfOperation") {
+        return {main: this.state.TargetFunderData.baseLocation, sub: this.state.FunderAttributes.BaseLocationTargetFunder, sub2: this.state.FunderTypeInitiative[0].BaseLocInitiative.countryOfOperation, sub3: this.state.FunderInitiative[0].BaseLocFunderInitiative.countryOfOperation, header1: 'Funders - Base Locations', header2: 'Initiatives - Country of Operation', subHeader: 'Number of Funders' }
+      }
+
+      return {main: this.state.TargetFunderData.baseLocation, sub: this.state.FunderAttributes.BaseLocationTargetFunder, sub2: '', sub3: '', header1: 'Funders - Base Locations', header2: '', subHeader: 'Number of Funders' }
     }
 
     if (this.state.entitySelection == "implementers" && this.state.attributeSelection == "profitMotive") {
       if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
-        return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative.mainProgramActivity, sub3: this.state.ImplementerInitiative.mainProgramActivity, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of Implementers'}
+        return {main: this.state.ImplementerData.profitMotives, sub: this.state.ImplementerAttributes.ProfitMotiveImplementer, sub2: this.state.ImplementerTypeInitiative.ProfitMotiveInitiative.mainProgramActivity, sub3: this.state.ImplementerInitiative.ProfitMotiveImplementerInitiative.mainProgramActivity, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of Implementers'}
       }
 
       if (this.state.secondaryAttributeSelection == "countryOfOperation") {
-        return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: this.state.ProfitMotiveImplementerInitiative.countryOfOperation, sub3: this.state.ImplementerInitiative.countryOfOperation, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Country of Operation', subHeader: 'Number of Implementers'}
+        return {main: this.state.ImplementerData.profitMotives, sub: this.state.ImplementerAttributes.ProfitMotiveImplementer, sub2: this.state.ImplementerTypeInitiative.ProfitMotiveInitiative.countryOfOperation, sub3: this.state.ImplementerInitiative.ProfitMotiveImplementerInitiative.countryOfOperation, header1: 'Implementers - Profit Motives', header2: 'Initiatives - Country of Operation', subHeader: 'Number of Implementers'}
       }
 
-      return {main: this.state.ImplementerData.profitMotives, sub: this.state.ProfitMotiveImplementer, sub2: '', sub3: '', header1: 'Implementers - Profit Motives', header2: '', subHeader: 'Number of Implementers'}
+      return {main: this.state.ImplementerData.profitMotives, sub: this.state.ImplementerAttributes.ProfitMotiveImplementer, sub2: '', sub3: '', header1: 'Implementers - Profit Motives', header2: '', subHeader: 'Number of Implementers'}
     }
 
     if (this.state.entitySelection == "initiatives" && this.state.attributeSelection == "mainProgramActivity") {
-      return {main: this.state.InititativeData.mainProgramActivity, sub: '', sub1: '', sub2: '', header1: 'Initiatives - Main Programming Area', header2: ''}
+      return {main: this.state.InititativeData.mainProgrammingActivity, sub: '', sub1: '', sub2: '', header1: 'Initiatives - Main Programming Area', header2: ''}
     }
 
     if (this.state.entitySelection == "initiatives" && this.state.attributeSelection == "countryOfOperation") {
@@ -759,11 +174,14 @@ class Visualize extends Component {
 
   render() {
     //Dynamically make attribute text field appear based on entity selection
-    const selection = this.state.entitySelection == "targetFunders" ?
+    const selection = this.state.entitySelection == "funders" ?
       <select value = {this.state.attributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleAttributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
         <option value="select" selected = "selected">Filter a target funder attribute</option>
         <option value="profitMotive">Profit Motive</option>
         <option value="organizationForm">Organization Form</option>
+        <option value="impactInvestor">Impact Investor</option>
+        <option value="eSubsectors">Education Subsectors</option>
+        <option value="baseLocations">Base Locations</option>
       </select> : (
         this.state.entitySelection == "initiatives" ?
         <select value = {this.state.attributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleAttributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
@@ -781,7 +199,7 @@ class Visualize extends Component {
       )
 
       //Dynamically make secondary comparison field appear if compare toggle is on
-      const secondarySelection = this.state.compareChecked ? (this.state.entitySelection == 'targetFunders' || this.state.entitySelection == 'implementers' ?
+      const secondarySelection = this.state.compareChecked ? (this.state.entitySelection == 'funders' || this.state.entitySelection == 'implementers' ?
         <select value = {this.state.secondaryAttributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleSecondaryAttributeSelection} style = {{width:"80%", margin: "25px 0 0 25px"}}>
           <option value="select" selected = "selected">Filter an initiative attribute</option>
           <option value="mainProgramActivity">Main Programming Activity</option>
@@ -791,13 +209,13 @@ class Visualize extends Component {
         ) : null
 
       //Compare toggle label
-      const compareLabel = this.state.entitySelection !== 'select' ? (this.state.entitySelection == 'targetFunders' || this.state.entitySelection == 'implementers' ? 'Initiatives' : null) : null
+      const compareLabel = this.state.entitySelection !== 'select' ? (this.state.entitySelection == 'funders' || this.state.entitySelection == 'implementers' ? 'Initiatives' : null) : null
       //Breakdown toggle label
-      const breakDownLabel = this.state.entitySelection !== 'select' ? (this.state.entitySelection == 'targetFunders' ? "Target Funders" : (this.state.entitySelection == 'initiatives' ? 'Initiatives' : (this.state.entitySelection == 'implementers' ? 'Implementers' : null))) : null
+      const breakDownLabel = this.state.entitySelection !== 'select' ? (this.state.entitySelection == 'funders' ? "Funders" : (this.state.entitySelection == 'initiatives' ? 'Initiatives' : (this.state.entitySelection == 'implementers' ? 'Implementers' : null))) : null
 
       //Toggle for implementer/funder to initiative comparison - choose whether to show or not depending on the type of entity initially chosen
       const toggleCompare = this.state.attributeSelection !== 'select' ?
-      (this.state.entitySelection == 'targetFunders' || this.state.entitySelection == 'implementers' ?
+      (this.state.entitySelection == 'funders' || this.state.entitySelection == 'implementers' ?
         <div>
           <div style = {{margin: "50px 55px 0 30px"}}>
             <div style = {{float: "left"}}>
@@ -850,7 +268,7 @@ class Visualize extends Component {
             <nav className = "nav flex-column navbar-dark bg-white" style = {{height: "100%"}}>
               <select value = {this.state.entitySelection} type="entity" id="entity" name="entity" onChange={this.handleEntitySelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
                 <option value="select">Filter Entity Type</option>
-                <option value="targetFunders">Target Funders</option>
+                <option value="funders">Funders</option>
                 <option value="initiatives">Initiatives</option>
                 <option value="implementers">Implementers</option>
               </select>
@@ -872,4 +290,28 @@ class Visualize extends Component {
    }
 }
 
-export default Visualize
+const mapStateToProps = (state) => {
+  return {
+    FunderData: state.data.FunderData,
+    ImplementerData: state.data.ImplementerData,
+    InititativeData: state.data.InititativeData,
+    FunderAttributes: state.data.FunderAttributes,
+    ImplementerAttributes: state.data.ImplementerAttributes,
+    FunderTypeInitiative: state.data.FunderTypeInitiative,
+    ImplementerTypeInitiative: state.data.ImplementerTypeInitiative,
+    FunderInitiative: state.data.FunderInitiative,
+    ImplementerInitiative: state.data.ImplementerInitiative
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getFunderData: () => {dispatch(getFunderData())},
+    getImplementerData: () => {dispatch(getImplementerData())},
+    getInitiativeData: () => {dispatch(getInitiativeData())},
+    getInitiativeFundersByAttr: () => {dispatch(getInitiativeFundersByAttr())},
+    getInitiativeImplementersByAttr: () => {dispatch(getInitiativeImplementersByAttr())}
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Visualize)

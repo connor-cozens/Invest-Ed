@@ -12,7 +12,8 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(200),
       allowNull: false
     }
-  }, {
+  }, 
+  {
     tableName: 'regions'
   });
 };

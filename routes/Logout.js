@@ -4,6 +4,9 @@ const cors = require('cors')
 const passport = require('passport')
 
 logout.get('/', (req, res) => {
+
+  if(req.user){
+
     console.log('key: ' + req.session.key)
     //Check if session exists using the session's key
     if(req.session.key !== undefined) {
@@ -27,5 +30,9 @@ logout.get('/', (req, res) => {
     else {
         res.json({"error" : true ,"message" : "Logout unsuccessful."})
     }
+
+  }else{
+    res.json({"error" : true , "messages" : [{message: "Error: Not authorized to access this page"}]})
+  }
 })
 module.exports = logout

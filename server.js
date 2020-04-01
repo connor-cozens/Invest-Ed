@@ -60,8 +60,7 @@ var Index = require('./routes/Index')
 var Visualize = require('./routes/Visualize')
 var Contact = require('./routes/Contact')
 var Logout = require('./routes/Logout')
-var DashboardOrg = require('./routes/DashboardOrg')
-var DashboardRA = require('./routes/DashboardRA')
+var Dashboard = require('./routes/Dashboard')
 
 
 app.use('/', Index)
@@ -70,8 +69,8 @@ app.use('/register', Register)
 app.use('/visualize', Visualize)
 app.use('/contact', Contact)
 app.use('/logout', Logout)
-app.use('/dashboard-org',DashboardOrg)
-app.use('/dashboard-ra',DashboardRA)
+app.use('/dashboard',Dashboard)
+
 
 
 app.listen(port, () =>{

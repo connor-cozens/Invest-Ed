@@ -45,5 +45,9 @@
   },
   "devDependencies": {
     "webpack": "^4.41.2"
-  }
+  },
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

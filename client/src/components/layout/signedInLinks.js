@@ -27,6 +27,9 @@ class SignedInLinks extends Component {
             <Link to = '/' className = "nav-link">Home</Link>
           </li>
           <li className="nav-item">
+            <Link to = '/about' className = "nav-link">About Us</Link>
+          </li>
+          <li className="nav-item">
             <Link to = '/visualize' className = "nav-link">Visualization</Link>
           </li>
           <li className="nav-item">

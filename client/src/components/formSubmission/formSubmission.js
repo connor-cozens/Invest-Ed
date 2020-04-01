@@ -63,7 +63,7 @@ class formSubmission extends React.Component{
     };
 
     this.addIBase = this.addIBase.bind(this);
-    this.addOpLoc = this.addOpLoc.bind(this);
+    //this.addOpLoc = this.addOpLoc.bind(this);
     this.addInitRegion = this.addInitRegion.bind(this);
     this.addInitCountry = this.addInitCountry.bind(this);
     this.buttonMaker = this.buttonMaker.bind(this);
@@ -90,6 +90,7 @@ class formSubmission extends React.Component{
     this.addLaunchCountry = this.addLaunchCountry.bind(this);
     this.startYearChange = this.startYearChange.bind(this);
     this.endYearChange = this.endYearChange.bind(this);
+    this.fillMultiValued = this.fillMultiValued.bind(this);
   }
 
   componentDidMount = () => {
@@ -106,21 +107,21 @@ class formSubmission extends React.Component{
         tWomen: this.props.form.targetsWomen,
         initStart: this.props.form.startYear,
         initEnd: this.props.form.endYear,
-        launchCountries: this.props.form.launchCountry,  //Not used yet
+        launchCountries: this.props.form.launchCountry !== undefined ? this.props.form.launchCountry : [],  //Not used yet
         idescription: this.props.form.description,
-        targetGeos: this.props.form.targetGeographies,  //Not used yet
-        mainProgramActivity: this.props.form.mainProgrammingActivity,  //Not used yet
-        programArea: this.props.form.mainProgrammingArea,  //Not used yet
+        targetGeos: this.props.form.targetGeographies.length !== undefined ? this.props.form.targetGeographies : [],
+        mainProgramActivity: this.props.form.mainProgrammingActivity !== undefined ? this.props.form.mainProgrammingActivity : [],  //Not used yet
+        programArea: this.props.form.mainProgrammingArea !== undefined ? this.props.form.mainProgrammingActivity : [],  //Not used yet
         feeAccess: this.props.form.feeToAccess,
-        targetPopulationSectors: this.props.form.targetPopulationSectors,  //Not used yet
-        outcomesMonitored: this.props.form.monitoredOutcomes,  //Not used yet
-        mEdSubs: this.props.form.mainEducationSubSectors,  //Not used yet
-        oEdSubs: this.props.form.educationSubSectors,  //Not used yet
-        managementTypes: this.props.form.targetSchoolManagementType,  //Not used yet
-        regions: this.props.form.regions, //Not used yet
-        countries: this.props.form.countriesOfOperation, //Not used yet
-        activities: this.props.form.programmingActivities, //Not used yet
-        sourceOfFees: this.props.form.sourcesOfFunding, //Not used yet
+        targetPopulationSectors: this.props.form.targetPopulationSectors !== undefined ? this.props.form.targetPopulationSectors : [],  //Not used yet
+        outcomesMonitored: this.props.form.monitoredOutcomes !== undefined ? this.props.form.monitoredOutcomes : [],  //Not used yet
+        mEdSubs: this.props.form.mainEducationSubSectors !== undefined ? this.props.form.mainEducationSubSectors : [],
+        oEdSubs: this.props.form.educationSubSectors !== undefined ? this.props.form.educationSubSectors : [],
+        managementTypes: this.props.form.targetSchoolManagementType !== undefined ? this.props.form.targetSchoolManagementType : [],  //Not used yet
+        regions: this.props.form.regions !== undefined ? this.props.form.regions : [], //Not used yet
+        countries: this.props.form.countriesOfOperation !== undefined ? this.props.form.countriesOfOperation : [], //Not used yet
+        activities: this.props.form.programmingActivities !== undefined ? this.props.form.programmingActivities : [], //Not used yet
+        sourceOfFees: this.props.form.sourcesOfFunding !== undefined ? this.props.form.sourcesOfFunding : [], //Not used yet
 
         //Funder Setters
         fname: this.props.form.funders.length > 0 ? this.props.form.funders[0].funderName : null,
@@ -129,11 +130,11 @@ class formSubmission extends React.Component{
         organizationForm: this.props.form.funders.length > 0 ? this.props.form.funders[0].organizationalForm : null,
         impact: this.props.form.funders.length > 0 ? this.props.form.funders[0].impactInvesting : null,
         //Still need to retrieve this data for funders:
-        // edSubs: ,
-        // orgTraits: ,
-        // asiaIBases: ,
-        // asiaOperations: ,
-        //internationalBases: ,
+        // edSubs: this.props.form.edSubs !== undefined ? this.props.form.edSubs : [],
+        // orgTraits: this.props.form.orgTraits !== undefined ? this.props.form.orgTraits : [],
+        // asiaIBases: this.props.form.asiaIBases !== undefined ? this.props.form.asiaIBases : [],
+        // asiaOperations: this.props.form.asiaOperations !== undefined ? this.props.form.asiaOperations : [],
+        // internationalBases: this.props.form.internationalBases !== undefined ? this.props.form.internationalBases : [],
 
         //Implementer setters
         iname: this.props.form.implementers.length > 0 ? this.props.form.implementers[0].implementorName : null,
@@ -146,6 +147,7 @@ class formSubmission extends React.Component{
       });
     }
   }
+  
 
 
   buttonMaker(props){
@@ -153,99 +155,99 @@ class formSubmission extends React.Component{
   }
 
   removeButton(props){
-    if (props.category == "iBase"){
+    if (props.category === "iBase"){
       for (var i = 0; i < this.state.internationalBases.length; i++){ //There is definitely a more efficient solution
-        if (this.state.internationalBases[i].key == props.name){
+        if (this.state.internationalBases[i].key === props.name){
           this.state.internationalBases.splice(i, 1);
           break;
         }
       }
       ReactDOM.render(<ul>{this.state.internationalBases}</ul>, document.getElementById('iBases'))
     }
-    else if (props.category == "opLoc"){
+    /*else if (props.category === "opLoc"){
       for (var i = 0; i < this.state.operations.length; i++){
-        if (this.state.operations[i].key == props.name){
+        if (this.state.operations[i].key === props.name){
           this.state.operations.splice(i, 1);
           break;
         }
       }
       ReactDOM.render(<ul>{this.state.operations}</ul>, document.getElementById('operationLocations'))
-    }
-    else if (props.category == "initRegions"){
+    }*/
+    else if (props.category === "initRegions"){
       for (var i = 0; i < this.state.regions.length; i++){
-        if (this.state.regions[i].key == props.name){
+        if (this.state.regions[i].key === props.name){
           this.state.regions.splice(i, 1);
           break;
         }
       }
       ReactDOM.render(<ul>{this.state.regions}</ul>, document.getElementById('initRegions'))
     }
-    else if (props.category == "initActivities"){
+    else if (props.category === "initActivities"){
       for (var i = 0; i < this.state.activities.length; i++){
-        if (this.state.activities[i].key == props.name){
+        if (this.state.activities[i].key === props.name){
           this.state.activities.splice(i, 1);
           break;
         }
       }
       ReactDOM.render(<ul>{this.state.activities}</ul>, document.getElementById('initActivities'))
     }
-    else if (props.category == "sourceOfFeesList"){
+    else if (props.category === "sourceOfFeesList"){
       for (var i = 0; i < this.state.sourceOfFees.length; i++){
-        if (this.state.sourceOfFees[i].key == props.name){
+        if (this.state.sourceOfFees[i].key === props.name){
           this.state.sourceOfFees.splice(i, 1);
           break;
         }
       }
       ReactDOM.render(<ul>{this.state.sourceOfFees}</ul>, document.getElementById('sourceOfFeesList'))
     }
-    else if (props.category == "outcomesMonitored"){
+    else if (props.category === "outcomesMonitored"){
       for (var i = 0; i < this.state.outcomesMonitored.length; i++){
-        if (this.state.outcomesMonitored[i].key == props.name){
+        if (this.state.outcomesMonitored[i].key === props.name){
           this.state.outcomesMonitored.splice(i, 1);
           break;
         }
       }
       ReactDOM.render(<ul>{this.state.outcomesMonitored}</ul>, document.getElementById('outcomesMonitored'))
     }
-    else if (props.category == "managementTypes"){
+    else if (props.category === "managementTypes"){
       for (var i = 0; i < this.state.managementTypes.length; i++){
-        if (this.state.managementTypes[i].key == props.name){
+        if (this.state.managementTypes[i].key === props.name){
           this.state.managementTypes.splice(i, 1);
           break;
         }
       }
       ReactDOM.render(<ul>{this.state.managementTypes}</ul>, document.getElementById('managementTypes'))
     }
-    else if (props.category == "targetPopSector"){
+    else if (props.category === "targetPopSector"){
       for (var i = 0; i < this.state.targetPopulationSectors.length; i++){
-        if (this.state.targetPopulationSectors[i].key == props.name){
+        if (this.state.targetPopulationSectors[i].key === props.name){
           this.state.targetPopulationSectors.splice(i, 1);
           break;
         }
       }
       ReactDOM.render(<ul>{this.state.targetPopulationSectors}</ul>, document.getElementById('targetPopSector'))
     }
-    else if (props.category == "aIBases"){
+    else if (props.category === "aIBases"){
       for (var i = 0; i < this.state.asiaIBases.length; i++){
-        if (this.state.asiaIBases[i].key == props.name){
+        if (this.state.asiaIBases[i].key === props.name){
           this.state.asiaIBases.splice(i, 1);
           break;
         }
       }
       ReactDOM.render(<ul>{this.state.asiaIBases}</ul>, document.getElementById('aIBases'))
     }
-    else if (props.category == "asiaOperationLocations"){
+    else if (props.category === "asiaOperationLocations"){
       for (var i = 0; i < this.state.asiaOperations.length; i++){
-        if (this.state.asiaOperations[i].key == props.name){
+        if (this.state.asiaOperations[i].key === props.name){
           this.state.asiaOperations.splice(i, 1);
           break;
         }
       }
       ReactDOM.render(<ul>{this.state.asiaOperations}</ul>, document.getElementById('asiaOperationLocations'))
     }
-    else if (props.category == "launchCountries"){
+    else if (props.category === "launchCountries"){
       for (var i = 0; i < this.state.launchCountries.length; i++){
-        if (this.state.launchCountries[i].key == props.name){
+        if (this.state.launchCountries[i].key === props.name){
           this.state.launchCountries.splice(i, 1);
           break;
         }
@@ -254,7 +256,7 @@ class formSubmission extends React.Component{
     }
     else{
       for (var i = 0; i < this.state.countries.length; i++){
-        if (this.state.countries[i].key == props.name){
+        if (this.state.countries[i].key === props.name){
           this.state.countries.splice(i, 1);
           break;
         }
@@ -270,50 +272,78 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.internationalBases.length; i++){ //There is definitely a more efficient solution
-      if (this.state.internationalBases[i].key == base){
+      if (this.state.internationalBases[i].key === base){
         present = true;
         break;
       }
     }
-    if (!present && base != "baseCase"){
+    if (!present && base !== "baseCase"){
       this.state.internationalBases.push(<this.buttonMaker key={base} name={base} category="iBase"/> )
       console.log(base);
       ReactDOM.render(<ul>{this.state.internationalBases}</ul>, document.getElementById('iBases'))
     }
   }
 
-  addOpLoc(e){
+  fillIBase(){
+    for (var i = 0; i < this.state.internationalBases.length; i++){
+      if(this.state.internationalBases[i] !== ""){
+        this.state.internationalBases[i] = (<this.buttonMaker key={this.state.internationalBases[i]} name={this.state.internationalBases[i]} category="iBase"/>)
+        console.log(this.state.internationalBases[i]);
+      }
+    }
+    ReactDOM.render(<ul>{this.state.internationalBases}</ul>, document.getElementById('iBases'))
+  }
+
+  /*addOpLoc(e){
     var country = e.currentTarget.value;
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.operations.length; i++){ //There is definitely a more efficient solution
-      if (this.state.operations[i].key == country){
+      if (this.state.operations[i].key === country){
         present = true;
         break;
       }
     }
-    if (!present && country != "baseCase"){
+    if (!present && country !== "baseCase"){
       this.state.operations.push(<this.buttonMaker key={country} name={country} category="opLoc"/>)
       console.log(country);
       ReactDOM.render(<ul>{this.state.operations}</ul>, document.getElementById('operationLocations'))
     }
   }
 
-  addInitRegion(e){
+  fillOpLoc(){
+    for (var i = 0; i < this.state.operations.length; i++){
+      this.state.operations[i] = (<this.buttonMaker key={this.state.operations[i]} name={this.state.operations[i]} category="opLoc"/>)
+      console.log(this.state.operations[i]);
+    }
+    ReactDOM.render(<ul>{this.state.operations}</ul>, document.getElementById('operationLocations'))
+  }*/
+
+  addInitRegion(e, onStart){
     var region = e.currentTarget.value;
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.regions.length; i++){ //There is definitely a more efficient solution
-      if (this.state.regions[i].key == region){
+      if (this.state.regions[i].key === region){
         present = true;
         break;
       }
     }
-    if (!present && region != "baseCase"){
+    if (!present && region !== "baseCase"){
       this.state.regions.push(<this.buttonMaker key={region} name={region} category="initRegions"/>)
       console.log(region);
       ReactDOM.render(<ul>{this.state.regions}</ul>, document.getElementById('initRegions'))
     }
+  }
+
+  fillInitRegion(){
+    for (var i = 0; i < this.state.regions.length; i++){
+      if(this.state.regions[i] !== ""){
+        this.state.regions[i] = (<this.buttonMaker key={this.state.regions[i]} name={this.state.regions[i]} category="initRegions"/>)
+        console.log(this.state.regions[i]);
+      }
+    }
+    ReactDOM.render(<ul>{this.state.regions}</ul>, document.getElementById('initRegions'))
   }
 
   addInitCountry(e){
@@ -321,16 +351,27 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.countries.length; i++){ //There is definitely a more efficient solution
-      if (this.state.countries[i].key == country){
+      if (this.state.countries[i].key === country){
         present = true;
         break;
       }
     }
-    if (!present && country != "baseCase"){
+    if (!present && country !== "baseCase"){
       this.state.countries.push(<this.buttonMaker key={country} name={country} category="initCountries"/>)
       console.log(country);
       ReactDOM.render(<ul>{this.state.countries}</ul>, document.getElementById('initCountries'))
     }
+  }
+
+  fillInitCountry(){
+    for (var i = 0; i < this.state.countries.length; i++){
+      if(this.state.countries[i] !== ""){
+        console.log(this.state.countries[i]);
+        this.state.countries[i] = (<this.buttonMaker key={this.state.countries[i]} name={this.state.countries[i]} category="initCountries"/>)
+        
+      }
+    }
+    ReactDOM.render(<ul>{this.state.countries}</ul>, document.getElementById('initCountries'))
   }
 
   addProgramActivity(e){
@@ -338,16 +379,26 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.activities.length; i++){ //There is definitely a more efficient solution
-      if (this.state.activities[i].key == activity){
+      if (this.state.activities[i].key === activity){
         present = true;
         break;
       }
     }
-    if (!present && activity != "baseCase"){
+    if (!present && activity !== "baseCase"){
       this.state.activities.push(<this.buttonMaker key={activity} name={activity} category="initActivities"/>)
       console.log(activity);
       ReactDOM.render(<ul>{this.state.activities}</ul>, document.getElementById('initActivities'))
     }
+  }
+
+  fillProgramActivity(){
+    for (var i = 0; i < this.state.activities.length; i++){
+      if(this.state.activities[i] !== ""){
+        this.state.activities[i] = (<this.buttonMaker key={this.state.activities[i]} name={this.state.activities[i]} category="initActivities"/>)
+        console.log(this.state.activities[i]);
+      }
+    }
+    ReactDOM.render(<ul>{this.state.activities}</ul>, document.getElementById('initActivities'))
   }
 
   addSourceFee(e){
@@ -355,16 +406,26 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.sourceOfFees.length; i++){ //There is definitely a more efficient solution
-      if (this.state.sourceOfFees[i].key == source){
+      if (this.state.sourceOfFees[i].key === source){
         present = true;
         break;
       }
     }
-    if (!present && source != "base"){
+    if (!present && source !== "base"){
       this.state.sourceOfFees.push(<this.buttonMaker key={source} name={source} category="sourceOfFeesList"/>)
       console.log(source);
       ReactDOM.render(<ul>{this.state.sourceOfFees}</ul>, document.getElementById('sourceOfFeesList'))
     }
+  }
+
+  fillSourceFee(){
+    for (var i = 0; i < this.state.sourceOfFees.length; i++){
+      if(this.state.sourceOfFees[i] !== ""){
+        this.state.sourceOfFees[i] = (<this.buttonMaker key={this.state.sourceOfFees[i]} name={this.state.sourceOfFees[i]} category="sourceOfFeesList"/>)
+        console.log(this.state.sourceOfFees[i]);
+      }
+    }
+    ReactDOM.render(<ul>{this.state.sourceOfFees}</ul>, document.getElementById('sourceOfFeesList'))
   }
 
   addOutcome(e){
@@ -372,16 +433,26 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.outcomesMonitored.length; i++){ //There is definitely a more efficient solution
-      if (this.state.outcomesMonitored[i].key == outcome){
+      if (this.state.outcomesMonitored[i].key === outcome){
         present = true;
         break;
       }
     }
-    if (!present && outcome != "base"){
+    if (!present && outcome !== "base"){
       this.state.outcomesMonitored.push(<this.buttonMaker key={outcome} name={outcome} category="outcomesMonitored"/>)
       console.log(outcome);
       ReactDOM.render(<ul>{this.state.outcomesMonitored}</ul>, document.getElementById('outcomesMonitored'))
     }
+  }
+
+  fillOutcome(){
+    for (var i = 0; i < this.state.outcomesMonitored.length; i++){
+      if(this.state.outcomesMonitored[i] !== ""){
+        this.state.outcomesMonitored[i] = (<this.buttonMaker key={this.state.outcomesMonitored[i]} name={this.state.outcomesMonitored[i]} category="outcomesMonitored"/>)
+        console.log(this.state.outcomesMonitored[i]);
+      }
+    }
+    ReactDOM.render(<ul>{this.state.outcomesMonitored}</ul>, document.getElementById('outcomesMonitored'))
   }
 
   addManagementType(e){
@@ -389,16 +460,26 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.managementTypes.length; i++){ //There is definitely a more efficient solution
-      if (this.state.managementTypes[i].key == type){
+      if (this.state.managementTypes[i].key === type){
         present = true;
         break;
       }
     }
-    if (!present && type != "base"){
+    if (!present && type !== "base"){
       this.state.managementTypes.push(<this.buttonMaker key={type} name={type} category="managementTypes"/>)
       console.log(type);
       ReactDOM.render(<ul>{this.state.managementTypes}</ul>, document.getElementById('managementTypes'))
     }
+  }
+
+  fillManagementType(){
+    for (var i = 0; i < this.state.managementTypes.length; i++){
+      if(this.state.managementTypes[i] !== ""){
+        this.state.managementTypes[i] = (<this.buttonMaker key={this.state.managementTypes[i]} name={this.state.managementTypes[i]} category="managementTypes"/>)
+        console.log(this.state.managementTypes[i]);
+      }
+    }
+    ReactDOM.render(<ul>{this.state.managementTypes}</ul>, document.getElementById('managementTypes'))
   }
 
   addPopSector(e){
@@ -406,16 +487,26 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.targetPopulationSectors.length; i++){ //There is definitely a more efficient solution
-      if (this.state.targetPopulationSectors[i].key == sector){
+      if (this.state.targetPopulationSectors[i].key === sector){
         present = true;
         break;
       }
     }
-    if (!present && sector != "base"){
+    if (!present && sector !== "base"){
       this.state.targetPopulationSectors.push(<this.buttonMaker key={sector} name={sector} category="targetPopSector"/>)
       console.log(sector);
       ReactDOM.render(<ul>{this.state.targetPopulationSectors}</ul>, document.getElementById('targetPopSector'))
     }
+  }
+
+  fillPopSector(){
+    for (var i = 0; i < this.state.targetPopulationSectors.length; i++){
+      if(this.state.targetPopulationSectors[i] !== ""){
+        this.state.targetPopulationSectors[i] = (<this.buttonMaker key={this.state.targetPopulationSectors[i]} name={this.state.targetPopulationSectors[i]} category="targetPopSector"/>)
+        console.log(this.state.targetPopulationSectors[i]);
+      }
+    }
+    ReactDOM.render(<ul>{this.state.targetPopulationSectors}</ul>, document.getElementById('targetPopSector'))
   }
 
   addAIBase(e){
@@ -423,16 +514,26 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.asiaIBases.length; i++){ //There is definitely a more efficient solution
-      if (this.state.asiaIBases[i].key == base){
+      if (this.state.asiaIBases[i].key === base){
         present = true;
         break;
       }
     }
-    if (!present && base != "base"){
+    if (!present && base !== "base"){
       this.state.asiaIBases.push(<this.buttonMaker key={base} name={base} category="aIBases"/>)
       console.log(base);
       ReactDOM.render(<ul>{this.state.asiaIBases}</ul>, document.getElementById('aIBases'))
     }
+  }
+
+  fillAIBase(){
+    for (var i = 0; i < this.state.asiaIBases.length; i++){
+      if(this.state.asiaIBases[i] !== ""){
+        this.state.asiaIBases[i] = (<this.buttonMaker key={this.state.asiaIBases[i]} name={this.state.asiaIBases[i]} category="aIBases"/>)
+        console.log(this.state.asiaIBases[i]);
+      }
+    }
+    ReactDOM.render(<ul>{this.state.asiaIBases}</ul>, document.getElementById('aIBases'))
   }
 
   addAsiaOperation(e){
@@ -440,16 +541,26 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.asiaOperations.length; i++){ //There is definitely a more efficient solution
-      if (this.state.asiaOperations[i].key == operation){
+      if (this.state.asiaOperations[i].key === operation){
         present = true;
         break;
       }
     }
-    if (!present && operation != "base"){
+    if (!present && operation !== "base"){
       this.state.asiaOperations.push(<this.buttonMaker key={operation} name={operation} category="asiaOperationLocations"/>)
       console.log(operation);
       ReactDOM.render(<ul>{this.state.asiaOperations}</ul>, document.getElementById('asiaOperationLocations'))
     }
+  }
+
+  fillAsiaOperation(){
+    for (var i = 0; i < this.state.asiaOperations.length; i++){
+      if(this.state.asiaOperations[i] !== ""){
+        this.state.asiaOperations[i] = (<this.buttonMaker key={this.state.asiaOperations[i]} name={this.state.asiaOperations[i]} category="asiaOperationLocations"/>)
+        console.log(this.state.asiaOperations[i]);
+      }
+    }
+    ReactDOM.render(<ul>{this.state.asiaOperations}</ul>, document.getElementById('asiaOperationLocations'))
   }
 
   addLaunchCountry(e){
@@ -457,16 +568,26 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.launchCountries.length; i++){ //There is definitely a more efficient solution
-      if (this.state.launchCountries[i].key == country){
+      if (this.state.launchCountries[i].key === country){
         present = true;
         break;
       }
     }
-    if (!present && country != "base"){
+    if (!present && country !== "base"){
       this.state.launchCountries.push(<this.buttonMaker key={country} name={country} category="launchCountries"/>)
       console.log(country);
       ReactDOM.render(<ul>{this.state.launchCountries}</ul>, document.getElementById('launchCountries'))
     }
+  }
+
+  fillLaunchCountry(){
+    for (var i = 0; i < this.state.launchCountries.length; i++){
+      if(this.state.launchCountries[i] !== ""){
+        this.state.launchCountries[i] = (<this.buttonMaker key={this.state.launchCountries[i]} name={this.state.launchCountries[i]} category="launchCountries"/>)
+        console.log(this.state.launchCountries[i]);
+      }
+    }
+    ReactDOM.render(<ul>{this.state.launchCountries}</ul>, document.getElementById('launchCountries'))
   }
 
 
@@ -474,49 +595,49 @@ class formSubmission extends React.Component{
     var activity = e.currentTarget.value;
     var updateArea = "";
     console.log(activity);
-    if (activity == "Missing"){
+    if (activity === "Missing"){
       updateArea = "Missing";
     }
-    else if (activity == "Unclear"){
+    else if (activity === "Unclear"){
       updateArea = "Unclear";
     }
-    else if(activity.charAt(0) == 'a'){
+    else if(activity.charAt(0) === 'a'){
       updateArea = "Access to Education";
     }
-    else if(activity.charAt(0) == 'w'){
+    else if(activity.charAt(0) === 'w'){
       updateArea = "Skills, Workplace Transition, and Continuing Education";
     }
-    else if(activity.charAt(0) == 'e'){
+    else if(activity.charAt(0) === 'e'){
       updateArea = "Education Facilities";
     }
-    else if(activity.charAt(0) == 'f'){
+    else if(activity.charAt(0) === 'f'){
       updateArea = "Education Financing";
     }
-    else if(activity.charAt(0) == 'g'){
+    else if(activity.charAt(0) === 'g'){
       updateArea = "Educational Governance and School-Based Management";
     }
-    else if(activity.charAt(0) == 'p'){
+    else if(activity.charAt(0) === 'p'){
       updateArea = "Private Sector Delivery of Education";
     }
-    else if(activity.charAt(0) == 'i'){
+    else if(activity.charAt(0) === 'i'){
       updateArea = "Information and Communications Technology";
     }
-    else if(activity.charAt(0) == 'c'){
+    else if(activity.charAt(0) === 'c'){
       updateArea = "Curriculum and Extra-Curricular Support";
     }
-    else if(activity.charAt(0) == 's'){
+    else if(activity.charAt(0) === 's'){
       updateArea = "Student Assessment";
     }
-    else if(activity.charAt(0) == 't'){
+    else if(activity.charAt(0) === 't'){
       updateArea = "Teachers and School Leaderhsip";
     }
-    else if(activity.charAt(0) == 'v'){
+    else if(activity.charAt(0) === 'v'){
       updateArea = "Advocacy and Policy";
     }
-    else if(activity.charAt(0) == 'o'){
+    else if(activity.charAt(0) === 'o'){
       updateArea = "Other Education";
     }
-    else if(activity.charAt(0) == ' '){
+    else if(activity.charAt(0) === ' '){
       updateArea = "Area Data Missing?";
     }
     ReactDOM.render(<p><i>{updateArea}</i></p>, document.getElementById('programArea'))
@@ -527,7 +648,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.orgTraits.length; i++){ //There is definitely a more efficient solution
-      if (this.state.orgTraits[i] == orgTrait){
+      if (this.state.orgTraits[i] === orgTrait){
         present = true;
         this.state.orgTraits.splice(i, 1);
         break;
@@ -543,7 +664,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.edSubs.length; i++){ //There is definitely a more efficient solution
-      if (this.state.edSubs[i] == edSub){
+      if (this.state.edSubs[i] === edSub){
         present = true;
         this.state.edSubs.splice(i, 1);
         break;
@@ -577,7 +698,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.mEdSubs.length; i++){ //There is definitely a more efficient solution
-      if (this.state.mEdSubs[i] == mEdSub){
+      if (this.state.mEdSubs[i] === mEdSub){
         present = true;
         this.state.mEdSubs.splice(i, 1);
         break;
@@ -593,7 +714,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.oEdSubs.length; i++){ //There is definitely a more efficient solution
-      if (this.state.oEdSubs[i] == oEdSub){
+      if (this.state.oEdSubs[i] === oEdSub){
         present = true;
         this.state.oEdSubs.splice(i, 1);
         break;
@@ -605,7 +726,7 @@ class formSubmission extends React.Component{
   }
 
   tWomenChange(e){
-    let targetsWomen = e.currentTarget.value == "Yes" ? 1 : 0;
+    let targetsWomen = e.currentTarget.value === "Yes" ? 1 : 0;
     this.setState({
       tWomen: targetsWomen
     });
@@ -616,7 +737,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.targetGeos.length; i++){ //There is definitely a more efficient solution
-      if (this.state.targetGeos[i] == geo){
+      if (this.state.targetGeos[i] === geo){
         present = true;
         this.state.targetGeos.splice(i, 1);
         break;
@@ -628,7 +749,7 @@ class formSubmission extends React.Component{
   }
 
   feeAccessChange(e){
-    let feeToAccess = e.currentTarget.value == "Yes" ? 1 : 0;
+    let feeToAccess = e.currentTarget.value === "Yes" ? 1 : 0;
     this.setState({
       feeAccess: feeToAccess
     });
@@ -663,12 +784,45 @@ class formSubmission extends React.Component{
 
   handleFormSubmit(e) {
     e.preventDefault();
+
+    //Changes stored buttons back to relevent info for backend
+    for (var i = 0; i < this.state.internationalBases.length; i++){
+      this.state.internationalBases[i] = this.state.internationalBases[i].key;
+    }
+    for (var i = 0; i < this.state.asiaIBases.length; i++){
+      this.state.asiaIBases[i] = this.state.asiaIBases[i].key;
+    }
+    for (var i = 0; i < this.state.asiaOperations.length; i++){
+      this.state.asiaOperations[i] = this.state.asiaOperations[i].key;
+    }
+    for (var i = 0; i < this.state.launchCountries.length; i++){
+      this.state.launchCountries[i] = this.state.launchCountries[i].key;
+    }
+    for (var i = 0; i < this.state.regions.length; i++){
+      this.state.regions[i] = this.state.regions[i].key;
+    }
+    for (var i = 0; i < this.state.countries.length; i++){
+      this.state.countries[i] = this.state.countries[i].key;
+    }
+    for (var i = 0; i < this.state.activities.length; i++){
+      this.state.activities[i] = this.state.activities[i].key;
+    }
+    for (var i = 0; i < this.state.managementTypes.length; i++){
+      this.state.managementTypes[i] = this.state.managementTypes[i].key;
+    }
+    for (var i = 0; i < this.state.targetPopulationSectors.length; i++){
+      this.state.targetPopulationSectors[i] = this.state.targetPopulationSectors[i].key;
+    }
+    for (var i = 0; i < this.state.outcomesMonitored.length; i++){
+      this.state.outcomesMonitored[i] = this.state.outcomesMonitored[i].key;
+    }
+
     const {formStatus, userData} = this.props;
     //If submitting a new form
-    if (formStatus == 'add') {
+    if (formStatus === 'add') {
       if (userData) {
         //If an organization user, then submit to temp db for review
-        if (userData.accessLevel == 0) {
+        if (userData.accessLevel === 0) {
           this.props.submitNonRA(this.state, this.props.inDB, false);
         }
         //Otherwise, if an RA or root user, submit directly to main db
@@ -693,6 +847,22 @@ class formSubmission extends React.Component{
     }
   }
 
+  fillMultiValued(){
+    console.log("why");
+    this.fillAIBase();
+    this.fillAsiaOperation();
+    this.fillIBase();
+    this.fillInitCountry();
+    this.fillInitRegion();
+    this.fillLaunchCountry();
+    this.fillManagementType();
+    //this.fillOpLoc();
+    this.fillOutcome();
+    this.fillPopSector();
+    this.fillProgramActivity();
+    this.fillSourceFee();
+  }
+
   render(){
     const {authorized, formSubmitted, formSubmitError} = this.props;
     if (authorized === false) {
@@ -712,6 +882,9 @@ class formSubmission extends React.Component{
       <h5 style = {{textAlign: "center"}}> {formSubmitError} </h5>
     </div> : null
 
+    document.addEventListener("DOMContentLoaded", this.fillMultiValued)
+    //document.addEventListener("load", this.fillMultiValued)
+
     return (
         <div className = "formSubmission" style = {{paddingTop: '50px'}}>
             <h3>Form Submission</h3>
@@ -719,6 +892,7 @@ class formSubmission extends React.Component{
             <form onSubmit={this.handleFormSubmit}>
 
             <h4>Funder</h4>
+            
 
             <p>Name</p>
               <input type="text" id="fname" name="funderName" value={this.state.fname} placeholder="Funder Name" onChange={this.handleChange}/>
@@ -727,27 +901,27 @@ class formSubmission extends React.Component{
               <input type="text" id="furl" name="funderWebsite" value={this.state.furl} placeholder="funderWebsite.com" onChange={this.handleChange}/>
 
             <p>Profit Motive</p>
-              <input type="radio" id="motive1" name="profitMotive" value="Not-for-profit" checked = {this.state.motive == 'Not-for-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive1">Not-For-Profit</label>
-              <input type="radio" id="motive2" name="profitMotive" value="Hybrid" checked = {this.state.motive == 'Hybrid'} onChange={this.profitMotiveChange}/> <label htmlFor="motive2">Hybrid</label>
-              <input type="radio" id="motive3" name="profitMotive" value="For-profit" checked = {this.state.motive == 'For-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive3">For-Profit</label>
+              <input type="radio" id="motive1" name="profitMotive" value="Not-for-profit" checked = {this.state.motive === 'Not-for-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive1">Not-For-Profit</label>
+              <input type="radio" id="motive2" name="profitMotive" value="Hybrid" checked = {this.state.motive === 'Hybrid'} onChange={this.profitMotiveChange}/> <label htmlFor="motive2">Hybrid</label>
+              <input type="radio" id="motive3" name="profitMotive" value="For-profit" checked = {this.state.motive === 'For-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive3">For-Profit</label>
             <br></br><br></br>
 
             <p>Impact Investing?</p>
-              <input type="radio" id="impact1" name="impactInvesting" value="Yes" checked = {this.state.impact == 'Yes'} onChange={this.impactChange}/> <label htmlFor="impact1">Yes</label>
-              <input type="radio" id="impact2" name="impactInvesting" value="No" checked = {this.state.impact == 'No'} onChange={this.impactChange}/> <label htmlFor="impact2">No</label>
-              <input type="radio" id="impact3" name="impactInvesting" value="Unknown" checked = {this.state.impact == 'Unknown'} onChange={this.impactChange}/> <label htmlFor="impact3">Unknown</label>
+              <input type="radio" id="impact1" name="impactInvesting" value="Yes" checked = {this.state.impact === 'Yes'} onChange={this.impactChange}/> <label htmlFor="impact1">Yes</label>
+              <input type="radio" id="impact2" name="impactInvesting" value="No" checked = {this.state.impact === 'No'} onChange={this.impactChange}/> <label htmlFor="impact2">No</label>
+              <input type="radio" id="impact3" name="impactInvesting" value="Unknown" checked = {this.state.impact === 'Unknown'} onChange={this.impactChange}/> <label htmlFor="impact3">Unknown</label>
             <br></br><br></br>
 
             <p>Organizational Form</p>
-              <input type="radio" id="organization1" name="organizationalForm" value="Private Foundation" checked = {this.state.organizationForm == 'Private Foundation'} onChange={this.organizationChange}/> <label htmlFor="organization1">Private Foundation</label>
-              <input type="radio" id="organization2" name="organizationalForm" value="Impact Investor" checked = {this.state.organizationForm == 'Impact Investor'} onChange={this.organizationChange}/> <label htmlFor="organization2">Impact Investor</label>
-              <input type="radio" id="organization3" name="organizationalForm" value="Invenstment Firm / Fund Manager / Fund Advisor or Consultancy Services" checked = {this.state.organizationForm == 'Invenstment Firm / Fund Manager / Fund Advisor or Consultancy Services'} onChange={this.organizationChange}/> <label htmlFor="organization3">Investment Firm / Fund Manager / Fund Advisor or Consultancy Services</label>
-              <input type="radio" id="organization4" name="organizationalForm" value="Charity / NGO" checked = {this.state.organizationForm == 'Charity / NGO'} onChange={this.organizationChange}/> <label htmlFor="organization4">Charity / NGO</label>
-              <input type="radio" id="organization5" name="organizationalForm" value="State / Government" checked = {this.state.organizationForm == 'State / Government'} onChange={this.organizationChange}/> <label htmlFor="organization5">State / Government</label>
-              <input type="radio" id="organization6" name="organizationalForm" value="Network or Platform" checked = {this.state.organizationForm == 'Network or Platform'} onChange={this.organizationChange}/> <label htmlFor="organization6">Network or Platform</label>
-              <input type="radio" id="organization7" name="organizationalForm" value="CSR Initiative / unit" checked = {this.state.organizationForm == 'CSR initiative / unit'} onChange={this.organizationChange}/> <label htmlFor="organization7">CSR Initiative / Unit</label>
-              <input type="radio" id="organization8" name="organizationalForm" value="Multilateral" checked = {this.state.organizationForm == 'Multilateral'} onChange={this.organizationChange}/> <label htmlFor="organization8">Multilateral</label>
-              <input type="radio" id="organization9" name="organizationalForm" value="Other" checked = {this.state.organizationForm == 'Other'} onChange={this.organizationChange}/> <label htmlFor="organization9">Other</label>
+              <input type="radio" id="organization1" name="organizationalForm" value="Private Foundation" checked = {this.state.organizationForm === 'Private Foundation'} onChange={this.organizationChange}/> <label htmlFor="organization1">Private Foundation</label>
+              <input type="radio" id="organization2" name="organizationalForm" value="Impact Investor" checked = {this.state.organizationForm === 'Impact Investor'} onChange={this.organizationChange}/> <label htmlFor="organization2">Impact Investor</label>
+              <input type="radio" id="organization3" name="organizationalForm" value="Invenstment Firm / Fund Manager / Fund Advisor or Consultancy Services" checked = {this.state.organizationForm === 'Invenstment Firm / Fund Manager / Fund Advisor or Consultancy Services'} onChange={this.organizationChange}/> <label htmlFor="organization3">Investment Firm / Fund Manager / Fund Advisor or Consultancy Services</label>
+              <input type="radio" id="organization4" name="organizationalForm" value="Charity / NGO" checked = {this.state.organizationForm === 'Charity / NGO'} onChange={this.organizationChange}/> <label htmlFor="organization4">Charity / NGO</label>
+              <input type="radio" id="organization5" name="organizationalForm" value="State / Government" checked = {this.state.organizationForm === 'State / Government'} onChange={this.organizationChange}/> <label htmlFor="organization5">State / Government</label>
+              <input type="radio" id="organization6" name="organizationalForm" value="Network or Platform" checked = {this.state.organizationForm === 'Network or Platform'} onChange={this.organizationChange}/> <label htmlFor="organization6">Network or Platform</label>
+              <input type="radio" id="organization7" name="organizationalForm" value="CSR Initiative / unit" checked = {this.state.organizationForm === 'CSR initiative / unit'} onChange={this.organizationChange}/> <label htmlFor="organization7">CSR Initiative / Unit</label>
+              <input type="radio" id="organization8" name="organizationalForm" value="Multilateral" checked = {this.state.organizationForm === 'Multilateral'} onChange={this.organizationChange}/> <label htmlFor="organization8">Multilateral</label>
+              <input type="radio" id="organization9" name="organizationalForm" value="Other" checked = {this.state.organizationForm === 'Other'} onChange={this.organizationChange}/> <label htmlFor="organization9">Other</label>
             <br></br><br></br>
 
             <p>International Base(s)</p>
@@ -978,44 +1152,41 @@ class formSubmission extends React.Component{
 
             <div id="iBases"></div>
 
-{/* OPERATIONS DOES NOT EXIST */}
-
-
             <p>Education Subsector(s)<br></br>Select all that apply:</p>
-            <input type="checkbox" id="edSub1" name="educationSubsector" value="Adult" onChange={this.changeEdSub}/> <label htmlFor="edSub1" className="checkbox">Adult</label>
-            <input type="checkbox" id="edSub2" name="educationSubsector" value="Adult Basic and Continuing Education" onChange={this.changeEdSub}/> <label htmlFor="edSub2" className="checkbox">Adult Basic and Continuing Education</label>
-            <input type="checkbox" id="edSub3" name="educationSubsector" value="All Education Sub-Sectors" onChange={this.changeEdSub}/> <label htmlFor="edSub3" className="checkbox">All Education Sub-Sectors</label>
-            <input type="checkbox" id="edSub4" name="educationSubsector" value="All sector data missing or unclear" onChange={this.changeEdSub}/> <label htmlFor="edSub4" className="checkbox">All sector data missing or unclear</label>
-            <input type="checkbox" id="edSub5" name="educationSubsector" value="Basic and Continuing Education" onChange={this.changeEdSub}/> <label htmlFor="edSub5" className="checkbox">Basic and Continuing Education</label>
-            <input type="checkbox" id="edSub6" name="educationSubsector" value="Early Childhood Education" onChange={this.changeEdSub}/> <label htmlFor="edSub6" className="checkbox">Early Childhood Education</label>
-            <input type="checkbox" id="edSub7" name="educationSubsector" value="Education Facilities" onChange={this.changeEdSub}/> <label htmlFor="edSub7" className="checkbox">Education Facilities</label>
-            <input type="checkbox" id="edSub8" name="educationSubsector" value="Education Sub-sector unclear" onChange={this.changeEdSub}/> <label htmlFor="edSub8" className="checkbox">Education Sub-sector unclear</label>
-            <input type="checkbox" id="edSub9" name="educationSubsector" value="Main Education Sub-Sector" onChange={this.changeEdSub}/> <label htmlFor="edSub9" className="checkbox">Main Education Sub-Sector</label>
-            <input type="checkbox" id="edSub10" name="educationSubsector" value="Missing data" onChange={this.changeEdSub}/> <label htmlFor="edSub10" className="checkbox">Missing data</label>
-            <input type="checkbox" id="edSub11" name="educationSubsector" value="No Education" onChange={this.changeEdSub}/> <label htmlFor="edSub11" className="checkbox">No Education</label>
-            <input type="checkbox" id="edSub12" name="educationSubsector" value="Other Education" onChange={this.changeEdSub}/> <label htmlFor="edSub12" className="checkbox">Other Education</label>
-            <input type="checkbox" id="edSub13" name="educationSubsector" value="Primary Education" onChange={this.changeEdSub}/> <label htmlFor="edSub13" className="checkbox">Primary Education</label>
-            <input type="checkbox" id="edSub14" name="educationSubsector" value="Public Administration - Education" onChange={this.changeEdSub}/> <label htmlFor="edSub14" className="checkbox">Public Administration - Education</label>
-            <input type="checkbox" id="edSub15" name="educationSubsector" value="Secondary Education" onChange={this.changeEdSub}/> <label htmlFor="edSub15" className="checkbox">Secondary Education</label>
-            <input type="checkbox" id="edSub16" name="educationSubsector" value="Tertiary Education" onChange={this.changeEdSub}/> <label htmlFor="edSub16" className="checkbox">Tertiary Education</label>
-            <input type="checkbox" id="edSub17" name="educationSubsector" value="Unclear" onChange={this.changeEdSub}/> <label htmlFor="edSub17" className="checkbox">Unclear</label>
-            <input type="checkbox" id="edSub18" name="educationSubsector" value="Workforce Development and Vocational Education" onChange={this.changeEdSub}/> <label htmlFor="edSub18" className="checkbox">Workforce Development and Vocational Education</label>
-            <input type="checkbox" id="edSub19" name="educationSubsector" value="Workforce Development/Skills" onChange={this.changeEdSub}/> <label htmlFor="edSub19" className="checkbox">Workforce Development/Skills</label>
+            <input type="checkbox" id="edSub1" name="educationSubsector" value="Adult" checked = {this.state.edSubs.includes("Adult")} onChange={this.changeEdSub}/> <label htmlFor="edSub1" className="checkbox">Adult</label>
+            <input type="checkbox" id="edSub2" name="educationSubsector" value="Adult Basic and Continuing Education" checked = {this.state.edSubs.includes("Adult Basic and Continuing Education")}  onChange={this.changeEdSub}/> <label htmlFor="edSub2" className="checkbox">Adult Basic and Continuing Education</label>
+            <input type="checkbox" id="edSub3" name="educationSubsector" value="All Education Sub-Sectors" checked = {this.state.edSubs.includes("All Education Sub-Sectors")} onChange={this.changeEdSub}/> <label htmlFor="edSub3" className="checkbox">All Education Sub-Sectors</label>
+            <input type="checkbox" id="edSub4" name="educationSubsector" value="All sector data missing or unclear" checked = {this.state.edSubs.includes("All sector data missing or unclear")} onChange={this.changeEdSub}/> <label htmlFor="edSub4" className="checkbox">All sector data missing or unclear</label>
+            <input type="checkbox" id="edSub5" name="educationSubsector" value="Basic and Continuing Education" checked = {this.state.edSubs.includes("Basic and Continuing Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub5" className="checkbox">Basic and Continuing Education</label>
+            <input type="checkbox" id="edSub6" name="educationSubsector" value="Early Childhood Education" checked = {this.state.edSubs.includes("Early Childhood Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub6" className="checkbox">Early Childhood Education</label>
+            <input type="checkbox" id="edSub7" name="educationSubsector" value="Education Facilities" checked = {this.state.edSubs.includes("Education Facilities")} onChange={this.changeEdSub}/> <label htmlFor="edSub7" className="checkbox">Education Facilities</label>
+            <input type="checkbox" id="edSub8" name="educationSubsector" value="Education Sub-sector unclear" checked = {this.state.edSubs.includes("Education Sub-sector unclear")} onChange={this.changeEdSub}/> <label htmlFor="edSub8" className="checkbox">Education Sub-sector unclear</label>
+            <input type="checkbox" id="edSub9" name="educationSubsector" value="Main Education Sub-Sector" checked = {this.state.edSubs.includes("Main Education Sub-Sector")} onChange={this.changeEdSub}/> <label htmlFor="edSub9" className="checkbox">Main Education Sub-Sector</label>
+            <input type="checkbox" id="edSub10" name="educationSubsector" value="Missing data" checked = {this.state.edSubs.includes("Missing data")} onChange={this.changeEdSub}/> <label htmlFor="edSub10" className="checkbox">Missing data</label>
+            <input type="checkbox" id="edSub11" name="educationSubsector" value="No Education" checked = {this.state.edSubs.includes("No Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub11" className="checkbox">No Education</label>
+            <input type="checkbox" id="edSub12" name="educationSubsector" value="Other Education" checked = {this.state.edSubs.includes("Other Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub12" className="checkbox">Other Education</label>
+            <input type="checkbox" id="edSub13" name="educationSubsector" value="Primary Education" checked = {this.state.edSubs.includes("Primary Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub13" className="checkbox">Primary Education</label>
+            <input type="checkbox" id="edSub14" name="educationSubsector" value="Public Administration - Education" checked = {this.state.edSubs.includes("Public Administration - Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub14" className="checkbox">Public Administration - Education</label>
+            <input type="checkbox" id="edSub15" name="educationSubsector" value="Secondary Education" checked = {this.state.edSubs.includes("Secondary Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub15" className="checkbox">Secondary Education</label>
+            <input type="checkbox" id="edSub16" name="educationSubsector" value="Tertiary Education" checked = {this.state.edSubs.includes("Tertiary Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub16" className="checkbox">Tertiary Education</label>
+            <input type="checkbox" id="edSub17" name="educationSubsector" value="Unclear" checked = {this.state.edSubs.includes("Unclear")} onChange={this.changeEdSub}/> <label htmlFor="edSub17" className="checkbox">Unclear</label>
+            <input type="checkbox" id="edSub18" name="educationSubsector" value="Workforce Development and Vocational Education" checked = {this.state.edSubs.includes("Workforce Development and Vocational Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub18" className="checkbox">Workforce Development and Vocational Education</label>
+            <input type="checkbox" id="edSub19" name="educationSubsector" value="Workforce Development/Skills" checked = {this.state.edSubs.includes("Workforce Development/Skills")} onChange={this.changeEdSub}/> <label htmlFor="edSub19" className="checkbox">Workforce Development/Skills</label>
 
             <p>Organizational Trait(s)<br></br>Select all that apply:</p>
-            <input type="checkbox" id="orgTrait1" name="organizationalTrait" value="Aim to address issues of common good" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait1" className="checkbox">Aim to address issues of common good</label>
-            <input type="checkbox" id="orgTrait2" name="organizationalTrait" value="All sector data missing or unclear" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait2" className="checkbox">All sector data missing or unclear</label>
-            <input type="checkbox" id="orgTrait3" name="organizationalTrait" value="Commitment to measurement" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait3" className="checkbox">Commitment to measurement</label>
-            <input type="checkbox" id="orgTrait4" name="organizationalTrait" value="Education Sub-sector unclear" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait4" className="checkbox">Education Sub-sector unclear</label>
-            <input type="checkbox" id="orgTrait5" name="organizationalTrait" value="Expects return on investment" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait5" className="checkbox">Expects return on investment</label>
-            <input type="checkbox" id="orgTrait6" name="organizationalTrait" value="Explicit intention to have social impact in the education sector" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait6" className="checkbox">Explicit intention to have social impact in the education sector</label>
-            <input type="checkbox" id="orgTrait7" name="organizationalTrait" value="Led by independent board of trustees or CEO" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait7" className="checkbox">Led by independent board of trustees or CEO</label>
-            <input type="checkbox" id="orgTrait8" name="organizationalTrait" value="Not part of the public sector" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait8" className="checkbox">Not part of the public sector</label>
-            <input type="checkbox" id="orgTrait9" name="organizationalTrait" value="Not-for-profit oriented" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait9" className="checkbox">Not-for-profit oriented</label>
-            <input type="checkbox" id="orgTrait10" name="organizationalTrait" value="Organizational Traits" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait10" className="checkbox">Organizational Traits</label>
-            <input type="checkbox" id="orgTrait11" name="organizationalTrait" value="Secondary Education" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait11" className="checkbox">Secondary Education</label>
-            <input type="checkbox" id="orgTrait12" name="organizationalTrait" value="Use own financial resources (unlike NGOs)" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait12" className="checkbox">Use own financial resources (unlike NGOs)</label>
-            <input type="checkbox" id="orgTrait13" name="organizationalTrait" value="Workforce Development/Skills" onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait13" className="checkbox">Workforce Development/Skills</label>
+            <input type="checkbox" id="orgTrait1" name="organizationalTrait" value="Aim to address issues of common good" checked = {this.state.orgTraits.includes("Aim to address issues of common good")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait1" className="checkbox">Aim to address issues of common good</label>
+            <input type="checkbox" id="orgTrait2" name="organizationalTrait" value="All sector data missing or unclear" checked = {this.state.orgTraits.includes("All sector data missing or unclear")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait2" className="checkbox">All sector data missing or unclear</label>
+            <input type="checkbox" id="orgTrait3" name="organizationalTrait" value="Commitment to measurement" checked = {this.state.orgTraits.includes("Commitment to measurement")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait3" className="checkbox">Commitment to measurement</label>
+            <input type="checkbox" id="orgTrait4" name="organizationalTrait" value="Education Sub-sector unclear" checked = {this.state.orgTraits.includes("Education Sub-sector unclear")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait4" className="checkbox">Education Sub-sector unclear</label>
+            <input type="checkbox" id="orgTrait5" name="organizationalTrait" value="Expects return on investment" checked = {this.state.orgTraits.includes("Expects return on investment")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait5" className="checkbox">Expects return on investment</label>
+            <input type="checkbox" id="orgTrait6" name="organizationalTrait" value="Explicit intention to have social impact in the education sector" checked = {this.state.orgTraits.includes("xplicit intention to have social impact in the education sector")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait6" className="checkbox">Explicit intention to have social impact in the education sector</label>
+            <input type="checkbox" id="orgTrait7" name="organizationalTrait" value="Led by independent board of trustees or CEO" checked = {this.state.orgTraits.includes("Led by independent board of trustees or CEO")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait7" className="checkbox">Led by independent board of trustees or CEO</label>
+            <input type="checkbox" id="orgTrait8" name="organizationalTrait" value="Not part of the public sector" checked = {this.state.orgTraits.includes("Not part of the public sector")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait8" className="checkbox">Not part of the public sector</label>
+            <input type="checkbox" id="orgTrait9" name="organizationalTrait" value="Not-for-profit oriented" checked = {this.state.orgTraits.includes("Not-for-profit oriented")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait9" className="checkbox">Not-for-profit oriented</label>
+            <input type="checkbox" id="orgTrait10" name="organizationalTrait" value="Organizational Traits" checked = {this.state.orgTraits.includes("Organizational Traits")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait10" className="checkbox">Organizational Traits</label>
+            <input type="checkbox" id="orgTrait11" name="organizationalTrait" value="Secondary Education" checked = {this.state.orgTraits.includes("Secondary Education")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait11" className="checkbox">Secondary Education</label>
+            <input type="checkbox" id="orgTrait12" name="organizationalTrait" value="Use own financial resources (unlike NGOs)" checked = {this.state.orgTraits.includes("Use own financial resources (unlike NGOs)")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait12" className="checkbox">Use own financial resources (unlike NGOs)</label>
+            <input type="checkbox" id="orgTrait13" name="organizationalTrait" value="Workforce Development/Skills" checked = {this.state.orgTraits.includes("Workforce Development/Skills")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait13" className="checkbox">Workforce Development/Skills</label>
 
             <p>Asia International Base(s)</p>
             <select id="asiaInternationalBase" name="country" onChange={this.addAIBase}>
@@ -1484,8 +1655,8 @@ class formSubmission extends React.Component{
               <input type="text" id="initURL" name="initiativeWebsite" value = {this.state.initURL} placeholder="initiativeWebsite.com" onChange={this.handleChange}/>
 
             <p>Targets Women?</p>
-              <input type="radio" id="tWomen1" name="targetsWomen" value="Yes" checked = {this.state.tWomen == true} onChange={this.tWomenChange}/> <label htmlFor="tWomen1">Yes</label>
-              <input type="radio" id="tWomen2" name="targetsWomen" value="No" checked = {this.state.tWomen == false} onChange={this.tWomenChange}/> <label htmlFor="tWomen2">No</label>
+              <input type="radio" id="tWomen1" name="targetsWomen" value="Yes" checked = {this.state.tWomen === true} onChange={this.tWomenChange}/> <label htmlFor="tWomen1">Yes</label>
+              <input type="radio" id="tWomen2" name="targetsWomen" value="No" checked = {this.state.tWomen === false} onChange={this.tWomenChange}/> <label htmlFor="tWomen2">No</label>
 
             <p>Start Year</p>
               <input type="number" id="initStart" name="startYear" defaultValue={this.state.initStart} placeholder="Start Year" onChange={this.startYearChange}/>
@@ -2014,55 +2185,55 @@ class formSubmission extends React.Component{
             <div id="initCountries"></div>
 
             <p>Target Geography</p>
-              <input type="checkbox" id="geography1" name="targetGeo" value="Urban" onChange={this.geographyChange}/> <label htmlFor="geography1" className="checkbox">Urban</label>
-              <input type="checkbox" id="geography2" name="targetGeo" value="Peri-Urban" onChange={this.geographyChange}/> <label htmlFor="geography2" className="checkbox">Peri-Urban</label>
-              <input type="checkbox" id="geography3" name="targetGeo" value="Rural" onChange={this.geographyChange}/> <label htmlFor="geography3" className="checkbox">Rural</label>
-              <input type="checkbox" id="geography4" name="targetGeo" value="Online community" onChange={this.geographyChange}/> <label htmlFor="geography4" className="checkbox">Online community</label>
-              <input type="checkbox" id="geography5" name="targetGeo" value="children with special needs" onChange={this.geographyChange}/> <label htmlFor="geography5" className="checkbox">children with special needs</label>
-              <input type="checkbox" id="geography6" name="targetGeo" value="Unclear" onChange={this.geographyChange}/> <label htmlFor="geography6" className="checkbox">Unclear</label>
-              <input type="checkbox" id="geography7" name="targetGeo" value="Missing" onChange={this.geographyChange}/> <label htmlFor="geography7" className="checkbox">Missing</label>
+              <input type="checkbox" id="geography1" name="targetGeo" value="Urban" checked = {this.state.targetGeos.includes("Urban")} onChange={this.geographyChange}/> <label htmlFor="geography1" className="checkbox">Urban</label>
+              <input type="checkbox" id="geography2" name="targetGeo" value="Peri-Urban" checked = {this.state.targetGeos.includes("Peri-Urban")} onChange={this.geographyChange}/> <label htmlFor="geography2" className="checkbox">Peri-Urban</label>
+              <input type="checkbox" id="geography3" name="targetGeo" value="Rural" checked = {this.state.targetGeos.includes("Rural")} onChange={this.geographyChange}/> <label htmlFor="geography3" className="checkbox">Rural</label>
+              <input type="checkbox" id="geography4" name="targetGeo" value="Online community" checked = {this.state.targetGeos.includes("Online Community")} onChange={this.geographyChange}/> <label htmlFor="geography4" className="checkbox">Online community</label>
+              <input type="checkbox" id="geography5" name="targetGeo" value="children with special needs" checked = {this.state.targetGeos.includes("children with special needs")} onChange={this.geographyChange}/> <label htmlFor="geography5" className="checkbox">children with special needs</label>
+              <input type="checkbox" id="geography6" name="targetGeo" value="Unclear" checked = {this.state.targetGeos.includes("Unclear")} onChange={this.geographyChange}/> <label htmlFor="geography6" className="checkbox">Unclear</label>
+              <input type="checkbox" id="geography7" name="targetGeo" value="Missing" checked = {this.state.targetGeos.includes("Missing")} onChange={this.geographyChange}/> <label htmlFor="geography7" className="checkbox">Missing</label>
 
             <p>Main Education Subsector</p>
-            <input type="checkbox" id="iEdSub1" name="educationSubsector" value="Adult" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub1" className="checkbox">Adult</label>
-            <input type="checkbox" id="iEdSub2" name="educationSubsector" value="Adult Basic and Continuing Education" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub2" className="checkbox">Adult Basic and Continuing Education</label>
-            <input type="checkbox" id="iEdSub3" name="educationSubsector" value="All Education Sub-Sectors" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub3" className="checkbox">All Education Sub-Sectors</label>
-            <input type="checkbox" id="iEdSub4" name="educationSubsector" value="All sector data missing or unclear" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub4" className="checkbox">All sector data missing or unclear</label>
-            <input type="checkbox" id="iEdSub5" name="educationSubsector" value="Basic and Continuing Education" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub5" className="checkbox">Basic and Continuing Education</label>
-            <input type="checkbox" id="iEdSub6" name="educationSubsector" value="Early Childhood Education" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub6" className="checkbox">Early Childhood Education</label>
-            <input type="checkbox" id="iEdSub7" name="educationSubsector" value="Education Facilities" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub7" className="checkbox">Education Facilities</label>
-            <input type="checkbox" id="iEdSub8" name="educationSubsector" value="Education Sub-sector unclear" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub8" className="checkbox">Education Sub-sector unclear</label>
-            <input type="checkbox" id="iEdSub9" name="educationSubsector" value="Main Education Sub-Sector" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub9" className="checkbox">Main Education Sub-Sector</label>
-            <input type="checkbox" id="iEdSub10" name="educationSubsector" value="Missing data" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub10" className="checkbox">Missing data</label>
-            <input type="checkbox" id="iEdSub11" name="educationSubsector" value="No Education" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub11" className="checkbox">No Education</label>
-            <input type="checkbox" id="iEdSub12" name="educationSubsector" value="Other Education" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub12" className="checkbox">Other Education</label>
-            <input type="checkbox" id="iEdSub13" name="educationSubsector" value="Primary Education" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub13" className="checkbox">Primary Education</label>
-            <input type="checkbox" id="iEdSub14" name="educationSubsector" value="Public Administration - Education" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub14" className="checkbox">Public Administration - Education</label>
-            <input type="checkbox" id="iEdSub15" name="educationSubsector" value="Secondary Education" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub15" className="checkbox">Secondary Education</label>
-            <input type="checkbox" id="iEdSub16" name="educationSubsector" value="Tertiary Education" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub16" className="checkbox">Tertiary Education</label>
-            <input type="checkbox" id="iEdSub17" name="educationSubsector" value="Unclear" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub17" className="checkbox">Unclear</label>
-            <input type="checkbox" id="iEdSub18" name="educationSubsector" value="Workforce Development and Vocational Education" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub18" className="checkbox">Workforce Development and Vocational Education</label>
-            <input type="checkbox" id="iEdSub19" name="educationSubsector" value="Workforce Development/Skills" onChange={this.mEdSubChange}/> <label htmlFor="iEdSub19" className="checkbox">Workforce Development/Skills</label>
+            <input type="checkbox" id="iEdSub1" name="educationSubsector" value="Adult" checked = {this.state.mEdSubs.includes("Adult")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub1" className="checkbox">Adult</label>
+            <input type="checkbox" id="iEdSub2" name="educationSubsector" value="Adult Basic and Continuing Education" checked = {this.state.mEdSubs.includes("Adult Basic and Continuing Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub2" className="checkbox">Adult Basic and Continuing Education</label>
+            <input type="checkbox" id="iEdSub3" name="educationSubsector" value="All Education Sub-Sectors" checked = {this.state.mEdSubs.includes("All Education Sub-Sectors")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub3" className="checkbox">All Education Sub-Sectors</label>
+            <input type="checkbox" id="iEdSub4" name="educationSubsector" value="All sector data missing or unclear" checked = {this.state.mEdSubs.includes("All sector data missing or unclear")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub4" className="checkbox">All sector data missing or unclear</label>
+            <input type="checkbox" id="iEdSub5" name="educationSubsector" value="Basic and Continuing Education" checked = {this.state.mEdSubs.includes("Basic and Continuing Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub5" className="checkbox">Basic and Continuing Education</label>
+            <input type="checkbox" id="iEdSub6" name="educationSubsector" value="Early Childhood Education" checked = {this.state.mEdSubs.includes("Early Childhood Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub6" className="checkbox">Early Childhood Education</label>
+            <input type="checkbox" id="iEdSub7" name="educationSubsector" value="Education Facilities" checked = {this.state.mEdSubs.includes("Education Facilities")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub7" className="checkbox">Education Facilities</label>
+            <input type="checkbox" id="iEdSub8" name="educationSubsector" value="Education Sub-sector unclear" checked = {this.state.mEdSubs.includes("Education Sub-sector unclear")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub8" className="checkbox">Education Sub-sector unclear</label>
+            <input type="checkbox" id="iEdSub9" name="educationSubsector" value="Main Education Sub-Sector" checked = {this.state.mEdSubs.includes("Main Education Sub-Sector")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub9" className="checkbox">Main Education Sub-Sector</label>
+            <input type="checkbox" id="iEdSub10" name="educationSubsector" value="Missing data" checked = {this.state.mEdSubs.includes("Missing data")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub10" className="checkbox">Missing data</label>
+            <input type="checkbox" id="iEdSub11" name="educationSubsector" value="No Education" checked = {this.state.mEdSubs.includes("No Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub11" className="checkbox">No Education</label>
+            <input type="checkbox" id="iEdSub12" name="educationSubsector" value="Other Education" checked = {this.state.mEdSubs.includes("Other Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub12" className="checkbox">Other Education</label>
+            <input type="checkbox" id="iEdSub13" name="educationSubsector" value="Primary Education" checked = {this.state.mEdSubs.includes("Primary Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub13" className="checkbox">Primary Education</label>
+            <input type="checkbox" id="iEdSub14" name="educationSubsector" value="Public Administration - Education" checked = {this.state.mEdSubs.includes("Public Administration - Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub14" className="checkbox">Public Administration - Education</label>
+            <input type="checkbox" id="iEdSub15" name="educationSubsector" value="Secondary Education" checked = {this.state.mEdSubs.includes("Secondary Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub15" className="checkbox">Secondary Education</label>
+            <input type="checkbox" id="iEdSub16" name="educationSubsector" value="Tertiary Education" checked = {this.state.mEdSubs.includes("Tertiary Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub16" className="checkbox">Tertiary Education</label>
+            <input type="checkbox" id="iEdSub17" name="educationSubsector" value="Unclear" checked = {this.state.mEdSubs.includes("Unclear")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub17" className="checkbox">Unclear</label>
+            <input type="checkbox" id="iEdSub18" name="educationSubsector" value="Workforce Development and Vocational Education" checked = {this.state.mEdSubs.includes("Workforce Development and Vocational Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub18" className="checkbox">Workforce Development and Vocational Education</label>
+            <input type="checkbox" id="iEdSub19" name="educationSubsector" value="Workforce Development/Skills" checked = {this.state.mEdSubs.includes("Workforce Development/Skills")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub19" className="checkbox">Workforce Development/Skills</label>
 
             <p>Other Education Subsector(s)<br></br>Select all that apply:</p>
-            <input type="checkbox" id="oEdSub1" name="educationSubsector" value="Adult" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub1" className="checkbox">Adult</label>
-            <input type="checkbox" id="oEdSub2" name="educationSubsector" value="Adult Basic and Continuing Education" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub2" className="checkbox">Adult Basic and Continuing Education</label>
-            <input type="checkbox" id="oEdSub3" name="educationSubsector" value="All Education Sub-Sectors" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub3" className="checkbox">All Education Sub-Sectors</label>
-            <input type="checkbox" id="oEdSub4" name="educationSubsector" value="All sector data missing or unclear" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub4" className="checkbox">All sector data missing or unclear</label>
-            <input type="checkbox" id="oEdSub5" name="educationSubsector" value="Basic and Continuing Education" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub5" className="checkbox">Basic and Continuing Education</label>
-            <input type="checkbox" id="oEdSub6" name="educationSubsector" value="Early Childhood Education" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub6" className="checkbox">Early Childhood Education</label>
-            <input type="checkbox" id="oEdSub7" name="educationSubsector" value="Education Facilities" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub7" className="checkbox">Education Facilities</label>
-            <input type="checkbox" id="oEdSub8" name="educationSubsector" value="Education Sub-sector unclear" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub8" className="checkbox">Education Sub-sector unclear</label>
-            <input type="checkbox" id="oEdSub9" name="educationSubsector" value="Main Education Sub-Sector" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub9" className="checkbox">Main Education Sub-Sector</label>
-            <input type="checkbox" id="oEdSub10" name="educationSubsector" value="Missing data" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub10" className="checkbox">Missing data</label>
-            <input type="checkbox" id="oEdSub11" name="educationSubsector" value="No Education" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub11" className="checkbox">No Education</label>
-            <input type="checkbox" id="oEdSub12" name="educationSubsector" value="Other Education" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub12" className="checkbox">Other Education</label>
-            <input type="checkbox" id="oEdSub13" name="educationSubsector" value="Primary Education" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub13" className="checkbox">Primary Education</label>
-            <input type="checkbox" id="oEdSub14" name="educationSubsector" value="Public Administration - Education" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub14" className="checkbox">Public Administration - Education</label>
-            <input type="checkbox" id="oEdSub15" name="educationSubsector" value="Secondary Education" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub15" className="checkbox">Secondary Education</label>
-            <input type="checkbox" id="oEdSub16" name="educationSubsector" value="Tertiary Education" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub16" className="checkbox">Tertiary Education</label>
-            <input type="checkbox" id="oEdSub17" name="educationSubsector" value="Unclear" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub17" className="checkbox">Unclear</label>
-            <input type="checkbox" id="oEdSub18" name="educationSubsector" value="Workforce Development and Vocational Education" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub18" className="checkbox">Workforce Development and Vocational Education</label>
-            <input type="checkbox" id="oEdSub19" name="educationSubsector" value="Workforce Development/Skills" onChange={this.oEdSubChange}/> <label htmlFor="oEdSub19" className="checkbox">Workforce Development/Skills</label>
+            <input type="checkbox" id="oEdSub1" name="educationSubsector" value="Adult" checked = {this.state.oEdSubs.includes("Adult")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub1" className="checkbox">Adult</label>
+            <input type="checkbox" id="oEdSub2" name="educationSubsector" value="Adult Basic and Continuing Education" checked = {this.state.oEdSubs.includes("Adult Basic and Continuing Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub2" className="checkbox">Adult Basic and Continuing Education</label>
+            <input type="checkbox" id="oEdSub3" name="educationSubsector" value="All Education Sub-Sectors" checked = {this.state.oEdSubs.includes("All Education Sub-Sectors")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub3" className="checkbox">All Education Sub-Sectors</label>
+            <input type="checkbox" id="oEdSub4" name="educationSubsector" value="All sector data missing or unclear" checked = {this.state.oEdSubs.includes("All sector data missing or unclear")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub4" className="checkbox">All sector data missing or unclear</label>
+            <input type="checkbox" id="oEdSub5" name="educationSubsector" value="Basic and Continuing Education" checked = {this.state.oEdSubs.includes("Basic and Continuing Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub5" className="checkbox">Basic and Continuing Education</label>
+            <input type="checkbox" id="oEdSub6" name="educationSubsector" value="Early Childhood Education" checked = {this.state.oEdSubs.includes("Early Childhood Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub6" className="checkbox">Early Childhood Education</label>
+            <input type="checkbox" id="oEdSub7" name="educationSubsector" value="Education Facilities" checked = {this.state.oEdSubs.includes("Education Facilities")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub7" className="checkbox">Education Facilities</label>
+            <input type="checkbox" id="oEdSub8" name="educationSubsector" value="Education Sub-sector unclear" checked = {this.state.oEdSubs.includes("Education Sub-sector unclear")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub8" className="checkbox">Education Sub-sector unclear</label>
+            <input type="checkbox" id="oEdSub9" name="educationSubsector" value="Main Education Sub-Sector" checked = {this.state.oEdSubs.includes("Main Education Sub-Sector")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub9" className="checkbox">Main Education Sub-Sector</label>
+            <input type="checkbox" id="oEdSub10" name="educationSubsector" value="Missing data" checked = {this.state.oEdSubs.includes("Missing data")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub10" className="checkbox">Missing data</label>
+            <input type="checkbox" id="oEdSub11" name="educationSubsector" value="No Education" checked = {this.state.oEdSubs.includes("No Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub11" className="checkbox">No Education</label>
+            <input type="checkbox" id="oEdSub12" name="educationSubsector" value="Other Education" checked = {this.state.oEdSubs.includes("Other Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub12" className="checkbox">Other Education</label>
+            <input type="checkbox" id="oEdSub13" name="educationSubsector" value="Primary Education" checked = {this.state.oEdSubs.includes("Primary Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub13" className="checkbox">Primary Education</label>
+            <input type="checkbox" id="oEdSub14" name="educationSubsector" value="Public Administration - Education" checked = {this.state.oEdSubs.includes("Public Administration - Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub14" className="checkbox">Public Administration - Education</label>
+            <input type="checkbox" id="oEdSub15" name="educationSubsector" value="Secondary Education" checked = {this.state.oEdSubs.includes("Secondary Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub15" className="checkbox">Secondary Education</label>
+            <input type="checkbox" id="oEdSub16" name="educationSubsector" value="Tertiary Education" checked = {this.state.oEdSubs.includes("Tertiary Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub16" className="checkbox">Tertiary Education</label>
+            <input type="checkbox" id="oEdSub17" name="educationSubsector" value="Unclear" checked = {this.state.oEdSubs.includes("Unclear")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub17" className="checkbox">Unclear</label>
+            <input type="checkbox" id="oEdSub18" name="educationSubsector" value="Workforce Development and Vocational Education" checked = {this.state.oEdSubs.includes("Workforce Development and Vocational Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub18" className="checkbox">Workforce Development and Vocational Education</label>
+            <input type="checkbox" id="oEdSub19" name="educationSubsector" value="Workforce Development/Skills" checked = {this.state.oEdSubs.includes("Workforce Development/Skills")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub19" className="checkbox">Workforce Development/Skills</label>
 
             <p>Main Program Activity</p>
             <select id="mainProgramActivity" name="activity" onChange={this.changeProgramArea}>
@@ -2271,8 +2442,8 @@ class formSubmission extends React.Component{
             <div id="initActivities"></div>
 
             <p>Fee to Access?</p>
-              <input type="radio" id="feeAccess1" name="feeToAccess" value="Yes" checked = {this.state.feeAccess == true} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess1">Yes</label>
-              <input type="radio" id="feeAccess2" name="feeToAccess" value="No" checked = {this.state.feeAccess == false} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess2">No</label>
+              <input type="radio" id="feeAccess1" name="feeToAccess" value="Yes" checked = {this.state.feeAccess === true} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess1">Yes</label>
+              <input type="radio" id="feeAccess2" name="feeToAccess" value="No" checked = {this.state.feeAccess === false} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess2">No</label>
 
             <p>Target School Management Type</p>
             <select id="manType" name="managementType" onChange={this.addManagementType}>
@@ -3490,9 +3661,9 @@ class formSubmission extends React.Component{
               <input type="text" id="iname" name="implementerName" value = {this.state.iname} placeholder="Implementer Name" onChange={this.handleChange}/>
 
             <p>Profit Motive</p>
-              <input type="radio" id="impMotive1" name="impProfitMotive" value="Not-for-profit" checked = {this.state.impMotive == "Not-for-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive1">Not-For-Profit</label>
-              <input type="radio" id="impMotive2" name="impProfitMotive" value="Hybrid" checked = {this.state.impMotive == "Hybrid"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive2">Hybrid</label>
-              <input type="radio" id="impMotive3" name="impProfitMotive" value="For-profit" checked = {this.state.impMotive == "For-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive3">For-Profit</label>
+              <input type="radio" id="impMotive1" name="impProfitMotive" value="Not-for-profit" checked = {this.state.impMotive === "Not-for-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive1">Not-For-Profit</label>
+              <input type="radio" id="impMotive2" name="impProfitMotive" value="Hybrid" checked = {this.state.impMotive === "Hybrid"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive2">Hybrid</label>
+              <input type="radio" id="impMotive3" name="impProfitMotive" value="For-profit" checked = {this.state.impMotive === "For-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive3">For-Profit</label>
             <br></br><br></br>
 
             <h4>Comments about Submission</h4>

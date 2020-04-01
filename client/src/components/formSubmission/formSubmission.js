@@ -147,6 +147,7 @@ class formSubmission extends React.Component{
       });
     }
   }
+  
 
 
   buttonMaker(props){
@@ -365,8 +366,9 @@ class formSubmission extends React.Component{
   fillInitCountry(){
     for (var i = 0; i < this.state.countries.length; i++){
       if(this.state.countries[i] !== ""){
-        this.state.countries[i] = (<this.buttonMaker key={this.state.countries[i]} name={this.state.countries[i]} category="initCountries"/>)
         console.log(this.state.countries[i]);
+        this.state.countries[i] = (<this.buttonMaker key={this.state.countries[i]} name={this.state.countries[i]} category="initCountries"/>)
+        
       }
     }
     ReactDOM.render(<ul>{this.state.countries}</ul>, document.getElementById('initCountries'))
@@ -782,6 +784,39 @@ class formSubmission extends React.Component{
 
   handleFormSubmit(e) {
     e.preventDefault();
+
+    //Changes stored buttons back to relevent info for backend
+    for (var i = 0; i < this.state.internationalBases.length; i++){
+      this.state.internationalBases[i] = this.state.internationalBases[i].key;
+    }
+    for (var i = 0; i < this.state.asiaIBases.length; i++){
+      this.state.asiaIBases[i] = this.state.asiaIBases[i].key;
+    }
+    for (var i = 0; i < this.state.asiaOperations.length; i++){
+      this.state.asiaOperations[i] = this.state.asiaOperations[i].key;
+    }
+    for (var i = 0; i < this.state.launchCountries.length; i++){
+      this.state.launchCountries[i] = this.state.launchCountries[i].key;
+    }
+    for (var i = 0; i < this.state.regions.length; i++){
+      this.state.regions[i] = this.state.regions[i].key;
+    }
+    for (var i = 0; i < this.state.countries.length; i++){
+      this.state.countries[i] = this.state.countries[i].key;
+    }
+    for (var i = 0; i < this.state.activities.length; i++){
+      this.state.activities[i] = this.state.activities[i].key;
+    }
+    for (var i = 0; i < this.state.managementTypes.length; i++){
+      this.state.managementTypes[i] = this.state.managementTypes[i].key;
+    }
+    for (var i = 0; i < this.state.targetPopulationSectors.length; i++){
+      this.state.targetPopulationSectors[i] = this.state.targetPopulationSectors[i].key;
+    }
+    for (var i = 0; i < this.state.outcomesMonitored.length; i++){
+      this.state.outcomesMonitored[i] = this.state.outcomesMonitored[i].key;
+    }
+
     const {formStatus, userData} = this.props;
     //If submitting a new form
     if (formStatus === 'add') {
@@ -813,6 +848,7 @@ class formSubmission extends React.Component{
   }
 
   fillMultiValued(){
+    console.log("why");
     this.fillAIBase();
     this.fillAsiaOperation();
     this.fillIBase();
@@ -847,6 +883,7 @@ class formSubmission extends React.Component{
     </div> : null
 
     document.addEventListener("DOMContentLoaded", this.fillMultiValued)
+    //document.addEventListener("load", this.fillMultiValued)
 
     return (
         <div className = "formSubmission" style = {{paddingTop: '50px'}}>

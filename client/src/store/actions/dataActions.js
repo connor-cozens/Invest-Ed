@@ -40,7 +40,8 @@ export const registerUser = (user) => (dispatch) => {
     organization: user.organization,
     accessLevel: user.accesslevel,
     password: user.password,
-    confirmPassword: user.confirmpassword})
+    confirmPassword: user.confirmpassword},
+    {withCredentials: true})
     .then(response => {
       // If there are validation errors
       if (response.data.error ==  true) {

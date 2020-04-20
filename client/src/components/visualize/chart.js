@@ -57,7 +57,7 @@ class Chart extends Component {
     activeIndex: 0,
 
     map: null,
-    mapData: this.props.data().main,
+    mapData: this.props.data.main,
     subMapData: null,
     subMapFill: null,
 
@@ -67,14 +67,15 @@ class Chart extends Component {
 
     pie: null,
     setMainPie: true,
-    pieData: this.props.data().main,
+    pieData: this.props.data.main,
     subPieData: null,
     subPieFill: null
   };
 
   componentDidUpdate = (prevProps) => {
-    if (this.props.data() !== prevProps.data()) {
-      this.state.pieData = this.props.data().main;
+    if (this.props.data !== prevProps.data) {
+      this.state.pieData = this.props.data.main;
+      this.state.mapData = this.props.data.main;
     }
   }
 
@@ -83,10 +84,10 @@ class Chart extends Component {
     //Set up data for bar chart to appear on hover
     if (data !== null){
       if (this.state.setMainPie) {
-        if (this.props.toggleCompare && this.props.data().sub2) {
+        if (this.props.toggleCompare && this.props.data.sub2) {
           //If map is toggled
           if (this.props.toggleMap) {
-            this.props.data().sub2.forEach((item) => {
+            this.props.data.sub2.forEach((item) => {
               if (item.id == data.name) {
                 this.setState({
                   subMapData: item.data
@@ -95,7 +96,7 @@ class Chart extends Component {
             });
           }
           else {
-            this.props.data().sub2.forEach((item) => {
+            this.props.data.sub2.forEach((item) => {
               if (item.id == data.name) {
                 this.setState({
                   barData: item.data,
@@ -108,10 +109,10 @@ class Chart extends Component {
         }
       }
       else {
-        if (this.props.toggleCompare && this.props.data().sub3) {
+        if (this.props.toggleCompare && this.props.data.sub3) {
           //If map is toggled
           if (this.props.toggleMap) {
-            this.props.data().sub3.forEach((item) => {
+            this.props.data.sub3.forEach((item) => {
               if (item.id == data.name) {
                 this.setState({
                   subMapData: item.data
@@ -120,7 +121,7 @@ class Chart extends Component {
             });
           }
           else {
-            this.props.data().sub3.forEach((item) => {
+            this.props.data.sub3.forEach((item) => {
               if (item.id == data.name) {
                 this.setState({
                   barData: item.data,
@@ -141,13 +142,13 @@ class Chart extends Component {
 
   //Add secondary pie chart onclick of main pie chart
   addSubPie = (data, index) => {
-    if (this.props.data().sub !== '') {
+    if (this.props.data.sub !== '') {
       this.setState({
         setMainPie: false,
         subPieFill: data.fill
       });
 
-      this.props.data().sub.forEach((item) => {
+      this.props.data.sub.forEach((item) => {
         if (item.id == data.name) {
           this.setState({
             subPieData: item.data
@@ -167,41 +168,42 @@ class Chart extends Component {
   };
 
   render() {
-    const xPieLocation = (!this.props.toggleMap && this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ? 425 : (this.props.toggleMap ? 300 : 550)
+    console.log(this.props);
+    const xPieLocation = (!this.props.toggleMap && this.props.toggleCompare && this.props.data.sub2 !== '' && this.props.data.sub3 !== '') ? 425 : (this.props.toggleMap ? 300 : 550)
     const yPieLocation = this.props.toggleMap ? 200 : 300
-    const xPieChartWidth = (!this.props.toggleMap && this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ? 825 : (this.props.toggleMap ? 600 : 1000)
+    const xPieChartWidth = (!this.props.toggleMap && this.props.toggleCompare && this.props.data.sub2 !== '' && this.props.data.sub3 !== '') ? 825 : (this.props.toggleMap ? 600 : 1000)
 
     const pieOuterRadius = this.props.toggleMap ? 80 : 0
     const pieInnerRadius = this.props.toggleMap ? 20 : 0
 
-    const title = (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ?
-      <h3 style = {{marginTop: "50px", marginLeft: "30px" }}> {this.props.data().header1} </h3>
+    const title = (this.props.toggleCompare && this.props.data.sub2 !== '' && this.props.data.sub3 !== '') ?
+      <h3 style = {{marginTop: "50px", marginLeft: "30px" }}> {this.props.data.header1} </h3>
       :
-      <h3 style = {{marginTop: "50px", marginLeft: "100px" }}> {this.props.data().header1} </h3>
+      <h3 style = {{marginTop: "50px", marginLeft: "100px" }}> {this.props.data.header1} </h3>
 
     const subTitle = this.state.setMainPie ?
     (
      this.props.toggleMap ?
-        <h4 style = {{marginTop: "20px", marginLeft: "200px" }}> {this.props.data().subHeader} </h4>
+        <h4 style = {{marginTop: "20px", marginLeft: "200px" }}> {this.props.data.subHeader} </h4>
         :
         (
-          (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ?
-          <h4 style = {{marginTop: "20px", marginLeft: "325px" }}> {this.props.data().subHeader} </h4>
+          (this.props.toggleCompare && this.props.data.sub2 !== '' && this.props.data.sub3 !== '') ?
+          <h4 style = {{marginTop: "20px", marginLeft: "325px" }}> {this.props.data.subHeader} </h4>
           :
-          <h4 style = {{marginTop: "20px", marginLeft: "440px" }}> {this.props.data().subHeader} </h4>
+          <h4 style = {{marginTop: "20px", marginLeft: "440px" }}> {this.props.data.subHeader} </h4>
         )
       ) :
       this.props.toggleMap ?
          <h4 style = {{marginTop: "20px", marginLeft: "200px" }}> Number of Initiatives </h4>
          :
          (
-           (this.props.toggleCompare && this.props.data().sub2 !== '' && this.props.data().sub3 !== '') ?
+           (this.props.toggleCompare && this.props.data.sub2 !== '' && this.props.data.sub3 !== '') ?
            <h4 style = {{marginTop: "20px", marginLeft: "310px" }}> Number of Initiatives </h4>
            :
            <h4 style = {{marginTop: "20px", marginLeft: "430px" }}> Number of Initiatives </h4>
          )
 
-    const secondaryTitle = <h4 style = {{marginTop: "100px"}}> {this.props.data().header2} </h4>
+    const secondaryTitle = <h4 style = {{marginTop: "100px"}}> {this.props.data.header2} </h4>
 
     //Choose whether to show main pie or secondary pie depending on state
     this.state.pie = this.state.setMainPie && !(this.props.toggleMap && !this.props.toggleCompare) ?

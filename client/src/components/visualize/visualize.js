@@ -13,6 +13,7 @@ class Visualize extends Component {
       entitySelection: 'select',
       attributeSelection: 'select',
       secondaryAttributeSelection: 'select',
+      dataSelected: false,
       breakDownChecked: false,
       compareChecked: false,
       mapViewChecked: false,
@@ -29,15 +30,19 @@ class Visualize extends Component {
       ImplementerInitiative: null
   }
 
+  //Trigger get request to retrieve data for visualization
   componentDidMount = () => {
     this.props.getFunderData();
     this.props.getImplementerData();
     this.props.getInitiativeData();
     this.props.getInitiativeFundersByAttr();
     this.props.getInitiativeImplementersByAttr();
+  }
 
-    const {FunderData, ImplementerData, InititativeData, FunderAttributes, ImplementerAttributes, FunderTypeInitiative, ImplementerTypeInitiative, FunderInitiative, ImplementerInitiative} = this.props;
-    this.setState({
+  //Set retrieved visualized data passed into component via next props to the state
+  static getDerivedStateFromProps = (props, state) => {
+    const {FunderData, ImplementerData, InititativeData, FunderAttributes, ImplementerAttributes, FunderTypeInitiative, ImplementerTypeInitiative, FunderInitiative, ImplementerInitiative} = props;
+    return {
       TargetFunderData: FunderData,
       ImplementerData: ImplementerData,
       InititativeData: InititativeData,
@@ -48,14 +53,12 @@ class Visualize extends Component {
       ImplementerTypeInitiative: ImplementerTypeInitiative,
       FunderInitiative: FunderInitiative,
       ImplementerInitiative: ImplementerInitiative
-    });
+    };
   }
 
   dataSelection = () => {
-    const {FunderData, ImplementerData, InititativeData, FunderAttributes, ImplementerAttributes, FunderTypeInitiative, ImplementerTypeInitiative, FunderInitiative, ImplementerInitiative} = this.props;
-
-    if (FunderData !== null && ImplementerData!== null && InititativeData !== null && FunderAttributes !== null && ImplementerAttributes !== null
-    && FunderTypeInitiative !== null && ImplementerTypeInitiative !== null && FunderInitiative !== null && ImplementerInitiative !== null) {
+    if (this.state.TargetFunderData !== null && this.state.ImplementerData !== null && this.state.InititativeData !== null && this.state.FunderAttributes !== null && this.state.ImplementerAttributes !== null
+    && this.state.FunderTypeInitiative !== null && this.state.ImplementerTypeInitiative !== null && this.state.FunderInitiative !== null && this.state.ImplementerInitiative !== null) {
       if (this.state.entitySelection == "funders" && this.state.attributeSelection == "profitMotive") {
         if (this.state.secondaryAttributeSelection == "mainProgramActivity") {
           return {main: this.state.TargetFunderData.profitMotives, sub: this.state.FunderAttributes.ProfitMotiveTargetFunder, sub2: this.state.FunderTypeInitiative[0].ProfitMotiveInitiative.mainProgramActivity, sub3: this.state.FunderInitiative[0].ProfitMotiveFunderInitiative.mainProgramActivity, header1: 'Funders - Profit Motives', header2: 'Initiatives - Main Programming Activity', subHeader: 'Number of Funders' }
@@ -64,6 +67,8 @@ class Visualize extends Component {
         if (this.state.secondaryAttributeSelection == "countryOfOperation") {
           return {main: this.state.TargetFunderData.profitMotives, sub: this.state.FunderAttributes.ProfitMotiveTargetFunder, sub2: this.state.FunderTypeInitiative[0].ProfitMotiveInitiative.countryOfOperation, sub3: this.state.FunderInitiative[0].ProfitMotiveFunderInitiative.countryOfOperation, header1: 'Funders - Profit Motives', header2: 'Initiatives - Country of Operation', subHeader: 'Number of Funders'}
         }
+
+        console.log(this.state.TargetFunderData);
 
         return {main: this.state.TargetFunderData.profitMotives, sub: this.state.FunderAttributes.ProfitMotiveTargetFunder, sub2: '', sub3: '', header1: 'Funders - Profit Motives', header2: '', subHeader: 'Number of Funders' }
       }
@@ -137,6 +142,8 @@ class Visualize extends Component {
       }
     }
     else {
+      console.log("i'm null");
+      console.log(this.state.TargetFunderData);
       return null;
     }
   }
@@ -268,9 +275,9 @@ class Visualize extends Component {
       //Setup Chart as the visualization medium
       const visual = this.state.attributeSelection !== 'select' ?
       (
-        this.dataSelection ?
-        <Chart data = {this.dataSelection} toggleCompare = {this.state.compareChecked} toggleBreakDown = {this.handleBreakDownChange} toggleMap = {this.state.mapViewChecked}/>
-        : null
+        this.dataSelection() ?
+        <Chart data = {this.dataSelection()} toggleCompare = {this.state.compareChecked} toggleBreakDown = {this.handleBreakDownChange} toggleMap = {this.state.mapViewChecked}/>
+        : <h3> Error occured loading data, please refresh page </h3>
       ) : <img src = {WorldIcon} height = {400} width = {400} style = {{margin: "150px 0 0 450px"}} />
 
 

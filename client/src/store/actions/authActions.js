@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../axios/axiosConfig';
 import {
   LOGIN_SUCCESS,
   LOGIN_ERROR,
@@ -12,7 +12,7 @@ import {
 } from '../reducers/dataReducer';
 
 export const loginUser = (user) => (dispatch) => {
-  axios.post(`http://localhost:4000/login`, {
+  axios.post(`/login`, {
     username: user.username,
     password: user.password},
     {withCredentials: true})
@@ -40,7 +40,7 @@ export const loginUser = (user) => (dispatch) => {
 }
 
 export const logoutUser = () => (dispatch) => {
-  axios.get(`http://localhost:4000/logout`,
+  axios.get(`/logout`,
     {withCredentials: true})
     .then(response => {
       if (response.data.error == true) {

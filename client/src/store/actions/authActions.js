@@ -3,7 +3,8 @@ import {
   LOGIN_SUCCESS,
   LOGIN_ERROR,
   LOGOUT_SUCCESS,
-  LOGOUT_ERROR
+  LOGOUT_ERROR,
+  CLEAR_AUTH_ERROR
 } from '../reducers/authReducer';
 
 import {
@@ -61,4 +62,10 @@ export const logoutUser = () => (dispatch) => {
 export const forceLogout = () => (dispatch) => {
   dispatch({type: LOGOUT_SUCCESS});
   dispatch({type: UNSET_USER});
+}
+
+
+//Clear auth errors
+export const clearAuthError = () => (dispatch) => {
+  dispatch({type: CLEAR_AUTH_ERROR});
 }

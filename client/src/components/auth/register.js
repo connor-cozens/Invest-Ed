@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import {Redirect} from 'react-router-dom';
 import { DropdownList } from 'react-widgets'
 import {connect} from 'react-redux';
-import {registerUser} from '../../store/actions/dataActions';
+import {registerUser, clearRegisterError} from '../../store/actions/dataActions';
 import './auth.css';
 
 //Component providing registration functionality for admin to register user
@@ -16,6 +16,10 @@ class Register extends PureComponent {
     accesslevel: '',
     password: '',
     confirmpassword: ''
+  }
+
+  componentDidMount = () => {
+    this.props.clearRegisterError();
   }
 
   handleChange = (event) => {
@@ -118,7 +122,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signUp: (user) => dispatch(registerUser(user))
+    signUp: (user) => dispatch(registerUser(user)),
+    clearRegisterError: () => dispatch(clearRegisterError())
   };
 }
 

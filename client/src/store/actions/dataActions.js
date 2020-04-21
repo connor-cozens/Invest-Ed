@@ -4,6 +4,7 @@ import {
   REGISTER_ERROR,
   REGISTER_CLEAR,
   REGISTER_CLEAR_ERROR,
+  CLEAR_REGISTER_ERROR,
   SET_USER,
   SET_REVIEW_FORM,
   SET_MODIFY_FORM,
@@ -70,6 +71,10 @@ export const setRegistrationComplete = () => (dispatch) => {
   catch(err) {
     dispatch({type: REGISTER_CLEAR_ERROR, payload: err});
   }
+}
+
+export const clearRegisterError = () => (dispatch) => {
+  dispatch({type: CLEAR_REGISTER_ERROR});
 }
 
 export const getUser = () => (dispatch) => {

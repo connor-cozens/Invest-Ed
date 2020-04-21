@@ -2,6 +2,7 @@ export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_CLEAR_ERROR = 'REGISTER_CLEAR_ERROR';
 export const REGISTER_CLEAR = 'REGISTER_CLEAR';
 export const REGISTER_ERROR = 'REGISTER_ERROR';
+export const CLEAR_REGISTER_ERROR = 'CLEAR_REGISTER_ERROR';
 
 export const SET_USER = 'SET_USER'
 export const UNSET_USER = 'UNSET_USER';
@@ -91,6 +92,12 @@ const dataReducer = (state = initState, action) => {
         registered: false,
         registerError: action.payload
       };
+    //If register page has errors and its reloaded, clear register errors
+    case CLEAR_REGISTER_ERROR:
+      return {
+        ...state,
+        registerError: null
+      }
 
 
     //USER INFO DISPATCH HANDLERS

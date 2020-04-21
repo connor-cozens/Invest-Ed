@@ -168,7 +168,6 @@ class Chart extends Component {
   };
 
   render() {
-    console.log(this.props);
     const xPieLocation = (!this.props.toggleMap && this.props.toggleCompare && this.props.data.sub2 !== '' && this.props.data.sub3 !== '') ? 425 : (this.props.toggleMap ? 300 : 550)
     const yPieLocation = this.props.toggleMap ? 200 : 300
     const xPieChartWidth = (!this.props.toggleMap && this.props.toggleCompare && this.props.data.sub2 !== '' && this.props.data.sub3 !== '') ? 825 : (this.props.toggleMap ? 600 : 1000)

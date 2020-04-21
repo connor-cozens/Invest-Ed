@@ -68,8 +68,6 @@ class Visualize extends Component {
           return {main: this.state.TargetFunderData.profitMotives, sub: this.state.FunderAttributes.ProfitMotiveTargetFunder, sub2: this.state.FunderTypeInitiative[0].ProfitMotiveInitiative.countryOfOperation, sub3: this.state.FunderInitiative[0].ProfitMotiveFunderInitiative.countryOfOperation, header1: 'Funders - Profit Motives', header2: 'Initiatives - Country of Operation', subHeader: 'Number of Funders'}
         }
 
-        console.log(this.state.TargetFunderData);
-
         return {main: this.state.TargetFunderData.profitMotives, sub: this.state.FunderAttributes.ProfitMotiveTargetFunder, sub2: '', sub3: '', header1: 'Funders - Profit Motives', header2: '', subHeader: 'Number of Funders' }
       }
 
@@ -142,8 +140,6 @@ class Visualize extends Component {
       }
     }
     else {
-      console.log("i'm null");
-      console.log(this.state.TargetFunderData);
       return null;
     }
   }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 import { DropdownList } from 'react-widgets'
 import {connect} from 'react-redux';
-import {loginUser, registerUser} from '../../store/actions/authActions';
+import {loginUser, clearAuthError} from '../../store/actions/authActions';
 import './auth.css';
 
 //Component providing login functionality
@@ -10,6 +10,10 @@ class Login extends Component {
   state = {
     username: '',
     password: ''
+  }
+
+  componentDidMount = () => {
+    this.props.clearAuthError();
   }
 
   handleChange = (event) => {
@@ -72,7 +76,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logIn: (user) => dispatch(loginUser(user))
+    logIn: (user) => dispatch(loginUser(user)),
+    clearAuthError: () => dispatch(clearAuthError())
   };
 }
 

@@ -14,7 +14,7 @@ class Landing extends Component{
 
   render() {
     const {authorized, userData, accessError} = this.props;
-    const showAuthStatus = authorized ? (accessError ? <h3 style = {{paddingTop: '50px', textAlign: "left"}}>There was an error retrieving your information</h3> : (userData ? <h3 style = {{paddingTop: '50px', textAlign: "left"}}>Welcome, {userData.firstname}</h3>: <h3>Loading</h3>)) : null
+    const showAuthStatus = authorized ? (accessError ? <h4 style = {{paddingTop: '50px', textAlign: "left"}}>There was an error retrieving your information</h4> : (userData ? <h4 style = {{paddingTop: '50px', textAlign: "left"}}>Welcome, {userData.firstname}</h4>: <h4>Loading</h4>)) : null
     return (
       <div className = "container">
         {showAuthStatus}

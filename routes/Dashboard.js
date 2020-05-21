@@ -12,7 +12,7 @@ dashboard.use(cors())
 const pool = sql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'password',
+    password: 'PASSWORD66^',
     database: 'inves431_girlsEd',
     waitForConnections: true,
     connectionLimit: 20,
@@ -22,7 +22,7 @@ const pool = sql.createPool({
 const poolTemp = sql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'password',
+    password: 'PASSWORD66^',
     database: 'inves431_girlsEd_temp',
     waitForConnections: true,
     connectionLimit: 20,
@@ -3821,6 +3821,506 @@ dashboard.post('/update-form-temp', (req, res) =>{
                 })
     res.send("Inves431_girlsEd updated successfully!")
 
+})
+
+//delete form from database
+dashboard.post('/delete-funder/:funder', (req,res) =>{
+    var funderName = req.params.funder
+    console.log("here")
+
+    //delete funds
+    var query1 = "DELETE FROM funds WHERE funderName = '"+ funderName+ "'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query1, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    
+    //delete funder asia bases
+    var query2 = "DELETE FROM funderasiabases WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query2, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    //delete funder asia operations
+    var query3 = "DELETE FROM funderasiaoperations WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query3, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    //delete funder education subsector
+    var query4 = "DELETE FROM fundereducationsubsectors WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query4, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //delete funder international bases
+    var query5 = "DELETE FROM funderinternationalbases WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query5, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+        
+    
+    //delete funder organization traits
+    var query6 = "DELETE FROM funderorganizationtraits WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query6, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })    
+    
+    //delete funder
+     var query7 = "DELETE FROM funder WHERE funderName ='" +funderName+"'"
+     async.parallel([
+         function(queryDB) {
+             pool.query(query7, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+ 
+                     queryDB()
+                 }
+ 
+             })
+         },
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+ 
+         })      
+         
+    res.send("Funder deleted successfully!")     
+      
+})
+
+dashboard.post('/delete-funder-temp/:funder', (req,res)=>{
+    var funderName = req.params.funder
+ 
+    //delete funds
+    var query1 = "DELETE FROM funds WHERE funderName = '"+ funderName+ "'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query1, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    
+    //delete funder asia bases
+    var query2 = "DELETE FROM funderasiabases WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query2, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    //delete funder asia operations
+    var query3 = "DELETE FROM funderasiaoperations WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query3, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    //delete funder education subsector
+    var query4 = "DELETE FROM fundereducationsubsectors WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query4, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //delete funder international bases
+    var query5 = "DELETE FROM funderinternationalbases WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query5, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+        
+    
+    //delete funder organization traits
+    var query6 = "DELETE FROM funderorganizationtraits WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query6, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })    
+    
+    //delete funder
+     var query7 = "DELETE FROM funder WHERE funderName ='" +funderName+"'"
+     async.parallel([
+         function(queryDB) {
+             poolTemp.query(query7, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+ 
+                     queryDB()
+                 }
+ 
+             })
+         },
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+ 
+         })
+         
+    res.send("Funder deleted successfully!")       
+})
+
+//delete implementor from db
+dashboard.post('/delete-implementor/:iname', (req,res) =>{
+    var implementorName = req.params.iname
+    
+        //delete implementor
+        var query2 = "DELETE FROM implementor WHERE implementorName ='" +implementorName+"'"
+        async.parallel([
+            function(queryDB) {
+                poolTemp.query(query2, {}, function(err, results) {
+                    if (err){
+                        return queryDB(err)
+                    }else{
+                        var query1 = "DELETE FROM implements WHERE implementorName = '"+ implementorName+ "'"
+                        async.parallel([
+                            function(queryDB) {
+                                poolTemp.query(query1, {}, function(err, results) {
+                                    if (err){
+                                        return queryDB(err)
+                                    }else{
+                    
+                                        queryDB()
+                                    }
+                    
+                                })
+                            },
+                            ], function(err) {
+                                if (err){
+                                    console.log(err)
+                                }
+                    
+                            })
+    
+                        queryDB()
+                    }
+    
+                })
+            },
+            ], function(err) {
+                if (err){
+                    console.log(err)
+                }
+    
+            })
+
+    res.send("Implementor deleted successfully!") 
+})
+
+//delete implementor from temp db
+dashboard.post('/delete-implementor-temp/:iname', (req,res) =>{
+    var implementorName = req.params.iname
+    
+    //delete implementor
+    var query2 = "DELETE FROM implementor WHERE implementorName ='" +implementorName+"'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query2, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    var query1 = "DELETE FROM implements WHERE implementorName = '"+ implementorName+ "'"
+                    async.parallel([
+                        function(queryDB) {
+                            poolTemp.query(query1, {}, function(err, results) {
+                                if (err){
+                                    return queryDB(err)
+                                }else{
+                
+                                    queryDB()
+                                }
+                
+                            })
+                        },
+                        ], function(err) {
+                            if (err){
+                                console.log(err)
+                            }
+                
+                        })
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+        
+    res.send("Implementor deleted successfully!") 
+})
+
+//delete intiative from db
+dashboard.post('/delete-initiative/:tagNum', (req,res) =>{
+    var tagNumber = req.params.tagNum
+
+
+
+
+    //delete funds
+    var query1 = "DELETE FROM initiative WHERE tagNumber ="+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            pool.query(query1, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    res.send("Initiative deleted successfully!") 
+})
+
+//delete intiative from temp db
+dashboard.post('/delete-initiative-temp/:tagNum', (req,res) =>{
+    var tagNumber = req.params.tagNum
+
+    delete funds
+    var query1 = "DELETE FROM funds WHERE tagNum ="+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query1, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    var query1 = "DELETE FROM initiative WHERE tagNumber ="+ tagNumber
+                    async.parallel([
+                        function(queryDB) {
+                            poolTemp.query(query1, {}, function(err, results) {
+                                if (err){
+                                    return queryDB(err)
+                                }else{
+
+                                    queryDB()
+                                }
+
+                            })
+                        },
+                        ], function(err) {
+                            if (err){
+                                console.log(err)
+                            }
+
+                        })
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    // //delete funds
+    // var query1 = "DELETE FROM initiative WHERE tagNumber ="+ tagNumber
+    // async.parallel([
+    //     function(queryDB) {
+    //         poolTemp.query(query1, {}, function(err, results) {
+    //             if (err){
+    //                 return queryDB(err)
+    //             }else{
+
+    //                 queryDB()
+    //             }
+
+    //         })
+    //     },
+    //     ], function(err) {
+    //         if (err){
+    //             console.log(err)
+    //         }
+
+    //     })
+    res.send("Implementor deleted successfully!")     
 })
 
 module.exports = dashboard

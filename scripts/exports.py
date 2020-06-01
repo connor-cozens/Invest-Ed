@@ -80,7 +80,11 @@ def exportToXpt(name, df, attributes):
     pyreadstat.write_xport(df, file_name, column_labels=attributes)
 
 
-# Main method
+# Main method - accepts command line arguments
+# Argument at index 0 is the program name,
+# Argument at index 1 is the entity type,
+# Argument at index 2 is the file format to export to,
+# Command format: python exports.py <entity> <file format>
 def main():
     # Open connection with database
     connection = None

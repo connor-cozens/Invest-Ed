@@ -1,9 +1,10 @@
-import axios from 'axios'
+import axios from '../../axios/axiosConfig';
 import {
   REGISTER_SUCCESS,
   REGISTER_ERROR,
   REGISTER_CLEAR,
   REGISTER_CLEAR_ERROR,
+  CLEAR_REGISTER_ERROR,
   SET_USER,
   SET_REVIEW_FORM,
   SET_MODIFY_FORM,
@@ -32,7 +33,7 @@ import {
 import {forceLogout} from './authActions';
 
 export const registerUser = (user) => (dispatch) => {
-  axios.post(`http://localhost:4000/register`, {
+  axios.post(`/register`, {
     firstName: user.firstname,
     lastName: user.lastname,
     email: user.email,
@@ -40,7 +41,8 @@ export const registerUser = (user) => (dispatch) => {
     organization: user.organization,
     accessLevel: user.accesslevel,
     password: user.password,
-    confirmPassword: user.confirmpassword})
+    confirmPassword: user.confirmpassword},
+    {withCredentials: true})
     .then(response => {
       // If there are validation errors
       if (response.data.error ==  true) {
@@ -71,9 +73,13 @@ export const setRegistrationComplete = () => (dispatch) => {
   }
 }
 
+export const clearRegisterError = () => (dispatch) => {
+  dispatch({type: CLEAR_REGISTER_ERROR});
+}
+
 export const getUser = () => (dispatch) => {
-  axios.get(`http://localhost:4000/`,
-    {withCredentials: true})
+  axios.get(`/`,
+    {withCredentials: true, accepts: "application/json"})
     .then(response => {
       if (response.data.error == false) {
         console.log(response)
@@ -193,7 +199,7 @@ const readForm = (response => {
 //Get approved forms from main DB
 export const getApprovedForm = (tag, getType) => (dispatch) => {
   const tagNum = tag
-  const url = `http://localhost:4000/dashboard/form/${tagNum}`;
+  const url = `/dashboard/form/${tagNum}`;
   axios.get(url, null, {tagNum})
     .then(response => {
       if (response.data.error !== undefined) {
@@ -221,7 +227,7 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
 //Get non-approved forms from temp DB for organization/RA user to modify
 export const getNonApprovedForm = (tag, getType) => (dispatch) => {
   const tagNum = tag
-  const url = `http://localhost:4000/dashboard/form-temp/${tagNum}`;
+  const url = `/dashboard/form-temp/${tagNum}`;
   axios.get(url, null, {tagNum})
     .then(response => {
       if (response.data.error !== undefined) {
@@ -463,7 +469,7 @@ const changeRequest = (form, inDB, isModified) => {
 //Organization user to modify existing form in either main or temp DB (could be in main DB since might have been approved)
 export const modifyForm = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequest(form, inDB, isModified);
-  axios.post(`http://localhost:4000/dashboard//update-form-temp`, req)
+  axios.post(`/dashboard//update-form-temp`, req)
     .then(response => {
       dispatch({type: FORM_SUBMIT_SUCCESS});
     })
@@ -475,7 +481,7 @@ export const modifyForm = (form, inDB, isModified) => (dispatch) => {
 //RA user to modify existing form in main DB
 export const modifyFormRA = (form, isModified) => (dispatch) => {
   const req = changeRequestRA(form, isModified);
-  axios.post(`http://localhost:4000/dashboard/update-form`, req)
+  axios.post(`/dashboard/update-form`, req)
     .then(response => {
       dispatch({type: FORM_SUBMIT_SUCCESS});
     })
@@ -487,7 +493,7 @@ export const modifyFormRA = (form, isModified) => (dispatch) => {
 //Organization user to add new form to temp DB
 export const addForm = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequest(form, inDB, isModified);
-  axios.post(`http://localhost:4000/dashboard/submit-form-temp`, req)
+  axios.post(`/dashboard/submit-form-temp`, req)
     .then(response => {
       dispatch({type: FORM_SUBMIT_SUCCESS});
     })
@@ -499,7 +505,7 @@ export const addForm = (form, inDB, isModified) => (dispatch) => {
 //RA user to add new form to main DB
 export const addFormRA = (form, isModified) => (dispatch) => {
     const req = changeRequestRA(form, isModified);
-    axios.post(`http://localhost:4000/dashboard/submitform`, req)
+    axios.post(`/dashboard/submitform`, req)
       .then(response => {
         dispatch({type: FORM_SUBMIT_SUCCESS});
       })
@@ -568,7 +574,7 @@ const multiValFunderAttr = (response, attribute) => {
 }
 
 export const getFunderData = () => (dispatch) => {
-  axios.get(`http://localhost:4000/visualize/target-funder`)
+  axios.get(`/visualize/target-funder`)
     .then(response => {
       const FunderData = {};
 
@@ -613,7 +619,7 @@ const singleValImplementerAttr = (response) => {
 }
 
 export const getImplementerData = () => (dispatch) => {
-  axios.get(`http://localhost:4000/visualize/implementor`)
+  axios.get(`/visualize/implementor`)
     .then(response => {
       const ImplementerData = {};
 
@@ -707,7 +713,7 @@ const multiValInitAttr = (response, attribute) => {
 }
 
 export const getInitiativeData = () => (dispatch) => {
-  axios.get(`http://localhost:4000/visualize/initiative`)
+  axios.get(`/visualize/initiative`)
     .then(response => {
       const InitiativeData = {};
 
@@ -877,7 +883,7 @@ const initiativeEntityByCountriesOfOperation = (d, response) => {
 
 
 export const getInitiativeFundersByAttr = () => (dispatch) => {
-  axios.get(`http://localhost:4000/visualize/target-funder-attributes`)
+  axios.get(`/visualize/target-funder-attributes`)
     .then(response => {
       const FunderAttributes = {};
 
@@ -1228,7 +1234,7 @@ const initativesPerImplementer = (response, implementer) => {
 }
 
 export const getInitiativeImplementersByAttr = () => (dispatch) => {
-  axios.get(`http://localhost:4000/visualize/implementor-attributes`)
+  axios.get(`/visualize/implementor-attributes`)
     .then(response => {
       const ImplementerAttributes = {};
 

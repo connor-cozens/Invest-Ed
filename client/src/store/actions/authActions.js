@@ -1,9 +1,10 @@
-import axios from 'axios'
+import axios from '../../axios/axiosConfig';
 import {
   LOGIN_SUCCESS,
   LOGIN_ERROR,
   LOGOUT_SUCCESS,
-  LOGOUT_ERROR
+  LOGOUT_ERROR,
+  CLEAR_AUTH_ERROR
 } from '../reducers/authReducer';
 
 import {
@@ -12,7 +13,7 @@ import {
 } from '../reducers/dataReducer';
 
 export const loginUser = (user) => (dispatch) => {
-  axios.post(`http://localhost:4000/login`, {
+  axios.post(`/login`, {
     username: user.username,
     password: user.password},
     {withCredentials: true})
@@ -40,7 +41,7 @@ export const loginUser = (user) => (dispatch) => {
 }
 
 export const logoutUser = () => (dispatch) => {
-  axios.get(`http://localhost:4000/logout`,
+  axios.get(`/logout`,
     {withCredentials: true})
     .then(response => {
       if (response.data.error == true) {
@@ -61,4 +62,10 @@ export const logoutUser = () => (dispatch) => {
 export const forceLogout = () => (dispatch) => {
   dispatch({type: LOGOUT_SUCCESS});
   dispatch({type: UNSET_USER});
+}
+
+
+//Clear auth errors
+export const clearAuthError = () => (dispatch) => {
+  dispatch({type: CLEAR_AUTH_ERROR});
 }

@@ -79,6 +79,39 @@ def exportToXpt(name, df, attributes):
     file_name = name + '.xpt'
     pyreadstat.write_xport(df, file_name, column_labels=attributes)
 
+def exportToHTML(name, df):
+    # Set up formatting to create a basic HTML page containing all of Funder, Implementor, Initiative as tables
+    pageStart = "<!DOCTYPE html>\n<html lang='en'>\n\t<head>\n\t\t<title>\n\t\tgirlseducation to HTML\n\t\t</title>\n\t</head>\n\n\t<body>\n"
+    pageEnd = "\n\t</body>\n</html>"
+    
+    page = pageStart + df.to_html() + pageEnd
+
+    fileName = name + ".html"
+
+    # Create and write to the new HTML file
+    newFile = open(fileName, "wt")
+    newFile.write(page)
+    newFile.close()
+
+def exportToRTF(name, df):
+    # Set up formatting for rtf document
+    page = "{\\rtf1" + df.to_string() + "}"
+
+    fileName = name + ".rtf"
+
+    # Create and write to the new RTF file
+    newFile = open(fileName, "wt")
+    newFile.write(page)
+    newFile.close()
+
+def exportToTXT(name, df):
+    fileName = name + ".txt"
+
+    # Create and write to the new RTF file
+    newFile = open(fileName, "wt")
+    newFile.write(df.to_string())
+    newFile.close()
+
 
 # Main method - accepts command line arguments
 # Argument at index 0 is the program name,
@@ -93,7 +126,7 @@ def main():
         connection = mysql.connect(user='root', passwd='password', db='inves431_girlsEd')
         print("Connection to MySQL DB successful")
     except Error as e:
-        print("The error '{e}' occurred")
+        print("The error {!r} occurred".format(e, e.args[0]))
 
     # If connection to database can be made,
     # Get attributes and data rows, set into a tabular data collection frame, and write to appropriate files
@@ -123,6 +156,9 @@ def main():
                             exportToExcel(sys.argv[1], df)
                             exportToDocument(sys.argv[1], df)
                             exportToXpt(sys.argv[1], df, attributes)
+                            exportToHTML(sys.argv[1], df)
+                            exportToRTF(sys.argv[1], df)
+                            exportToTXT(sys.argv[1], df)
                         elif sys.argv[2] == 'csv':
                             exportToCsv(sys.argv[1], df, attributes)
                         elif sys.argv[2] == 'sav':
@@ -133,6 +169,12 @@ def main():
                             exportToDocument(sys.argv[1], df)
                         elif sys.argv[2] == 'sas':
                             exportToXpt(sys.argv[1], df, attributes)
+                        elif sys.argv[2] == 'html':
+                            exportToHTML(sys.argv[1], df)
+                        elif sys.argv[2] == 'rtf':
+                            exportToRTF(sys.argv[1], df)
+                        elif sys.argv[2] == 'txt':
+                            exportToTXT(sys.argv[1], df)
                         else:
                             print('Invalid file format')
                     else:

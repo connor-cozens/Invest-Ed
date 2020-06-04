@@ -305,12 +305,10 @@ dashboard.get('/form/:tagNum', cors(),(req, res) =>{
               if (err){
                 res.json(err);
               }else{
-                  var temp = {};
                   final++;
                   //push results here to avoid duplicated parallel writes to funderIndividual array
                   funderIndividual.push(results);
-                  temp.table1 = funderIndividual;
-                  Object.assign(formData, temp.table1);
+                  formData.funderIndividualData = funderIndividual;
 
                   if(final == funderData.length)
                       res.json(formData);
@@ -615,12 +613,10 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
               if (err){
                 res.json(err);
               }else{
-                  var temp = {};
                   final++;
                   //push results here to avoid duplicated parallel writes to funderIndividual array
                   funderIndividual.push(results);
-                  temp.table1 = funderIndividual;
-                  Object.assign(formData, temp.table1);
+                  formData.funderIndividualData = funderIndividual;
 
                   if(final == funderData.length)
                       res.json(formData);

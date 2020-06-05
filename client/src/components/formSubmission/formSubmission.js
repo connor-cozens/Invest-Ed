@@ -129,12 +129,12 @@ class formSubmission extends React.Component{
         motive: this.props.form.funders.length > 0 ? this.props.form.funders[0].profitMotive : null,
         organizationForm: this.props.form.funders.length > 0 ? this.props.form.funders[0].organizationalForm : null,
         impact: this.props.form.funders.length > 0 ? this.props.form.funders[0].impactInvesting : null,
-        //Still need to retrieve this data for funders:
-        // edSubs: this.props.form.edSubs !== undefined ? this.props.form.edSubs : [],
-        // orgTraits: this.props.form.orgTraits !== undefined ? this.props.form.orgTraits : [],
-        // asiaIBases: this.props.form.asiaIBases !== undefined ? this.props.form.asiaIBases : [],
-        // asiaOperations: this.props.form.asiaOperations !== undefined ? this.props.form.asiaOperations : [],
-        // internationalBases: this.props.form.internationalBases !== undefined ? this.props.form.internationalBases : [],
+        //Multi-valued funder attribute setters
+        edSubs: this.props.form.funders !== undefined ? (this.props.form.funders.length > 0 ? this.props.form.funders[0].educationSubsector : null) : null,
+        orgTraits: this.props.form.funders !== undefined ? (this.props.form.funders.length > 0 ? this.props.form.funders[0].trait : null) : null,
+        asiaIBases: this.props.form.funders !== undefined ? (this.props.form.funders.length > 0 ? this.props.form.funders[0].asiaBase : null) : null,
+        asiaOperations: this.props.form.funders !== undefined ? (this.props.form.funders.length > 0 ? this.props.form.funders[0].asiaOperatons : null) : null,
+        internationalBases: this.props.form.funders !== undefined ? (this.props.form.funders.length > 0 ? this.props.form.funders[0].baseLocation : null) : null,
 
         //Implementer setters
         iname: this.props.form.implementers.length > 0 ? this.props.form.implementers[0].implementorName : null,
@@ -147,7 +147,7 @@ class formSubmission extends React.Component{
       });
     }
   }
-  
+
 
 
   buttonMaker(props){
@@ -368,7 +368,7 @@ class formSubmission extends React.Component{
       if(this.state.countries[i] !== ""){
         console.log(this.state.countries[i]);
         this.state.countries[i] = (<this.buttonMaker key={this.state.countries[i]} name={this.state.countries[i]} category="initCountries"/>)
-        
+
       }
     }
     ReactDOM.render(<ul>{this.state.countries}</ul>, document.getElementById('initCountries'))
@@ -848,7 +848,6 @@ class formSubmission extends React.Component{
   }
 
   fillMultiValued(){
-    console.log("why");
     this.fillAIBase();
     this.fillAsiaOperation();
     this.fillIBase();
@@ -892,7 +891,7 @@ class formSubmission extends React.Component{
             <form onSubmit={this.handleFormSubmit}>
 
             <h4>Funder</h4>
-            
+
 
             <p>Name</p>
               <input type="text" id="fname" name="funderName" value={this.state.fname} placeholder="Funder Name" onChange={this.handleChange}/>
@@ -1179,7 +1178,7 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="orgTrait3" name="organizationalTrait" value="Commitment to measurement" checked = {this.state.orgTraits.includes("Commitment to measurement")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait3" className="checkbox">Commitment to measurement</label>
             <input type="checkbox" id="orgTrait4" name="organizationalTrait" value="Education Sub-sector unclear" checked = {this.state.orgTraits.includes("Education Sub-sector unclear")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait4" className="checkbox">Education Sub-sector unclear</label>
             <input type="checkbox" id="orgTrait5" name="organizationalTrait" value="Expects return on investment" checked = {this.state.orgTraits.includes("Expects return on investment")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait5" className="checkbox">Expects return on investment</label>
-            <input type="checkbox" id="orgTrait6" name="organizationalTrait" value="Explicit intention to have social impact in the education sector" checked = {this.state.orgTraits.includes("xplicit intention to have social impact in the education sector")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait6" className="checkbox">Explicit intention to have social impact in the education sector</label>
+            <input type="checkbox" id="orgTrait6" name="organizationalTrait" value="Explicit intention to have social impact in the education sector" checked = {this.state.orgTraits.includes("Explicit intention to have social impact in the education sector")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait6" className="checkbox">Explicit intention to have social impact in the education sector</label>
             <input type="checkbox" id="orgTrait7" name="organizationalTrait" value="Led by independent board of trustees or CEO" checked = {this.state.orgTraits.includes("Led by independent board of trustees or CEO")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait7" className="checkbox">Led by independent board of trustees or CEO</label>
             <input type="checkbox" id="orgTrait8" name="organizationalTrait" value="Not part of the public sector" checked = {this.state.orgTraits.includes("Not part of the public sector")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait8" className="checkbox">Not part of the public sector</label>
             <input type="checkbox" id="orgTrait9" name="organizationalTrait" value="Not-for-profit oriented" checked = {this.state.orgTraits.includes("Not-for-profit oriented")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait9" className="checkbox">Not-for-profit oriented</label>

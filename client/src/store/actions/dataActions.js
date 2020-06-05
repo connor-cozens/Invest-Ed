@@ -109,55 +109,79 @@ export const setNewFormStatus = () => (dispatch) => {
 }
 
 const readForm = (response => {
-  const initiativeRegions = [];
+  let initiativeRegions = [];
   response.data.table2.forEach((item) => { initiativeRegions.push(item.region); });
 
-  const initiativeCountries = [];  //Countries of Operation
+  let initiativeCountries = [];  //Countries of Operation
   response.data.table3.forEach((item) => { initiativeCountries.push(item.country); });
 
-  const initiativeProgrammingActivities = [];
+  let initiativeProgrammingActivities = [];
   response.data.table4.forEach((item) => { initiativeProgrammingActivities.push(item.programmingActivity); });
 
-  const initiativeSourcesOfFunding = [];
+  let initiativeSourcesOfFunding = [];
   response.data.table5.forEach((item) => { initiativeSourcesOfFunding.push(item.sourceOfFunding); });
 
-  const initiativeLaunchCountries = [];
+  let initiativeLaunchCountries = [];
   response.data.table6.forEach((item) => { initiativeLaunchCountries.push(item.launchCountry); });
 
-  const initiativeTargetGeographies = [];
+  let initiativeTargetGeographies = [];
   response.data.table7.forEach((item) => { initiativeTargetGeographies.push(item.targetGeography); });
 
-  const initiativeTargetPopulationSectors = [];
+  let initiativeTargetPopulationSectors = [];
   response.data.table8.forEach((item) => { initiativeTargetPopulationSectors.push(item.targetPopulationSector); });
 
-  const initiativeMonitoredOutcomes = [];
+  let initiativeMonitoredOutcomes = [];
   response.data.table9.forEach((item) => { initiativeMonitoredOutcomes.push(item.monitoredOutcome); });
 
-  const initiativeMainEducationSubsectors = [];
+  let initiativeMainEducationSubsectors = [];
   response.data.table10.forEach((item) => { initiativeMainEducationSubsectors.push(item.mainEducationSubsector); });
 
-  const initiativeEducationSubsectors = [];
+  let initiativeEducationSubsectors = [];
   response.data.table11.forEach((item) => { initiativeEducationSubsectors.push(item.educationSubsector); });
 
-  const initiativeTargetSchoolManagement = [];
+  let initiativeTargetSchoolManagement = [];
   response.data.table12.forEach((item) => { initiativeTargetSchoolManagement.push(item.targetSchoolManagementType); });
 
-  const implementers = [];
+  let implementers = [];
   if (response.data.table13.length > 0) {
     response.data.table13.forEach((implementer) => { implementers.push(implementer); });
   }
 
-  const funders = [];
+  let funders = [];
   if (response.data.table14.length > 0) {
     response.data.table14.forEach((funder) => { funders.push(funder); });
   }
+  //Get multi-valued funder attributes - base locations, asia bases, asia operations, education subsectors, traits
+  if (response.data.funderIndividual !== undefined) {
+    //For each funder
+    response.data.funderIndividual.forEach(indivFunder => {
+      //Find matching funder from general funder info list
+      let funderObj = funders.find(funder => { return funder.funderName == indivFunder[0][0].funderName });
+      if (funderObj !== undefined) {
+        //For each funder attribute (eg. base location), get all the corresponding rows/values (eg. all corresponding country names) and add as object to general funder list
+        indivFunder.forEach(attributeList => {
+          attributeList.forEach(attribute => {
+            Object.keys(attribute).forEach(key => {
+              if (key !== 'funderName') {
+                if (key in funderObj) {
+                  funderObj[key].push(attribute[key])
+                } else {
+                  funderObj[key] = [attribute[key]];
+                }
+              }
+            });
+          });
+        });
+      }
+    });
+  }
 
-  const status = [];
+  let status = [];
   if (response.data.table15 !== undefined) {
     status.push(response.data.table15);
   }
 
-  const reviews = [];
+  let reviews = [];
   if (response.data.table16 !== undefined) {
     reviews.push(response.data.table16);
   }
@@ -256,39 +280,39 @@ export const getNonApprovedForm = (tag, getType) => (dispatch) => {
 
 const changeRequestRA = (form, isModified) => {
   //Setting up multi val initatives
-  const regions = [];
+  let regions = [];
   if (form.regions !== undefined) { form.regions.forEach((item) => {regions.push(item.key); }); }
-  const countries = [];
+  let countries = [];
   if (form.countries !== undefined) { form.countries.forEach((item) => {countries.push(item.key); }); }
-  const activities = [];
+  let activities = [];
   if (form.activities !== undefined) { form.activities.forEach((item) => {activities.push(item.key); }); }
-  const sourceOfFees = [];
+  let sourceOfFees = [];
   if (form.sourceOfFees !== undefined) { form.sourceOfFees.forEach((item) => {sourceOfFees.push(item.key); }); }
-  const launchCountries = [];
+  let launchCountries = [];
   if (form.launchCountries !== undefined) { form.launchCountries.forEach((item) => {launchCountries.push(item.key); }); }
-  const targetGeos = [];
+  let targetGeos = [];
   if (form.targetGeos !== undefined) { form.targetGeos.forEach((item) => {targetGeos.push(item.key); }); }
-  const targetPopulationSectors = [];
+  let targetPopulationSectors = [];
   if (form.targetPopulationSectors !== undefined) { form.targetPopulationSectors.forEach((item) => {targetPopulationSectors.push(item.key); }); }
-  const outcomesMonitored = [];
+  let outcomesMonitored = [];
   if (form.outcomesMonitored !== undefined) { form.outcomesMonitored.forEach((item) => {outcomesMonitored.push(item.key); }); }
-  const mEdSubs = [];
+  let mEdSubs = [];
   if (form.mEdSubs !== undefined) { form.mEdSubs.forEach((item) => {mEdSubs.push(item.key); }); }
-  const oEdSubs = [];
+  let oEdSubs = [];
   if (form.oEdSubs !== undefined) { form.oEdSubs.forEach((item) => {oEdSubs.push(item.key); }); }
-  const managementTypes = [];
+  let managementTypes = [];
   if (form.managementTypes !== undefined) { form.managementTypes.forEach((item) => {managementTypes.push(item.key); }); }
 
   //Setting up multi val funders
-  const internationalBases = [];
+  let internationalBases = [];
   if (form.internationalBases !== undefined) { form.internationalBases.forEach((item) => {internationalBases.push(item.key); }); }
-  const edSubs = [];
+  let edSubs = [];
   if (form.edSubs !== undefined) { form.edSubs.forEach((item) => {edSubs.push(item.key); }); }
-  const orgTraits = [];
+  let orgTraits = [];
   if (form.orgTraits !== undefined) { form.orgTraits.forEach((item) => {orgTraits.push(item.key); }); }
-  const asiaIBases = [];
+  let asiaIBases = [];
   if (form.asiaIBases !== undefined) { form.asiaIBases.forEach((item) => {asiaIBases.push(item.key); }); }
-  const asiaOperations = [];
+  let asiaOperations = [];
   if (form.asiaOperations !== undefined) { form.asiaOperations.forEach((item) => {asiaOperations.push(item.key);}); }
 
   const reqBody = {
@@ -341,39 +365,39 @@ const changeRequestRA = (form, isModified) => {
 
 const changeRequest = (form, inDB, isModified) => {
   //Setting up multi val initatives
-  const regions = [];
+  let regions = [];
   if (form.regions !== undefined) { form.regions.forEach((item) => {regions.push(item.key); }); }
-  const countries = [];
+  let countries = [];
   if (form.countries !== undefined) { form.countries.forEach((item) => {countries.push(item.key); }); }
-  const activities = [];
+  let activities = [];
   if (form.activities !== undefined) { form.activities.forEach((item) => {activities.push(item.key); }); }
-  const sourceOfFees = [];
+  let sourceOfFees = [];
   if (form.sourceOfFees !== undefined) { form.sourceOfFees.forEach((item) => {sourceOfFees.push(item.key); }); }
-  const launchCountries = [];
+  let launchCountries = [];
   if (form.launchCountries !== undefined) { form.launchCountries.forEach((item) => {launchCountries.push(item.key); }); }
-  const targetGeos = [];
+  let targetGeos = [];
   if (form.targetGeos !== undefined) { form.targetGeos.forEach((item) => {targetGeos.push(item.key); }); }
-  const targetPopulationSectors = [];
+  let targetPopulationSectors = [];
   if (form.targetPopulationSectors !== undefined) { form.targetPopulationSectors.forEach((item) => {targetPopulationSectors.push(item.key); }); }
-  const outcomesMonitored = [];
+  let outcomesMonitored = [];
   if (form.outcomesMonitored !== undefined) { form.outcomesMonitored.forEach((item) => {outcomesMonitored.push(item.key); }); }
-  const mEdSubs = [];
+  let mEdSubs = [];
   if (form.mEdSubs !== undefined) { form.mEdSubs.forEach((item) => {mEdSubs.push(item.key); }); }
-  const oEdSubs = [];
+  let oEdSubs = [];
   if (form.oEdSubs !== undefined) { form.oEdSubs.forEach((item) => {oEdSubs.push(item.key); }); }
-  const managementTypes = [];
+  let managementTypes = [];
   if (form.managementTypes !== undefined) { form.managementTypes.forEach((item) => {managementTypes.push(item.key); }); }
 
   //Setting up multi val funders
-  const internationalBases = [];
+  let internationalBases = [];
   if (form.internationalBases !== undefined) { form.internationalBases.forEach((item) => {internationalBases.push(item.key); }); }
-  const edSubs = [];
+  let edSubs = [];
   if (form.edSubs !== undefined) { form.edSubs.forEach((item) => {edSubs.push(item.key); }); }
-  const orgTraits = [];
+  let orgTraits = [];
   if (form.orgTraits !== undefined) { form.orgTraits.forEach((item) => {orgTraits.push(item.key); }); }
-  const asiaIBases = [];
+  let asiaIBases = [];
   if (form.asiaIBases !== undefined) { form.asiaIBases.forEach((item) => {asiaIBases.push(item.key); }); }
-  const asiaOperations = [];
+  let asiaOperations = [];
   if (form.asiaOperations !== undefined) { form.asiaOperations.forEach((item) => {asiaOperations.push(item.key);}); }
 
   const reqBody = {

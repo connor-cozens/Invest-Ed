@@ -616,7 +616,7 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
                   final++;
                   //push results here to avoid duplicated parallel writes to funderIndividual array
                   funderIndividual.push(results);
-                  formData.funderIndividualData = funderIndividual;
+                  formData.funderIndividual = funderIndividual;
 
                   if(final == funderData.length)
                       res.json(formData);

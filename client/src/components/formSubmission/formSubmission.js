@@ -90,64 +90,62 @@ class formSubmission extends React.Component{
     this.addLaunchCountry = this.addLaunchCountry.bind(this);
     this.startYearChange = this.startYearChange.bind(this);
     this.endYearChange = this.endYearChange.bind(this);
-    this.fillMultiValued = this.fillMultiValued.bind(this);
   }
 
-  componentDidMount = () => {
-    if (this.props.formStatus === 'modify') {
-      this.setState({
+  static getDerivedStateFromProps = (props, state) => {
+    if (props.formStatus === 'modify') {
+      return {
         //Original value Setters
-        tagNum: this.props.form.tagNumber,
-        originalFunderName: this.props.form.funders.length > 0 ? this.props.form.funders[0].funderName : null,
-        originalImplementerName: this.props.form.name,
+        tagNum: props.form.tagNumber,
+        originalFunderName: props.form.funders.length > 0 ? props.form.funders[0].funderName : null,
+        originalImplementerName: props.form.name,
 
         //Initiative setters
-        initName: this.props.form.name,
-        initURL: this.props.form.website,
-        tWomen: this.props.form.targetsWomen,
-        initStart: this.props.form.startYear,
-        initEnd: this.props.form.endYear,
-        launchCountries: this.props.form.launchCountry !== undefined ? this.props.form.launchCountry : [],  //Not used yet
-        idescription: this.props.form.description,
-        targetGeos: this.props.form.targetGeographies.length !== undefined ? this.props.form.targetGeographies : [],
-        mainProgramActivity: this.props.form.mainProgrammingActivity !== undefined ? this.props.form.mainProgrammingActivity : [],  //Not used yet
-        programArea: this.props.form.mainProgrammingArea !== undefined ? this.props.form.mainProgrammingActivity : [],  //Not used yet
-        feeAccess: this.props.form.feeToAccess,
-        targetPopulationSectors: this.props.form.targetPopulationSectors !== undefined ? this.props.form.targetPopulationSectors : [],  //Not used yet
-        outcomesMonitored: this.props.form.monitoredOutcomes !== undefined ? this.props.form.monitoredOutcomes : [],  //Not used yet
-        mEdSubs: this.props.form.mainEducationSubSectors !== undefined ? this.props.form.mainEducationSubSectors : [],
-        oEdSubs: this.props.form.educationSubSectors !== undefined ? this.props.form.educationSubSectors : [],
-        managementTypes: this.props.form.targetSchoolManagementType !== undefined ? this.props.form.targetSchoolManagementType : [],  //Not used yet
-        regions: this.props.form.regions !== undefined ? this.props.form.regions : [], //Not used yet
-        countries: this.props.form.countriesOfOperation !== undefined ? this.props.form.countriesOfOperation : [], //Not used yet
-        activities: this.props.form.programmingActivities !== undefined ? this.props.form.programmingActivities : [], //Not used yet
-        sourceOfFees: this.props.form.sourcesOfFunding !== undefined ? this.props.form.sourcesOfFunding : [], //Not used yet
+        initName: props.form.name,
+        initURL: props.form.website,
+        tWomen: props.form.targetsWomen,
+        initStart: props.form.startYear,
+        initEnd: props.form.endYear,
+        launchCountries: props.form.launchCountry !== undefined ? props.form.launchCountry : [],  //Not used yet
+        idescription: props.form.description,
+        targetGeos: props.form.targetGeographies.length !== undefined ? props.form.targetGeographies : [],
+        mainProgramActivity: props.form.mainProgrammingActivity !== undefined ? props.form.mainProgrammingActivity : [],  //Not used yet
+        programArea: props.form.mainProgrammingArea !== undefined ? props.form.mainProgrammingActivity : [],  //Not used yet
+        feeAccess: props.form.feeToAccess,
+        targetPopulationSectors: props.form.targetPopulationSectors !== undefined ? props.form.targetPopulationSectors : [],  //Not used yet
+        outcomesMonitored: props.form.monitoredOutcomes !== undefined ? props.form.monitoredOutcomes : [],  //Not used yet
+        mEdSubs: props.form.mainEducationSubSectors !== undefined ? props.form.mainEducationSubSectors : [],
+        oEdSubs: props.form.educationSubSectors !== undefined ? props.form.educationSubSectors : [],
+        managementTypes: props.form.targetSchoolManagementType !== undefined ? props.form.targetSchoolManagementType : [],  //Not used yet
+        regions: props.form.regions !== undefined ? props.form.regions : [], //Not used yet
+        countries: props.form.countriesOfOperation !== undefined ? props.form.countriesOfOperation : [], //Not used yet
+        activities: props.form.programmingActivities !== undefined ? props.form.programmingActivities : [], //Not used yet
+        sourceOfFees: props.form.sourcesOfFunding !== undefined ? props.form.sourcesOfFunding : [], //Not used yet
 
         //Funder Setters
-        fname: this.props.form.funders.length > 0 ? this.props.form.funders[0].funderName : null,
-        furl: this.props.form.funders.length > 0 ? this.props.form.funders[0].funderWebsite : null,
-        motive: this.props.form.funders.length > 0 ? this.props.form.funders[0].profitMotive : null,
-        organizationForm: this.props.form.funders.length > 0 ? this.props.form.funders[0].organizationalForm : null,
-        impact: this.props.form.funders.length > 0 ? this.props.form.funders[0].impactInvesting : null,
+        fname: props.form.funders.length > 0 ? props.form.funders[0].funderName : null,
+        furl: props.form.funders.length > 0 ? props.form.funders[0].funderWebsite : null,
+        motive: props.form.funders.length > 0 ? props.form.funders[0].profitMotive : null,
+        organizationForm: props.form.funders.length > 0 ? props.form.funders[0].organizationalForm : null,
+        impact: props.form.funders.length > 0 ? props.form.funders[0].impactInvesting : null,
         //Multi-valued funder attribute setters
-        edSubs: this.props.form.funders !== undefined ? (this.props.form.funders.length > 0 ? this.props.form.funders[0].educationSubsector : null) : null,
-        orgTraits: this.props.form.funders !== undefined ? (this.props.form.funders.length > 0 ? this.props.form.funders[0].trait : null) : null,
-        asiaIBases: this.props.form.funders !== undefined ? (this.props.form.funders.length > 0 ? this.props.form.funders[0].asiaBase : null) : null,
-        asiaOperations: this.props.form.funders !== undefined ? (this.props.form.funders.length > 0 ? this.props.form.funders[0].asiaOperatons : null) : null,
-        internationalBases: this.props.form.funders !== undefined ? (this.props.form.funders.length > 0 ? this.props.form.funders[0].baseLocation : null) : null,
+        edSubs: props.form.funders !== undefined ? (props.form.funders.length > 0 ? props.form.funders[0].educationSubsector : null) : null,
+        orgTraits: props.form.funders !== undefined ? (props.form.funders.length > 0 ? props.form.funders[0].trait : null) : null,
+        asiaIBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? props.form.funders[0].asiaBase : null) : null,
+        asiaOperations: props.form.funders !== undefined ? (props.form.funders.length > 0 ? props.form.funders[0].asiaOperatons : null) : null,
+        internationalBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? props.form.funders[0].baseLocation : null) : null,
 
         //Implementer setters
-        iname: this.props.form.implementers.length > 0 ? this.props.form.implementers[0].implementorName : null,
-        impMotive: this.props.form.implementers.length > 0 ? this.props.form.implementers[0].profitMotive : null,
+        iname: props.form.implementers.length > 0 ? props.form.implementers[0].implementorName : null,
+        impMotive: props.form.implementers.length > 0 ? props.form.implementers[0].profitMotive : null,
 
         //Other Setters
-        comments: this.props.form.reviews, //Not used yet
-        status: this.props.form.status === undefined ? (this.props.form.status.length > 0 ? this.props.form.status[0][0].needsReview : null) : null, //not used yet
-        reviews: this.props.form.reviews === undefined ? (this.props.form.reviews.length > 0 ? this.props.form.reviews[0][0] : null) : null //not used yet
-      });
+        comments: props.form.reviews, //Not used yet
+        status: props.form.status === undefined ? (props.form.status.length > 0 ? props.form.status[0][0].needsReview : null) : null, //not used yet
+        reviews: props.form.reviews === undefined ? (props.form.reviews.length > 0 ? props.form.reviews[0][0] : null) : null //not used yet
+      };
     }
   }
-
 
 
   buttonMaker(props){
@@ -155,14 +153,17 @@ class formSubmission extends React.Component{
   }
 
   removeButton(props){
+    console.log(props)
     if (props.category === "iBase"){
       for (var i = 0; i < this.state.internationalBases.length; i++){ //There is definitely a more efficient solution
-        if (this.state.internationalBases[i].key === props.name){
+        if (this.state.internationalBases[i] === props.name){
           this.state.internationalBases.splice(i, 1);
+          this.setState({
+            internationalBases: this.state.internationalBases
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.internationalBases}</ul>, document.getElementById('iBases'))
     }
     /*else if (props.category === "opLoc"){
       for (var i = 0; i < this.state.operations.length; i++){
@@ -175,96 +176,115 @@ class formSubmission extends React.Component{
     }*/
     else if (props.category === "initRegions"){
       for (var i = 0; i < this.state.regions.length; i++){
-        if (this.state.regions[i].key === props.name){
+        if (this.state.regions[i] === props.name){
           this.state.regions.splice(i, 1);
+          this.setState({
+            regions: this.state.regions
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.regions}</ul>, document.getElementById('initRegions'))
     }
     else if (props.category === "initActivities"){
       for (var i = 0; i < this.state.activities.length; i++){
-        if (this.state.activities[i].key === props.name){
+        if (this.state.activities[i] === props.name){
           this.state.activities.splice(i, 1);
+          this.setState({
+            activities: this.state.activities
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.activities}</ul>, document.getElementById('initActivities'))
     }
     else if (props.category === "sourceOfFeesList"){
       for (var i = 0; i < this.state.sourceOfFees.length; i++){
-        if (this.state.sourceOfFees[i].key === props.name){
+        if (this.state.sourceOfFees[i] === props.name){
           this.state.sourceOfFees.splice(i, 1);
+          this.setState({
+            sourceOfFees: this.state.sourceOfFees
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.sourceOfFees}</ul>, document.getElementById('sourceOfFeesList'))
     }
     else if (props.category === "outcomesMonitored"){
       for (var i = 0; i < this.state.outcomesMonitored.length; i++){
-        if (this.state.outcomesMonitored[i].key === props.name){
+        if (this.state.outcomesMonitored[i] === props.name){
           this.state.outcomesMonitored.splice(i, 1);
+          this.setState({
+            outcomesMonitored: this.state.outcomesMonitored
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.outcomesMonitored}</ul>, document.getElementById('outcomesMonitored'))
     }
     else if (props.category === "managementTypes"){
       for (var i = 0; i < this.state.managementTypes.length; i++){
-        if (this.state.managementTypes[i].key === props.name){
+        if (this.state.managementTypes[i] === props.name){
           this.state.managementTypes.splice(i, 1);
+          this.setState({
+            managementTypes: this.state.managementTypes
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.managementTypes}</ul>, document.getElementById('managementTypes'))
     }
     else if (props.category === "targetPopSector"){
       for (var i = 0; i < this.state.targetPopulationSectors.length; i++){
-        if (this.state.targetPopulationSectors[i].key === props.name){
+        if (this.state.targetPopulationSectors[i] === props.name){
           this.state.targetPopulationSectors.splice(i, 1);
+          this.setState({
+            targetPopulationSectors: this.state.targetPopulationSectors
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.targetPopulationSectors}</ul>, document.getElementById('targetPopSector'))
     }
     else if (props.category === "aIBases"){
       for (var i = 0; i < this.state.asiaIBases.length; i++){
-        if (this.state.asiaIBases[i].key === props.name){
+        if (this.state.asiaIBases[i] === props.name){
           this.state.asiaIBases.splice(i, 1);
+          this.setState({
+            asiaIBases: this.state.asiaIBases
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.asiaIBases}</ul>, document.getElementById('aIBases'))
     }
     else if (props.category === "asiaOperationLocations"){
       for (var i = 0; i < this.state.asiaOperations.length; i++){
-        if (this.state.asiaOperations[i].key === props.name){
+        if (this.state.asiaOperations[i] === props.name){
           this.state.asiaOperations.splice(i, 1);
+          this.setState({
+            asiaOperations: this.state.asiaOperations
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.asiaOperations}</ul>, document.getElementById('asiaOperationLocations'))
     }
     else if (props.category === "launchCountries"){
       for (var i = 0; i < this.state.launchCountries.length; i++){
-        if (this.state.launchCountries[i].key === props.name){
+        if (this.state.launchCountries[i] === props.name){
           this.state.launchCountries.splice(i, 1);
+          this.setState({
+            launchCountries: this.state.launchCountries
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.launchCountries}</ul>, document.getElementById('launchCountries'))
     }
     else{
       for (var i = 0; i < this.state.countries.length; i++){
-        if (this.state.countries[i].key === props.name){
+        if (this.state.countries[i] === props.name){
           this.state.countries.splice(i, 1);
+          this.setState({
+            countries: this.state.countries
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.countries}</ul>, document.getElementById('initCountries'))
     }
   }
-
 
 
   addIBase(e){
@@ -272,26 +292,17 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.internationalBases.length; i++){ //There is definitely a more efficient solution
-      if (this.state.internationalBases[i].key === base){
+      if (this.state.internationalBases[i] === base){
         present = true;
         break;
       }
     }
     if (!present && base !== "baseCase"){
-      this.state.internationalBases.push(<this.buttonMaker key={base} name={base} category="iBase"/> )
-      console.log(base);
-      ReactDOM.render(<ul>{this.state.internationalBases}</ul>, document.getElementById('iBases'))
+      this.state.internationalBases.push(base);
+      this.setState({
+        internationalBases: this.state.internationalBases
+      })
     }
-  }
-
-  fillIBase(){
-    for (var i = 0; i < this.state.internationalBases.length; i++){
-      if(this.state.internationalBases[i] !== ""){
-        this.state.internationalBases[i] = (<this.buttonMaker key={this.state.internationalBases[i]} name={this.state.internationalBases[i]} category="iBase"/>)
-        console.log(this.state.internationalBases[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.internationalBases}</ul>, document.getElementById('iBases'))
   }
 
   /*addOpLoc(e){
@@ -324,26 +335,17 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.regions.length; i++){ //There is definitely a more efficient solution
-      if (this.state.regions[i].key === region){
+      if (this.state.regions[i] === region){
         present = true;
         break;
       }
     }
     if (!present && region !== "baseCase"){
-      this.state.regions.push(<this.buttonMaker key={region} name={region} category="initRegions"/>)
-      console.log(region);
-      ReactDOM.render(<ul>{this.state.regions}</ul>, document.getElementById('initRegions'))
+      this.state.regions.push(region)
+      this.setState({
+        regions: this.state.regions
+      })
     }
-  }
-
-  fillInitRegion(){
-    for (var i = 0; i < this.state.regions.length; i++){
-      if(this.state.regions[i] !== ""){
-        this.state.regions[i] = (<this.buttonMaker key={this.state.regions[i]} name={this.state.regions[i]} category="initRegions"/>)
-        console.log(this.state.regions[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.regions}</ul>, document.getElementById('initRegions'))
   }
 
   addInitCountry(e){
@@ -351,27 +353,17 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.countries.length; i++){ //There is definitely a more efficient solution
-      if (this.state.countries[i].key === country){
+      if (this.state.countries[i] === country){
         present = true;
         break;
       }
     }
     if (!present && country !== "baseCase"){
-      this.state.countries.push(<this.buttonMaker key={country} name={country} category="initCountries"/>)
-      console.log(country);
-      ReactDOM.render(<ul>{this.state.countries}</ul>, document.getElementById('initCountries'))
+      this.state.countries.push(country)
+      this.setState({
+        countries: this.state.countries
+      })
     }
-  }
-
-  fillInitCountry(){
-    for (var i = 0; i < this.state.countries.length; i++){
-      if(this.state.countries[i] !== ""){
-        console.log(this.state.countries[i]);
-        this.state.countries[i] = (<this.buttonMaker key={this.state.countries[i]} name={this.state.countries[i]} category="initCountries"/>)
-
-      }
-    }
-    ReactDOM.render(<ul>{this.state.countries}</ul>, document.getElementById('initCountries'))
   }
 
   addProgramActivity(e){
@@ -379,26 +371,17 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.activities.length; i++){ //There is definitely a more efficient solution
-      if (this.state.activities[i].key === activity){
+      if (this.state.activities[i] === activity){
         present = true;
         break;
       }
     }
     if (!present && activity !== "baseCase"){
-      this.state.activities.push(<this.buttonMaker key={activity} name={activity} category="initActivities"/>)
-      console.log(activity);
-      ReactDOM.render(<ul>{this.state.activities}</ul>, document.getElementById('initActivities'))
+      this.state.activities.push(activity)
+      this.setState({
+        activities: this.state.activities
+      })
     }
-  }
-
-  fillProgramActivity(){
-    for (var i = 0; i < this.state.activities.length; i++){
-      if(this.state.activities[i] !== ""){
-        this.state.activities[i] = (<this.buttonMaker key={this.state.activities[i]} name={this.state.activities[i]} category="initActivities"/>)
-        console.log(this.state.activities[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.activities}</ul>, document.getElementById('initActivities'))
   }
 
   addSourceFee(e){
@@ -406,7 +389,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.sourceOfFees.length; i++){ //There is definitely a more efficient solution
-      if (this.state.sourceOfFees[i].key === source){
+      if (this.state.sourceOfFees[i] === source){
         present = true;
         break;
       }
@@ -414,18 +397,7 @@ class formSubmission extends React.Component{
     if (!present && source !== "base"){
       this.state.sourceOfFees.push(<this.buttonMaker key={source} name={source} category="sourceOfFeesList"/>)
       console.log(source);
-      ReactDOM.render(<ul>{this.state.sourceOfFees}</ul>, document.getElementById('sourceOfFeesList'))
     }
-  }
-
-  fillSourceFee(){
-    for (var i = 0; i < this.state.sourceOfFees.length; i++){
-      if(this.state.sourceOfFees[i] !== ""){
-        this.state.sourceOfFees[i] = (<this.buttonMaker key={this.state.sourceOfFees[i]} name={this.state.sourceOfFees[i]} category="sourceOfFeesList"/>)
-        console.log(this.state.sourceOfFees[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.sourceOfFees}</ul>, document.getElementById('sourceOfFeesList'))
   }
 
   addOutcome(e){
@@ -433,26 +405,17 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.outcomesMonitored.length; i++){ //There is definitely a more efficient solution
-      if (this.state.outcomesMonitored[i].key === outcome){
+      if (this.state.outcomesMonitored[i] === outcome){
         present = true;
         break;
       }
     }
     if (!present && outcome !== "base"){
-      this.state.outcomesMonitored.push(<this.buttonMaker key={outcome} name={outcome} category="outcomesMonitored"/>)
-      console.log(outcome);
-      ReactDOM.render(<ul>{this.state.outcomesMonitored}</ul>, document.getElementById('outcomesMonitored'))
+      this.state.outcomesMonitored.push(outcome)
+      this.setState({
+        outcomesMonitored: this.state.outcomesMonitored
+      })
     }
-  }
-
-  fillOutcome(){
-    for (var i = 0; i < this.state.outcomesMonitored.length; i++){
-      if(this.state.outcomesMonitored[i] !== ""){
-        this.state.outcomesMonitored[i] = (<this.buttonMaker key={this.state.outcomesMonitored[i]} name={this.state.outcomesMonitored[i]} category="outcomesMonitored"/>)
-        console.log(this.state.outcomesMonitored[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.outcomesMonitored}</ul>, document.getElementById('outcomesMonitored'))
   }
 
   addManagementType(e){
@@ -460,26 +423,17 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.managementTypes.length; i++){ //There is definitely a more efficient solution
-      if (this.state.managementTypes[i].key === type){
+      if (this.state.managementTypes[i] === type){
         present = true;
         break;
       }
     }
     if (!present && type !== "base"){
-      this.state.managementTypes.push(<this.buttonMaker key={type} name={type} category="managementTypes"/>)
-      console.log(type);
-      ReactDOM.render(<ul>{this.state.managementTypes}</ul>, document.getElementById('managementTypes'))
+      this.state.managementTypes.push(type)
+      this.setState({
+        managementTypes: this.state.managementTypes
+      })
     }
-  }
-
-  fillManagementType(){
-    for (var i = 0; i < this.state.managementTypes.length; i++){
-      if(this.state.managementTypes[i] !== ""){
-        this.state.managementTypes[i] = (<this.buttonMaker key={this.state.managementTypes[i]} name={this.state.managementTypes[i]} category="managementTypes"/>)
-        console.log(this.state.managementTypes[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.managementTypes}</ul>, document.getElementById('managementTypes'))
   }
 
   addPopSector(e){
@@ -487,26 +441,17 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.targetPopulationSectors.length; i++){ //There is definitely a more efficient solution
-      if (this.state.targetPopulationSectors[i].key === sector){
+      if (this.state.targetPopulationSectors[i] === sector){
         present = true;
         break;
       }
     }
     if (!present && sector !== "base"){
-      this.state.targetPopulationSectors.push(<this.buttonMaker key={sector} name={sector} category="targetPopSector"/>)
-      console.log(sector);
-      ReactDOM.render(<ul>{this.state.targetPopulationSectors}</ul>, document.getElementById('targetPopSector'))
+      this.state.targetPopulationSectors.push(sector)
+      this.setState({
+        targetPopulationSectors: this.state.targetPopulationSectors
+      })
     }
-  }
-
-  fillPopSector(){
-    for (var i = 0; i < this.state.targetPopulationSectors.length; i++){
-      if(this.state.targetPopulationSectors[i] !== ""){
-        this.state.targetPopulationSectors[i] = (<this.buttonMaker key={this.state.targetPopulationSectors[i]} name={this.state.targetPopulationSectors[i]} category="targetPopSector"/>)
-        console.log(this.state.targetPopulationSectors[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.targetPopulationSectors}</ul>, document.getElementById('targetPopSector'))
   }
 
   addAIBase(e){
@@ -514,26 +459,17 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.asiaIBases.length; i++){ //There is definitely a more efficient solution
-      if (this.state.asiaIBases[i].key === base){
+      if (this.state.asiaIBases[i] === base){
         present = true;
         break;
       }
     }
     if (!present && base !== "base"){
-      this.state.asiaIBases.push(<this.buttonMaker key={base} name={base} category="aIBases"/>)
-      console.log(base);
-      ReactDOM.render(<ul>{this.state.asiaIBases}</ul>, document.getElementById('aIBases'))
+      this.state.asiaIBases.push(base);
+      this.setState({
+        asiaIBases: this.state.asiaIBases
+      })
     }
-  }
-
-  fillAIBase(){
-    for (var i = 0; i < this.state.asiaIBases.length; i++){
-      if(this.state.asiaIBases[i] !== ""){
-        this.state.asiaIBases[i] = (<this.buttonMaker key={this.state.asiaIBases[i]} name={this.state.asiaIBases[i]} category="aIBases"/>)
-        console.log(this.state.asiaIBases[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.asiaIBases}</ul>, document.getElementById('aIBases'))
   }
 
   addAsiaOperation(e){
@@ -541,26 +477,17 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.asiaOperations.length; i++){ //There is definitely a more efficient solution
-      if (this.state.asiaOperations[i].key === operation){
+      if (this.state.asiaOperations[i] === operation){
         present = true;
         break;
       }
     }
     if (!present && operation !== "base"){
-      this.state.asiaOperations.push(<this.buttonMaker key={operation} name={operation} category="asiaOperationLocations"/>)
-      console.log(operation);
-      ReactDOM.render(<ul>{this.state.asiaOperations}</ul>, document.getElementById('asiaOperationLocations'))
+      this.state.asiaOperations.push(operation)
+      this.setState({
+        asiaOperations: this.state.asiaOperations
+      })
     }
-  }
-
-  fillAsiaOperation(){
-    for (var i = 0; i < this.state.asiaOperations.length; i++){
-      if(this.state.asiaOperations[i] !== ""){
-        this.state.asiaOperations[i] = (<this.buttonMaker key={this.state.asiaOperations[i]} name={this.state.asiaOperations[i]} category="asiaOperationLocations"/>)
-        console.log(this.state.asiaOperations[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.asiaOperations}</ul>, document.getElementById('asiaOperationLocations'))
   }
 
   addLaunchCountry(e){
@@ -568,33 +495,23 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.launchCountries.length; i++){ //There is definitely a more efficient solution
-      if (this.state.launchCountries[i].key === country){
+      if (this.state.launchCountries[i] === country){
         present = true;
         break;
       }
     }
     if (!present && country !== "base"){
-      this.state.launchCountries.push(<this.buttonMaker key={country} name={country} category="launchCountries"/>)
-      console.log(country);
-      ReactDOM.render(<ul>{this.state.launchCountries}</ul>, document.getElementById('launchCountries'))
+      this.state.launchCountries.push(country);
+      this.setState({
+        launchCountries: this.state.launchCountries
+      });
     }
   }
-
-  fillLaunchCountry(){
-    for (var i = 0; i < this.state.launchCountries.length; i++){
-      if(this.state.launchCountries[i] !== ""){
-        this.state.launchCountries[i] = (<this.buttonMaker key={this.state.launchCountries[i]} name={this.state.launchCountries[i]} category="launchCountries"/>)
-        console.log(this.state.launchCountries[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.launchCountries}</ul>, document.getElementById('launchCountries'))
-  }
-
 
   changeProgramArea(e){
     var activity = e.currentTarget.value;
     var updateArea = "";
-    console.log(activity);
+
     if (activity === "Missing"){
       updateArea = "Missing";
     }
@@ -847,21 +764,6 @@ class formSubmission extends React.Component{
     }
   }
 
-  fillMultiValued(){
-    this.fillAIBase();
-    this.fillAsiaOperation();
-    this.fillIBase();
-    this.fillInitCountry();
-    this.fillInitRegion();
-    this.fillLaunchCountry();
-    this.fillManagementType();
-    //this.fillOpLoc();
-    this.fillOutcome();
-    this.fillPopSector();
-    this.fillProgramActivity();
-    this.fillSourceFee();
-  }
-
   render(){
     const {authorized, formSubmitted, formSubmitError} = this.props;
     if (authorized === false) {
@@ -880,9 +782,6 @@ class formSubmission extends React.Component{
     <div className="alert alert-danger alert-dismissible fade show" style = {{width: "25%"}}>
       <h5 style = {{textAlign: "center"}}> {formSubmitError} </h5>
     </div> : null
-
-    document.addEventListener("DOMContentLoaded", this.fillMultiValued)
-    //document.addEventListener("load", this.fillMultiValued)
 
     return (
         <div className = "formSubmission" style = {{paddingTop: '50px'}}>
@@ -1149,7 +1048,17 @@ class formSubmission extends React.Component{
             <option value="Zimbabwe">Zimbabwe</option>
             </select>
 
-            <div id="iBases"></div>
+            <div id="iBases">
+              <ul>
+              {
+                this.state.internationalBases.map(base => {
+                  return (
+                    <this.buttonMaker key={base} name={base} category="iBase"/>
+                  );
+                })
+              }
+              </ul>
+            </div>
 
             <p>Education Subsector(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="edSub1" name="educationSubsector" value="Adult" checked = {this.state.edSubs.includes("Adult")} onChange={this.changeEdSub}/> <label htmlFor="edSub1" className="checkbox">Adult</label>
@@ -1413,7 +1322,17 @@ class formSubmission extends React.Component{
             <option value="Zimbabwe">Zimbabwe</option>
             </select>
 
-            <div id="aIBases"></div>
+            <div id="aIBases">
+              <ul>
+              {
+                this.state.asiaIBases.map(base => {
+                  return (
+                    <this.buttonMaker key={base} name={base} category="aIBases"/>
+                  );
+                })
+              }
+              </ul>
+            </div>
             {/* MAKE ASIA INTERNATIONAL BASE NOT ACCEPT BASE CASE */}
 
             <p>Asia Operation(s)</p>
@@ -1642,8 +1561,17 @@ class formSubmission extends React.Component{
             <option value="Zimbabwe">Zimbabwe</option>
             </select>
 
-            <div id="asiaOperationLocations"></div>
-
+            <div id="asiaOperationLocations">
+              <ul>
+                {
+                  this.state.asiaOperations.map(operation => {
+                    return (
+                      <this.buttonMaker key={operation} name={operation} category="asiaOperationLocations"/>
+                    );
+                  })
+                }
+              </ul>
+            </div>
 
             <h4>Initiative</h4>
 
@@ -1889,10 +1817,20 @@ class formSubmission extends React.Component{
             <option value="Zimbabwe">Zimbabwe</option>
             </select>
 
-            <div id="launchCountries"></div>
+            <div id="launchCountries">
+              <ul>
+              {
+                this.state.launchCountries.map(country => {
+                  return (
+                    <this.buttonMaker key={country} name={country} category="launchCountries"/>
+                  );
+                })
+              }
+              </ul>
+            </div>
 
             <p>Description</p>
-              <textarea id="idescription" name="description" value = {this.state.idescription} placeholder="Write a description" onChange={this.handleChange}></textarea>
+            <textarea id="idescription" name="description" value = {this.state.idescription} placeholder="Write a description" onChange={this.handleChange}></textarea>
 
             <p>Region(s)</p>
             <select id="region" name="regions" onChange={this.addInitRegion}>
@@ -1953,7 +1891,17 @@ class formSubmission extends React.Component{
             <option value="World">World</option>
             </select>
 
-            <div id="initRegions"></div>
+            <div id="initRegions">
+              <ul>
+                {
+                  this.state.regions.map(region => {
+                    return (
+                      <this.buttonMaker key={region} name={region} category="initRegions"/>
+                    );
+                  })
+                }
+              </ul>
+            </div>
 
             <p>Countries</p>
             <select id="initCountry" name="initiativeCountry" onChange={this.addInitCountry}>
@@ -2181,7 +2129,17 @@ class formSubmission extends React.Component{
             <option value="Zimbabwe">Zimbabwe</option>
             </select>
 
-            <div id="initCountries"></div>
+            <div id="initCountries">
+              <ul>
+                {
+                  this.state.countries.map(country => {
+                    return (
+                      <this.buttonMaker key={country} name={country} category="initCountries"/>
+                    );
+                  })
+                }
+              </ul>
+            </div>
 
             <p>Target Geography</p>
               <input type="checkbox" id="geography1" name="targetGeo" value="Urban" checked = {this.state.targetGeos.includes("Urban")} onChange={this.geographyChange}/> <label htmlFor="geography1" className="checkbox">Urban</label>
@@ -2438,7 +2396,17 @@ class formSubmission extends React.Component{
             <option value=" Maternal Health Education">Maternal Health Education</option>
             </select>
 
-            <div id="initActivities"></div>
+            <div id="initActivities">
+              <ul>
+                {
+                  this.state.activities.map(activity => {
+                    return (
+                      <this.buttonMaker key={activity} name={activity} category="initActivities"/>
+                    );
+                  })
+                }
+              </ul>
+            </div>
 
             <p>Fee to Access?</p>
               <input type="radio" id="feeAccess1" name="feeToAccess" value="Yes" checked = {this.state.feeAccess === true} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess1">Yes</label>
@@ -2446,7 +2414,7 @@ class formSubmission extends React.Component{
 
             <p>Target School Management Type</p>
             <select id="manType" name="managementType" onChange={this.addManagementType}>
-            <option value="base">Choose an Outcome</option>
+            <option value="base">Choose a School Management Type</option>
             <option value="Government/Public">Government/Public</option>
             <option value="Non-state/Private">Non-state/Private</option>
             <option value="Not Applicable">Not Applicable</option>
@@ -2454,7 +2422,17 @@ class formSubmission extends React.Component{
             <option value="Missing Data">Missing Data</option>
             </select>
 
-            <div id="managementTypes"></div>
+            <div id="managementTypes">
+              <ul>
+                {
+                  this.state.managementTypes.map(type => {
+                    return (
+                      <this.buttonMaker key={type} name={type} category="managementTypes"/>
+                    );
+                  })
+                }
+              </ul>
+            </div>
 
 
             <p>Target Population Sector(s)<br></br>Select all that apply:</p>
@@ -3100,7 +3078,17 @@ class formSubmission extends React.Component{
             <option value="Secondary school students in rural communities who don't have access to internet">Secondary school students in rural communities who don't have access to internet</option>
             </select>
 
-            <div id="targetPopSector"></div>
+            <div id="targetPopSector">
+              <ul>
+                {
+                  this.state.targetPopulationSectors.map(sector => {
+                    return (
+                      <this.buttonMaker key={sector} name={sector} category="targetPopSector"/>
+                    );
+                  })
+                }
+              </ul>
+            </div>
 
             <p>Outcomes Monitored<br></br>Select all that apply:</p>
             <select id="outcome" name="outcomesMonitored" onChange={this.addOutcome}>
@@ -3649,7 +3637,17 @@ class formSubmission extends React.Component{
             <option value="missing data">missing data</option>
             </select>
 
-            <div id="outcomesMonitored"></div>
+            <div id="outcomesMonitored">
+              <ul>
+                {
+                  this.state.outcomesMonitored.map(outcome => {
+                    return (
+                      <this.buttonMaker key={outcome} name={outcome} category="outcomesMonitored"/>
+                    );
+                  })
+                }
+              </ul>
+            </div>
 
 
             <div id="sourceOfFeesList"></div>

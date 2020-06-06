@@ -92,9 +92,10 @@ class formSubmission extends React.Component{
     this.endYearChange = this.endYearChange.bind(this);
   }
 
-  static getDerivedStateFromProps = (props, state) => {
+  componentDidMount = () => {
+    const {props} = this;
     if (props.formStatus === 'modify') {
-      return {
+      this.setState({
         //Original value Setters
         tagNum: props.form.tagNumber,
         originalFunderName: props.form.funders.length > 0 ? props.form.funders[0].funderName : null,
@@ -143,7 +144,7 @@ class formSubmission extends React.Component{
         comments: props.form.reviews, //Not used yet
         status: props.form.status === undefined ? (props.form.status.length > 0 ? props.form.status[0][0].needsReview : null) : null, //not used yet
         reviews: props.form.reviews === undefined ? (props.form.reviews.length > 0 ? props.form.reviews[0][0] : null) : null //not used yet
-      };
+      });
     }
   }
 
@@ -153,7 +154,6 @@ class formSubmission extends React.Component{
   }
 
   removeButton(props){
-    console.log(props)
     if (props.category === "iBase"){
       for (var i = 0; i < this.state.internationalBases.length; i++){ //There is definitely a more efficient solution
         if (this.state.internationalBases[i] === props.name){
@@ -396,7 +396,6 @@ class formSubmission extends React.Component{
     }
     if (!present && source !== "base"){
       this.state.sourceOfFees.push(<this.buttonMaker key={source} name={source} category="sourceOfFeesList"/>)
-      console.log(source);
     }
   }
 
@@ -574,6 +573,9 @@ class formSubmission extends React.Component{
     if (!present){
       this.state.orgTraits.push(orgTrait)
     }
+    this.setState({
+      orgTraits: this.state.orgTraits
+    })
   }
 
   changeEdSub(e){
@@ -590,6 +592,9 @@ class formSubmission extends React.Component{
     if (!present){
       this.state.edSubs.push(edSub)
     }
+    this.setState({
+      edSubs: this.state.edSubs
+    })
   }
 
   profitMotiveChange(e){
@@ -624,6 +629,9 @@ class formSubmission extends React.Component{
     if (!present){
       this.state.mEdSubs.push(mEdSub)
     }
+    this.setState({
+      mEdSubs: this.state.mEdSubs
+    })
   }
 
   oEdSubChange(e){
@@ -640,10 +648,13 @@ class formSubmission extends React.Component{
     if (!present){
       this.state.oEdSubs.push(oEdSub)
     }
+    this.setState({
+      oEdSubs: this.state.oEdSubs
+    })
   }
 
   tWomenChange(e){
-    let targetsWomen = e.currentTarget.value === "Yes" ? 1 : 0;
+    let targetsWomen = e.target.value === "Yes" ? true : false;
     this.setState({
       tWomen: targetsWomen
     });
@@ -663,10 +674,13 @@ class formSubmission extends React.Component{
     if (!present){
       this.state.targetGeos.push(geo)
     }
+    this.setState({
+      targetGeos: this.state.targetGeos
+    })
   }
 
   feeAccessChange(e){
-    let feeToAccess = e.currentTarget.value === "Yes" ? 1 : 0;
+    let feeToAccess = e.currentTarget.value === "Yes" ? true : false;
     this.setState({
       feeAccess: feeToAccess
     });
@@ -2145,7 +2159,7 @@ class formSubmission extends React.Component{
               <input type="checkbox" id="geography1" name="targetGeo" value="Urban" checked = {this.state.targetGeos.includes("Urban")} onChange={this.geographyChange}/> <label htmlFor="geography1" className="checkbox">Urban</label>
               <input type="checkbox" id="geography2" name="targetGeo" value="Peri-Urban" checked = {this.state.targetGeos.includes("Peri-Urban")} onChange={this.geographyChange}/> <label htmlFor="geography2" className="checkbox">Peri-Urban</label>
               <input type="checkbox" id="geography3" name="targetGeo" value="Rural" checked = {this.state.targetGeos.includes("Rural")} onChange={this.geographyChange}/> <label htmlFor="geography3" className="checkbox">Rural</label>
-              <input type="checkbox" id="geography4" name="targetGeo" value="Online community" checked = {this.state.targetGeos.includes("Online Community")} onChange={this.geographyChange}/> <label htmlFor="geography4" className="checkbox">Online community</label>
+              <input type="checkbox" id="geography4" name="targetGeo" value="Online community" checked = {this.state.targetGeos.includes("Online community")} onChange={this.geographyChange}/> <label htmlFor="geography4" className="checkbox">Online community</label>
               <input type="checkbox" id="geography5" name="targetGeo" value="children with special needs" checked = {this.state.targetGeos.includes("children with special needs")} onChange={this.geographyChange}/> <label htmlFor="geography5" className="checkbox">children with special needs</label>
               <input type="checkbox" id="geography6" name="targetGeo" value="Unclear" checked = {this.state.targetGeos.includes("Unclear")} onChange={this.geographyChange}/> <label htmlFor="geography6" className="checkbox">Unclear</label>
               <input type="checkbox" id="geography7" name="targetGeo" value="Missing" checked = {this.state.targetGeos.includes("Missing")} onChange={this.geographyChange}/> <label htmlFor="geography7" className="checkbox">Missing</label>

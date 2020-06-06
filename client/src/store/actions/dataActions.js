@@ -209,7 +209,7 @@ const readForm = (response => {
     targetGeographies: initiativeTargetGeographies,
     targetPopulationSectors: initiativeTargetPopulationSectors,
     monitoredOutcomes:initiativeMonitoredOutcomes,
-    mainEducationSubsectors: initiativeMainEducationSubsectors,
+    mainEducationSubSectors: initiativeMainEducationSubsectors,
     educationSubSectors: initiativeEducationSubsectors,
     targetSchoolManagementType: initiativeTargetSchoolManagement,
     implementers: implementers,

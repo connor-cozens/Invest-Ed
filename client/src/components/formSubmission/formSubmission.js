@@ -62,12 +62,12 @@ class formSubmission extends React.Component{
       status: null
     };
 
-    this.addIBase = this.addIBase.bind(this); //done
+    this.addIBase = this.addIBase.bind(this);
     //this.addOpLoc = this.addOpLoc.bind(this);
-    this.addInitRegion = this.addInitRegion.bind(this); //done
-    this.addInitCountry = this.addInitCountry.bind(this); //done
+    this.addInitRegion = this.addInitRegion.bind(this);
+    this.addInitCountry = this.addInitCountry.bind(this);
     this.buttonMaker = this.buttonMaker.bind(this);
-    this.addProgramActivity = this.addProgramActivity.bind(this); //done
+    this.addProgramActivity = this.addProgramActivity.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.changeEdSub = this.changeEdSub.bind(this);
@@ -83,11 +83,11 @@ class formSubmission extends React.Component{
     this.impMotiveChange = this.impMotiveChange.bind(this);
     this.addOutcome = this.addOutcome.bind(this);
     this.addSourceFee = this.addSourceFee.bind(this);
-    this.addManagementType = this.addManagementType.bind(this); //done
+    this.addManagementType = this.addManagementType.bind(this);
     this.addPopSector = this.addPopSector.bind(this);
-    this.addAIBase = this.addAIBase.bind(this); //done
-    this.addAsiaOperation = this.addAsiaOperation.bind(this); //done
-    this.addLaunchCountry = this.addLaunchCountry.bind(this);  //done
+    this.addAIBase = this.addAIBase.bind(this);
+    this.addAsiaOperation = this.addAsiaOperation.bind(this);
+    this.addLaunchCountry = this.addLaunchCountry.bind(this);
     this.startYearChange = this.startYearChange.bind(this);
     this.endYearChange = this.endYearChange.bind(this);
   }
@@ -286,12 +286,13 @@ class formSubmission extends React.Component{
     }
   }
 
+
   addIBase(e){
     var base = e.currentTarget.value;
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.internationalBases.length; i++){ //There is definitely a more efficient solution
-      if (this.state.internationalBases[i].key === base){
+      if (this.state.internationalBases[i] === base){
         present = true;
         break;
       }
@@ -334,7 +335,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.regions.length; i++){ //There is definitely a more efficient solution
-      if (this.state.regions[i].key === region){
+      if (this.state.regions[i] === region){
         present = true;
         break;
       }
@@ -352,7 +353,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.countries.length; i++){ //There is definitely a more efficient solution
-      if (this.state.countries[i].key === country){
+      if (this.state.countries[i] === country){
         present = true;
         break;
       }
@@ -370,7 +371,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.activities.length; i++){ //There is definitely a more efficient solution
-      if (this.state.activities[i].key === activity){
+      if (this.state.activities[i] === activity){
         present = true;
         break;
       }
@@ -388,7 +389,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.sourceOfFees.length; i++){ //There is definitely a more efficient solution
-      if (this.state.sourceOfFees[i].key === source){
+      if (this.state.sourceOfFees[i] === source){
         present = true;
         break;
       }
@@ -404,7 +405,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.outcomesMonitored.length; i++){ //There is definitely a more efficient solution
-      if (this.state.outcomesMonitored[i].key === outcome){
+      if (this.state.outcomesMonitored[i] === outcome){
         present = true;
         break;
       }
@@ -422,7 +423,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.managementTypes.length; i++){ //There is definitely a more efficient solution
-      if (this.state.managementTypes[i].key === type){
+      if (this.state.managementTypes[i] === type){
         present = true;
         break;
       }
@@ -440,7 +441,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.targetPopulationSectors.length; i++){ //There is definitely a more efficient solution
-      if (this.state.targetPopulationSectors[i].key === sector){
+      if (this.state.targetPopulationSectors[i] === sector){
         present = true;
         break;
       }
@@ -458,7 +459,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.asiaIBases.length; i++){ //There is definitely a more efficient solution
-      if (this.state.asiaIBases[i].key === base){
+      if (this.state.asiaIBases[i] === base){
         present = true;
         break;
       }
@@ -476,7 +477,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.asiaOperations.length; i++){ //There is definitely a more efficient solution
-      if (this.state.asiaOperations[i].key === operation){
+      if (this.state.asiaOperations[i] === operation){
         present = true;
         break;
       }
@@ -494,7 +495,7 @@ class formSubmission extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.launchCountries.length; i++){ //There is definitely a more efficient solution
-      if (this.state.launchCountries[i].key === country){
+      if (this.state.launchCountries[i] === country){
         present = true;
         break;
       }

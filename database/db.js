@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize")
 const db = {}
 //Change database name "users" to the mysql database you're testing with
-const sequelize = new Sequelize("accounts", "root", "PASSWORD66^", {
+const sequelize = new Sequelize("accounts", "root", "password", {
     host: 'localhost',
     dialect: 'mysql',
     operatorAliases: false,

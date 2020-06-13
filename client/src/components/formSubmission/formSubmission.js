@@ -147,7 +147,7 @@ class formSubmission extends React.Component{
       });
     }
   }
-  
+
 
 
   buttonMaker(props){
@@ -368,7 +368,7 @@ class formSubmission extends React.Component{
       if(this.state.countries[i] !== ""){
         console.log(this.state.countries[i]);
         this.state.countries[i] = (<this.buttonMaker key={this.state.countries[i]} name={this.state.countries[i]} category="initCountries"/>)
-        
+
       }
     }
     ReactDOM.render(<ul>{this.state.countries}</ul>, document.getElementById('initCountries'))
@@ -892,7 +892,7 @@ class formSubmission extends React.Component{
             <form onSubmit={this.handleFormSubmit}>
 
             <h4>Funder</h4>
-            
+
 
             <p>Name</p>
               <input type="text" id="fname" name="funderName" value={this.state.fname} placeholder="Funder Name" onChange={this.handleChange}/>

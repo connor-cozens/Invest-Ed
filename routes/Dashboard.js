@@ -74,7 +74,6 @@ dashboard.get('/form/:tagNum', cors(),(req, res) =>{
 
     var formData = {}
     var fundersData = {}
-    var test = []
     var funderIndividual = []
 
     async.parallel([
@@ -254,97 +253,83 @@ dashboard.get('/form/:tagNum', cors(),(req, res) =>{
 
         var final = 0
         //nest them here
-        for(var i = 0; i < funderData.length; i++){
-
-            var query15 = "SELECT * FROM funderasiabases WHERE funderName ='" +funderData[i].funderName+"'"
-            var query16 = "SELECT * FROM funderasiaoperations WHERE funderName ='" +funderData[i].funderName+"'"
-            var query17 = "SELECT * FROM fundereducationsubsectors WHERE funderName ='" +funderData[i].funderName+"'"
-            var query18 = "SELECT * FROM funderinternationalbases WHERE funderName ='" +funderData[i].funderName+"'"
-            var query19 = "SELECT * FROM funderorganizationtraits WHERE funderName ='" +funderData[i].funderName+"'"
-
-
-            async.parallel([
-                function(queryDB) {
-                    pool.query(query15, {}, function(err, results) {
-                        if (err){
-                            return queryDB(err)
-                        }else{
-                            funderIndividual.push(results)
-                            queryDB()
-                        }
-
-                    })
-                },
-                function(queryDB) {
-                    pool.query(query16, {}, function(err, results) {
-                        if (err){
-                            return queryDB(err)
-                        }else{
-                            funderIndividual.push(results)
-                            queryDB()
-                        }
-
-                    })
-                },
-                function(queryDB) {
-                    pool.query(query17, {}, function(err, results) {
-                        if (err){
-                            return queryDB(err)
-                        }else{
-                            funderIndividual.push(results)
-                            queryDB()
-                        }
-
-                    })
-                },
-                function(queryDB) {
-                    pool.query(query18, {}, function(err, results) {
-                        if (err){
-                            return queryDB(err)
-                        }else{
-                            funderIndividual.push(results)
-                            queryDB()
-                        }
-
-                    })
-                },
-                function(queryDB) {
-                    pool.query(query19, {}, function(err, results) {
-                        if (err){
-                            return queryDB(err)
-                        }else{
-                            funderIndividual.push(results)
-                            queryDB()
-                        }
-
-                    })
-                }
-
-            ],
-
-            function(err) {
-                if (err){
-                  res.json(err)
-                }else{
-                    var temp = {}
-                    final++;
-                    test.push(funderIndividual)
-                    temp.table1 = test
-                    Object.assign(formData, temp.table1)
+        funderData.forEach(funder => {
+          var query15 = "SELECT * FROM funderasiabases WHERE funderName ='" +funder.funderName+"'"
+          var query16 = "SELECT * FROM funderasiaoperations WHERE funderName ='" +funder.funderName+"'"
+          var query17 = "SELECT * FROM fundereducationsubsectors WHERE funderName ='" +funder.funderName+"'"
+          var query18 = "SELECT * FROM funderinternationalbases WHERE funderName ='" +funder.funderName+"'"
+          var query19 = "SELECT * FROM funderorganizationtraits WHERE funderName ='" +funder.funderName+"'"
 
 
-                    if(final == funderData.length)
-                        res.json(formData)
+          async.parallel([
+              function(queryDB) {
+                  pool.query(query15, {}, function(err, results) {
+                      if (err){
+                          return queryDB(err, null);
+                      }else{
+                          queryDB(null, results);
+                      }
 
-                }
+                  })
+              },
+              function(queryDB) {
+                  pool.query(query16, {}, function(err, results) {
+                      if (err){
+                          return queryDB(err, null);
+                      }else{
+                          queryDB(null, results);
+                      }
 
-            })
-        }
+                  })
+              },
+              function(queryDB) {
+                  pool.query(query17, {}, function(err, results) {
+                      if (err){
+                          return queryDB(err, null);
+                      }else{
+                          queryDB(null, results);
+                      }
 
+                  })
+              },
+              function(queryDB) {
+                  pool.query(query18, {}, function(err, results) {
+                      if (err){
+                          return queryDB(err, null);
+                      }else{
+                          queryDB(null, results);
+                      }
 
+                  })
+              },
+              function(queryDB) {
+                  pool.query(query19, {}, function(err, results) {
+                      if (err){
+                          return queryDB(err, null);
+                      }else{
+                          queryDB(null, results);
+                      }
+
+                  })
+              }
+
+          ],
+
+          function(err, results) {
+              if (err){
+                res.json(err);
+              }else{
+                  final++;
+                  //push results here to avoid duplicated parallel writes to funderIndividual array
+                  funderIndividual.push(results);
+                  formData.funderIndividualData = funderIndividual;
+
+                  if(final == funderData.length)
+                      res.json(formData);
+              }
+          })
+        })
     }
-
-
 })
 
 
@@ -378,7 +363,6 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
 
     var formData = {}
     var fundersData = {}
-    var test = []
     var funderIndividual = []
 
     async.parallel([
@@ -579,89 +563,79 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
      function funderQueries(funderData){
         var final = 0
         //nest them here
-        for(var i = 0; i < funderData.length; i++){
-            var query15 = "SELECT * FROM funderasiabases WHERE funderName ='" +funderData[i].funderName+"'"
-            var query16 = "SELECT * FROM funderasiaoperations WHERE funderName ='" +funderData[i].funderName+"'"
-            var query17 = "SELECT * FROM fundereducationsubsectors WHERE funderName ='" +funderData[i].funderName+"'"
-            var query18 = "SELECT * FROM funderinternationalbases WHERE funderName ='" +funderData[i].funderName+"'"
-            var query19 = "SELECT * FROM funderorganizationtraits WHERE funderName ='" +funderData[i].funderName+"'"
+        funderData.forEach(funder => {
+          var query15 = "SELECT * FROM funderasiabases WHERE funderName ='" +funder.funderName+"'"
+          var query16 = "SELECT * FROM funderasiaoperations WHERE funderName ='" +funder.funderName+"'"
+          var query17 = "SELECT * FROM fundereducationsubsectors WHERE funderName ='" +funder.funderName+"'"
+          var query18 = "SELECT * FROM funderinternationalbases WHERE funderName ='" +funder.funderName+"'"
+          var query19 = "SELECT * FROM funderorganizationtraits WHERE funderName ='" +funder.funderName+"'"
 
+          async.parallel([
+              function(queryDB) {
+                  poolTemp.query(query15, {}, function(err, results) {
+                      if (err){
+                          return queryDB(err, null);
+                      }else{
+                          queryDB(null, results);
+                      }
 
-            async.parallel([
-                function(queryDB) {
-                    poolTemp.query(query15, {}, function(err, results) {
-                        if (err){
-                            return queryDB(err)
-                        }else{
-                            funderIndividual.push(results)
-                            queryDB()
-                        }
+                  })
+              },
+              function(queryDB) {
+                  poolTemp.query(query16, {}, function(err, results) {
+                      if (err){
+                          return queryDB(err, null);
+                      }else{
+                          queryDB(null, results);
+                      }
 
-                    })
-                },
-                function(queryDB) {
-                    poolTemp.query(query16, {}, function(err, results) {
-                        if (err){
-                            return queryDB(err)
-                        }else{
-                            funderIndividual.push(results)
-                            queryDB()
-                        }
+                  })
+              },
+              function(queryDB) {
+                  poolTemp.query(query17, {}, function(err, results) {
+                      if (err){
+                          return queryDB(err, null);
+                      }else{
+                          queryDB(null, results);
+                      }
 
-                    })
-                },
-                function(queryDB) {
-                    poolTemp.query(query17, {}, function(err, results) {
-                        if (err){
-                            return queryDB(err)
-                        }else{
-                            funderIndividual.push(results)
-                            queryDB()
-                        }
+                  })
+              },
+              function(queryDB) {
+                  poolTemp.query(query18, {}, function(err, results) {
+                      if (err){
+                          return queryDB(err, null);
+                      }else{
+                          queryDB(null, results);
+                      }
 
-                    })
-                },
-                function(queryDB) {
-                    poolTemp.query(query18, {}, function(err, results) {
-                        if (err){
-                            return queryDB(err)
-                        }else{
-                            funderIndividual.push(results)
-                            queryDB()
-                        }
+                  })
+              },
+              function(queryDB) {
+                  poolTemp.query(query19, {}, function(err, results) {
+                      if (err){
+                          return queryDB(err, null);
+                      }else{
+                          queryDB(null, results);
+                      }
+                  })
+              }
+          ],
 
-                    })
-                },
-                function(queryDB) {
-                    poolTemp.query(query19, {}, function(err, results) {
-                        if (err){
-                            return queryDB(err)
-                        }else{
-                            funderIndividual.push(results)
-                            queryDB()
-                        }
+          function(err, results) {
+              if (err){
+                res.json(err);
+              }else{
+                  final++;
+                  //push results here to avoid duplicated parallel writes to funderIndividual array
+                  funderIndividual.push(results);
+                  formData.funderIndividual = funderIndividual;
 
-                    })
-                }
-
-            ],
-
-            function(err) {
-                if (err){
-                  res.json(err)
-                }else{
-                    var temp = {}
-                    final++;
-                    test.push(funderIndividual)
-                    temp.table1 = test
-                    Object.assign(formData, temp.table1)
-
-                    if(final == funderData.length)
-                        res.json(formData)
-                }
-            })
-        }
-
+                  if(final == funderData.length)
+                      res.json(formData);
+              }
+          })
+        })
     }
 })
 

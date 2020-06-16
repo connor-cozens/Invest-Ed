@@ -251,7 +251,7 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
 //Get non-approved forms from temp DB for organization/RA user to modify
 export const getNonApprovedForm = (tag, getType) => (dispatch) => {
   const tagNum = tag
-  const url = `/dashboard/form-temp/${tagNum}`;
+  const url = `/dashboard/form/${tagNum}`;
   axios.get(url, null, {tagNum})
     .then(response => {
       if (response.data.error !== undefined) {
@@ -493,7 +493,7 @@ const changeRequest = (form, inDB, isModified) => {
 //Organization user to modify existing form in either main or temp DB (could be in main DB since might have been approved)
 export const modifyForm = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequest(form, inDB, isModified);
-  axios.post(`/dashboard//update-form-temp`, req)
+  axios.post(`/dashboard/update-form-temp`, req)
     .then(response => {
       dispatch({type: FORM_SUBMIT_SUCCESS});
     })

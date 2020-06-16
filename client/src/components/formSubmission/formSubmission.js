@@ -149,6 +149,7 @@ class formSubmission extends React.Component{
   }
 
 
+
   buttonMaker(props){
     return <button type="button" onClick={() => {this.removeButton(props)}} ><b>X</b> {props.name}</button>
   }

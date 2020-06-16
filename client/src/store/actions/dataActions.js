@@ -223,10 +223,10 @@ const readForm = (response => {
   return initiative;
 })
 
-//Get non-approved forms from temp DB for organization/RA user to modify
-export const getNonApprovedForm = (tag, getType) => (dispatch) => {
+//Get approved forms from main DB
+export const getApprovedForm = (tag, getType) => (dispatch) => {
   const tagNum = tag
-  const url = `/dashboard/form-temp/${tagNum}`;
+  const url = `/dashboard/form/${tagNum}`;
   axios.get(url, null, {tagNum})
     .then(response => {
       if (response.data.error !== undefined) {
@@ -251,16 +251,16 @@ export const getNonApprovedForm = (tag, getType) => (dispatch) => {
     })
 }
 
-//Get approved forms from main DB
-export const getApprovedForm = (tag, getType) => (dispatch) => {
+//Get non-approved forms from temp DB for organization/RA user to modify
+export const getNonApprovedForm = (tag, getType) => (dispatch) => {
   const tagNum = tag
-  const url = `/dashboard/form/${tagNum}`;
+  const url = `/dashboard/form-temp/${tagNum}`;
   axios.get(url, null, {tagNum})
     .then(response => {
       if (response.data.error !== undefined) {
         dispatch({type: NOT_PULLED_APPROVED_FORM});
-        //If couldn't find form in temp db, then check for form in temp db
-        dispatch(getNonApprovedForm(tag, getType));
+        //If couldn't find form in temp db, then check for form in main db
+        dispatch(getApprovedForm(tag, getType));
       }
       else {
         const initiative = readForm(response);
@@ -276,8 +276,8 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
     })
     .catch(err =>  {
       dispatch({type: NOT_PULLED_APPROVED_FORM});
-      //If couldn't find form in main db, then check for form in temp db
-      dispatch(getNonApprovedForm(tag, getType));
+      //If couldn't find form in temp db, then check for form in main db
+      dispatch(getApprovedForm(tag, getType));
     })
 }
 
@@ -424,7 +424,7 @@ const changeRequest = (form, inDB, isModified) => {
 //Organization user to modify existing form in either main or temp DB (could be in main DB since might have been approved)
 export const modifyForm = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequest(form, inDB, isModified);
-  axios.post(`/dashboard//update-form-temp`, req)
+  axios.post(`/dashboard/update-form-temp`, req)
     .then(response => {
       dispatch({type: FORM_SUBMIT_SUCCESS});
     })

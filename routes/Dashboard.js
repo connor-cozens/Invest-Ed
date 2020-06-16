@@ -2,10 +2,28 @@ const express   = require("express")
 const sql       = require("mysql2")
 const async     = require('async');
 const cors      = require('cors')
-const genTagNum = require('../tagNumber')
+var storage     = require ('node-persist')
+var redis       = require("redis")
+
+var client = redis.createClient()
+client.on('connect', function(){
+    console.log('Dashboard connected ')
+})
+
+client.exists('tagNumber', function(err, reply){
+    if(reply != 1){
+       client.set('tagNumber', 1521)
+    }else{
+        client.incr('tagNumber')
+        client.get('tagNumber', function(err, reply){
+            console.log(reply)
+        })
+    }
+})
 
 const dashboard = express.Router()
 dashboard.use(cors())
+
 
 
 //Create pool connection to DB
@@ -28,9 +46,6 @@ const poolTemp = sql.createPool({
     connectionLimit: 20,
     queueLimit: 0
 })
-
-
-global.tempStore = []
 
 //GET from from DB
 dashboard.get('/form/:tagNum', cors(),(req, res) =>{
@@ -227,7 +242,6 @@ dashboard.get('/form/:tagNum', cors(),(req, res) =>{
           if (err){
             res.json({error: err})
           }else{
-            //pool.end()
             funderQueries(formData.table14)
 
           }
@@ -541,7 +555,6 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
           if (err){
             res.json({error: err})
           }else{
-            //poolTemp.end()
             funderQueries(formData.table14)
           }
      })
@@ -628,6 +641,7 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
 
 //POST new form to temp DB
 dashboard.post('/submit-form-temp', (req, res) =>{
+
     const formData = {
         // single val funder
         funderName: req.body.fname, //f
@@ -707,8 +721,6 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
     }
 
-    console.log(formData);
-
    //Insert funder data
    var query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
    async.parallel([
@@ -717,7 +729,6 @@ dashboard.post('/submit-form-temp', (req, res) =>{
             if (err){
                 return queryDB(err)
             }else{
-                //formData.table1 = results;
                 queryDB()
             }
 
@@ -731,7 +742,6 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
     })
 
-
    //Insert funder international bases data
    for(var i = 0; i <formData.funderInternationalBases.length; i++) {
         var query2 = "INSERT into funderinternationalbases VALUES ('" + formData.funderName +"','"+ formData.funderInternationalBases[i] +"')"
@@ -742,7 +752,6 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                     if (err){
                         return queryDB(err)
                     }else{
-                        //formData.table1 = results;
                         queryDB()
                     }
 
@@ -766,7 +775,6 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -790,7 +798,6 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -814,7 +821,6 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -838,7 +844,6 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -853,19 +858,22 @@ dashboard.post('/submit-form-temp', (req, res) =>{
     })
     }
 
-
     //Insert initative data
-    query7 = "INSERT into initiative VALUES ("+ genTagNum.currentTagNum +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"',"+ formData.initiativeTargetsWomen +
-     ",'"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +
-     "',(SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas
-     +"') , (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'),"+ formData.initiativeFeeAccess+")"
-     async.parallel([
+    test = client.get('tagNumber', function(err, reply){
+        function1(reply)
+    })
+
+   function function1(val){
+        query7 = "INSERT into initiative VALUES ("+ val +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"',"+ formData.initiativeTargetsWomen +
+        ",'"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +
+        "',(SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas
+        +"') , (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'),"+ formData.initiativeFeeAccess+")"
+        async.parallel([
         function(queryDB) {
             poolTemp.query(query7, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -878,14 +886,20 @@ dashboard.post('/submit-form-temp', (req, res) =>{
             }
 
         })
+    }
+
+
 
 
 
      //Insert initiative region data
-   for(var i = 0; i < formData.initiativeRegions.length; i++) {
+     test = client.get('tagNumber', function(err, reply){
+       function2(reply)
+    })
 
-        var query8 = "INSERT into initiativeregion VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
-        console.log(formData.initiativeRegions[i])
+   function function2(val){
+    for(var i = 0; i < formData.initiativeRegions.length; i++) {
+        var query8 = "INSERT into initiativeregion VALUES (" + val+", (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
         async.parallel([
             function(queryDB) {
                 poolTemp.query(query8, {}, function(err, results) {
@@ -893,7 +907,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                         return queryDB(err)
                     }else{
                         //formData.table1 = results;
-                        console.log("here")
+
                         queryDB()
                     }
 
@@ -908,18 +922,24 @@ dashboard.post('/submit-form-temp', (req, res) =>{
         })
     }
 
+   }
 
 
-     //Insert initiative country of operation data
+
+//      //Insert initiative country of operation data
+     test = client.get('tagNumber', function(err, reply){
+       function3(reply)
+    })
+
+   function function3(val){
    for(var i = 0; i < formData.initiativeCountries.length; i++) {
-    var query9 = "INSERT into initiativecountryofoperation VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
+    var query9 = "INSERT into initiativecountryofoperation VALUES ( " + val+", (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query9, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -933,18 +953,22 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
     })
     }
-
+    }
 
      //Insert initiative programming activity data
+     test = client.get('tagNumber', function(err, reply){
+       function4(reply)
+    })
+
+   function function4(val){
    for(var i = 0; i < formData.initiativeActivities.length; i++) {
-    var query10 = "INSERT into initiativeprogrammingactivities VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeActivities[i]+"')"
+    var query10 = "INSERT into initiativeprogrammingactivities VALUES (" + val +",'"+ formData.initiativeActivities[i]+"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query10, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -958,18 +982,22 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
     })
     }
-
+    }
 
    //Insert initiative source of fees data
+   test = client.get('tagNumber', function(err, reply){
+   function5(reply)
+})
+
+function function5(val){
    for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
-    var query11= "INSERT into initiativefundingsource VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeSourceOfFees[i]+"')"
+    var query11= "INSERT into initiativefundingsource VALUES (" + val +",'"+ formData.initiativeSourceOfFees[i]+"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query11, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -983,18 +1011,22 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
     })
     }
+    }
 
+//     //Insert initiative launch country data
+    test = client.get('tagNumber', function(err, reply){
+       function6(reply)
+    })
 
-    //Insert initiative launch country data
+   function function6(val){
    for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
-    var query12 =  "INSERT into initiativelaunchcountry VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
+    var query12 =  "INSERT into initiativelaunchcountry VALUES (" + val +",(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query12, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1008,18 +1040,22 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
     })
     }
-
+    }
 
      //Insert initiative target geo data
+     test = client.get('tagNumber', function(err, reply){
+       function7(reply)
+    })
+
+   function function7(val){
    for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
-    var query13 = "INSERT into initiativetargetgeography VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeTargetGeo[i]+"')"
+    var query13 = "INSERT into initiativetargetgeography VALUES ( " + val +",'"+ formData.initiativeTargetGeo[i]+"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query13, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1033,18 +1069,22 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
     })
     }
+    }
 
+//      //Insert initiative target population sector data
+     test = client.get('tagNumber', function(err, reply){
+       function8(reply)
+    })
 
-     //Insert initiative target population sector data
+   function function8(val){
    for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
-    var query14 = "INSERT into initiativetargetpopulationsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativetargetPopulationSector[i]+"')"
+    var query14 = "INSERT into initiativetargetpopulationsector VALUES (" + val +",'"+ formData.initiativetargetPopulationSector[i]+"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query14, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1058,18 +1098,22 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
     })
     }
+    }
 
+    //Insert initiative outcomes monitored data
+     test = client.get('tagNumber', function(err, reply){
+       function9(reply)
+    })
 
-     //Insert initiative outcomes monitored data
+   function function9(val){
    for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
-    var query15 = "INSERT into initiativemonitoredoutcomes VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +"),'"+ formData.initiativeOutcomesMonitored[i]+"')"
+    var query15 = "INSERT into initiativemonitoredoutcomes VALUES (" + val +",'"+ formData.initiativeOutcomesMonitored[i]+"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query15, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1083,19 +1127,24 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
     })
     }
+    }
 
 
      //Insert initiative main education subsector data
+     test = client.get('tagNumber', function(err, reply){
+       function10(reply)
+    })
+
+   function function10(val){
    for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
-    var query16 = "INSERT into initiativemaineducationsubsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +
-    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
+    var query16 = "INSERT into initiativemaineducationsubsector VALUES (" + val +
+    ",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query16, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1109,19 +1158,23 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
     })
     }
+    }
 
+      //Insert initiative education subsector data
+     test = client.get('tagNumber', function(err, reply){
+       function11(reply)
+    })
 
-     //Insert initiative education subsector data
+   function function11(val){
    for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
-    var query17 = "INSERT into initiativeeducationsubsectors VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +
-    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
+    var query17 = "INSERT into initiativeeducationsubsectors VALUES (" + val +
+    ",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query17, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1135,18 +1188,22 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
     })
     }
-
+    }
 
      //Insert initiative target management t data
+     test = client.get('tagNumber', function(err, reply){
+       function12(reply)
+    })
+
+   function function12(val){
    for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
-    var query18 = "INSERT into initiativetargetschoolmanagement VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +"),'"+ formData.initiativeManagementTypes[i]+"')"
+    var query18 = "INSERT into initiativetargetschoolmanagement VALUES (" + val +",'"+ formData.initiativeManagementTypes[i]+"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query18, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1159,6 +1216,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
         }
 
     })
+    }
     }
 
     //implementor queries
@@ -1169,7 +1227,6 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1184,13 +1241,19 @@ dashboard.post('/submit-form-temp', (req, res) =>{
         })
 
 
-    // funder - funds - relationship
-    var query20 = "INSERT INTO funds VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber ="+ genTagNum.currentTagNum + "),(SELECT funderName FROM funder WHERE funderName ='"
-    + formData.funderName+ "'),'"+formData.initiativeStart + "','" + formData.initiativeEnd +"')"
+    test = client.get('tagNumber', function(err, reply){
+       function13(reply)
+    })
+
+   function function13(val){
+
+  // funder - funds - relationship
+    var query20 = "INSERT INTO funds VALUES ("+ val + ",'"
+    + formData.funderName+ "','"+formData.initiativeStart + "','" + formData.initiativeEnd +"')"
 
     // //implementor - implements - initiative
-    var query21 = "INSERT INTO implements VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber ="+ genTagNum.currentTagNum +"),(SELECT implementorName from implementor WHERE implementorName ='"+
-    formData.implementorName + "'),'" + formData.initiativeStart + "','" + formData.initiativeEnd +"')"
+    var query21 = "INSERT INTO implements VALUES ("+ val +",'"+
+    formData.implementorName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd +"')"
 
     async.parallel([
         function(queryDB) {
@@ -1198,7 +1261,6 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1209,7 +1271,6 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1222,15 +1283,20 @@ dashboard.post('/submit-form-temp', (req, res) =>{
             }
 
         })
+    }
 
-    var query22 = "INSERT INTO comments VALUES ("+ genTagNum.currentTagNum+ ",'"+ formData.comments +"')"
+    test = client.get('tagNumber', function(err, reply){
+        function15(reply)
+    })
+
+   function function15(val){
+    var query22 = "INSERT INTO comments VALUES ("+ val+ ",'"+ formData.comments +"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query22, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1243,16 +1309,20 @@ dashboard.post('/submit-form-temp', (req, res) =>{
             }
 
         })
+   }
 
+   test = client.get('tagNumber', function(err, reply){
+    function16(reply)
+    })
 
-        var query23 = "INSERT INTO status VALUES ("+ genTagNum.currentTagNum+ ","+ formData.inDB + "," + formData.needsReview +")"
+function function16(val){
+        var query23 = "INSERT INTO status VALUES ("+ val+ ","+ formData.inDB + "," + formData.needsReview +")"
         async.parallel([
             function(queryDB) {
                 poolTemp.query(query23, {}, function(err, results) {
                     if (err){
                         return queryDB(err)
                     }else{
-                        //formData.table1 = results;
                         queryDB()
                     }
 
@@ -1265,8 +1335,14 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                 }
 
             })
+    }
 
-        var query24 = "INSERT INTO sectionreviews VALUES ("+ genTagNum.currentTagNum + "," +
+    test = client.get('tagNumber', function(err, reply){
+        function17(reply)
+    })
+
+   function function17(val){
+        var query24 = "INSERT INTO sectionreviews VALUES ("+ val + "," +
         formData.funderNameApproval + "," +
         formData.funderUrlApproval + "," +
         formData.funderMotiveApproval + "," +
@@ -1307,7 +1383,6 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                     if (err){
                         return queryDB(err)
                     }else{
-                        //formData.table1 = results;
                         queryDB()
                     }
 
@@ -1320,8 +1395,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                 }
 
             })
-   //AT THE VERY END
-   genTagNum.add()
+    }
 
    res.json("Form successfully added to the DB")
 
@@ -1370,7 +1444,6 @@ dashboard.post('/submitform', (req, res) =>{
         implementorMotive: req.body.impMotive, //im
     }
 
-  console.log(formData);
    //Insert funder data
    var query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
    async.parallel([
@@ -1379,7 +1452,6 @@ dashboard.post('/submitform', (req, res) =>{
             if (err){
                 return queryDB(err)
             }else{
-                //formData.table1 = results;
                 queryDB()
             }
 
@@ -1404,7 +1476,6 @@ dashboard.post('/submitform', (req, res) =>{
                     if (err){
                         return queryDB(err)
                     }else{
-                        //formData.table1 = results;
                         queryDB()
                     }
 
@@ -1428,7 +1499,6 @@ dashboard.post('/submitform', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1452,7 +1522,6 @@ dashboard.post('/submitform', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1476,7 +1545,6 @@ dashboard.post('/submitform', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1500,7 +1568,6 @@ dashboard.post('/submitform', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1517,17 +1584,21 @@ dashboard.post('/submitform', (req, res) =>{
 
 
     //Insert initative data
-    query7 = "INSERT into initiative VALUES ("+ genTagNum.currentTagNum +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"',"+ formData.initiativeTargetsWomen +
-     ",'"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +
-     "',(SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas
-     +"') , (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'),"+ formData.initiativeFeeAccess+")"
-     async.parallel([
+    test = client.get('tagNumber', function(err, reply){
+        function1(reply)
+    })
+
+   function function1(val){
+        query7 = "INSERT into initiative VALUES ("+ val +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"',"+ formData.initiativeTargetsWomen +
+        ",'"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +
+        "',(SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas
+        +"') , (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'),"+ formData.initiativeFeeAccess+")"
+        async.parallel([
         function(queryDB) {
             pool.query(query7, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1540,46 +1611,58 @@ dashboard.post('/submitform', (req, res) =>{
             }
 
         })
-
-
-
-     //Insert initiative region data
-   for(var i = 0; i < formData.initiativeRegions.length; i++) {
-       //INSERT into initiativeregion VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = 1521), (SELECT regionName from regions WHERE regionName = "Missing"))
-    var query8 = "INSERT into initiativeregion VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query8, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    //formData.table1 = results;
-                    queryDB()
-                }
-
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
     }
 
 
 
-     //Insert initiative country of operation data
+
+
+     //Insert initiative region data
+     test = client.get('tagNumber', function(err, reply){
+       function2(reply)
+    })
+
+   function function2(val){
+    for(var i = 0; i < formData.initiativeRegions.length; i++) {
+        var query8 = "INSERT into initiativeregion VALUES (" + val+", (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
+        async.parallel([
+            function(queryDB) {
+                pool.query(query8, {}, function(err, results) {
+                    if (err){
+                        return queryDB(err)
+                    }else{
+                        queryDB()
+                    }
+
+                })
+            },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    }
+
+   }
+
+
+
+    //Insert initiative country of operation data
+     test = client.get('tagNumber', function(err, reply){
+       function3(reply)
+    })
+
+   function function3(val){
    for(var i = 0; i < formData.initiativeCountries.length; i++) {
-    var query9 = "INSERT into initiativecountryofoperation VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
+    var query9 = "INSERT into initiativecountryofoperation VALUES ( " + val+", (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
     async.parallel([
         function(queryDB) {
             pool.query(query9, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1593,18 +1676,22 @@ dashboard.post('/submitform', (req, res) =>{
 
     })
     }
-
+    }
 
      //Insert initiative programming activity data
+     test = client.get('tagNumber', function(err, reply){
+       function4(reply)
+    })
+
+   function function4(val){
    for(var i = 0; i < formData.initiativeActivities.length; i++) {
-    var query10 = "INSERT into initiativeprogrammingactivities VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeActivities[i]+"')"
+    var query10 = "INSERT into initiativeprogrammingactivities VALUES (" + val +",'"+ formData.initiativeActivities[i]+"')"
     async.parallel([
         function(queryDB) {
             pool.query(query10, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1618,18 +1705,22 @@ dashboard.post('/submitform', (req, res) =>{
 
     })
     }
+    }
 
+//    //Insert initiative source of fees data
+   test = client.get('tagNumber', function(err, reply){
+   function5(reply)
+})
 
-   //Insert initiative source of fees data
+function function5(val){
    for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
-    var query11= "INSERT into initiativefundingsource VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeSourceOfFees[i]+"')"
+    var query11= "INSERT into initiativefundingsource VALUES (" + val +",'"+ formData.initiativeSourceOfFees[i]+"')"
     async.parallel([
         function(queryDB) {
             pool.query(query11, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1643,18 +1734,22 @@ dashboard.post('/submitform', (req, res) =>{
 
     })
     }
+    }
 
+//     //Insert initiative launch country data
+    test = client.get('tagNumber', function(err, reply){
+       function6(reply)
+    })
 
-    //Insert initiative launch country data
+   function function6(val){
    for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
-    var query12 =  "INSERT into initiativelaunchcountry VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
+    var query12 =  "INSERT into initiativelaunchcountry VALUES (" + val +",(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
     async.parallel([
         function(queryDB) {
             pool.query(query12, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1668,18 +1763,22 @@ dashboard.post('/submitform', (req, res) =>{
 
     })
     }
+    }
 
+//      //Insert initiative target geo data
+     test = client.get('tagNumber', function(err, reply){
+       function7(reply)
+    })
 
-     //Insert initiative target geo data
+   function function7(val){
    for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
-    var query13 = "INSERT into initiativetargetgeography VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeTargetGeo[i]+"')"
+    var query13 = "INSERT into initiativetargetgeography VALUES ( " + val +",'"+ formData.initiativeTargetGeo[i]+"')"
     async.parallel([
         function(queryDB) {
             pool.query(query13, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1693,18 +1792,22 @@ dashboard.post('/submitform', (req, res) =>{
 
     })
     }
+    }
 
+//      //Insert initiative target population sector data
+     test = client.get('tagNumber', function(err, reply){
+       function8(reply)
+    })
 
-     //Insert initiative target population sector data
+   function function8(val){
    for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
-    var query14 = "INSERT into initiativetargetpopulationsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativetargetPopulationSector[i]+"')"
+    var query14 = "INSERT into initiativetargetpopulationsector VALUES (" + val +",'"+ formData.initiativetargetPopulationSector[i]+"')"
     async.parallel([
         function(queryDB) {
             pool.query(query14, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1718,18 +1821,22 @@ dashboard.post('/submitform', (req, res) =>{
 
     })
     }
+    }
 
+      //Insert initiative outcomes monitored data
+     test = client.get('tagNumber', function(err, reply){
+       function9(reply)
+    })
 
-     //Insert initiative outcomes monitored data
+   function function9(val){
    for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
-    var query15 = "INSERT into initiativemonitoredoutcomes VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +"),'"+ formData.initiativeOutcomesMonitored[i]+"')"
+    var query15 = "INSERT into initiativemonitoredoutcomes VALUES (" + val +",'"+ formData.initiativeOutcomesMonitored[i]+"')"
     async.parallel([
         function(queryDB) {
             pool.query(query15, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1743,19 +1850,24 @@ dashboard.post('/submitform', (req, res) =>{
 
     })
     }
+    }
 
 
-     //Insert initiative main education subsector data
+//      //Insert initiative main education subsector data
+     test = client.get('tagNumber', function(err, reply){
+       function10(reply)
+    })
+
+   function function10(val){
    for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
-    var query16 = "INSERT into initiativemaineducationsubsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +
-    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
+    var query16 = "INSERT into initiativemaineducationsubsector VALUES (" + val +
+    ",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
     async.parallel([
         function(queryDB) {
             pool.query(query16, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1769,19 +1881,23 @@ dashboard.post('/submitform', (req, res) =>{
 
     })
     }
-
+    }
 
      //Insert initiative education subsector data
+     test = client.get('tagNumber', function(err, reply){
+       function11(reply)
+    })
+
+   function function11(val){
    for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
-    var query17 = "INSERT into initiativeeducationsubsectors VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +
-    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
+    var query17 = "INSERT into initiativeeducationsubsectors VALUES (" + val +
+    ",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
     async.parallel([
         function(queryDB) {
             pool.query(query17, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1795,18 +1911,22 @@ dashboard.post('/submitform', (req, res) =>{
 
     })
     }
-
+    }
 
      //Insert initiative target management t data
+     test = client.get('tagNumber', function(err, reply){
+       function12(reply)
+    })
+
+   function function12(val){
    for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
-    var query18 = "INSERT into initiativetargetschoolmanagement VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber =" + genTagNum.currentTagNum +"),'"+ formData.initiativeManagementTypes[i]+"')"
+    var query18 = "INSERT into initiativetargetschoolmanagement VALUES (" + val +",'"+ formData.initiativeManagementTypes[i]+"')"
     async.parallel([
         function(queryDB) {
             pool.query(query18, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1819,6 +1939,7 @@ dashboard.post('/submitform', (req, res) =>{
         }
 
     })
+    }
     }
 
     //implementor queries
@@ -1829,7 +1950,6 @@ dashboard.post('/submitform', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1844,12 +1964,20 @@ dashboard.post('/submitform', (req, res) =>{
         })
 
 
-    var query20 = "INSERT INTO funds VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber ="+ genTagNum.currentTagNum + "),(SELECT funderName FROM funder WHERE funderName ='"
-    + formData.funderName+ "'),'"+formData.initiativeStart + "','" + formData.initiativeEnd +"')"
+    test = client.get('tagNumber', function(err, reply){
+       function13(reply)
+    })
+
+   function function13(val){
+
+
+  // funder - funds - relationship
+    var query20 = "INSERT INTO funds VALUES ("+ val + ",'"
+    + formData.funderName+ "','"+formData.initiativeStart + "','" + formData.initiativeEnd +"')"
 
     // //implementor - implements - initiative
-    var query21 = "INSERT INTO implements VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber ="+ genTagNum.currentTagNum +"),(SELECT implementorName from implementor WHERE implementorName ='"+
-    formData.implementorName + "'),'" + formData.initiativeStart + "','" + formData.initiativeEnd +"')"
+    var query21 = "INSERT INTO implements VALUES ("+ val +",'"+
+    formData.implementorName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd +"')"
 
     async.parallel([
         function(queryDB) {
@@ -1857,7 +1985,6 @@ dashboard.post('/submitform', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1868,7 +1995,6 @@ dashboard.post('/submitform', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -1881,11 +2007,8 @@ dashboard.post('/submitform', (req, res) =>{
             }
 
         })
+    }
 
-
-
-   //AT THE VERY END
-   genTagNum.add()
    res.json("Form successfully added to the DB")
 
 })
@@ -1937,7 +2060,8 @@ dashboard.post('/update-form', (req, res) =>{
         implementorMotive: req.body.impMotive, //im
     }
 
-    console.log(formData);
+    console.log("Updating...")
+    console.log(formData)
 
     //Update funder data
    var query1 = "UPDATE funder SET funderName = '" + formData.funderName + "', funderWebsite ='"+ formData.funderUrl +"', profitMotive ='"+ formData.funderMotive +"', impactInvesting ='"+ formData.funderImpact
@@ -1948,7 +2072,6 @@ dashboard.post('/update-form', (req, res) =>{
             if (err){
                 return queryDB(err)
             }else{
-
                 queryDB()
             }
 
@@ -1970,7 +2093,6 @@ dashboard.post('/update-form', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-
                     queryDB()
                 }
 
@@ -1990,11 +2112,10 @@ dashboard.post('/update-form', (req, res) =>{
     //console.log(query2)
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query3, {}, function(err, results) {
+            pool.query(query3, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -2017,7 +2138,6 @@ dashboard.post('/update-form', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-
                     queryDB()
                 }
 
@@ -2036,11 +2156,10 @@ dashboard.post('/update-form', (req, res) =>{
     var query5 = "INSERT into fundereducationsubsectors VALUES ('" + formData.funderName +"','"+ formData.funderEducationSubsector[i]+"')"
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query5, {}, function(err, results) {
+            pool.query(query5, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -2063,7 +2182,6 @@ dashboard.post('/update-form', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-
                     queryDB()
                 }
 
@@ -2081,11 +2199,10 @@ dashboard.post('/update-form', (req, res) =>{
     var query7 = "INSERT into funderorganizationtraits VALUES ('" + formData.funderName +"','"+ formData.funderOrgTraits[i]+"')"
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query7, {}, function(err, results) {
+            pool.query(query7, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -2108,7 +2225,6 @@ dashboard.post('/update-form', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-
                     queryDB()
                 }
 
@@ -2126,11 +2242,10 @@ dashboard.post('/update-form', (req, res) =>{
     var query9 = "INSERT into funderasiabases VALUES ('" + formData.funderName +"','"+ formData.funderAsiaBases[i]+"')"
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query9, {}, function(err, results) {
+            pool.query(query9, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -2153,7 +2268,6 @@ dashboard.post('/update-form', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-
                     queryDB()
                 }
 
@@ -2171,11 +2285,10 @@ dashboard.post('/update-form', (req, res) =>{
     var query11 = "INSERT into funderasiaoperations VALUES ('" + formData.funderName +"','"+ formData.funderAsiaOperations[i]+"')"
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query11, {}, function(err, results) {
+            pool.query(query11, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
-                    //formData.table1 = results;
                     queryDB()
                 }
 
@@ -2199,7 +2312,7 @@ dashboard.post('/update-form', (req, res) =>{
     +" WHERE tagNumber = " + formData.tagNum
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query12, {}, function(err, results) {
+            pool.query(query12, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2241,15 +2354,14 @@ dashboard.post('/update-form', (req, res) =>{
     //Insert initiative region data
     for(var i = 0; i < formData.initiativeRegions.length; i++) {
 
-        var query14 = "INSERT into initiativeregion VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
+        var query14 = "INSERT into initiativeregion VALUES ("+formData.tagNum +", (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
         console.log(formData.initiativeRegions[i])
         async.parallel([
             function(queryDB) {
-                poolTemp.query(query14, {}, function(err, results) {
+                pool.query(query14, {}, function(err, results) {
                     if (err){
                         return queryDB(err)
                     }else{
-                        console.log("here")
                         queryDB()
                     }
 
@@ -2264,7 +2376,7 @@ dashboard.post('/update-form', (req, res) =>{
         })
     }
 
-    console.log("here1")
+
     //delete initiativecountryofoperation data
     var query15= "DELETE FROM initiativecountryofoperation WHERE tagNumber = "+ formData.tagNum
     async.parallel([
@@ -2288,10 +2400,10 @@ dashboard.post('/update-form', (req, res) =>{
         })
     //Insert initiative country of operation data
     for(var i = 0; i < formData.initiativeCountries.length; i++) {
-    var query16 = "INSERT into initiativecountryofoperation VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
+    var query16 = "INSERT into initiativecountryofoperation VALUES ("+formData.tagNum +", (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query16, {}, function(err, results) {
+            pool.query(query16, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2330,13 +2442,13 @@ dashboard.post('/update-form', (req, res) =>{
             }
 
         })
-        console.log("here2")
+
     //Insert initiative programming activity data
     for(var i = 0; i < formData.initiativeActivities.length; i++) {
-    var query18 = "INSERT into initiativeprogrammingactivities VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeActivities[i]+"')"
+    var query18 = "INSERT into initiativeprogrammingactivities VALUES ("+formData.tagNum +",'"+ formData.initiativeActivities[i]+"')"
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query18, {}, function(err, results) {
+            pool.query(query18, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2379,10 +2491,10 @@ dashboard.post('/update-form', (req, res) =>{
           console.log("here4")
     //Insert initiative source of fees data
     for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
-    var query20= "INSERT into initiativefundingsource VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeSourceOfFees[i]+"')"
+    var query20= "INSERT into initiativefundingsource VALUES ("+formData.tagNum +",'"+ formData.initiativeSourceOfFees[i]+"')"
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query20, {}, function(err, results) {
+            pool.query(query20, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2423,10 +2535,10 @@ dashboard.post('/update-form', (req, res) =>{
          })
     //Insert initiative launch country data
     for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
-    var query22 =  "INSERT into initiativelaunchcountry VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
+    var query22 =  "INSERT into initiativelaunchcountry VALUES ("+formData.tagNum +",(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query22, {}, function(err, results) {
+            pool.query(query22, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2467,10 +2579,10 @@ dashboard.post('/update-form', (req, res) =>{
          })
     //Insert initiative target geo data
     for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
-    var query24 = "INSERT into initiativetargetgeography VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeTargetGeo[i]+"')"
+    var query24 = "INSERT into initiativetargetgeography VALUES ("+formData.tagNum +",'"+ formData.initiativeTargetGeo[i]+"')"
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query24, {}, function(err, results) {
+            pool.query(query24, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2511,10 +2623,10 @@ dashboard.post('/update-form', (req, res) =>{
         })
     //Insert initiative target population sector data
     for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
-    var query26 = "INSERT into initiativetargetpopulationsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativetargetPopulationSector[i]+"')"
+    var query26 = "INSERT into initiativetargetpopulationsector VALUES ("+formData.tagNum +",'"+ formData.initiativetargetPopulationSector[i]+"')"
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query26, {}, function(err, results) {
+            poo.query(query26, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2555,10 +2667,10 @@ dashboard.post('/update-form', (req, res) =>{
         })
     //Insert initiative outcomes monitored data
     for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
-    var query28 = "INSERT into initiativemonitoredoutcomes VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeOutcomesMonitored[i]+"')"
+    var query28 = "INSERT into initiativemonitoredoutcomes VALUES ("+formData.tagNum +",'"+ formData.initiativeOutcomesMonitored[i]+"')"
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query28, {}, function(err, results) {
+            pool.query(query28, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2599,11 +2711,10 @@ dashboard.post('/update-form', (req, res) =>{
          })
     //Insert initiative main education subsector data
     for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
-    var query30 = "INSERT into initiativemaineducationsubsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +
-    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
+    var query30 = "INSERT into initiativemaineducationsubsector VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query30, {}, function(err, results) {
+            pool.query(query30, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2644,11 +2755,10 @@ dashboard.post('/update-form', (req, res) =>{
         })
     //Insert initiative education subsector data
     for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
-    var query32 = "INSERT into initiativeeducationsubsectors VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +
-    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
+    var query32 = "INSERT into initiativeeducationsubsectors VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query32, {}, function(err, results) {
+            pool.query(query32, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2689,10 +2799,10 @@ dashboard.post('/update-form', (req, res) =>{
         })
     //Insert initiative target management t data
     for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
-    var query34 = "INSERT into initiativetargetschoolmanagement VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeManagementTypes[i]+"')"
+    var query34 = "INSERT into initiativetargetschoolmanagement VALUES ("+formData.tagNum +",'"+ formData.initiativeManagementTypes[i]+"')"
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query34, {}, function(err, results) {
+            pool.query(query34, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2714,7 +2824,7 @@ dashboard.post('/update-form', (req, res) =>{
     var query35 = "UPDATE implementor SET implementorName ='" + formData.implementorName + "', profitMotive ='" + formData.implementorMotive+"' WHERE implementorName = '"+ formData.OimplementorName +"'"
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query35, {}, function(err, results) {
+            pool.query(query35, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2734,8 +2844,8 @@ dashboard.post('/update-form', (req, res) =>{
 
     // funder - funds - relationship
     var query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
-    + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"') WHERE (tagNum =" + formData.tagNum + ") AND (funderName = '"
-    + formData.ofname +"')"
+    + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (funderName = '"
+    + formData.OfunderName +"')"
 
     // //implementor - implements - initiative
     var query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "'), startYear ='"
@@ -2743,7 +2853,7 @@ dashboard.post('/update-form', (req, res) =>{
 
     async.parallel([
         function(queryDB) {
-            poolTemp.query(query36, {}, function(err, results) {
+            pool.query(query36, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2753,7 +2863,7 @@ dashboard.post('/update-form', (req, res) =>{
             })
         },
         function(queryDB) {
-            poolTemp.query(query37, {}, function(err, results) {
+            pool.query(query37, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2769,9 +2879,6 @@ dashboard.post('/update-form', (req, res) =>{
             }
 
         })
-
-    res.send("Inves431_girlsEd updated successfully!")
-
 
 })
 
@@ -2861,14 +2968,15 @@ dashboard.post('/update-form-temp', (req, res) =>{
         implementorMotiveApproval: req.body.impMotiveA
     }
 
-    console.log(formData);
+    console.log("Updating temp...")
+    console.log(formData)
 
     //Update funder data
    var query1 = "UPDATE funder SET funderName = '" + formData.funderName + "', funderWebsite ='"+ formData.funderUrl +"', profitMotive ='"+ formData.funderMotive +"', impactInvesting ='"+ formData.funderImpact
    +"', organizationalForm ='"+ formData.funderOrganizationForm +"' WHERE funderName = '" + formData.OfunderName + "'"
    async.parallel([
     function(queryDB) {
-        pool.query(query1, {}, function(err, results) {
+        poolTemp.query(query1, {}, function(err, results) {
             if (err){
                 return queryDB(err)
             }else{
@@ -2890,7 +2998,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
     var query2 = "DELETE FROM funderinternationalbases WHERE funderName = '"+ formData.OfunderName+ "'"
     async.parallel([
         function(queryDB) {
-            pool.query(query2, {}, function(err, results) {
+            poolTemp.query(query2, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2937,7 +3045,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
     var query4 = "DELETE FROM fundereducationsubsectors WHERE funderName = '"+ formData.OfunderName + "'"
     async.parallel([
         function(queryDB) {
-            pool.query(query4, {}, function(err, results) {
+            poolTemp.query(query4, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -2983,7 +3091,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
     var query6 = "DELETE FROM funderorganizationtraits WHERE funderName = '"+ formData.OfunderName + "'"
     async.parallel([
         function(queryDB) {
-            pool.query(query6, {}, function(err, results) {
+            poolTemp.query(query6, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -3028,7 +3136,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
     var query8 = "DELETE FROM funderasiabases WHERE funderName = '"+ formData.OfunderName + "'"
     async.parallel([
         function(queryDB) {
-            pool.query(query8, {}, function(err, results) {
+            poolTemp.query(query8, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -3073,7 +3181,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
     var query10= "DELETE FROM funderasiaoperations WHERE funderName = '"+ formData.OfunderName + "'"
     async.parallel([
         function(queryDB) {
-            pool.query(query10, {}, function(err, results) {
+            poolTemp.query(query10, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -3145,7 +3253,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
     var query13= "DELETE FROM initiativeregion WHERE tagNumber = "+ formData.tagNum
     async.parallel([
         function(queryDB) {
-            pool.query(query13, {}, function(err, results) {
+            poolTemp.query(query13, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -3165,7 +3273,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
     //Insert initiative region data
     for(var i = 0; i < formData.initiativeRegions.length; i++) {
 
-        var query14 = "INSERT into initiativeregion VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
+        var query14 = "INSERT into initiativeregion VALUES ("+formData.tagNum +", (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
         console.log(formData.initiativeRegions[i])
         async.parallel([
             function(queryDB) {
@@ -3173,7 +3281,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                     if (err){
                         return queryDB(err)
                     }else{
-                        console.log("here")
                         queryDB()
                     }
 
@@ -3188,12 +3295,12 @@ dashboard.post('/update-form-temp', (req, res) =>{
         })
     }
 
-    console.log("here1")
+
     //delete initiativecountryofoperation data
     var query15= "DELETE FROM initiativecountryofoperation WHERE tagNumber = "+ formData.tagNum
     async.parallel([
         function(queryDB) {
-            pool.query(query15, {}, function(err, results) {
+            poolTemp.query(query15, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -3212,7 +3319,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
         })
     //Insert initiative country of operation data
     for(var i = 0; i < formData.initiativeCountries.length; i++) {
-    var query16 = "INSERT into initiativecountryofoperation VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"), (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
+    var query16 = "INSERT into initiativecountryofoperation VALUES ("+formData.tagNum +", (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query16, {}, function(err, results) {
@@ -3237,7 +3344,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
     var query17= "DELETE FROM initiativeprogrammingactivities WHERE tagNumber = "+ formData.tagNum
     async.parallel([
         function(queryDB) {
-            pool.query(query17, {}, function(err, results) {
+            poolTemp.query(query17, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -3254,10 +3361,10 @@ dashboard.post('/update-form-temp', (req, res) =>{
             }
 
         })
-        console.log("here2")
+
     //Insert initiative programming activity data
     for(var i = 0; i < formData.initiativeActivities.length; i++) {
-    var query18 = "INSERT into initiativeprogrammingactivities VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeActivities[i]+"')"
+    var query18 = "INSERT into initiativeprogrammingactivities VALUES ("+formData.tagNum +",'"+ formData.initiativeActivities[i]+"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query18, {}, function(err, results) {
@@ -3282,7 +3389,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
       var query19= "DELETE FROM initiativefundingsource WHERE tagNumber = "+ formData.tagNum
       async.parallel([
           function(queryDB) {
-              pool.query(query19, {}, function(err, results) {
+              poolTemp.query(query19, {}, function(err, results) {
                   if (err){
                       return queryDB(err)
                   }else{
@@ -3303,7 +3410,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
           console.log("here4")
     //Insert initiative source of fees data
     for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
-    var query20= "INSERT into initiativefundingsource VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeSourceOfFees[i]+"')"
+    var query20= "INSERT into initiativefundingsource VALUES ("+formData.tagNum +",'"+ formData.initiativeSourceOfFees[i]+"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query20, {}, function(err, results) {
@@ -3328,7 +3435,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
      var query21= "DELETE FROM initiativelaunchcountry WHERE tagNumber = "+ formData.tagNum
      async.parallel([
          function(queryDB) {
-             pool.query(query21, {}, function(err, results) {
+             poolTemp.query(query21, {}, function(err, results) {
                  if (err){
                      return queryDB(err)
                  }else{
@@ -3347,7 +3454,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
          })
     //Insert initiative launch country data
     for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
-    var query22 =  "INSERT into initiativelaunchcountry VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
+    var query22 =  "INSERT into initiativelaunchcountry VALUES ("+formData.tagNum +",(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query22, {}, function(err, results) {
@@ -3372,7 +3479,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
      var query23= "DELETE FROM initiativetargetgeography WHERE tagNumber = "+ formData.tagNum
      async.parallel([
          function(queryDB) {
-             pool.query(query23, {}, function(err, results) {
+             poolTemp.query(query23, {}, function(err, results) {
                  if (err){
                      return queryDB(err)
                  }else{
@@ -3391,7 +3498,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
          })
     //Insert initiative target geo data
     for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
-    var query24 = "INSERT into initiativetargetgeography VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeTargetGeo[i]+"')"
+    var query24 = "INSERT into initiativetargetgeography VALUES ("+formData.tagNum +",'"+ formData.initiativeTargetGeo[i]+"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query24, {}, function(err, results) {
@@ -3416,7 +3523,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
     var query25= "DELETE FROM initiativetargetpopulationsector WHERE tagNumber = "+ formData.tagNum
     async.parallel([
         function(queryDB) {
-            pool.query(query25, {}, function(err, results) {
+            poolTemp.query(query25, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -3435,7 +3542,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
         })
     //Insert initiative target population sector data
     for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
-    var query26 = "INSERT into initiativetargetpopulationsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativetargetPopulationSector[i]+"')"
+    var query26 = "INSERT into initiativetargetpopulationsector VALUES ("+formData.tagNum +",'"+ formData.initiativetargetPopulationSector[i]+"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query26, {}, function(err, results) {
@@ -3460,7 +3567,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
     var query27= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ formData.tagNum
     async.parallel([
         function(queryDB) {
-            pool.query(query27, {}, function(err, results) {
+            poolTemp.query(query27, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -3479,7 +3586,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
         })
     //Insert initiative outcomes monitored data
     for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
-    var query28 = "INSERT into initiativemonitoredoutcomes VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeOutcomesMonitored[i]+"')"
+    var query28 = "INSERT into initiativemonitoredoutcomes VALUES ("+formData.tagNum +",'"+ formData.initiativeOutcomesMonitored[i]+"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query28, {}, function(err, results) {
@@ -3504,7 +3611,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
      var query29= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ formData.tagNum
      async.parallel([
          function(queryDB) {
-             pool.query(query29, {}, function(err, results) {
+             poolTemp.query(query29, {}, function(err, results) {
                  if (err){
                      return queryDB(err)
                  }else{
@@ -3523,8 +3630,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
          })
     //Insert initiative main education subsector data
     for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
-    var query30 = "INSERT into initiativemaineducationsubsector VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +
-    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
+    var query30 = "INSERT into initiativemaineducationsubsector VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query30, {}, function(err, results) {
@@ -3549,7 +3655,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
     var query31= "DELETE FROM initiativeeducationsubsectors WHERE initiativeTagNumber = "+ formData.tagNum
     async.parallel([
         function(queryDB) {
-            pool.query(query31, {}, function(err, results) {
+            poolTemp.query(query31, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -3568,8 +3674,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
         })
     //Insert initiative education subsector data
     for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
-    var query32 = "INSERT into initiativeeducationsubsectors VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +
-    "),(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
+    var query32 = "INSERT into initiativeeducationsubsectors VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query32, {}, function(err, results) {
@@ -3594,7 +3699,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
     var query33= "DELETE FROM initiativetargetschoolmanagement WHERE tagNumber = "+ formData.tagNum
     async.parallel([
         function(queryDB) {
-            pool.query(query33, {}, function(err, results) {
+            poolTemp.query(query33, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
                 }else{
@@ -3613,7 +3718,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
         })
     //Insert initiative target management t data
     for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
-    var query34 = "INSERT into initiativetargetschoolmanagement VALUES ((SELECT tagNumber FROM initiative WHERE tagNumber = " + genTagNum.currentTagNum +"),'"+ formData.initiativeManagementTypes[i]+"')"
+    var query34 = "INSERT into initiativetargetschoolmanagement VALUES ("+formData.tagNum +",'"+ formData.initiativeManagementTypes[i]+"')"
     async.parallel([
         function(queryDB) {
             poolTemp.query(query34, {}, function(err, results) {
@@ -3659,7 +3764,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
     // funder - funds - relationship
     var query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
     + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (funderName = '"
-    + formData.ofname +"')"
+    + formData.OfunderName +"')"
 
     // //implementor - implements - initiative
     var query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "'), startYear ='"
@@ -3772,7 +3877,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
             formData.initOEdSubsApproval + ", initManagementTypesApproval = " +
             formData.initManagementTypesApproval+ ",implementorNameApproval = " +
             formData.implementorNameApproval+ ",implementorMotiveApproval = " +
-            formData.implementorMotiveApproval
+            formData.implementorMotiveApproval + " WHERE tagNumber = "+formData.tagNum
 
 
             async.parallel([
@@ -3795,6 +3900,933 @@ dashboard.post('/update-form-temp', (req, res) =>{
                 })
     res.send("Inves431_girlsEd updated successfully!")
 
+
 })
 
+//delete form from database
+dashboard.post('/delete-funder/:funder', (req,res) =>{
+    var funderName = req.params.funder
+
+    //delete funds
+    var query1 = "DELETE FROM funds WHERE funderName = '"+ funderName+ "'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query1, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    //delete funder asia bases
+    var query2 = "DELETE FROM funderasiabases WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query2, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    //delete funder asia operations
+    var query3 = "DELETE FROM funderasiaoperations WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query3, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    //delete funder education subsector
+    var query4 = "DELETE FROM fundereducationsubsectors WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query4, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //delete funder international bases
+    var query5 = "DELETE FROM funderinternationalbases WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query5, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+
+    //delete funder organization traits
+    var query6 = "DELETE FROM funderorganizationtraits WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query6, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    //delete funder
+     var query7 = "DELETE FROM funder WHERE funderName ='" +funderName+"'"
+     async.parallel([
+         function(queryDB) {
+             pool.query(query7, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+
+                     queryDB()
+                 }
+
+             })
+         },
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+
+    res.send("Funder deleted successfully!")
+
+})
+
+dashboard.post('/delete-funder-temp/:funder', (req,res)=>{
+    var funderName = req.params.funder
+
+    //delete funds
+    var query1 = "DELETE FROM funds WHERE funderName = '"+ funderName+ "'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query1, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    //delete funder asia bases
+    var query2 = "DELETE FROM funderasiabases WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query2, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    //delete funder asia operations
+    var query3 = "DELETE FROM funderasiaoperations WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query3, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    //delete funder education subsector
+    var query4 = "DELETE FROM fundereducationsubsectors WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query4, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //delete funder international bases
+    var query5 = "DELETE FROM funderinternationalbases WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query5, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+
+    //delete funder organization traits
+    var query6 = "DELETE FROM funderorganizationtraits WHERE funderName ='" +funderName+"'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query6, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    //delete funder
+     var query7 = "DELETE FROM funder WHERE funderName ='" +funderName+"'"
+     async.parallel([
+         function(queryDB) {
+             poolTemp.query(query7, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+
+                     queryDB()
+                 }
+
+             })
+         },
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+
+    res.send("Funder deleted successfully!")
+})
+
+//delete implementor from db
+dashboard.post('/delete-implementor/:iname', (req,res) =>{
+    var implementorName = req.params.iname
+
+    //delete implementor
+    var query1 = "DELETE FROM implementor WHERE implementorName ='" +implementorName+"'"
+    async.parallel([
+        function(queryDB) {
+            pool.query(query1, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+        //delete from implements
+        var query2 = "DELETE FROM implements WHERE implementorName ='" +implementorName+"'"
+        async.parallel([
+            function(queryDB) {
+                pool.query(query2, {}, function(err, results) {
+                    if (err){
+                        return queryDB(err)
+                    }else{
+
+                        queryDB()
+                    }
+
+                })
+            },
+            ], function(err) {
+                if (err){
+                    console.log(err)
+                }
+
+            })
+
+    res.send("Implementor deleted successfully!")
+})
+
+//delete implementor from temp db
+dashboard.post('/delete-implementor-temp/:iname', (req,res) =>{
+    var implementorName = req.params.iname
+
+    //delete implementor
+    var query1 = "DELETE FROM implementor WHERE implementorName ='" +implementorName+"'"
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query1, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+        //delete from implements
+        var query2 = "DELETE FROM implements WHERE implementorName ='" +implementorName+"'"
+        async.parallel([
+            function(queryDB) {
+                poolTemp.query(query2, {}, function(err, results) {
+                    if (err){
+                        return queryDB(err)
+                    }else{
+
+                        queryDB()
+                    }
+
+                })
+            },
+            ], function(err) {
+                if (err){
+                    console.log(err)
+                }
+
+            })
+
+    res.send("Implementor deleted successfully!")
+})
+
+//delete intiative from db
+dashboard.post('/delete-initiative/:tagNum', (req,res) =>{
+    var tagNumber = req.params.tagNum
+
+    //delete funds
+    var query1 = "DELETE FROM initiative WHERE tagNumber ="+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            pool.query(query1, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+
+    //delete initiative region data
+    var query2= "DELETE FROM initiativeregion WHERE tagNumber = "+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            pool.query(query2, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+ //delete initiativecountryofoperation data
+    var query3= "DELETE FROM initiativecountryofoperation WHERE tagNumber = "+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            pool.query(query3, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+//delete initiativeprogrammingactivities data
+    var query4= "DELETE FROM initiativeprogrammingactivities WHERE tagNumber = "+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            pool.query(query4, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+  //delete initiativefundingsource data
+      var query5= "DELETE FROM initiativefundingsource WHERE tagNumber = "+ tagNumber
+      async.parallel([
+          function(queryDB) {
+              pool.query(query5, {}, function(err, results) {
+                  if (err){
+                      return queryDB(err)
+                  }else{
+
+                      queryDB()
+                  }
+
+              })
+          },
+
+          ], function(err) {
+              if (err){
+                  console.log(err)
+              }
+
+          })
+     //delete launchcountry data
+     var query6= "DELETE FROM initiativelaunchcountry WHERE tagNumber = "+ tagNumber
+     async.parallel([
+         function(queryDB) {
+             pool.query(query6, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+
+                     queryDB()
+                 }
+
+             })
+         },
+
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+ //delete initiativetargetgeography data
+     var query7= "DELETE FROM initiativetargetgeography WHERE tagNumber = "+ tagNumber
+     async.parallel([
+         function(queryDB) {
+             pool.query(query7, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+
+                     queryDB()
+                 }
+
+             })
+         },
+
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+ //delete INSERT into initiativetargetpopulationsector data
+    var query8= "DELETE FROM initiativetargetpopulationsector WHERE tagNumber = "+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            pool.query(query8, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //delete initiativemonitoredoutcomes data
+    var query9= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            pool.query(query9, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+//delete initiativemonitoredoutcomes data
+     var query10= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ tagNumber
+     async.parallel([
+         function(queryDB) {
+             pool.query(query10, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+
+                     queryDB()
+                 }
+
+             })
+         },
+
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+    //delete initiativeeducationsubsectors data
+    var query11= "DELETE FROM initiativeeducationsubsectors WHERE initiativeTagNumber = "+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            pool.query(query11, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //delete initiativetargetschoolmanagement data
+    var query12= "DELETE FROM initiativetargetschoolmanagement WHERE tagNumber = "+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            pool.query(query12, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+    res.send("Initiative deleted successfully!")
+})
+
+//delete intiative from temp db
+dashboard.post('/delete-initiative-temp/:tagNum', (req,res) =>{
+    var tagNumber = req.params.tagNum
+
+    //delete funds
+    var query1 = "DELETE FROM initiative WHERE tagNumber ="+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query1, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+
+
+    //delete initiative region data
+    var query2= "DELETE FROM initiativeregion WHERE tagNumber = "+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query2, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+ //delete initiativecountryofoperation data
+    var query3= "DELETE FROM initiativecountryofoperation WHERE tagNumber = "+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query3, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+//delete initiativeprogrammingactivities data
+    var query4= "DELETE FROM initiativeprogrammingactivities WHERE tagNumber = "+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query4, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+  //delete initiativefundingsource data
+      var query5= "DELETE FROM initiativefundingsource WHERE tagNumber = "+ tagNumber
+      async.parallel([
+          function(queryDB) {
+              poolTemp.query(query5, {}, function(err, results) {
+                  if (err){
+                      return queryDB(err)
+                  }else{
+
+                      queryDB()
+                  }
+
+              })
+          },
+
+          ], function(err) {
+              if (err){
+                  console.log(err)
+              }
+
+          })
+     //delete launchcountry data
+     var query6= "DELETE FROM initiativelaunchcountry WHERE tagNumber = "+ tagNumber
+     async.parallel([
+         function(queryDB) {
+             poolTemp.query(query6, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+
+                     queryDB()
+                 }
+
+             })
+         },
+
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+ //delete initiativetargetgeography data
+     var query7= "DELETE FROM initiativetargetgeography WHERE tagNumber = "+ tagNumber
+     async.parallel([
+         function(queryDB) {
+             poolTemp.query(query7, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+
+                     queryDB()
+                 }
+
+             })
+         },
+
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+ //delete INSERT into initiativetargetpopulationsector data
+    var query8= "DELETE FROM initiativetargetpopulationsector WHERE tagNumber = "+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query8, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //delete initiativemonitoredoutcomes data
+    var query9= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query9, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+//delete initiativemonitoredoutcomes data
+     var query10= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ tagNumber
+     async.parallel([
+         function(queryDB) {
+             poolTemp.query(query10, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+
+                     queryDB()
+                 }
+
+             })
+         },
+
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+    //delete initiativeeducationsubsectors data
+    var query11= "DELETE FROM initiativeeducationsubsectors WHERE initiativeTagNumber = "+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query11, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    //delete initiativetargetschoolmanagement data
+    var query12= "DELETE FROM initiativetargetschoolmanagement WHERE tagNumber = "+ tagNumber
+    async.parallel([
+        function(queryDB) {
+            poolTemp.query(query12, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+
+                    queryDB()
+                }
+
+            })
+        },
+
+        ], function(err) {
+            if (err){
+                console.log(err)
+            }
+
+        })
+    res.send("Initiative deleted successfully!")
+})
 module.exports = dashboard

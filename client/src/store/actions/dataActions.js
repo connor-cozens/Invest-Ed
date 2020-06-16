@@ -251,7 +251,7 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
 //Get non-approved forms from temp DB for organization/RA user to modify
 export const getNonApprovedForm = (tag, getType) => (dispatch) => {
   const tagNum = tag
-  const url = `/dashboard/form/${tagNum}`;
+  const url = `/dashboard/form-temp/${tagNum}`;
   axios.get(url, null, {tagNum})
     .then(response => {
       if (response.data.error !== undefined) {

@@ -179,7 +179,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getForm: (tag, getType) => dispatch(getNonApprovedForm(tag, getType)),
+    getForm: (tag, getType) => dispatch(getApprovedForm(tag, getType)),
     clearForm: () => dispatch(clearFormStatus()),
     newForm: () => dispatch(setNewFormStatus())
   }

@@ -264,7 +264,6 @@ export const getNonApprovedForm = (tag, getType) => (dispatch) => {
   axios.get(url, null, {tagNum})
     .then(response => {
       if (response.data.error !== undefined) {
-        console.log("heyyyyyk");
         dispatch({type: NOT_PULLED_APPROVED_FORM});
         //If couldn't find form in temp db, then check for form in main db
         dispatch(getApprovedForm(tag, getType));

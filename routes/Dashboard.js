@@ -2018,7 +2018,6 @@ function function5(val){
 dashboard.post('/update-form', (req, res) =>{
 
     const formData = {
-
         //original values
         tagNum: req.body.tagNum,
         OfunderName: req.body.ofname,
@@ -2062,9 +2061,6 @@ dashboard.post('/update-form', (req, res) =>{
         implementorMotive: req.body.impMotive, //im
     }
 
-    console.log("Updating...")
-    console.log(formData)
-
     //Update funder data or insert new funder if funder funds other initiatives - if this is the case, don't want to replace(update) the funder
     var query1;
     var numFunderInitiatives;  //Number of initiatives funded by funder
@@ -2087,12 +2083,17 @@ dashboard.post('/update-form', (req, res) =>{
            res.json(err)
          } else {
            numFunderInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(funderName)']));
-
-           if (numFunderInitiatives > 1 && formData.funderName !== formData.OfunderName) {
+           //If funder existed in temp already but hasnt been added to main db yet
+           if (numFunderInitiatives == 0) {
              query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
            } else {
-             query1 = "UPDATE funder SET funderName = '" + formData.funderName + "', funderWebsite ='"+ formData.funderUrl +"', profitMotive ='"+ formData.funderMotive +"', impactInvesting ='"+ formData.funderImpact
-            +"', organizationalForm ='"+ formData.funderOrganizationForm +"' WHERE funderName = '" + formData.OfunderName + "'"
+             if (formData.funderName !== formData.OfunderName) {
+               query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
+             }
+             else {
+               query1 = "UPDATE funder SET funderName = '" + formData.funderName + "', funderWebsite ='"+ formData.funderUrl +"', profitMotive ='"+ formData.funderMotive +"', impactInvesting ='"+ formData.funderImpact
+              +"', organizationalForm ='"+ formData.funderOrganizationForm +"' WHERE funderName = '" + formData.OfunderName + "'"
+            }
            }
 
            async.parallel([
@@ -2747,8 +2748,7 @@ dashboard.post('/update-form', (req, res) =>{
         if (err){
             console.log(err)
         }
-
-    })
+      })
     }
 
     //delete INSERT into initiativetargetpopulationsector data
@@ -2994,9 +2994,17 @@ dashboard.post('/update-form', (req, res) =>{
 
 
     // funder - funds - relationship
-    var query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
-    + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (funderName = '"
-    + formData.OfunderName +"')"
+    var query36;
+    //If funder already existed in temp but not yet in main
+    if (numFunderInitiatives == 0) {
+      query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
+      + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ")"
+    } else {
+      query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
+      + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (funderName = '"
+      + formData.OfunderName +"')"
+    }
+
 
     // //implementor - implements - initiative
     var query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "'), startYear ='"

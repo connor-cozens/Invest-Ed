@@ -158,7 +158,12 @@ const readForm = (response => {
     response.data.funderIndividual.forEach(indivFunder => {
       //Find matching funder from general funder info list
       let funderObj = funders.find(funder => {
-        return funder.funderName == indivFunder[0][0].funderName
+        if (indivFunder[0][0] !== undefined) {
+          return funder.funderName == indivFunder[0][0].funderName;
+        } else {
+          return false;
+        }
+
       });
       if (funderObj !== undefined) {
         //For each funder attribute (eg. base location), get all the corresponding rows/values (eg. all corresponding country names) and add as object to general funder list
@@ -247,6 +252,7 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
       }
     })
     .catch(err =>  {
+      console.log(err)
       dispatch({type: ACCESS_ERROR, payload: "Error retrieving form"});
     })
 }
@@ -258,6 +264,7 @@ export const getNonApprovedForm = (tag, getType) => (dispatch) => {
   axios.get(url, null, {tagNum})
     .then(response => {
       if (response.data.error !== undefined) {
+        console.log("heyyyyyk");
         dispatch({type: NOT_PULLED_APPROVED_FORM});
         //If couldn't find form in temp db, then check for form in main db
         dispatch(getApprovedForm(tag, getType));
@@ -274,7 +281,8 @@ export const getNonApprovedForm = (tag, getType) => (dispatch) => {
         dispatch({type: CLEAR_ACCESS_ERROR});
       }
     })
-    .catch(err =>  {
+    .catch(err => {
+      console.log(err)
       dispatch({type: NOT_PULLED_APPROVED_FORM});
       //If couldn't find form in temp db, then check for form in main db
       dispatch(getApprovedForm(tag, getType));

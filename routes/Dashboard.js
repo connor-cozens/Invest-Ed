@@ -2064,7 +2064,9 @@ dashboard.post('/update-form', (req, res) =>{
     //Update funder data or insert new funder if funder funds other initiatives - if this is the case, don't want to replace(update) the funder
     var query1;
     var numFunderInitiatives;  //Number of initiatives funded by funder
+    var numFunders;
     var queryNumFunderInitiatives = "SELECT COUNT(funderName) FROM funds WHERE funderName = '" + formData.OfunderName + "'" //Get number of initiatives funded by funder
+    var queryNumFunders = "SELECT COUNT(funderName) FROM funds WHERE tagNum = " + formData.tagNum
 
     async.parallel([
      function(queryDB) {
@@ -2087,7 +2089,7 @@ dashboard.post('/update-form', (req, res) =>{
            if (numFunderInitiatives == 0) {
              query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
            } else {
-             if (formData.funderName !== formData.OfunderName) {
+             if (numFunderInitiatives > 1 && formData.funderName !== formData.OfunderName) {
                query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
              }
              else {
@@ -2113,7 +2115,7 @@ dashboard.post('/update-form', (req, res) =>{
                 }
             })
 
-            if (!numFunderInitiatives > 1 || formData.funderName == formData.OfunderName) {
+            if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
               //delete all funder international base
               var query2 = "DELETE FROM funderinternationalbases WHERE funderName = '" + formData.OfunderName + "'"
               async.parallel([
@@ -2182,7 +2184,7 @@ dashboard.post('/update-form', (req, res) =>{
             }
 
             //delete all funder fundereducationsubsectors
-            if (!numFunderInitiatives > 1 || formData.funderName == formData.OfunderName) {
+            if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
               var query4 = "DELETE FROM fundereducationsubsectors WHERE funderName = '"+ formData.OfunderName + "'"
               async.parallel([
                   function(queryDB) {
@@ -2247,7 +2249,7 @@ dashboard.post('/update-form', (req, res) =>{
               }
 
 
-            if (!numFunderInitiatives > 1 || formData.funderName == formData.OfunderName) {
+            if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
               //delete all funder funderorganizationtraits
               var query6 = "DELETE FROM funderorganizationtraits WHERE funderName = '"+ formData.OfunderName + "'"
               async.parallel([
@@ -2316,7 +2318,7 @@ dashboard.post('/update-form', (req, res) =>{
             }
 
 
-            if (!numFunderInitiatives > 1 || formData.funderName == formData.OfunderName) {
+            if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
               //delete all funder asiabases
               var query8 = "DELETE FROM funderasiabases WHERE funderName = '"+ formData.OfunderName + "'"
               async.parallel([
@@ -2386,7 +2388,7 @@ dashboard.post('/update-form', (req, res) =>{
               }
             }
 
-            if (!numFunderInitiatives > 1 || formData.funderName == formData.OfunderName) {
+            if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
               //delete all funder asia operations
               var query10= "DELETE FROM funderasiaoperations WHERE funderName = '"+ formData.OfunderName + "'"
               async.parallel([
@@ -2490,7 +2492,6 @@ dashboard.post('/update-form', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-
                     queryDB()
                 }
 
@@ -2505,7 +2506,6 @@ dashboard.post('/update-form', (req, res) =>{
         })
     //Insert initiative region data
     for(var i = 0; i < formData.initiativeRegions.length; i++) {
-
         var query14 = "INSERT into initiativeregion VALUES ("+formData.tagNum +", (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
         console.log(formData.initiativeRegions[i])
         async.parallel([
@@ -2581,7 +2581,6 @@ dashboard.post('/update-form', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-
                     queryDB()
                 }
 
@@ -2993,48 +2992,68 @@ dashboard.post('/update-form', (req, res) =>{
         })
 
 
-    // funder - funds - relationship
-    var query36;
-    //If funder already existed in temp but not yet in main
-    if (numFunderInitiatives == 0) {
-      query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
-      + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ")"
-    } else {
-      query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
-      + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (funderName = '"
-      + formData.OfunderName +"')"
-    }
-
-
-    // //implementor - implements - initiative
-    var query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "'), startYear ='"
-    + formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (implementorName = '" + formData.OimplementorName + "')"
-
     async.parallel([
-        function(queryDB) {
-            pool.query(query36, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
+      function(queryDB) {
+          pool.query(queryNumFunders, {}, function(err, results) {
+              if (err){
+                  return queryDB(err)
+              }else{
+                  queryDB()
+              }
+          })
+      },
+    ], function(err) {
+        if (err){
+            console.log(err)
+        } else {
+          numFunders = JSON.parse(JSON.stringify(results[0][0]['COUNT(funderName)']));
+          // funder - funds - relationship
+          //If funder already existed in temp but not yet in main
+          var query36;
+          if (numFunderInitiatives == 0) {
+            if (numFunders == 0) {
+              query36 = "INSERT into funds VALUES (" + formData.tagNum + ",'" + formData.funderName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd + "')"
+            } else {
+              query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
+              + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ")"
+            }
+          } else {
+            query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
+            + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (funderName = '"
+            + formData.OfunderName +"')"
+          }
 
-            })
-        },
-        function(queryDB) {
-            pool.query(query37, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
+          // //implementor - implements - initiative
+          var query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "'), startYear ='"
+          + formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (implementorName = '" + formData.OimplementorName + "')"
 
-            })
-        },
+          async.parallel([
+              function(queryDB) {
+                  pool.query(query36, {}, function(err, results) {
+                      if (err){
+                          return queryDB(err)
+                      }else{
+                          queryDB()
+                      }
 
-        ], function(err) {
-            if (err){
-                console.log(err)
+                  })
+              },
+              function(queryDB) {
+                  pool.query(query37, {}, function(err, results) {
+                      if (err){
+                          return queryDB(err)
+                      }else{
+                          queryDB()
+                      }
+
+                  })
+              },
+
+              ], function(err) {
+                  if (err){
+                      console.log(err)
+                  }
+              })
             }
         })
       }
@@ -3130,7 +3149,9 @@ dashboard.post('/update-form-temp', (req, res) =>{
    //Update funder data or insert new funder if funder funds other initiatives - if this is the case, don't want to replace(update) the funder
    var query1;
    var numFunderInitiatives;  //Number of initiatives funded by funder
+   var numFunders //Number of funders by specified tag number
    var queryNumFunderInitiatives = "SELECT COUNT(funderName) FROM funds WHERE funderName = '" + formData.OfunderName + "'" //Get number of initiatives funded by funder
+   var queryNumFunders = "SELECT COUNT(funderName) FROM funds WHERE tagNum = " + formData.tagNum  //Get number of funders specified by tag number
 
    async.parallel([
     function(queryDB) {
@@ -3150,11 +3171,17 @@ dashboard.post('/update-form-temp', (req, res) =>{
         } else {
           numFunderInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(funderName)']));
 
-          if (numFunderInitiatives > 1 && formData.funderName !== formData.OfunderName) {
+          //If funder existed in main already when previously added by an RA, and doesn't exist in temp db
+          if (numFunderInitiatives == 0) {
             query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
           } else {
-            query1 = "UPDATE funder SET funderName = '" + formData.funderName + "', funderWebsite ='"+ formData.funderUrl +"', profitMotive ='"+ formData.funderMotive +"', impactInvesting ='"+ formData.funderImpact
-           +"', organizationalForm ='"+ formData.funderOrganizationForm +"' WHERE funderName = '" + formData.OfunderName + "'"
+            if (numFunderInitiatives > 1 && formData.funderName !== formData.OfunderName) {
+              query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
+            }
+            else {
+              query1 = "UPDATE funder SET funderName = '" + formData.funderName + "', funderWebsite ='"+ formData.funderUrl +"', profitMotive ='"+ formData.funderMotive +"', impactInvesting ='"+ formData.funderImpact
+             +"', organizationalForm ='"+ formData.funderOrganizationForm +"' WHERE funderName = '" + formData.OfunderName + "'"
+           }
           }
 
           async.parallel([
@@ -3174,7 +3201,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                }
            })
 
-           if (!numFunderInitiatives > 1 || formData.funderName == formData.OfunderName) {
+           if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
              //delete all funder international base
              var query2 = "DELETE FROM funderinternationalbases WHERE funderName = '" + formData.OfunderName + "'"
              async.parallel([
@@ -3243,7 +3270,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
            }
 
            //delete all funder fundereducationsubsectors
-           if (!numFunderInitiatives > 1 || formData.funderName == formData.OfunderName) {
+           if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
              var query4 = "DELETE FROM fundereducationsubsectors WHERE funderName = '"+ formData.OfunderName + "'"
              async.parallel([
                  function(queryDB) {
@@ -3308,7 +3335,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
              }
 
 
-           if (!numFunderInitiatives > 1 || formData.funderName == formData.OfunderName) {
+           if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
              //delete all funder funderorganizationtraits
              var query6 = "DELETE FROM funderorganizationtraits WHERE funderName = '"+ formData.OfunderName + "'"
              async.parallel([
@@ -3377,7 +3404,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
            }
 
 
-           if (!numFunderInitiatives > 1 || formData.funderName == formData.OfunderName) {
+           if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
              //delete all funder asiabases
              var query8 = "DELETE FROM funderasiabases WHERE funderName = '"+ formData.OfunderName + "'"
              async.parallel([
@@ -3447,7 +3474,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
              }
            }
 
-           if (!numFunderInitiatives > 1 || formData.funderName == formData.OfunderName) {
+           if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
              //delete all funder asia operations
              var query10= "DELETE FROM funderasiaoperations WHERE funderName = '"+ formData.OfunderName + "'"
              async.parallel([
@@ -4053,47 +4080,70 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
               })
 
-
-          // funder - funds - relationship
-          var query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
-          + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (funderName = '"
-          + formData.OfunderName +"')"
-
-          // //implementor - implements - initiative
-          var query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "'), startYear ='"
-          + formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (implementorName = '" + formData.OimplementorName + "')"
-
           async.parallel([
-              function(queryDB) {
-                  poolTemp.query(query36, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
-
-                  })
-              },
-              function(queryDB) {
-                  poolTemp.query(query37, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
-
-                  })
-              },
-
-              ], function(err) {
-                  if (err){
-                      console.log(err)
+            function(queryDB) {
+                poolTemp.query(queryNumFunders, {}, function(err, results) {
+                    if (err){
+                        return queryDB(err)
+                    }else{
+                        queryDB()
+                    }
+                })
+            },
+          ], function(err) {
+              if (err){
+                  console.log(err)
+              } else {
+                numFunders = JSON.parse(JSON.stringify(results[0][0]['COUNT(funderName)']));
+                // funder - funds - relationship
+                //If funder already existed in temp but not yet in main
+                var query36;
+                if (numFunderInitiatives == 0) {
+                  if (numFunders == 0) {
+                    query36 = "INSERT into funds VALUES (" + formData.tagNum + ",'" + formData.funderName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd + "')"
+                  } else {
+                    query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
+                    + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ")"
                   }
+                } else {
+                  query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
+                  + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (funderName = '"
+                  + formData.OfunderName +"')"
+                }
 
+                // //implementor - implements - initiative
+                var query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "'), startYear ='"
+                + formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (implementorName = '" + formData.OimplementorName + "')"
+
+                async.parallel([
+                    function(queryDB) {
+                        poolTemp.query(query36, {}, function(err, results) {
+                            if (err){
+                                return queryDB(err)
+                            }else{
+                                queryDB()
+                            }
+
+                        })
+                    },
+                    function(queryDB) {
+                        poolTemp.query(query37, {}, function(err, results) {
+                            if (err){
+                                return queryDB(err)
+                            }else{
+                                queryDB()
+                            }
+
+                        })
+                    },
+
+                    ], function(err) {
+                        if (err){
+                            console.log(err)
+                        }
+                    })
+                  }
               })
-
-
-
 
         var query38 = "UPDATE comments SET comment = '"+ formData.comments +"' WHERE tagNumber = "+formData.tagNum
         async.parallel([

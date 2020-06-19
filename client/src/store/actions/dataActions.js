@@ -445,7 +445,7 @@ export const modifyFormRA = (form, isModified) => (dispatch) => {
   const req = changeRequestRA(form, isModified);
   axios.post(`/dashboard/update-form`, req)
     .then(response => {
-      dispatch({type: FORM_SUBMIT_SUCCESS});
+      dispatch(modifyForm(form, true, true));
     })
     .catch(err => {
       dispatch({type: FORM_SUBMIT_ERROR, payload: err});

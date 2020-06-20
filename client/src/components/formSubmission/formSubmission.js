@@ -98,8 +98,8 @@ class formSubmission extends React.Component{
       this.setState({
         //Original value Setters
         tagNum: props.form.tagNumber,
-        originalFunderName: props.form.funders.length > 0 ? props.form.funders[0].funderName : null,
-        originalImplementerName: props.form.name,
+        originalFunderName: props.form.funders.length > 0 ? props.form.funders[0].funderName : null,  //For now, retrieving and displaying first funder in the funder list
+        originalImplementerName: props.form.implementers.length > 0 ? props.form.implementers[0].implementorName : null,  //For now, retrieving and displaying first implementer in the implementer list
 
         //Initiative setters
         initName: props.form.name,

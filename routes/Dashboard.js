@@ -2063,8 +2063,9 @@ dashboard.post('/update-form', (req, res) =>{
 
     //Update funder data or insert new funder if funder funds other initiatives - if this is the case, don't want to replace(update) the funder
     var query1;
+
     var numFunderInitiatives;  //Number of initiatives funded by funder
-    var numFunders;
+    var numFunders;  //Number of funders with the current tagNum associated to them
     var queryNumFunderInitiatives = "SELECT COUNT(funderName) FROM funds WHERE funderName = '" + formData.OfunderName + "'" //Get number of initiatives funded by funder
     var queryNumFunders = "SELECT COUNT(funderName) FROM funds WHERE tagNum = " + formData.tagNum
 
@@ -2076,7 +2077,6 @@ dashboard.post('/update-form', (req, res) =>{
              }else{
                  queryDB(null, results)
              }
-
          })
      },
 
@@ -2966,30 +2966,8 @@ dashboard.post('/update-form', (req, res) =>{
         if (err){
             console.log(err)
         }
-
-    })
+      })
     }
-
-    //implementor queries
-    var query35 = "UPDATE implementor SET implementorName ='" + formData.implementorName + "', profitMotive ='" + formData.implementorMotive+"' WHERE implementorName = '"+ formData.OimplementorName +"'"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query35, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-        ], function(err) {
-            if (err){
-                console.log(err)
-            }
-
-        })
 
 
     async.parallel([
@@ -3008,47 +2986,31 @@ dashboard.post('/update-form', (req, res) =>{
         } else {
           numFunders = JSON.parse(JSON.stringify(results[0][0]['COUNT(funderName)']));
           // funder - funds - relationship
-          //If funder already existed in temp but not yet in main
-          var query36;
+          //If funder already existed in temp but not yet in main, insert into funds instead of update
+          var query35;
           if (numFunderInitiatives == 0) {
             if (numFunders == 0) {
-              query36 = "INSERT into funds VALUES (" + formData.tagNum + ",'" + formData.funderName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd + "')"
+              query35 = "INSERT into funds VALUES (" + formData.tagNum + ",'" + formData.funderName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd + "')"
             } else {
-              query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
+              query35 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
               + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ")"
             }
           } else {
-            query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
+            query35 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
             + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (funderName = '"
             + formData.OfunderName +"')"
           }
 
-          // //implementor - implements - initiative
-          var query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "'), startYear ='"
-          + formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (implementorName = '" + formData.OimplementorName + "')"
-
           async.parallel([
               function(queryDB) {
-                  pool.query(query36, {}, function(err, results) {
+                  pool.query(query35, {}, function(err, results) {
                       if (err){
                           return queryDB(err)
                       }else{
                           queryDB()
                       }
-
                   })
-              },
-              function(queryDB) {
-                  pool.query(query37, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
-
-                  })
-              },
-
+                },
               ], function(err) {
                   if (err){
                       console.log(err)
@@ -3058,6 +3020,106 @@ dashboard.post('/update-form', (req, res) =>{
         })
       }
     })
+
+    /////////////////////////////Update implements and implementor tables
+    var numImplementerInitiatives;  //Number of initiatives implemented by implementer
+    var numImplementers;  //Number of implementers with the current tagNum associated to them
+    var queryNumImplementerInitiatives = "SELECT COUNT(implementorName) FROM implements WHERE implementorName = '" + formData.OimplementorName + "'" //Get number of initiatives funded by funder
+    var queryNumImplementers = "SELECT COUNT(implementorName) FROM implements WHERE tagNum = " + formData.tagNum
+
+    var query36;
+    async.parallel([
+     function(queryDB) {
+         pool.query(queryNumImplementerInitiatives, {}, function(err, results) {
+             if (err){
+                 return queryDB(err, null)
+             }else{
+                 queryDB(null, results)
+             }
+         })
+     },
+
+   ], function(err, results) {
+         if (err){
+           console.log(err)
+         } else {
+             numImplementerInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(implementorName)']));
+             //If implementer existed in temp already but hasnt been added to main db yet
+             if (numImplementerInitiatives == 0) {
+               query36 = "INSERT into implementor VALUES ('" + formData.implementorName + "','" + formData.implementorMotive + "')"
+             } else {
+               if (numImplementerInitiatives > 1 && formData.implementorName !== formData.OimplementorName) {
+                 query36 = "INSERT into implementor VALUES ('" + formData.implementorName + "','" + formData.implementorMotive + "')"
+               }
+               else {
+                 query36 = "UPDATE implementor SET implementorName ='" + formData.implementorName + "', profitMotive ='" + formData.implementorMotive+"' WHERE implementorName = '"+ formData.OimplementorName +"'"
+               }
+             }
+
+             async.parallel([
+              function(queryDB) {
+                  pool.query(query36, {}, function(err, results) {
+                      if (err){
+                          return queryDB(err)
+                      }else{
+                          queryDB()
+                      }
+                  })
+                },
+              ], function(err) {
+                  if (err){
+                      console.log(err)
+                  }
+              })
+
+              async.parallel([
+                function(queryDB) {
+                    pool.query(queryNumImplementers, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            queryDB()
+                        }
+                    })
+                },
+              ], function(err) {
+                  if (err){
+                      console.log(err)
+                  } else {
+                    numImplementers = JSON.parse(JSON.stringify(results[0][0]['COUNT(implementorName)']));
+                    //implementor - implements - initiative
+                    //If implementer already existed in temp but not yet in main
+                    var query37;
+                    if (numImplementerInitiatives == 0) {
+                      if (numImplementers == 0) {
+                        query37 = "INSERT into implements VALUES (" + formData.tagNum + ",'" + formData.implementorName + "')"
+                      } else {
+                        query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "') WHERE (tagNum =" + formData.tagNum + ")"
+                      }
+                    } else {
+                      query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "') WHERE (tagNum =" + formData.tagNum + ") AND (implementorName = '" + formData.OimplementorName + "')"
+                    }
+
+                    async.parallel([
+                      function(queryDB) {
+                          pool.query(query37, {}, function(err, results) {
+                              if (err){
+                                  return queryDB(err)
+                              }else{
+                                  queryDB()
+                              }
+                          })
+                        },
+                      ], function(err) {
+                          if (err){
+                              console.log(err)
+                          }
+                      })
+                  }
+            })
+        }
+    })
+
     res.send("Inves431_girlsEd updated successfully!")
 })
 
@@ -3835,8 +3897,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
               if (err){
                   console.log(err)
               }
-
-          })
+            })
           }
 
           //delete INSERT into initiativetargetpopulationsector data
@@ -3879,8 +3940,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
               if (err){
                   console.log(err)
               }
-
-          })
+            })
           }
 
           //delete initiativemonitoredoutcomes data
@@ -3934,11 +3994,9 @@ dashboard.post('/update-form-temp', (req, res) =>{
                    poolTemp.query(query29, {}, function(err, results) {
                        if (err){
                            return queryDB(err)
-                       }else{
-
+                       } else {
                            queryDB()
                        }
-
                    })
                },
 
@@ -3946,7 +4004,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                    if (err){
                        console.log(err)
                    }
-
                })
           //Insert initiative main education subsector data
           for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
@@ -3959,7 +4016,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                       }else{
                           queryDB()
                       }
-
                   })
               },
 
@@ -4059,27 +4115,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
           })
           }
 
-          //implementor queries
-          var query35 = "UPDATE implementor SET implementorName ='" + formData.implementorName + "', profitMotive ='" + formData.implementorMotive+"' WHERE implementorName = '"+ formData.OimplementorName +"'"
-          async.parallel([
-              function(queryDB) {
-                  poolTemp.query(query35, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
-
-                  })
-              },
-
-              ], function(err) {
-                  if (err){
-                      console.log(err)
-                  }
-
-              })
-
           async.parallel([
             function(queryDB) {
                 poolTemp.query(queryNumFunders, {}, function(err, results) {
@@ -4111,10 +4146,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                   + formData.OfunderName +"')"
                 }
 
-                // //implementor - implements - initiative
-                var query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "'), startYear ='"
-                + formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (implementorName = '" + formData.OimplementorName + "')"
-
                 async.parallel([
                     function(queryDB) {
                         poolTemp.query(query36, {}, function(err, results) {
@@ -4125,18 +4156,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                             }
 
                         })
-                    },
-                    function(queryDB) {
-                        poolTemp.query(query37, {}, function(err, results) {
-                            if (err){
-                                return queryDB(err)
-                            }else{
-                                queryDB()
-                            }
-
-                        })
-                    },
-
+                      },
                     ], function(err) {
                         if (err){
                             console.log(err)
@@ -4245,8 +4265,106 @@ dashboard.post('/update-form-temp', (req, res) =>{
         }
     })
 
-    res.send("Inves431_girlsEd updated successfully!")
+    ///////////////////////////////Update implements and implementor tables
+    var numImplementerInitiatives;  //Number of initiatives implemented by implementer
+    var numImplementers;  //Number of implementers with the current tagNum associated to them
+    var queryNumImplementerInitiatives = "SELECT COUNT(implementorName) FROM implements WHERE implementorName = '" + formData.OimplementorName + "'" //Get number of initiatives funded by funder
+    var queryNumImplementers = "SELECT COUNT(implementorName) FROM implements WHERE tagNum = " + formData.tagNum
 
+    var query41;
+    async.parallel([
+     function(queryDB) {
+         poolTemp.query(queryNumImplementerInitiatives, {}, function(err, results) {
+             if (err){
+                 return queryDB(err, null)
+             }else{
+                 queryDB(null, results)
+             }
+         })
+     },
+
+   ], function(err, results) {
+         if (err){
+           console.log(err)
+         } else {
+             numImplementerInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(implementorName)']));
+             //If implementer existed in main already but hasnt been added to temp db yet
+             if (numImplementerInitiatives == 0) {
+               query41 = "INSERT into implementor VALUES ('" + formData.implementorName + "','" + formData.implementorMotive + "')"
+             } else {
+               if (numImplementerInitiatives > 1 && formData.implementorName !== formData.OimplementorName) {
+                 query41 = "INSERT into implementor VALUES ('" + formData.implementorName + "','" + formData.implementorMotive + "')"
+               }
+               else {
+                 query41 = "UPDATE implementor SET implementorName ='" + formData.implementorName + "', profitMotive ='" + formData.implementorMotive+"' WHERE implementorName = '"+ formData.OimplementorName +"'"
+               }
+             }
+
+             async.parallel([
+              function(queryDB) {
+                  poolTemp.query(query41, {}, function(err, results) {
+                      if (err){
+                          return queryDB(err)
+                      }else{
+                          queryDB()
+                      }
+                  })
+                },
+              ], function(err) {
+                  if (err){
+                      console.log(err)
+                  }
+              })
+
+              async.parallel([
+                function(queryDB) {
+                    poolTemp.query(queryNumImplementers, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            queryDB()
+                        }
+                    })
+                },
+              ], function(err) {
+                  if (err){
+                      console.log(err)
+                  } else {
+                    numImplementers = JSON.parse(JSON.stringify(results[0][0]['COUNT(implementorName)']));
+                    //implementor - implements - initiative
+                    //If implementer already existed in main but not yet in temp
+                    var query42;
+                    if (numImplementerInitiatives == 0) {
+                      if (numImplementers == 0) {
+                        query42 = "INSERT into implements VALUES (" + formData.tagNum + ",'" + formData.implementorName + "')"
+                      } else {
+                        query42 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "') WHERE (tagNum =" + formData.tagNum + ")"
+                      }
+                    } else {
+                      query42 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "') WHERE (tagNum =" + formData.tagNum + ") AND (implementorName = '" + formData.OimplementorName + "')"
+                    }
+
+                    async.parallel([
+                      function(queryDB) {
+                          poolTemp.query(query42, {}, function(err, results) {
+                              if (err){
+                                  return queryDB(err)
+                              }else{
+                                  queryDB()
+                              }
+                          })
+                        },
+                      ], function(err) {
+                          if (err){
+                              console.log(err)
+                          }
+                      })
+                  }
+            })
+        }
+    })
+
+    res.send("Inves431_girlsEd updated successfully!")
 })
 
 //delete form from database

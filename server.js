@@ -10,6 +10,9 @@ var nodemailer = require('nodemailer')
 var bodyParser = require("body-parser")
 var passport = require('passport')
 
+//const storage = require ('node-persist')
+
+
 var client = redis.createClient()
 client.on('connect', () => {
   console.log('Connected to Redis')
@@ -54,6 +57,7 @@ app.use(function(req, res, next) {
   next();
 });
 
+
 var Register = require('./routes/Register')
 var Login = require('./routes/Login')
 var Index = require('./routes/Index')
@@ -61,6 +65,7 @@ var Visualize = require('./routes/Visualize')
 var Contact = require('./routes/Contact')
 var Logout = require('./routes/Logout')
 var Dashboard = require('./routes/Dashboard')
+var ChangePassword = require('./routes/ChangePassword')
 
 
 app.use('/', Index)
@@ -70,9 +75,13 @@ app.use('/visualize', Visualize)
 app.use('/contact', Contact)
 app.use('/logout', Logout)
 app.use('/dashboard',Dashboard)
-
+app.use('/change-password', ChangePassword)
 
 
 app.listen(port, () =>{
-    console.log("Server is running on port: " + port)
+  console.log("Server is running on port: " + port)
 })
+
+   
+
+

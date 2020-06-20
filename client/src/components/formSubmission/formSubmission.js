@@ -130,11 +130,11 @@ class formSubmission extends React.Component{
         organizationForm: props.form.funders.length > 0 ? props.form.funders[0].organizationalForm : null,
         impact: props.form.funders.length > 0 ? props.form.funders[0].impactInvesting : null,
         //Multi-valued funder attribute setters
-        edSubs: props.form.funders !== undefined ? (props.form.funders.length > 0 ? props.form.funders[0].educationSubsector : null) : null,
-        orgTraits: props.form.funders !== undefined ? (props.form.funders.length > 0 ? props.form.funders[0].trait : null) : null,
-        asiaIBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? props.form.funders[0].asiaBase : null) : null,
-        asiaOperations: props.form.funders !== undefined ? (props.form.funders.length > 0 ? props.form.funders[0].asiaOperatons : null) : null,
-        internationalBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? props.form.funders[0].baseLocation : null) : null,
+        edSubs: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].educationSubsector !== undefined ? props.form.funders[0].educationSubsector : []) : []) : [],
+        orgTraits: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].trait !== undefined ? props.form.funders[0].trait : []) : []) : [],
+        asiaIBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaBase !== undefined ? props.form.funders[0].asiaBase : []) : []) : [],
+        asiaOperations: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaOperatons !== undefined ? props.form.funders[0].asiaOperatons : []) : []) : [],
+        internationalBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].baseLocation !== undefined ? props.form.funders[0].baseLocation : []) : []) : [],
 
         //Implementer setters
         iname: props.form.implementers.length > 0 ? props.form.implementers[0].implementorName : null,
@@ -147,6 +147,7 @@ class formSubmission extends React.Component{
       });
     }
   }
+
 
 
   buttonMaker(props){

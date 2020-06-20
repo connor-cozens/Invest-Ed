@@ -382,7 +382,7 @@
 //         },
 //
 //
-//   //ENDPOINT 7 - AN ARRAY OF RELATIONSHIPS BETWEEN iMPLEMENTERS AND INITIATIVES
+//   //ENDPOINT 7 - AN ARRAY OF RELATIONSHIPS BETWEEN IMPLEMENTERS AND INITIATIVES
 //       //RELATIONSHIP 1 - Relationship between Implementers filtered by profit motive, and Initiatives
 //       ProfitMotiveImplementerInitiative:
 //         {

@@ -151,12 +151,20 @@ const readForm = (response => {
   if (response.data.table14.length > 0) {
     response.data.table14.forEach((funder) => { funders.push(funder); });
   }
+
   //Get multi-valued funder attributes - base locations, asia bases, asia operations, education subsectors, traits
   if (response.data.funderIndividual !== undefined) {
     //For each funder
     response.data.funderIndividual.forEach(indivFunder => {
       //Find matching funder from general funder info list
-      let funderObj = funders.find(funder => { return funder.funderName == indivFunder[0][0].funderName });
+      let funderObj = funders.find(funder => {
+        if (indivFunder[0][0] !== undefined) {
+          return funder.funderName == indivFunder[0][0].funderName;
+        } else {
+          return false;
+        }
+
+      });
       if (funderObj !== undefined) {
         //For each funder attribute (eg. base location), get all the corresponding rows/values (eg. all corresponding country names) and add as object to general funder list
         indivFunder.forEach(attributeList => {
@@ -244,6 +252,7 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
       }
     })
     .catch(err =>  {
+      console.log(err)
       dispatch({type: ACCESS_ERROR, payload: "Error retrieving form"});
     })
 }
@@ -271,7 +280,8 @@ export const getNonApprovedForm = (tag, getType) => (dispatch) => {
         dispatch({type: CLEAR_ACCESS_ERROR});
       }
     })
-    .catch(err =>  {
+    .catch(err => {
+      console.log(err)
       dispatch({type: NOT_PULLED_APPROVED_FORM});
       //If couldn't find form in temp db, then check for form in main db
       dispatch(getApprovedForm(tag, getType));
@@ -279,42 +289,6 @@ export const getNonApprovedForm = (tag, getType) => (dispatch) => {
 }
 
 const changeRequestRA = (form, isModified) => {
-  //Setting up multi val initatives
-  let regions = [];
-  if (form.regions !== undefined) { form.regions.forEach((item) => {regions.push(item.key); }); }
-  let countries = [];
-  if (form.countries !== undefined) { form.countries.forEach((item) => {countries.push(item.key); }); }
-  let activities = [];
-  if (form.activities !== undefined) { form.activities.forEach((item) => {activities.push(item.key); }); }
-  let sourceOfFees = [];
-  if (form.sourceOfFees !== undefined) { form.sourceOfFees.forEach((item) => {sourceOfFees.push(item.key); }); }
-  let launchCountries = [];
-  if (form.launchCountries !== undefined) { form.launchCountries.forEach((item) => {launchCountries.push(item.key); }); }
-  let targetGeos = [];
-  if (form.targetGeos !== undefined) { form.targetGeos.forEach((item) => {targetGeos.push(item.key); }); }
-  let targetPopulationSectors = [];
-  if (form.targetPopulationSectors !== undefined) { form.targetPopulationSectors.forEach((item) => {targetPopulationSectors.push(item.key); }); }
-  let outcomesMonitored = [];
-  if (form.outcomesMonitored !== undefined) { form.outcomesMonitored.forEach((item) => {outcomesMonitored.push(item.key); }); }
-  let mEdSubs = [];
-  if (form.mEdSubs !== undefined) { form.mEdSubs.forEach((item) => {mEdSubs.push(item.key); }); }
-  let oEdSubs = [];
-  if (form.oEdSubs !== undefined) { form.oEdSubs.forEach((item) => {oEdSubs.push(item.key); }); }
-  let managementTypes = [];
-  if (form.managementTypes !== undefined) { form.managementTypes.forEach((item) => {managementTypes.push(item.key); }); }
-
-  //Setting up multi val funders
-  let internationalBases = [];
-  if (form.internationalBases !== undefined) { form.internationalBases.forEach((item) => {internationalBases.push(item.key); }); }
-  let edSubs = [];
-  if (form.edSubs !== undefined) { form.edSubs.forEach((item) => {edSubs.push(item.key); }); }
-  let orgTraits = [];
-  if (form.orgTraits !== undefined) { form.orgTraits.forEach((item) => {orgTraits.push(item.key); }); }
-  let asiaIBases = [];
-  if (form.asiaIBases !== undefined) { form.asiaIBases.forEach((item) => {asiaIBases.push(item.key); }); }
-  let asiaOperations = [];
-  if (form.asiaOperations !== undefined) { form.asiaOperations.forEach((item) => {asiaOperations.push(item.key);}); }
-
   const reqBody = {
     fname: form.fname,
     furl: form.furl,
@@ -322,11 +296,11 @@ const changeRequestRA = (form, isModified) => {
     impact: form.impact,
     organizationForm: form.organizationForm,
     // multi val funder
-    internationalBases: internationalBases,
+    internationalBases: form.internationalBases,
     edSubs: form.edSubs,
     orgTraits: form.orgTraits,
-    asialBases: asiaIBases,
-    asiaOperations: asiaOperations,
+    asialBases: form.asiaIBases,
+    asiaOperations: form.asiaOperations,
     // single val initiative
     initName: form.initName,
     initURL: form.initURL,
@@ -338,17 +312,17 @@ const changeRequestRA = (form, isModified) => {
     initativeMainProgramActivity: form.mainProgramActivity,
     feeAccess: form.feeAccess,
     // multi val initiative
-    regions: regions,
-    countries: countries,
-    activities: activities,
-    sourceOfFees: sourceOfFees,
-    launchCountry: launchCountries,
+    regions: form.regions,
+    countries: form.countries,
+    activities: form.activities,
+    sourceOfFees: form.sourceOfFees,
+    launchCountry: form.launchCountries,
     targetGeos: form.targetGeos,
-    targetPopulationSectors: targetPopulationSectors,
-    outcomesMonitored: outcomesMonitored,
+    targetPopulationSectors: form.targetPopulationSectors,
+    outcomesMonitored: form.outcomesMonitored,
     mEdSubs: form.mEdSubs,
     oEdSubs: form.oEdSubs,
-    managementTypes: managementTypes,
+    managementTypes: form.managementTypes,
     // single val implementer
     iname: form.iname,
     impMotive: form.impMotive,
@@ -364,42 +338,6 @@ const changeRequestRA = (form, isModified) => {
 }
 
 const changeRequest = (form, inDB, isModified) => {
-  //Setting up multi val initatives
-  let regions = [];
-  if (form.regions !== undefined) { form.regions.forEach((item) => {regions.push(item.key); }); }
-  let countries = [];
-  if (form.countries !== undefined) { form.countries.forEach((item) => {countries.push(item.key); }); }
-  let activities = [];
-  if (form.activities !== undefined) { form.activities.forEach((item) => {activities.push(item.key); }); }
-  let sourceOfFees = [];
-  if (form.sourceOfFees !== undefined) { form.sourceOfFees.forEach((item) => {sourceOfFees.push(item.key); }); }
-  let launchCountries = [];
-  if (form.launchCountries !== undefined) { form.launchCountries.forEach((item) => {launchCountries.push(item.key); }); }
-  let targetGeos = [];
-  if (form.targetGeos !== undefined) { form.targetGeos.forEach((item) => {targetGeos.push(item.key); }); }
-  let targetPopulationSectors = [];
-  if (form.targetPopulationSectors !== undefined) { form.targetPopulationSectors.forEach((item) => {targetPopulationSectors.push(item.key); }); }
-  let outcomesMonitored = [];
-  if (form.outcomesMonitored !== undefined) { form.outcomesMonitored.forEach((item) => {outcomesMonitored.push(item.key); }); }
-  let mEdSubs = [];
-  if (form.mEdSubs !== undefined) { form.mEdSubs.forEach((item) => {mEdSubs.push(item.key); }); }
-  let oEdSubs = [];
-  if (form.oEdSubs !== undefined) { form.oEdSubs.forEach((item) => {oEdSubs.push(item.key); }); }
-  let managementTypes = [];
-  if (form.managementTypes !== undefined) { form.managementTypes.forEach((item) => {managementTypes.push(item.key); }); }
-
-  //Setting up multi val funders
-  let internationalBases = [];
-  if (form.internationalBases !== undefined) { form.internationalBases.forEach((item) => {internationalBases.push(item.key); }); }
-  let edSubs = [];
-  if (form.edSubs !== undefined) { form.edSubs.forEach((item) => {edSubs.push(item.key); }); }
-  let orgTraits = [];
-  if (form.orgTraits !== undefined) { form.orgTraits.forEach((item) => {orgTraits.push(item.key); }); }
-  let asiaIBases = [];
-  if (form.asiaIBases !== undefined) { form.asiaIBases.forEach((item) => {asiaIBases.push(item.key); }); }
-  let asiaOperations = [];
-  if (form.asiaOperations !== undefined) { form.asiaOperations.forEach((item) => {asiaOperations.push(item.key);}); }
-
   const reqBody = {
     fname: form.fname,
     furl: form.furl,
@@ -407,11 +345,11 @@ const changeRequest = (form, inDB, isModified) => {
     impact: form.impact,
     organizationForm: form.organizationForm,
     // multi val funder
-    internationalBases: internationalBases,
+    internationalBases: form.internationalBases,
     edSubs: form.edSubs,
     orgTraits: form.orgTraits,
-    asialBases: asiaIBases,
-    asiaOperations: asiaOperations,
+    asialBases: form.asiaIBases,
+    asiaOperations: form.asiaOperations,
     // single val initiative
     initName: form.initName,
     initURL: form.initURL,
@@ -423,17 +361,17 @@ const changeRequest = (form, inDB, isModified) => {
     initativeMainProgramActivity: form.mainProgramActivity,
     feeAccess: form.feeAccess,
     // multi val initiative
-    regions: regions,
-    countries: countries,
-    activities: activities,
-    sourceOfFees: sourceOfFees,
-    launchCountry: launchCountries,
+    regions: form.regions,
+    countries: form.countries,
+    activities: form.activities,
+    sourceOfFees: form.sourceOfFees,
+    launchCountry: form.launchCountries,
     targetGeos: form.targetGeos,
-    targetPopulationSectors: targetPopulationSectors,
-    outcomesMonitored: outcomesMonitored,
+    targetPopulationSectors: form.targetPopulationSectors,
+    outcomesMonitored: form.outcomesMonitored,
     mEdSubs: form.mEdSubs,
     oEdSubs: form.oEdSubs,
-    managementTypes: managementTypes,
+    managementTypes: form.managementTypes,
     // single val implementer
     iname: form.iname,
     impMotive: form.impMotive,
@@ -493,7 +431,7 @@ const changeRequest = (form, inDB, isModified) => {
 //Organization user to modify existing form in either main or temp DB (could be in main DB since might have been approved)
 export const modifyForm = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequest(form, inDB, isModified);
-  axios.post(`/dashboard//update-form-temp`, req)
+  axios.post(`/dashboard/update-form-temp`, req)
     .then(response => {
       dispatch({type: FORM_SUBMIT_SUCCESS});
     })
@@ -507,7 +445,7 @@ export const modifyFormRA = (form, isModified) => (dispatch) => {
   const req = changeRequestRA(form, isModified);
   axios.post(`/dashboard/update-form`, req)
     .then(response => {
-      dispatch({type: FORM_SUBMIT_SUCCESS});
+      dispatch(modifyForm(form, true, true));
     })
     .catch(err => {
       dispatch({type: FORM_SUBMIT_ERROR, payload: err});
@@ -1304,9 +1242,6 @@ export const getInitiativeImplementersByAttr = () => (dispatch) => {
       ImplementerTypeRelationships.ProfitMotiveInitiative = Relationship1;
       ImplementerRelationships.ProfitMotiveImplementerInitiative = RelationshipImplementer1;
       ImplementerAttributes.ProfitMotiveImplementer = ProfitMotiveImplementer;
-
-      // console.log(ImplementerTypeRelationships);
-      // console.log(ImplementerRelationships);
 
       dispatch({type: SET_IMPLEMENTER_ATTRIBUTES, payload: ImplementerAttributes});
       dispatch({type: SET_IMPLEMENTERTYPE_INITIATIVE, payload: ImplementerTypeRelationships});

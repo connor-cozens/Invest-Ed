@@ -3092,7 +3092,7 @@ dashboard.post('/update-form', (req, res) =>{
                     var query37;
                     if (numImplementerInitiatives == 0) {
                       if (numImplementers == 0) {
-                        query37 = "INSERT into implements VALUES (" + formData.tagNum + ",'" + formData.implementorName + "')"
+                        query37 = "INSERT into implements VALUES (" + formData.tagNum + ",'" + formData.implementorName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd + "')"
                       } else {
                         query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "') WHERE (tagNum =" + formData.tagNum + ")"
                       }
@@ -4331,12 +4331,13 @@ dashboard.post('/update-form-temp', (req, res) =>{
                       console.log(err)
                   } else {
                     numImplementers = JSON.parse(JSON.stringify(results[0][0]['COUNT(implementorName)']));
+                    console.log(numImplementers);
                     //implementor - implements - initiative
                     //If implementer already existed in main but not yet in temp
                     var query42;
                     if (numImplementerInitiatives == 0) {
                       if (numImplementers == 0) {
-                        query42 = "INSERT into implements VALUES (" + formData.tagNum + ",'" + formData.implementorName + "')"
+                        query42 = "INSERT into implements VALUES (" + formData.tagNum + ",'" + formData.implementorName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd + "')"
                       } else {
                         query42 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "') WHERE (tagNum =" + formData.tagNum + ")"
                       }

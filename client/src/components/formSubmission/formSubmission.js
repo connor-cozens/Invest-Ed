@@ -41,8 +41,8 @@ class formSubmission extends React.Component{
       launchCountries: [],
       idescription: null,
       targetGeos: [],
-      mainProgramActivity: null, //This isnt being set
-      programArea: null,
+      mainProgramActivity: '', //This isnt being set
+      programArea: '',
       feeAccess: null,
       targetPopulationSectors: [], //
       outcomesMonitored: [], //
@@ -68,6 +68,7 @@ class formSubmission extends React.Component{
     this.addInitCountry = this.addInitCountry.bind(this);
     this.buttonMaker = this.buttonMaker.bind(this);
     this.addProgramActivity = this.addProgramActivity.bind(this);
+    this.changeProgramArea = this.changeProgramArea.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.changeEdSub = this.changeEdSub.bind(this);
@@ -107,21 +108,21 @@ class formSubmission extends React.Component{
         tWomen: props.form.targetsWomen,
         initStart: props.form.startYear,
         initEnd: props.form.endYear,
-        launchCountries: props.form.launchCountry !== undefined ? props.form.launchCountry : [],  //Not used yet
+        launchCountries: props.form.launchCountry !== undefined ? props.form.launchCountry : [],
         idescription: props.form.description,
         targetGeos: props.form.targetGeographies.length !== undefined ? props.form.targetGeographies : [],
-        mainProgramActivity: props.form.mainProgrammingActivity !== undefined ? props.form.mainProgrammingActivity : [],  //Not used yet
-        programArea: props.form.mainProgrammingArea !== undefined ? props.form.mainProgrammingActivity : [],  //Not used yet
+        mainProgramActivity: props.form.mainProgrammingActivity !== undefined ? props.form.mainProgrammingActivity : '',
+        programArea: props.form.mainProgrammingArea !== undefined ? props.form.mainProgrammingArea : '',
         feeAccess: props.form.feeToAccess,
-        targetPopulationSectors: props.form.targetPopulationSectors !== undefined ? props.form.targetPopulationSectors : [],  //Not used yet
-        outcomesMonitored: props.form.monitoredOutcomes !== undefined ? props.form.monitoredOutcomes : [],  //Not used yet
+        targetPopulationSectors: props.form.targetPopulationSectors !== undefined ? props.form.targetPopulationSectors : [],
+        outcomesMonitored: props.form.monitoredOutcomes !== undefined ? props.form.monitoredOutcomes : [],
         mEdSubs: props.form.mainEducationSubSectors !== undefined ? props.form.mainEducationSubSectors : [],
         oEdSubs: props.form.educationSubSectors !== undefined ? props.form.educationSubSectors : [],
-        managementTypes: props.form.targetSchoolManagementType !== undefined ? props.form.targetSchoolManagementType : [],  //Not used yet
-        regions: props.form.regions !== undefined ? props.form.regions : [], //Not used yet
-        countries: props.form.countriesOfOperation !== undefined ? props.form.countriesOfOperation : [], //Not used yet
-        activities: props.form.programmingActivities !== undefined ? props.form.programmingActivities : [], //Not used yet
-        sourceOfFees: props.form.sourcesOfFunding !== undefined ? props.form.sourcesOfFunding : [], //Not used yet
+        managementTypes: props.form.targetSchoolManagementType !== undefined ? props.form.targetSchoolManagementType : [],
+        regions: props.form.regions !== undefined ? props.form.regions : [],
+        countries: props.form.countriesOfOperation !== undefined ? props.form.countriesOfOperation : [],
+        activities: props.form.programmingActivities !== undefined ? props.form.programmingActivities : [],
+        sourceOfFees: props.form.sourcesOfFunding !== undefined ? props.form.sourcesOfFunding : [],
 
         //Funder Setters
         fname: props.form.funders.length > 0 ? props.form.funders[0].funderName : null,
@@ -129,6 +130,7 @@ class formSubmission extends React.Component{
         motive: props.form.funders.length > 0 ? props.form.funders[0].profitMotive : null,
         organizationForm: props.form.funders.length > 0 ? props.form.funders[0].organizationalForm : null,
         impact: props.form.funders.length > 0 ? props.form.funders[0].impactInvesting : null,
+
         //Multi-valued funder attribute setters
         edSubs: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].educationSubsector !== undefined ? props.form.funders[0].educationSubsector : []) : []) : [],
         orgTraits: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].trait !== undefined ? props.form.funders[0].trait : []) : []) : [],
@@ -557,7 +559,13 @@ class formSubmission extends React.Component{
     else if(activity.charAt(0) === ' '){
       updateArea = "Area Data Missing?";
     }
-    ReactDOM.render(<p><i>{updateArea}</i></p>, document.getElementById('programArea'))
+    //Set Program Area and Main Programming Activity
+    this.state.mainProgramActivity = activity.substring(1);
+    this.state.programArea = updateArea;
+    this.setState({
+      mainProgramActivity: this.state.mainProgramActivity,
+      programArea: this.state.programArea
+    })
   }
 
   changeOrgTrait(e){
@@ -1056,7 +1064,7 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="edSub11" name="educationSubsector" value="No Education" checked = {this.state.edSubs.includes("No Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub11" className="checkbox">No Education</label>
             <input type="checkbox" id="edSub12" name="educationSubsector" value="Other Education" checked = {this.state.edSubs.includes("Other Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub12" className="checkbox">Other Education</label>
             <input type="checkbox" id="edSub13" name="educationSubsector" value="Primary Education" checked = {this.state.edSubs.includes("Primary Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub13" className="checkbox">Primary Education</label>
-            <input type="checkbox" id="edSub14" name="educationSubsector" value="Public Administration - Education" checked = {this.state.edSubs.includes("Public Administration - Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub14" className="checkbox">Public Administration - Education</label>
+            <input type="checkbox" id="edSub14" name="educationSubsector" value="Public Administration – Education" checked = {this.state.edSubs.includes("Public Administration – Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub14" className="checkbox">Public Administration – Education</label>
             <input type="checkbox" id="edSub15" name="educationSubsector" value="Secondary Education" checked = {this.state.edSubs.includes("Secondary Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub15" className="checkbox">Secondary Education</label>
             <input type="checkbox" id="edSub16" name="educationSubsector" value="Tertiary Education" checked = {this.state.edSubs.includes("Tertiary Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub16" className="checkbox">Tertiary Education</label>
             <input type="checkbox" id="edSub17" name="educationSubsector" value="Unclear" checked = {this.state.edSubs.includes("Unclear")} onChange={this.changeEdSub}/> <label htmlFor="edSub17" className="checkbox">Unclear</label>
@@ -2146,7 +2154,7 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="iEdSub11" name="educationSubsector" value="No Education" checked = {this.state.mEdSubs.includes("No Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub11" className="checkbox">No Education</label>
             <input type="checkbox" id="iEdSub12" name="educationSubsector" value="Other Education" checked = {this.state.mEdSubs.includes("Other Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub12" className="checkbox">Other Education</label>
             <input type="checkbox" id="iEdSub13" name="educationSubsector" value="Primary Education" checked = {this.state.mEdSubs.includes("Primary Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub13" className="checkbox">Primary Education</label>
-            <input type="checkbox" id="iEdSub14" name="educationSubsector" value="Public Administration - Education" checked = {this.state.mEdSubs.includes("Public Administration - Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub14" className="checkbox">Public Administration - Education</label>
+            <input type="checkbox" id="iEdSub14" name="educationSubsector" value="Public Administration – Education" checked = {this.state.mEdSubs.includes("Public Administration – Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub14" className="checkbox">Public Administration – Education</label>
             <input type="checkbox" id="iEdSub15" name="educationSubsector" value="Secondary Education" checked = {this.state.mEdSubs.includes("Secondary Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub15" className="checkbox">Secondary Education</label>
             <input type="checkbox" id="iEdSub16" name="educationSubsector" value="Tertiary Education" checked = {this.state.mEdSubs.includes("Tertiary Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub16" className="checkbox">Tertiary Education</label>
             <input type="checkbox" id="iEdSub17" name="educationSubsector" value="Unclear" checked = {this.state.mEdSubs.includes("Unclear")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub17" className="checkbox">Unclear</label>
@@ -2167,7 +2175,7 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="oEdSub11" name="educationSubsector" value="No Education" checked = {this.state.oEdSubs.includes("No Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub11" className="checkbox">No Education</label>
             <input type="checkbox" id="oEdSub12" name="educationSubsector" value="Other Education" checked = {this.state.oEdSubs.includes("Other Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub12" className="checkbox">Other Education</label>
             <input type="checkbox" id="oEdSub13" name="educationSubsector" value="Primary Education" checked = {this.state.oEdSubs.includes("Primary Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub13" className="checkbox">Primary Education</label>
-            <input type="checkbox" id="oEdSub14" name="educationSubsector" value="Public Administration - Education" checked = {this.state.oEdSubs.includes("Public Administration - Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub14" className="checkbox">Public Administration - Education</label>
+            <input type="checkbox" id="oEdSub14" name="educationSubsector" value="Public Administration – Education" checked = {this.state.oEdSubs.includes("Public Administration – Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub14" className="checkbox">Public Administration – Education</label>
             <input type="checkbox" id="oEdSub15" name="educationSubsector" value="Secondary Education" checked = {this.state.oEdSubs.includes("Secondary Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub15" className="checkbox">Secondary Education</label>
             <input type="checkbox" id="oEdSub16" name="educationSubsector" value="Tertiary Education" checked = {this.state.oEdSubs.includes("Tertiary Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub16" className="checkbox">Tertiary Education</label>
             <input type="checkbox" id="oEdSub17" name="educationSubsector" value="Unclear" checked = {this.state.oEdSubs.includes("Unclear")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub17" className="checkbox">Unclear</label>
@@ -2176,106 +2184,110 @@ class formSubmission extends React.Component{
 
             <p>Main Program Activity</p>
             <select id="mainProgramActivity" name="activity" onChange={this.changeProgramArea}>
-            <option value="baseCase">Choose the Main Program Activity</option>
-            <option value="Missing Data">Missing</option>
-            <option value="Unclear">Unclear</option>
-            <option value="aTransitional Support">Transitional Support</option>
-            <option value="aIncreasing or Sustaining Enrollment">Increasing or Sustaining Enrollment</option>
-            <option value="aSchool Feeding Programs and Other Non-Financial Targeted Incentives">School Feeding Programs and Other Non-Financial Targeted Incentives</option>
-            <option value="aPrograms to improve access and equity in education">Programs to improve access and equity in education</option>
-            <option value="aAdult literacy and numeracy programs">Adult literacy and numeracy programs</option>
-            <option value="eSchool Infrastructure and equipment">School Infrastructure and equipment</option>
-            <option value="eSchool rehabilitation and construction">School rehabilitation and construction</option>
-            <option value="eCommunity resources towards education facilities">Community resources towards education facilities</option>
-            <option value="fVouchers and conditional cash transfers">Vouchers and conditional cash transfers</option>
-            <option value="fScholarships and financial aid">Scholarships and financial aid</option>
-            <option value="fStudent/household loans">Student/household loans</option>
-            <option value="fContracting">Contracting</option>
-            <option value="fSchool loans">School loans</option>
-            <option value="fPay-for-performance">Pay-for-performance</option>
-            <option value="fOther financial targeted incentives for attendance">Other financial targeted incentives for attendance</option>
-            <option value="gParental or community engagement for school accountability">Parental or community engagement for school accountability</option>
-            <option value="gSchool operations or management">School operations or management</option>
-            <option value="gSchool assessment/rating systems">School assessment/rating systems</option>
-            <option value="gCapacity development programs or services for education administration or bureaucracy">Capacity development programs or services for education administration or bureaucracy</option>
-            <option value="gEMIS/Data systems">EMIS/Data systems</option>
-            <option value="gRegulatory analysis focused on government policy">Regulatory analysis focused on government policy</option>
-            <option value="gRegulatory analysis focused on school policy">Regulatory analysis focused on school policy</option>
-            <option value="gSchool quality improvement">School quality improvement</option>
-            <option value="pFranchise of schools/centers">Franchise of schools/centers</option>
-            <option value="pChain of schools/centers">Chain of schools/centers</option>
-            <option value="pNetwork of schools/centers">Network of schools/centers</option>
-            <option value="pMobile schools/centers">Mobile schools/centers</option>
-            <option value="pOnline school/center">Online school/center</option>
-            <option value="pStand-alone schools/centers">Stand-alone schools/centers</option>
-            <option value="pNGO Schools">NGO Schools</option>
-            <option value="pFormal public-private partnership">Formal public-private partnership</option>
-            <option value="pPrivate schools">Private schools</option>
-            <option value="iOnline learning portals">Online learning portals</option>
-            <option value="iComputer-assisted instruction/learning programs/products">Computer-assisted instruction/learning programs/products</option>
-            <option value="iComputers and tablets/computing skills focus">Computers and tablets/computing skills focus</option>
-            <option value="iSchool WiFi/broadband initiatives">School WiFi/broadband initiatives</option>
-            <option value="iDigital classrooms">Digital classrooms</option>
-            <option value="iMOOC instruction">MOOC instruction</option>
-            <option value="iScience technology and innovation (STI) activities including research and development (R&D), training knowledge workers/ technology acquisition and diffusion/ STI grants">Science technology and innovation (STI) activities including research and development (R&D), training knowledge workers/ technology acquisition and diffusion/ STI grants</option>
-            <option value="cStandardized teaching materials">Standardized teaching materials</option>
-            <option value="cNon-traditional schedules">Non-traditional schedules</option>
-            <option value="cExtra-curricular activities">Extra-curricular activities</option>
-            <option value="cLearning materials for students">Learning materials for students</option>
-            <option value="cTextbooks/books">Textbooks/books</option>
-            <option value="cSTEM materials/focus/program">STEM materials/focus/program</option>
-            <option value="cEnglish/language materials">English/language materials</option>
-            <option value="cMaths materials">Maths materials</option>
-            <option value="sStudent assessment and progress">Student assessment and progress</option>
-            <option value="sExam preparation">Exam preparation</option>
-            <option value="sTutoring/private tuition (includes tutoring chains/centres)">Tutoring/private tuition (includes tutoring chains/centres)</option>
-            <option value="sParental or community engagement in support of students">Parental or community engagement in support of students</option>
-            <option value="sMentorship programs">Mentorship programs</option>
-            <option value="tTeacher training">Teacher training</option>
-            <option value="tSchool leader/principals training">School leader/principals training</option>
-            <option value="tTeacher/leader evaluation capacity development and mentorship programs">Teacher/leader evaluation capacity development and mentorship programs</option>
-            <option value="tTeacher recruitment/ deployment/ in-service training programs">Teacher recruitment/ deployment/ in-service training programs</option>
-            <option value="wMentorship/ internship/ job placement">Mentorship/ internship/ job placement</option>
-            <option value="wEmployment skills programs">Employment skills programs</option>
-            <option value="wEntrepreneurship and business skills programs">Entrepreneurship and business skills programs</option>
-            <option value="vLinking research and evidence with policy or implementation">Linking research and evidence with policy or implementation</option>
-            <option value="vAdvocacy campaigns/ initiatives/ movements">Advocacy campaigns/ initiatives/ movements</option>
-            <option value="vRegulatory analysis">Regulatory analysis</option>
-            <option value="vKnowledge production/mobilization">Knowledge production/mobilization</option>
-            <option value="vEducation sector research studies/ surveys/ assessments">Education sector research studies/ surveys/ assessments</option>
-            <option value="vCapacity building at the system level">Capacity building at the system level</option>
-            <option value="wLife skills and personal finance training">Life skills and personal finance training</option>
-            <option value="wContinuing education programs offered for adults">Continuing education programs offered for adults</option>
-            <option value="aCurriculum and Extra-Curricular Support">Curriculum and Extra-Curricular Support</option>
-            <option value="aPrograms targeting girls/women">Programs targeting girls/women</option>
-            <option value="aPrograms targeting special needs or people with disabilities">Programs targeting special needs or people with disabilities</option>
-            <option value="aPrograms targeting other marginalized groups">Programs targeting other marginalized groups</option>
-            <option value="aPrograms targeting tribal or indigenous groups">Programs targeting tribal or indigenous groups</option>
-            <option value="wProfessional certification/skills">Professional certification/skills</option>
-            <option value="wShort-term technical/vocational course">Short-term technical/vocational course</option>
-            <option value="wLonger-term technical/vocational course">Longer-term technical/vocational course</option>
-            <option value="oNon-formal education youth">Non-formal education youth</option>
-            <option value=" Private Sector Delivery of Education">Private Sector Delivery of Education</option>
-            <option value=" vocational training">vocational training</option>
-            <option value=" Education Finance (system-level)">Education Finance (system-level)</option>
-            <option value=" school finance">school finance</option>
-            <option value=" Capacity Building of Non-Education Professionals">Capacity Building of Non-Education Professionals</option>
-            <option value=" Enrichment/New Pedagogical or Curricular Programs">Enrichment/New Pedagogical or Curricular Programs</option>
-            <option value=" Academic research/academic exchange">Academic research/academic exchange</option>
-            <option value=" Main Programming Activity">Main Programming Activity</option>
-            <option value=" All Programming Activities">All Programming Activities</option>
-            <option value=" Civic/community education">Civic/community education</option>
-            <option value=" Scholarships and Financial Aid">Scholarship and Financial Aid</option>
-            <option value=" Employment Skills program">Employment Skills program</option>
-            <option value=" Advocacy campaigns/initiatives/movements">Advocacy campaigns/initiatives/movements</option>
-            <option value=" Knowledge production/mobilization">Knowledge production/mobilization</option>
-            <option value=" Program targeting special needs or people with disabilities">Program targeting special needs or people with disabilities</option>
-            <option value=" Literacy skills">Literacy skills</option>
-            <option value=" Maternal Health Education">Maternal Health Education</option>
+            <option value="baseCase" selected = {this.state.mainProgramActivity === null}>Choose the Main Program Activity</option>
+            <option value="Missing Data" selected = {this.state.mainProgramActivity.includes("Missing Data")}>Missing</option>
+            <option value="Unclear" selected = {this.state.mainProgramActivity.includes("Unclear")}>Unclear</option>
+            <option value="aTransitional Support" selected = {this.state.mainProgramActivity.includes("Transitional Support")}>Transitional Support</option>
+            <option value="aIncreasing or Sustaining Enrollment" selected = {this.state.mainProgramActivity.includes("Increasing or Sustaining Enrollment")}>Increasing or Sustaining Enrollment</option>
+            <option value="aSchool Feeding Programs and Other Non-Financial Targeted Incentives" selected = {this.state.mainProgramActivity.includes("School Feeding Programs and Other Non-Financial Targeted Incentives")}>School Feeding Programs and Other Non-Financial Targeted Incentives</option>
+            <option value="aPrograms to improve access and equity in education" selected = {this.state.mainProgramActivity.includes("Programs to improve access and equity in education")}>Programs to improve access and equity in education</option>
+            <option value="aAdult literacy and numeracy programs" selected = {this.state.mainProgramActivity.includes("Adult literacy and numeracy programs")}>Adult literacy and numeracy programs</option>
+            <option value="eSchool Infrastructure and equipment" selected = {this.state.mainProgramActivity.includes("School Infrastructure and equipment")}>School Infrastructure and equipment</option>
+            <option value="eSchool rehabilitation and construction" selected = {this.state.mainProgramActivity.includes("School rehabilitation and construction")}>School rehabilitation and construction</option>
+            <option value="eCommunity resources towards education facilities" selected = {this.state.mainProgramActivity.includes("Community resources towards education facilities")}>Community resources towards education facilities</option>
+            <option value="fVouchers and conditional cash transfers" selected = {this.state.mainProgramActivity.includes("Vouchers and conditional cash transfers")}>Vouchers and conditional cash transfers</option>
+            <option value="fScholarships and financial aid" selected = {this.state.mainProgramActivity.includes("Scholarships and financial aid")}>Scholarships and financial aid</option>
+            <option value="fStudent/household loans" selected = {this.state.mainProgramActivity.includes("Student/household loans")}>Student/household loans</option>
+            <option value="fContracting" selected = {this.state.mainProgramActivity.includes("Contracting")}>Contracting</option>
+            <option value="fSchool loans" selected = {this.state.mainProgramActivity.includes("School loans")}>School loans</option>
+            <option value="fPay-for-performance" selected = {this.state.mainProgramActivity.includes("Pay-for-performance")}>Pay-for-performance</option>
+            <option value="fOther financial targeted incentives for attendance" selected = {this.state.mainProgramActivity.includes("Other financial targeted incentives for attendance")}>Other financial targeted incentives for attendance</option>
+            <option value="gParental or community engagement for school accountability" selected = {this.state.mainProgramActivity.includes("Parental or community engagement for school accountability")}>Parental or community engagement for school accountability</option>
+            <option value="gSchool operations or management" selected = {this.state.mainProgramActivity.includes("School operations or management")}>School operations or management</option>
+            <option value="gSchool assessment/rating systems" selected = {this.state.mainProgramActivity.includes("School assessment/rating systems")}>School assessment/rating systems</option>
+            <option value="gCapacity development programs or services for education administration or bureaucracy" selected = {this.state.mainProgramActivity.includes("Capacity development programs or services for education administration or bureaucracy")}>Capacity development programs or services for education administration or bureaucracy</option>
+            <option value="gEMIS/Data systems" selected = {this.state.mainProgramActivity.includes("EMIS/Data systems")}>EMIS/Data systems</option>
+            <option value="gRegulatory analysis focused on government policy" selected = {this.state.mainProgramActivity.includes("Regulatory analysis focused on government policy")}>Regulatory analysis focused on government policy</option>
+            <option value="gRegulatory analysis focused on school policy" selected = {this.state.mainProgramActivity.includes("Regulatory analysis focused on school policy")}>Regulatory analysis focused on school policy</option>
+            <option value="gSchool quality improvement" selected = {this.state.mainProgramActivity.includes("School quality improvement")}>School quality improvement</option>
+            <option value="pFranchise of schools/centers" selected = {this.state.mainProgramActivity.includes("Franchise of schools/centers")}>Franchise of schools/centers</option>
+            <option value="pChain of schools/centers" selected = {this.state.mainProgramActivity.includes("Chain of schools/centers")}>Chain of schools/centers</option>
+            <option value="pNetwork of schools/centers" selected = {this.state.mainProgramActivity.includes("Network of schools/centers")}>Network of schools/centers</option>
+            <option value="pMobile schools/centers" selected = {this.state.mainProgramActivity.includes("Mobile schools/centers")}>Mobile schools/centers</option>
+            <option value="pOnline school/center" selected = {this.state.mainProgramActivity.includes("Online school/center")}>Online school/center</option>
+            <option value="pStand-alone schools/centers" selected = {this.state.mainProgramActivity.includes("Stand-alone schools/centers")}>Stand-alone schools/centers</option>
+            <option value="pNGO Schools" selected = {this.state.mainProgramActivity.includes("NGO Schools")}>NGO Schools</option>
+            <option value="pFormal public-private partnership" selected = {this.state.mainProgramActivity.includes("Formal public-private partnership")}>Formal public-private partnership</option>
+            <option value="pPrivate schools" selected = {this.state.mainProgramActivity.includes("Private schools")}>Private schools</option>
+            <option value="iOnline learning portals" selected = {this.state.mainProgramActivity.includes("Online learning portals")}>Online learning portals</option>
+            <option value="iComputer-assisted instruction/learning programs/products" selected = {this.state.mainProgramActivity.includes("Computer-assisted instruction/learning programs/products")}>Computer-assisted instruction/learning programs/products</option>
+            <option value="iComputers and tablets/computing skills focus" selected = {this.state.mainProgramActivity.includes("Computers and tablets/computing skills focus")}>Computers and tablets/computing skills focus</option>
+            <option value="iSchool WiFi/broadband initiatives" selected = {this.state.mainProgramActivity.includes("School WiFi/broadband initiatives")}>School WiFi/broadband initiatives</option>
+            <option value="iDigital classrooms" selected = {this.state.mainProgramActivity.includes("Digital classrooms")}>Digital classrooms</option>
+            <option value="iMOOC instruction" selected = {this.state.mainProgramActivity.includes("MOOC instruction")}>MOOC instruction</option>
+            <option value="iScience technology and innovation (STI) activities including research and development (R&D), training knowledge workers/ technology acquisition and diffusion/ STI grants" selected = {this.state.mainProgramActivity.includes("Science technology and innovation (STI) activities including research and development (R&D), training knowledge workers/ technology acquisition and diffusion/ STI grants")}>Science technology and innovation (STI) activities including research and development (R&D), training knowledge workers/ technology acquisition and diffusion/ STI grants</option>
+            <option value="cStandardized teaching materials" selected = {this.state.mainProgramActivity.includes("Standardized teaching materials")}>Standardized teaching materials</option>
+            <option value="cNon-traditional schedules" selected = {this.state.mainProgramActivity.includes("Non-traditional schedules")}>Non-traditional schedules</option>
+            <option value="cExtra-curricular activities" selected = {this.state.mainProgramActivity.includes("Extra-curricular activities")}>Extra-curricular activities</option>
+            <option value="cLearning materials for students" selected = {this.state.mainProgramActivity.includes("Learning materials for students")}>Learning materials for students</option>
+            <option value="cTextbooks/books" selected = {this.state.mainProgramActivity.includes("Textbooks/books")}>Textbooks/books</option>
+            <option value="cSTEM materials/focus/program" selected = {this.state.mainProgramActivity.includes("STEM materials/focus/program")}>STEM materials/focus/program</option>
+            <option value="cEnglish/language materials" selected = {this.state.mainProgramActivity.includes("English/language materials")}>English/language materials</option>
+            <option value="cMaths materials" selected = {this.state.mainProgramActivity.includes("Maths materials")}>Maths materials</option>
+            <option value="sStudent assessment and progress" selected = {this.state.mainProgramActivity.includes("Student assessment and progress")}>Student assessment and progress</option>
+            <option value="sExam preparation" selected = {this.state.mainProgramActivity.includes("Exam preparation")}>Exam preparation</option>
+            <option value="sTutoring/private tuition (includes tutoring chains/centres)" selected = {this.state.mainProgramActivity.includes("Tutoring/private tuition (includes tutoring chains/centres)")}>Tutoring/private tuition (includes tutoring chains/centres)</option>
+            <option value="sParental or community engagement in support of students" selected = {this.state.mainProgramActivity.includes("Parental or community engagement in support of students")}>Parental or community engagement in support of students</option>
+            <option value="sMentorship programs" selected = {this.state.mainProgramActivity.includes("Mentorship programs")}>Mentorship programs</option>
+            <option value="tTeacher training" selected = {this.state.mainProgramActivity.includes("Teacher training")}>Teacher training</option>
+            <option value="tSchool leader/principals training" selected = {this.state.mainProgramActivity.includes("School leader/principals training")}>School leader/principals training</option>
+            <option value="tTeacher/leader evaluation capacity development and mentorship programs" selected = {this.state.mainProgramActivity.includes("Teacher/leader evaluation capacity development and mentorship programs")}>Teacher/leader evaluation capacity development and mentorship programs</option>
+            <option value="tTeacher recruitment/ deployment/ in-service training programs" selected = {this.state.mainProgramActivity.includes("Teacher recruitment/ deployment/ in-service training programs")}>Teacher recruitment/ deployment/ in-service training programs</option>
+            <option value="wMentorship/ internship/ job placement" selected = {this.state.mainProgramActivity.includes("Mentorship/ internship/ job placement")}>Mentorship/ internship/ job placement</option>
+            <option value="wEmployment skills programs" selected = {this.state.mainProgramActivity.includes("Employment skills programs")}>Employment skills programs</option>
+            <option value="wEntrepreneurship and business skills programs" selected = {this.state.mainProgramActivity.includes("Entrepreneurship and business skills programs")}>Entrepreneurship and business skills programs</option>
+            <option value="vLinking research and evidence with policy or implementation" selected = {this.state.mainProgramActivity.includes("Linking research and evidence with policy or implementation")}>Linking research and evidence with policy or implementation</option>
+            <option value="vAdvocacy campaigns/ initiatives/ movements" selected = {this.state.mainProgramActivity.includes("Advocacy campaigns/ initiatives/ movements")}>Advocacy campaigns/ initiatives/ movements</option>
+            <option value="vRegulatory analysis" selected = {this.state.mainProgramActivity.includes("Regulatory analysis")}>Regulatory analysis</option>
+            <option value="vKnowledge production/mobilization" selected = {this.state.mainProgramActivity.includes("Knowledge production/mobilization")}>Knowledge production/mobilization</option>
+            <option value="vEducation sector research studies/ surveys/ assessments" selected = {this.state.mainProgramActivity.includes("Increasing or Sustaining Enrollment")}>Education sector research studies/ surveys/ assessments</option>
+            <option value="vCapacity building at the system level" selected = {this.state.mainProgramActivity.includes("Capacity building at the system level")}>Capacity building at the system level</option>
+            <option value="wLife skills and personal finance training" selected = {this.state.mainProgramActivity.includes("Life skills and personal finance training")}>Life skills and personal finance training</option>
+            <option value="wContinuing education programs offered for adults" selected = {this.state.mainProgramActivity.includes("Continuing education programs offered for adults")}>Continuing education programs offered for adults</option>
+            <option value="aCurriculum and Extra-Curricular Support" selected = {this.state.mainProgramActivity.includes("Curriculum and Extra-Curricular Support")}>Curriculum and Extra-Curricular Support</option>
+            <option value="aPrograms targeting girls/women" selected = {this.state.mainProgramActivity.includes("Programs targeting girls/women")}>Programs targeting girls/women</option>
+            <option value="aPrograms targeting special needs or people with disabilities" selected = {this.state.mainProgramActivity.includes("Programs targeting special needs or people with disabilities")}>Programs targeting special needs or people with disabilities</option>
+            <option value="aPrograms targeting other marginalized groups" selected = {this.state.mainProgramActivity.includes("Programs targeting other marginalized groups")}>Programs targeting other marginalized groups</option>
+            <option value="aPrograms targeting tribal or indigenous groups" selected = {this.state.mainProgramActivity.includes("Programs targeting tribal or indigenous groups")}>Programs targeting tribal or indigenous groups</option>
+            <option value="wProfessional certification/skills" selected = {this.state.mainProgramActivity.includes("Professional certification/skills")}>Professional certification/skills</option>
+            <option value="wShort-term technical/vocational course" selected = {this.state.mainProgramActivity.includes("Short-term technical/vocational course")}>Short-term technical/vocational course</option>
+            <option value="wLonger-term technical/vocational course" selected = {this.state.mainProgramActivity.includes("Longer-term technical/vocational course")}>Longer-term technical/vocational course</option>
+            <option value="oNon-formal education youth" selected = {this.state.mainProgramActivity.includes("Non-formal education youth")}>Non-formal education youth</option>
+            <option value=" Private Sector Delivery of Education" selected = {this.state.mainProgramActivity.includes("Private Sector Delivery of Education")}>Private Sector Delivery of Education</option>
+            <option value=" vocational training" selected = {this.state.mainProgramActivity.includes("vocational training")}>vocational training</option>
+            <option value=" Education Finance (system-level)" selected = {this.state.mainProgramActivity.includes("Education Finance (system-level)")}>Education Finance (system-level)</option>
+            <option value=" school finance" selected = {this.state.mainProgramActivity.includes("school finance")}>school finance</option>
+            <option value=" Capacity Building of Non-Education Professionals" selected = {this.state.mainProgramActivity.includes("Capacity Building of Non-Education Professionals")}>Capacity Building of Non-Education Professionals</option>
+            <option value=" Enrichment/New Pedagogical or Curricular Programs" selected = {this.state.mainProgramActivity.includes("Enrichment/New Pedagogical or Curricular Programs")}>Enrichment/New Pedagogical or Curricular Programs</option>
+            <option value=" Academic research/academic exchange" selected = {this.state.mainProgramActivity.includes("Academic research/academic exchange")}>Academic research/academic exchange</option>
+            <option value=" Main Programming Activity" selected = {this.state.mainProgramActivity.includes("Main Programming Activity")}>Main Programming Activity</option>
+            <option value=" All Programming Activities" selected = {this.state.mainProgramActivity.includes("All Programming Activities")}>All Programming Activities</option>
+            <option value=" Civic/community education" selected = {this.state.mainProgramActivity.includes("Civic/community education")}>Civic/community education</option>
+            <option value=" Scholarships and Financial Aid" selected = {this.state.mainProgramActivity.includes("Scholarships and Financial Aid")}>Scholarship and Financial Aid</option>
+            <option value=" Employment Skills program" selected = {this.state.mainProgramActivity.includes("Employment Skills program")}>Employment Skills program</option>
+            <option value=" Advocacy campaigns/initiatives/movements" selected = {this.state.mainProgramActivity.includes("Advocacy campaigns/initiatives/movements")}>Advocacy campaigns/initiatives/movements</option>
+            <option value=" Knowledge production/mobilization" selected = {this.state.mainProgramActivity.includes("Knowledge production/mobilization")}>Knowledge production/mobilization</option>
+            <option value=" Program targeting special needs or people with disabilities" selected = {this.state.mainProgramActivity.includes("Program targeting special needs or people with disabilities")}>Program targeting special needs or people with disabilities</option>
+            <option value=" Literacy skills" selected = {this.state.mainProgramActivity.includes("Literacy skills")}>Literacy skills</option>
+            <option value=" Maternal Health Education" selected = {this.state.mainProgramActivity.includes("Maternal Health Education")}>Maternal Health Education</option>
             </select>
 
             <p>Program Area</p>
-            <div id="programArea"></div>
+            <div id="programArea">
+              <p>
+                <i>{this.state.programArea}</i>
+              </p>
+            </div>
             <br></br>
 
             <p>Other Programming Activities</p>

@@ -2483,53 +2483,70 @@ dashboard.post('/update-form', (req, res) =>{
         })
 
 
-    //delete initiative region data
-    var query13= "DELETE FROM initiativeregion WHERE tagNumber = "+ formData.tagNum
-    async.parallel([
-      function(queryDB) {
-          pool.query(query13, {}, function(err, results) {
+        //delete initiative region data
+        var query13= "DELETE FROM initiativeregion WHERE tagNumber = "+ formData.tagNum
+        async.parallel([
+          function(queryDB) {
+              pool.query(query13, {}, function(err, results) {
+                  if (err){
+                      return queryDB(err)
+                  }else{
+                      queryDB()
+                  }
+              })
+            },
+          ], function(err) {
               if (err){
-                  return queryDB(err)
-              }else{
-                  queryDB()
-              }
-
-          })
-        },
-      ], function(err) {
-          if (err){
-              console.log(err)
-          } else {
-            const countriesToRegions = {};
-            for(var i = 0; i < formData.initiativeRegions.length; i++) {
-              for(var j = 0; j < formData.initiativeCountries.length; j++) {
-                //Only push and insert region if it hasnt been inserted yet
-                if (!(formData.initiativeRegions[i] in countriesToRegions)) {
-                  //Push country associated to region
-                  countriesToRegions[formData.initiativeRegions[i]] = [formData.initiativeCountries[j]];
-                  //Insert initiative region data
-                  var query14 = "INSERT into initiativeregion VALUES ("+formData.tagNum +", (SELECT regionName from regions WHERE regionName = '" + formData.initiativeRegions[i] + "' AND includedCountry = '" + formData.initiativeCountries[j] + "'))"
-                  async.parallel([
-                      function(queryDB) {
-                          pool.query(query14, {}, function(err, results) {
-                              if (err){
-                                  return queryDB(err)
-                              }else{
-                                  queryDB()
-                              }
-                          })
-                      },
-                  ], function(err) {
-                      if (err){
-                          console.log(err);
-                      }
-                  })
+                  console.log(err)
+              } else {
+                const countryRegions = [];
+                for (var i = 0; i < formData.initiativeRegions.length; i++) {
+                  for (var j = 0; j < formData.initiativeCountries.length; j++) {
+                    const regionFound = countryRegions.find(region => region.region == formData.initiativeRegions[i] && region.country == formData.initiativeCountries[j]);
+                    if (regionFound === undefined) {
+                      countryRegions.push({region: formData.initiativeRegions[i], country: formData.initiativeCountries[j] })
+                    }
+                  }
                 }
+
+                async.map(countryRegions, function(region, queryDB) {
+                    pool.query("SELECT regionName from regions WHERE regionName = '" + region.region + "' AND includedCountry = '" + region.country + "'", {}, function(err, results) {
+                      if (err) {
+                        return queryDB(err, null)
+                      } else {
+                        queryDB(null, results)
+                      }
+                    })
+                  }, function(err, results) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      let res = JSON.parse(JSON.stringify(results));
+                      const regions = [];
+                      res.forEach(regionListing => {
+                        if (regionListing.length > 0) {
+                          regions.push(regionListing[0].regionName);
+                        }
+                      });
+                      regionsFiltered = [...new Set(regions)];
+                      //Insert region data
+                      async.map(regionsFiltered, function(region, queryDB) {
+                        pool.query("INSERT into initiativeregion VALUES ("+ formData.tagNum +", '" + region + "')", {}, function(err, results) {
+                          if (err) {
+                            return queryDB(err, null)
+                          } else {
+                            queryDB(null, results)
+                          }
+                        })
+                      }, function(err, results) {
+                        if (err) {
+                          console.log(err)
+                        }
+                      })
+                    }
+                })
               }
-            }
-            console.log(countriesToRegions)
-        }
-      })
+            })
 
 
     //delete initiativecountryofoperation data
@@ -3633,54 +3650,70 @@ dashboard.post('/update-form-temp', (req, res) =>{
               })
 
 
-        //delete initiative region data
-        var query13= "DELETE FROM initiativeregion WHERE tagNumber = "+ formData.tagNum
-        async.parallel([
-          function(queryDB) {
-              poolTemp.query(query13, {}, function(err, results) {
-                  if (err){
-                      return queryDB(err)
-                  }else{
-                      queryDB()
-                  }
+              //delete initiative region data
+              var query13= "DELETE FROM initiativeregion WHERE tagNumber = "+ formData.tagNum
+              async.parallel([
+                function(queryDB) {
+                    poolTemp.query(query13, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            queryDB()
+                        }
+                    })
+                  },
+                ], function(err) {
+                    if (err){
+                        console.log(err)
+                    } else {
+                      const countryRegions = [];
+                      for (var i = 0; i < formData.initiativeRegions.length; i++) {
+                        for (var j = 0; j < formData.initiativeCountries.length; j++) {
+                          const regionFound = countryRegions.find(region => region.region == formData.initiativeRegions[i] && region.country == formData.initiativeCountries[j]);
+                          if (regionFound === undefined) {
+                            countryRegions.push({region: formData.initiativeRegions[i], country: formData.initiativeCountries[j] })
+                          }
+                        }
+                      }
 
-              })
-            },
-          ], function(err) {
-              if (err){
-                  console.log(err)
-              } else {
-                const countriesToRegions = {};
-                for(var i = 0; i < formData.initiativeRegions.length; i++) {
-                  for(var j = 0; j < formData.initiativeCountries.length; j++) {
-                    //Only push and insert region if it hasnt been inserted yet
-                    if (!(formData.initiativeRegions[i] in countriesToRegions)) {
-                      //Push country associated to region
-                      countriesToRegions[formData.initiativeRegions[i]] = [formData.initiativeCountries[j]];
-                      //Insert initiative region data
-                      var query14 = "INSERT into initiativeregion VALUES ("+formData.tagNum +", (SELECT regionName from regions WHERE regionName = '" + formData.initiativeRegions[i] + "' AND includedCountry = '" + formData.initiativeCountries[j] + "'))"
-                      async.parallel([
-                          function(queryDB) {
-                              poolTemp.query(query14, {}, function(err, results) {
-                                  if (err){
-                                      return queryDB(err)
-                                  }else{
-                                      queryDB()
-                                  }
+                      async.map(countryRegions, function(region, queryDB) {
+                          poolTemp.query("SELECT regionName from regions WHERE regionName = '" + region.region + "' AND includedCountry = '" + region.country + "'", {}, function(err, results) {
+                            if (err) {
+                              return queryDB(err, null)
+                            } else {
+                              queryDB(null, results)
+                            }
+                          })
+                        }, function(err, results) {
+                          if (err) {
+                            console.log(err);
+                          } else {
+                            let res = JSON.parse(JSON.stringify(results));
+                            const regions = [];
+                            res.forEach(regionListing => {
+                              if (regionListing.length > 0) {
+                                regions.push(regionListing[0].regionName);
+                              }
+                            });
+                            regionsFiltered = [...new Set(regions)];
+                            //Insert region data
+                            async.map(regionsFiltered, function(region, queryDB) {
+                              poolTemp.query("INSERT into initiativeregion VALUES ("+ formData.tagNum +", '" + region + "')", {}, function(err, results) {
+                                if (err) {
+                                  return queryDB(err, null)
+                                } else {
+                                  queryDB(null, results)
+                                }
                               })
-                          },
-                      ], function(err) {
-                          if (err){
-                              console.log(err);
+                            }, function(err, results) {
+                              if (err) {
+                                console.log(err)
+                              }
+                            })
                           }
                       })
                     }
-                  }
-                }
-                console.log(countriesToRegions)
-              }
-            })
-
+                  })
 
           //delete initiativecountryofoperation data
           var query15= "DELETE FROM initiativecountryofoperation WHERE tagNumber = "+ formData.tagNum

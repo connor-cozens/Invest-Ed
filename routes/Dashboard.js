@@ -2084,6 +2084,7 @@ dashboard.post('/update-form', (req, res) =>{
          if (err){
            res.json(err)
          } else {
+           console.log('Num funder init: ' + JSON.parse(JSON.stringify(results)));
            numFunderInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(funderName)']));
            //If funder existed in temp already but hasnt been added to main db yet
            if (numFunderInitiatives == 0) {
@@ -2349,7 +2350,6 @@ dashboard.post('/update-form', (req, res) =>{
                                           //formData.table1 = results;
                                           queryDB()
                                       }
-
                                   })
                               },
 
@@ -2357,7 +2357,6 @@ dashboard.post('/update-form', (req, res) =>{
                               if (err){
                                   console.log(err)
                               }
-
                           })
                         }
                       }
@@ -2459,11 +2458,11 @@ dashboard.post('/update-form', (req, res) =>{
 
 
     //Insert initative data
-    query12 = "UPDATE initiative SET initiativeName = '" + formData.initiativeName +"', initiativeWebsite ='"+ formData.initiativeURL +"', targetsWomen ="+ formData.initiativeTargetsWomen +
-    ", startYear ='"+ formData.initiativeStart +"',endYear='"+ formData.initiativeEnd +"', description ='"+ formData.initiativeDescription +
-    "', mainProgrammingArea = (SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas
-    +"') , mainProgrammingActivity = (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'), feeToAccess ="+ formData.initiativeFeeAccess
-    +" WHERE tagNumber = " + formData.tagNum
+    query12 = "UPDATE initiative SET initiativeName = '" + formData.initiativeName +"', initiativeWebsite ='"+ formData.initiativeURL +"', targetsWomen = '"+ formData.initiativeTargetsWomen +
+    "', startYear ='"+ formData.initiativeStart +"',endYear='"+ formData.initiativeEnd +"', description ='"+ formData.initiativeDescription +
+    "', mainProgrammingArea = (SELECT programArea FROM programarea WHERE programArea ='" + formData.initiativeProgramAreas
+    + "' AND activity = '" + formData.initiativeMainProgramActivity + "') , mainProgrammingActivity = (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '" + formData.initiativeMainProgramActivity + "'), feeToAccess = '"+ formData.initiativeFeeAccess
+    + "' WHERE tagNumber = " + formData.tagNum
     async.parallel([
         function(queryDB) {
             pool.query(query12, {}, function(err, results) {
@@ -2487,46 +2486,50 @@ dashboard.post('/update-form', (req, res) =>{
     //delete initiative region data
     var query13= "DELETE FROM initiativeregion WHERE tagNumber = "+ formData.tagNum
     async.parallel([
-        function(queryDB) {
-            pool.query(query13, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
+      function(queryDB) {
+          pool.query(query13, {}, function(err, results) {
+              if (err){
+                  return queryDB(err)
+              }else{
+                  queryDB()
+              }
 
-            })
+          })
         },
-
-        ], function(err) {
-            if (err){
-                console.log(err)
+      ], function(err) {
+          if (err){
+              console.log(err)
+          } else {
+            const countriesToRegions = {};
+            for(var i = 0; i < formData.initiativeRegions.length; i++) {
+              for(var j = 0; j < formData.initiativeCountries.length; j++) {
+                //Only push and insert region if it hasnt been inserted yet
+                if (!(formData.initiativeRegions[i] in countriesToRegions)) {
+                  //Push country associated to region
+                  countriesToRegions[formData.initiativeRegions[i]] = [formData.initiativeCountries[j]];
+                  //Insert initiative region data
+                  var query14 = "INSERT into initiativeregion VALUES ("+formData.tagNum +", (SELECT regionName from regions WHERE regionName = '" + formData.initiativeRegions[i] + "' AND includedCountry = '" + formData.initiativeCountries[j] + "'))"
+                  async.parallel([
+                      function(queryDB) {
+                          pool.query(query14, {}, function(err, results) {
+                              if (err){
+                                  return queryDB(err)
+                              }else{
+                                  queryDB()
+                              }
+                          })
+                      },
+                  ], function(err) {
+                      if (err){
+                          console.log(err);
+                      }
+                  })
+                }
+              }
             }
-
-        })
-    //Insert initiative region data
-    for(var i = 0; i < formData.initiativeRegions.length; i++) {
-        var query14 = "INSERT into initiativeregion VALUES ("+formData.tagNum +", (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
-        console.log(formData.initiativeRegions[i])
-        async.parallel([
-            function(queryDB) {
-                pool.query(query14, {}, function(err, results) {
-                    if (err){
-                        return queryDB(err)
-                    }else{
-                        queryDB()
-                    }
-
-                })
-            },
-
-        ], function(err) {
-            if (err){
-                console.log(err)
-            }
-
-        })
-    }
+            console.log(countriesToRegions)
+        }
+      })
 
 
     //delete initiativecountryofoperation data
@@ -3523,7 +3526,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                                //formData.table1 = results;
                                queryDB()
                            }
-
                        })
                    },
 
@@ -3607,11 +3609,11 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
 
           //Insert initative data
-          query12 = "UPDATE initiative SET initiativeName = '" + formData.initiativeName +"', initiativeWebsite ='"+ formData.initiativeURL +"', targetsWomen ="+ formData.initiativeTargetsWomen +
-          ", startYear ='"+ formData.initiativeStart +"',endYear='"+ formData.initiativeEnd +"', description ='"+ formData.initiativeDescription +
-          "', mainProgrammingArea = (SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas
-          +"') , mainProgrammingActivity = (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'), feeToAccess ="+ formData.initiativeFeeAccess
-          +" WHERE tagNumber = " + formData.tagNum
+          query12 = "UPDATE initiative SET initiativeName = '" + formData.initiativeName +"', initiativeWebsite ='"+ formData.initiativeURL +"', targetsWomen = '"+ formData.initiativeTargetsWomen +
+          "', startYear ='"+ formData.initiativeStart +"',endYear='"+ formData.initiativeEnd +"', description ='"+ formData.initiativeDescription +
+          "', mainProgrammingArea = (SELECT programArea FROM programarea WHERE programArea ='" + formData.initiativeProgramAreas
+          + "' AND activity = '" + formData.initiativeMainProgramActivity + "') , mainProgrammingActivity = (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '" + formData.initiativeMainProgramActivity + "'), feeToAccess = '"+ formData.initiativeFeeAccess
+          + "' WHERE tagNumber = " + formData.tagNum
           async.parallel([
               function(queryDB) {
                   poolTemp.query(query12, {}, function(err, results) {
@@ -3631,51 +3633,53 @@ dashboard.post('/update-form-temp', (req, res) =>{
               })
 
 
-          //delete initiative region data
-          var query13= "DELETE FROM initiativeregion WHERE tagNumber = "+ formData.tagNum
-          async.parallel([
-              function(queryDB) {
-                  poolTemp.query(query13, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-
-                          queryDB()
-                      }
-
-                  })
-              },
-
-              ], function(err) {
+        //delete initiative region data
+        var query13= "DELETE FROM initiativeregion WHERE tagNumber = "+ formData.tagNum
+        async.parallel([
+          function(queryDB) {
+              poolTemp.query(query13, {}, function(err, results) {
                   if (err){
-                      console.log(err)
+                      return queryDB(err)
+                  }else{
+                      queryDB()
                   }
 
               })
-          //Insert initiative region data
-          for(var i = 0; i < formData.initiativeRegions.length; i++) {
-
-              var query14 = "INSERT into initiativeregion VALUES ("+formData.tagNum +", (SELECT regionName from regions WHERE regionName = '"+ formData.initiativeRegions[i]+"'))"
-              console.log(formData.initiativeRegions[i])
-              async.parallel([
-                  function(queryDB) {
-                      poolTemp.query(query14, {}, function(err, results) {
+            },
+          ], function(err) {
+              if (err){
+                  console.log(err)
+              } else {
+                const countriesToRegions = {};
+                for(var i = 0; i < formData.initiativeRegions.length; i++) {
+                  for(var j = 0; j < formData.initiativeCountries.length; j++) {
+                    //Only push and insert region if it hasnt been inserted yet
+                    if (!(formData.initiativeRegions[i] in countriesToRegions)) {
+                      //Push country associated to region
+                      countriesToRegions[formData.initiativeRegions[i]] = [formData.initiativeCountries[j]];
+                      //Insert initiative region data
+                      var query14 = "INSERT into initiativeregion VALUES ("+formData.tagNum +", (SELECT regionName from regions WHERE regionName = '" + formData.initiativeRegions[i] + "' AND includedCountry = '" + formData.initiativeCountries[j] + "'))"
+                      async.parallel([
+                          function(queryDB) {
+                              poolTemp.query(query14, {}, function(err, results) {
+                                  if (err){
+                                      return queryDB(err)
+                                  }else{
+                                      queryDB()
+                                  }
+                              })
+                          },
+                      ], function(err) {
                           if (err){
-                              return queryDB(err)
-                          }else{
-                              queryDB()
+                              console.log(err);
                           }
-
                       })
-                  },
-
-              ], function(err) {
-                  if (err){
-                      console.log(err)
+                    }
                   }
-
-              })
-          }
+                }
+                console.log(countriesToRegions)
+              }
+            })
 
 
           //delete initiativecountryofoperation data

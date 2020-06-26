@@ -2557,41 +2557,38 @@ dashboard.post('/update-form', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-
                     queryDB()
                 }
-
             })
         },
 
         ], function(err) {
             if (err){
                 console.log(err)
+            } else {
+              //Insert initiative country of operation data
+              for(var i = 0; i < formData.initiativeCountries.length; i++) {
+                var query16 = "INSERT into initiativecountryofoperation VALUES ("+formData.tagNum +", (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
+                async.parallel([
+                    function(queryDB) {
+                        pool.query(query16, {}, function(err, results) {
+                            if (err){
+                                return queryDB(err)
+                            } else {
+                                queryDB()
+                            }
+                        })
+                    },
+
+                ], function(err) {
+                    if (err){
+                        console.log(err)
+                    }
+                })
+              }
             }
-
         })
-    //Insert initiative country of operation data
-    for(var i = 0; i < formData.initiativeCountries.length; i++) {
-    var query16 = "INSERT into initiativecountryofoperation VALUES ("+formData.tagNum +", (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query16, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
 
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
 
     //delete initiativeprogrammingactivities data
     var query17= "DELETE FROM initiativeprogrammingactivities WHERE tagNumber = "+ formData.tagNum
@@ -2603,39 +2600,36 @@ dashboard.post('/update-form', (req, res) =>{
                 }else{
                     queryDB()
                 }
-
             })
         },
 
         ], function(err) {
             if (err){
                 console.log(err)
+            } else {
+              //Insert initiative programming activity data
+              for(var i = 0; i < formData.initiativeActivities.length; i++) {
+                var query18 = "INSERT into initiativeprogrammingactivities VALUES ("+formData.tagNum +",'"+ formData.initiativeActivities[i]+"')"
+                async.parallel([
+                    function(queryDB) {
+                        pool.query(query18, {}, function(err, results) {
+                            if (err){
+                                return queryDB(err)
+                            }else{
+                                queryDB()
+                            }
+                        })
+                    },
+
+                ], function(err) {
+                    if (err){
+                        console.log(err)
+                    }
+                })
+              }
             }
 
         })
-
-    //Insert initiative programming activity data
-    for(var i = 0; i < formData.initiativeActivities.length; i++) {
-    var query18 = "INSERT into initiativeprogrammingactivities VALUES ("+formData.tagNum +",'"+ formData.initiativeActivities[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query18, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
 
       //delete initiativefundingsource data
       var query19= "DELETE FROM initiativefundingsource WHERE tagNumber = "+ formData.tagNum
@@ -2645,43 +2639,38 @@ dashboard.post('/update-form', (req, res) =>{
                   if (err){
                       return queryDB(err)
                   }else{
-
                       queryDB()
                   }
-
               })
           },
 
           ], function(err) {
               if (err){
                   console.log(err)
-              }
+              } else {
+                //Insert initiative source of fees data
+                for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
+                  var query20= "INSERT into initiativefundingsource VALUES ("+formData.tagNum +",'"+ formData.initiativeSourceOfFees[i]+"')"
+                  async.parallel([
+                      function(queryDB) {
+                          pool.query(query20, {}, function(err, results) {
+                              if (err){
+                                  return queryDB(err)
+                              }else{
+                                  queryDB()
+                              }
+                          })
+                      },
 
+                  ], function(err) {
+                      if (err){
+                          console.log(err)
+                      }
+                  })
+                }
+              }
           })
 
-          console.log("here4")
-    //Insert initiative source of fees data
-    for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
-    var query20= "INSERT into initiativefundingsource VALUES ("+formData.tagNum +",'"+ formData.initiativeSourceOfFees[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query20, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
 
      //delete launchcountry data
      var query21= "DELETE FROM initiativelaunchcountry WHERE tagNumber = "+ formData.tagNum
@@ -2691,41 +2680,38 @@ dashboard.post('/update-form', (req, res) =>{
                  if (err){
                      return queryDB(err)
                  }else{
-
                      queryDB()
                  }
-
              })
          },
 
          ], function(err) {
              if (err){
                  console.log(err)
+             } else {
+               //Insert initiative launch country data
+               for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
+                 var query22 =  "INSERT into initiativelaunchcountry VALUES ("+formData.tagNum +",(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
+                 async.parallel([
+                     function(queryDB) {
+                         pool.query(query22, {}, function(err, results) {
+                             if (err){
+                                 return queryDB(err)
+                             }else{
+                                 queryDB()
+                             }
+                         })
+                     },
+
+                 ], function(err) {
+                     if (err){
+                         console.log(err)
+                     }
+                 })
+               }
              }
-
          })
-    //Insert initiative launch country data
-    for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
-    var query22 =  "INSERT into initiativelaunchcountry VALUES ("+formData.tagNum +",(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query22, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
 
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
 
      //delete initiativetargetgeography data
      var query23= "DELETE FROM initiativetargetgeography WHERE tagNumber = "+ formData.tagNum
@@ -2735,7 +2721,6 @@ dashboard.post('/update-form', (req, res) =>{
                  if (err){
                      return queryDB(err)
                  }else{
-
                      queryDB()
                  }
 
@@ -2745,30 +2730,31 @@ dashboard.post('/update-form', (req, res) =>{
          ], function(err) {
              if (err){
                  console.log(err)
+             } else {
+               //Insert initiative target geo data
+               for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
+                 var query24 = "INSERT into initiativetargetgeography VALUES ("+formData.tagNum +",'"+ formData.initiativeTargetGeo[i]+"')"
+                 async.parallel([
+                     function(queryDB) {
+                         pool.query(query24, {}, function(err, results) {
+                             if (err){
+                                 return queryDB(err)
+                             }else{
+                                 queryDB()
+                             }
+
+                         })
+                     },
+
+                 ], function(err) {
+                     if (err){
+                         console.log(err)
+                     }
+                 })
+               }
              }
-
          })
-    //Insert initiative target geo data
-    for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
-    var query24 = "INSERT into initiativetargetgeography VALUES ("+formData.tagNum +",'"+ formData.initiativeTargetGeo[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query24, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
 
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-      })
-    }
 
     //delete INSERT into initiativetargetpopulationsector data
     var query25= "DELETE FROM initiativetargetpopulationsector WHERE tagNumber = "+ formData.tagNum
@@ -2778,41 +2764,37 @@ dashboard.post('/update-form', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-
                     queryDB()
                 }
-
             })
         },
 
         ], function(err) {
             if (err){
                 console.log(err)
+            } else {
+              //Insert initiative target population sector data
+              for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
+                var query26 = "INSERT into initiativetargetpopulationsector VALUES ("+formData.tagNum +",'"+ formData.initiativetargetPopulationSector[i]+"')"
+                async.parallel([
+                    function(queryDB) {
+                        pool.query(query26, {}, function(err, results) {
+                            if (err){
+                                return queryDB(err)
+                            }else{
+                                queryDB()
+                            }
+                        })
+                    },
+
+                ], function(err) {
+                    if (err){
+                        console.log(err)
+                    }
+                })
+              }
             }
-
         })
-    //Insert initiative target population sector data
-    for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
-    var query26 = "INSERT into initiativetargetpopulationsector VALUES ("+formData.tagNum +",'"+ formData.initiativetargetPopulationSector[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query26, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
 
     //delete initiativemonitoredoutcomes data
     var query27= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ formData.tagNum
@@ -2822,85 +2804,77 @@ dashboard.post('/update-form', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-
                     queryDB()
                 }
-
             })
         },
 
         ], function(err) {
             if (err){
                 console.log(err)
+            } else {
+              //Insert initiative outcomes monitored data
+              for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
+                var query28 = "INSERT into initiativemonitoredoutcomes VALUES ("+formData.tagNum +",'"+ formData.initiativeOutcomesMonitored[i]+"')"
+                async.parallel([
+                    function(queryDB) {
+                        pool.query(query28, {}, function(err, results) {
+                            if (err){
+                                return queryDB(err)
+                            }else{
+                                queryDB()
+                            }
+
+                        })
+                    },
+
+                ], function(err) {
+                    if (err){
+                        console.log(err)
+                    }
+                })
+              }
             }
-
         })
-    //Insert initiative outcomes monitored data
-    for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
-    var query28 = "INSERT into initiativemonitoredoutcomes VALUES ("+formData.tagNum +",'"+ formData.initiativeOutcomesMonitored[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query28, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
 
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
-
-     //delete initiativemonitoredoutcomes data
-     var query29= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ formData.tagNum
+     //delete initiative main education subsector data
+     var query29= "DELETE FROM initiativemaineducationsubsector WHERE tagNumber = "+ formData.tagNum
      async.parallel([
-         function(queryDB) {
-             pool.query(query29, {}, function(err, results) {
-                 if (err){
-                     return queryDB(err)
-                 }else{
-
-                     queryDB()
-                 }
-
-             })
+       function(queryDB) {
+           pool.query(query29, {}, function(err, results) {
+               if (err){
+                   return queryDB(err)
+               }else{
+                   queryDB()
+               }
+           })
          },
-
-         ], function(err) {
-             if (err){
-                 console.log(err)
+       ], function(err) {
+           if (err){
+               console.log(err)
+           } else {
+             //Insert initiative main education subsector data
+             for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
+               var query30 = "INSERT into initiativemaineducationsubsector VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
+               async.parallel([
+                   function(queryDB) {
+                       pool.query(query30, {}, function(err, results) {
+                           if (err){
+                               return queryDB(err)
+                           }else{
+                               queryDB()
+                           }
+                       })
+                   },
+               ], function(err) {
+                   if (err){
+                       console.log(err)
+                   }
+               })
              }
+           }
+     })
 
-         })
-    //Insert initiative main education subsector data
-    for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
-    var query30 = "INSERT into initiativemaineducationsubsector VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query30, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
 
     //delete initiativeeducationsubsectors data
     var query31= "DELETE FROM initiativeeducationsubsectors WHERE initiativeTagNumber = "+ formData.tagNum
@@ -2910,41 +2884,38 @@ dashboard.post('/update-form', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-
                     queryDB()
                 }
-
             })
         },
 
         ], function(err) {
             if (err){
                 console.log(err)
+            } else {
+              //Insert initiative education subsector data
+              for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
+                var query32 = "INSERT into initiativeeducationsubsectors VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
+                async.parallel([
+                    function(queryDB) {
+                        pool.query(query32, {}, function(err, results) {
+                            if (err){
+                                return queryDB(err)
+                            }else{
+                                queryDB()
+                            }
+
+                        })
+                    },
+
+                ], function(err) {
+                    if (err){
+                        console.log(err)
+                    }
+                })
+              }
             }
-
         })
-    //Insert initiative education subsector data
-    for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
-    var query32 = "INSERT into initiativeeducationsubsectors VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query32, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
 
     //delete initiativetargetschoolmanagement data
     var query33= "DELETE FROM initiativetargetschoolmanagement WHERE tagNumber = "+ formData.tagNum
@@ -2954,41 +2925,37 @@ dashboard.post('/update-form', (req, res) =>{
                 if (err){
                     return queryDB(err)
                 }else{
-
                     queryDB()
                 }
-
             })
         },
 
         ], function(err) {
             if (err){
                 console.log(err)
+            } else {
+              //Insert initiative target management t data
+              for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
+              var query34 = "INSERT into initiativetargetschoolmanagement VALUES ("+formData.tagNum +",'"+ formData.initiativeManagementTypes[i]+"')"
+              async.parallel([
+                  function(queryDB) {
+                      pool.query(query34, {}, function(err, results) {
+                          if (err){
+                              return queryDB(err)
+                          }else{
+                              queryDB()
+                          }
+                      })
+                  },
+
+              ], function(err) {
+                  if (err){
+                      console.log(err)
+                  }
+              })
             }
-
-        })
-    //Insert initiative target management t data
-    for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
-    var query34 = "INSERT into initiativetargetschoolmanagement VALUES ("+formData.tagNum +",'"+ formData.initiativeManagementTypes[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query34, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
+          }
       })
-    }
-
 
     async.parallel([
       function(queryDB) {
@@ -3723,41 +3690,37 @@ dashboard.post('/update-form-temp', (req, res) =>{
                       if (err){
                           return queryDB(err)
                       }else{
-
                           queryDB()
                       }
 
                   })
-              },
-
+                },
               ], function(err) {
                   if (err){
                       console.log(err)
+                  } else {
+                    //Insert initiative country of operation data
+                    for(var i = 0; i < formData.initiativeCountries.length; i++) {
+                      var query16 = "INSERT into initiativecountryofoperation VALUES ("+formData.tagNum +", (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
+                      async.parallel([
+                          function(queryDB) {
+                              poolTemp.query(query16, {}, function(err, results) {
+                                  if (err){
+                                      return queryDB(err)
+                                  }else{
+                                      queryDB()
+                                  }
+                              })
+                          },
+                      ], function(err) {
+                          if (err){
+                              console.log(err)
+                          }
+                      })
+                    }
                   }
-
               })
-          //Insert initiative country of operation data
-          for(var i = 0; i < formData.initiativeCountries.length; i++) {
-          var query16 = "INSERT into initiativecountryofoperation VALUES ("+formData.tagNum +", (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
-          async.parallel([
-              function(queryDB) {
-                  poolTemp.query(query16, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
 
-                  })
-              },
-
-          ], function(err) {
-              if (err){
-                  console.log(err)
-              }
-
-          })
-          }
 
           //delete initiativeprogrammingactivities data
           var query17= "DELETE FROM initiativeprogrammingactivities WHERE tagNumber = "+ formData.tagNum
@@ -3767,42 +3730,38 @@ dashboard.post('/update-form-temp', (req, res) =>{
                       if (err){
                           return queryDB(err)
                       }else{
-
                           queryDB()
                       }
-
                   })
-              },
-
+                },
               ], function(err) {
                   if (err){
                       console.log(err)
-                  }
+                  } else {
+                    //Insert initiative programming activity data
+                    for(var i = 0; i < formData.initiativeActivities.length; i++) {
+                      var query18 = "INSERT into initiativeprogrammingactivities VALUES ("+formData.tagNum +",'"+ formData.initiativeActivities[i]+"')"
+                      async.parallel([
+                          function(queryDB) {
+                              poolTemp.query(query18, {}, function(err, results) {
+                                  if (err){
+                                      return queryDB(err)
+                                  }else{
+                                      queryDB()
+                                  }
 
+                              })
+                          },
+
+                      ], function(err) {
+                          if (err){
+                              console.log(err)
+                          }
+                      })
+                    }
+                  }
               })
 
-          //Insert initiative programming activity data
-          for(var i = 0; i < formData.initiativeActivities.length; i++) {
-          var query18 = "INSERT into initiativeprogrammingactivities VALUES ("+formData.tagNum +",'"+ formData.initiativeActivities[i]+"')"
-          async.parallel([
-              function(queryDB) {
-                  poolTemp.query(query18, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
-
-                  })
-              },
-
-          ], function(err) {
-              if (err){
-                  console.log(err)
-              }
-
-          })
-          }
 
             //delete initiativefundingsource data
             var query19= "DELETE FROM initiativefundingsource WHERE tagNumber = "+ formData.tagNum
@@ -3812,43 +3771,38 @@ dashboard.post('/update-form-temp', (req, res) =>{
                         if (err){
                             return queryDB(err)
                         }else{
-
                             queryDB()
                         }
 
                     })
-                },
-
+                  },
                 ], function(err) {
                     if (err){
                         console.log(err)
-                    }
+                    } else {
+                      //Insert initiative source of fees data
+                      for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
+                        var query20= "INSERT into initiativefundingsource VALUES ("+formData.tagNum +",'"+ formData.initiativeSourceOfFees[i]+"')"
+                        async.parallel([
+                            function(queryDB) {
+                                poolTemp.query(query20, {}, function(err, results) {
+                                    if (err){
+                                        return queryDB(err)
+                                    }else{
+                                        queryDB()
+                                    }
+                                })
+                            },
 
+                        ], function(err) {
+                            if (err){
+                                console.log(err)
+                            }
+                        })
+                      }
+                    }
                 })
 
-                console.log("here4")
-          //Insert initiative source of fees data
-          for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
-          var query20= "INSERT into initiativefundingsource VALUES ("+formData.tagNum +",'"+ formData.initiativeSourceOfFees[i]+"')"
-          async.parallel([
-              function(queryDB) {
-                  poolTemp.query(query20, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
-
-                  })
-              },
-
-          ], function(err) {
-              if (err){
-                  console.log(err)
-              }
-
-          })
-          }
 
            //delete launchcountry data
            var query21= "DELETE FROM initiativelaunchcountry WHERE tagNumber = "+ formData.tagNum
@@ -3858,41 +3812,40 @@ dashboard.post('/update-form-temp', (req, res) =>{
                        if (err){
                            return queryDB(err)
                        }else{
-
                            queryDB()
                        }
-
                    })
                },
 
                ], function(err) {
                    if (err){
                        console.log(err)
+                   } else {
+                     //Insert initiative launch country data
+                     for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
+                       var query22 =  "INSERT into initiativelaunchcountry VALUES ("+formData.tagNum +",(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
+                       async.parallel([
+                           function(queryDB) {
+                               poolTemp.query(query22, {}, function(err, results) {
+                                   if (err){
+                                       return queryDB(err)
+                                   }else{
+                                       queryDB()
+                                   }
+
+                               })
+                           },
+
+                       ], function(err) {
+                           if (err){
+                               console.log(err)
+                           }
+
+                       })
+                     }
                    }
-
                })
-          //Insert initiative launch country data
-          for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
-          var query22 =  "INSERT into initiativelaunchcountry VALUES ("+formData.tagNum +",(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
-          async.parallel([
-              function(queryDB) {
-                  poolTemp.query(query22, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
 
-                  })
-              },
-
-          ], function(err) {
-              if (err){
-                  console.log(err)
-              }
-
-          })
-          }
 
            //delete initiativetargetgeography data
            var query23= "DELETE FROM initiativetargetgeography WHERE tagNumber = "+ formData.tagNum
@@ -3902,40 +3855,38 @@ dashboard.post('/update-form-temp', (req, res) =>{
                        if (err){
                            return queryDB(err)
                        }else{
-
                            queryDB()
                        }
-
                    })
                },
 
                ], function(err) {
                    if (err){
                        console.log(err)
+                   } else {
+                     //Insert initiative target geo data
+                     for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
+                       var query24 = "INSERT into initiativetargetgeography VALUES ("+formData.tagNum +",'"+ formData.initiativeTargetGeo[i]+"')"
+                       async.parallel([
+                           function(queryDB) {
+                               poolTemp.query(query24, {}, function(err, results) {
+                                   if (err){
+                                       return queryDB(err)
+                                   }else{
+                                       queryDB()
+                                   }
+
+                               })
+                           },
+
+                       ], function(err) {
+                           if (err){
+                               console.log(err)
+                           }
+                       })
+                     }
                    }
-
                })
-          //Insert initiative target geo data
-          for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
-          var query24 = "INSERT into initiativetargetgeography VALUES ("+formData.tagNum +",'"+ formData.initiativeTargetGeo[i]+"')"
-          async.parallel([
-              function(queryDB) {
-                  poolTemp.query(query24, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
-
-                  })
-              },
-
-          ], function(err) {
-              if (err){
-                  console.log(err)
-              }
-            })
-          }
 
           //delete INSERT into initiativetargetpopulationsector data
           var query25= "DELETE FROM initiativetargetpopulationsector WHERE tagNumber = "+ formData.tagNum
@@ -3950,35 +3901,36 @@ dashboard.post('/update-form-temp', (req, res) =>{
                       }
 
                   })
-              },
+                },
 
               ], function(err) {
                   if (err){
                       console.log(err)
+                  } else {
+                    //Insert initiative target population sector data
+                    for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
+                      var query26 = "INSERT into initiativetargetpopulationsector VALUES ("+formData.tagNum +",'"+ formData.initiativetargetPopulationSector[i]+"')"
+                      async.parallel([
+                          function(queryDB) {
+                              poolTemp.query(query26, {}, function(err, results) {
+                                  if (err){
+                                      return queryDB(err)
+                                  }else{
+                                      queryDB()
+                                  }
+
+                              })
+                          },
+
+                      ], function(err) {
+                          if (err){
+                              console.log(err)
+                          }
+                        })
+                    }
                   }
-
               })
-          //Insert initiative target population sector data
-          for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
-          var query26 = "INSERT into initiativetargetpopulationsector VALUES ("+formData.tagNum +",'"+ formData.initiativetargetPopulationSector[i]+"')"
-          async.parallel([
-              function(queryDB) {
-                  poolTemp.query(query26, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
 
-                  })
-              },
-
-          ], function(err) {
-              if (err){
-                  console.log(err)
-              }
-            })
-          }
 
           //delete initiativemonitoredoutcomes data
           var query27= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ formData.tagNum
@@ -3998,71 +3950,72 @@ dashboard.post('/update-form-temp', (req, res) =>{
               ], function(err) {
                   if (err){
                       console.log(err)
+                  } else {
+                    //Insert initiative outcomes monitored data
+                    for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
+                      var query28 = "INSERT into initiativemonitoredoutcomes VALUES ("+formData.tagNum +",'"+ formData.initiativeOutcomesMonitored[i]+"')"
+                      async.parallel([
+                          function(queryDB) {
+                              poolTemp.query(query28, {}, function(err, results) {
+                                  if (err){
+                                      return queryDB(err)
+                                  }else{
+                                      queryDB()
+                                  }
+
+                              })
+                          },
+
+                      ], function(err) {
+                          if (err){
+                              console.log(err)
+                          }
+                      })
+                    }
                   }
-
               })
-          //Insert initiative outcomes monitored data
-          for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
-          var query28 = "INSERT into initiativemonitoredoutcomes VALUES ("+formData.tagNum +",'"+ formData.initiativeOutcomesMonitored[i]+"')"
+
+
+          //delete initiative main education subsector data
+          var query29= "DELETE FROM initiativemaineducationsubsector WHERE tagNumber = "+ formData.tagNum
           async.parallel([
-              function(queryDB) {
-                  poolTemp.query(query28, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
-
-                  })
+            function(queryDB) {
+                poolTemp.query(query29, {}, function(err, results) {
+                    if (err){
+                        return queryDB(err)
+                    }else{
+                        queryDB()
+                    }
+                })
               },
+            ], function(err) {
+                if (err){
+                    console.log(err)
+                } else {
+                  //Insert initiative main education subsector data
+                  for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
+                    var query30 = "INSERT into initiativemaineducationsubsector VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
+                    async.parallel([
+                        function(queryDB) {
+                            poolTemp.query(query30, {}, function(err, results) {
+                                if (err){
+                                    return queryDB(err)
+                                }else{
+                                    queryDB()
+                                }
+                            })
+                        },
 
-          ], function(err) {
-              if (err){
-                  console.log(err)
-              }
+                    ], function(err) {
+                        if (err){
+                            console.log(err)
+                        }
 
+                    })
+                  }
+                }
           })
-          }
 
-           //delete initiativemonitoredoutcomes data
-           var query29= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ formData.tagNum
-           async.parallel([
-               function(queryDB) {
-                   poolTemp.query(query29, {}, function(err, results) {
-                       if (err){
-                           return queryDB(err)
-                       } else {
-                           queryDB()
-                       }
-                   })
-               },
-
-               ], function(err) {
-                   if (err){
-                       console.log(err)
-                   }
-               })
-          //Insert initiative main education subsector data
-          for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
-          var query30 = "INSERT into initiativemaineducationsubsector VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
-          async.parallel([
-              function(queryDB) {
-                  poolTemp.query(query30, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
-                  })
-              },
-
-          ], function(err) {
-              if (err){
-                  console.log(err)
-              }
-
-          })
-          }
 
           //delete initiativeeducationsubsectors data
           var query31= "DELETE FROM initiativeeducationsubsectors WHERE initiativeTagNumber = "+ formData.tagNum
@@ -4077,36 +4030,35 @@ dashboard.post('/update-form-temp', (req, res) =>{
                       }
 
                   })
-              },
-
+                },
               ], function(err) {
                   if (err){
                       console.log(err)
+                  } else {
+                    //Insert initiative education subsector data
+                    for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
+                      var query32 = "INSERT into initiativeeducationsubsectors VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
+                      async.parallel([
+                          function(queryDB) {
+                              poolTemp.query(query32, {}, function(err, results) {
+                                  if (err){
+                                      return queryDB(err)
+                                  }else{
+                                      queryDB()
+                                  }
+                              })
+                          },
+
+                      ], function(err) {
+                          if (err){
+                              console.log(err)
+                          }
+                      })
+                    }
                   }
 
               })
-          //Insert initiative education subsector data
-          for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
-          var query32 = "INSERT into initiativeeducationsubsectors VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
-          async.parallel([
-              function(queryDB) {
-                  poolTemp.query(query32, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
 
-                  })
-              },
-
-          ], function(err) {
-              if (err){
-                  console.log(err)
-              }
-
-          })
-          }
 
           //delete initiativetargetschoolmanagement data
           var query33= "DELETE FROM initiativetargetschoolmanagement WHERE tagNumber = "+ formData.tagNum
@@ -4116,42 +4068,39 @@ dashboard.post('/update-form-temp', (req, res) =>{
                       if (err){
                           return queryDB(err)
                       }else{
-
                           queryDB()
                       }
-
                   })
-              },
-
+                },
               ], function(err) {
                   if (err){
                       console.log(err)
+                  } else {
+                    //Insert initiative target management data
+                    for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
+                      var query34 = "INSERT into initiativetargetschoolmanagement VALUES ("+formData.tagNum +",'"+ formData.initiativeManagementTypes[i]+"')"
+                      async.parallel([
+                          function(queryDB) {
+                              poolTemp.query(query34, {}, function(err, results) {
+                                  if (err){
+                                      return queryDB(err)
+                                  }else{
+                                      queryDB()
+                                  }
+                              })
+                          },
+
+                      ], function(err) {
+                          if (err){
+                              console.log(err)
+                          }
+                      })
+                    }
                   }
 
               })
-          //Insert initiative target management t data
-          for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
-          var query34 = "INSERT into initiativetargetschoolmanagement VALUES ("+formData.tagNum +",'"+ formData.initiativeManagementTypes[i]+"')"
-          async.parallel([
-              function(queryDB) {
-                  poolTemp.query(query34, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
 
-                  })
-              },
-
-          ], function(err) {
-              if (err){
-                  console.log(err)
-              }
-
-          })
-          }
-
+          //Count number of initiatives this funder funds
           async.parallel([
             function(queryDB) {
                 poolTemp.query(queryNumFunders, {}, function(err, results) {
@@ -4209,7 +4158,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                     if (err){
                         return queryDB(err)
                     }else{
-                        //formData.table1 = results;
                         queryDB()
                     }
 
@@ -4298,7 +4246,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                     }
 
                 })
-
         }
     })
 

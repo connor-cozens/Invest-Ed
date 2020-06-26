@@ -1884,7 +1884,7 @@ class formSubmission extends React.Component{
             {/* ???? I'm not sure about these */}
             <option value="Global">Global</option>
             <option value="Middle East and North Africa">Middle East and North Africa</option>
-            <option value="Latin Ameria and Caribbean">Latin Ameria and Caribbean</option>
+            <option value="Latin America and Caribbean">Latin America and Caribbean</option>
             <option value="East Asia and Pacific">East Asia and Pacific</option>
             <option value="Europe and Central Asia">Europe and Central Asia</option>
             <option value="World">World</option>

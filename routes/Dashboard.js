@@ -2411,7 +2411,6 @@ dashboard.post('/update-form', (req, res) =>{
                                           //formData.table1 = results;
                                           queryDB()
                                       }
-
                                   })
                               },
 
@@ -2419,7 +2418,6 @@ dashboard.post('/update-form', (req, res) =>{
                               if (err){
                                   console.log(err)
                               }
-
                           })
                         }
                       }
@@ -2449,29 +2447,54 @@ dashboard.post('/update-form', (req, res) =>{
             }
 
 
-    //Insert initative data
-    query12 = "UPDATE initiative SET initiativeName = '" + formData.initiativeName +"', initiativeWebsite ='"+ formData.initiativeURL +"', targetsWomen = '"+ formData.initiativeTargetsWomen +
-    "', startYear ='"+ formData.initiativeStart +"',endYear='"+ formData.initiativeEnd +"', description ='"+ formData.initiativeDescription +
-    "', mainProgrammingArea = (SELECT programArea FROM programarea WHERE programArea ='" + formData.initiativeProgramAreas
-    + "' AND activity = '" + formData.initiativeMainProgramActivity + "') , mainProgrammingActivity = (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '" + formData.initiativeMainProgramActivity + "'), feeToAccess = '"+ formData.initiativeFeeAccess
-    + "' WHERE tagNumber = " + formData.tagNum
+    var query12;
+    var queryNumInitiatives = "SELECT COUNT(tagNumber) FROM initiative WHERE tagNumber = " + formData.tagNum;  //Check if initiative exists in main db
     async.parallel([
-        function(queryDB) {
-            pool.query(query12, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
+      function(queryDB) {
+          pool.query(queryNumInitiatives, {}, function(err, results) {
+              if (err){
+                  return queryDB(err, null)
+              }else{
+                  queryDB(null, results)
+              }
+          })
+      }
+    ], function(err, results) {
+        if (err){
+            console.log(err)
+        } else {
+          // console.log("initiatives: " + JSON.parse(JSON.stringify(results[0])));
+          let numInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(tagNumber)']));
+          //If initiative doesn't exist in main db, insert initiative data. Otherwise, update existing initiative
+          if (numInitiatives > 0) {
+            query12 = "UPDATE initiative SET initiativeName = '" + formData.initiativeName +"', initiativeWebsite ='"+ formData.initiativeURL +"', targetsWomen = '"+ formData.initiativeTargetsWomen +
+            "', startYear ='"+ formData.initiativeStart +"',endYear='"+ formData.initiativeEnd +"', description ='"+ formData.initiativeDescription +
+            "', mainProgrammingArea = (SELECT programArea FROM programarea WHERE programArea ='" + formData.initiativeProgramAreas
+            + "' AND activity = '" + formData.initiativeMainProgramActivity + "') , mainProgrammingActivity = (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '" + formData.initiativeMainProgramActivity + "'), feeToAccess = '"+ formData.initiativeFeeAccess
+            + "' WHERE tagNumber = " + formData.tagNum
+          } else {
+            query12 = "INSERT into initiative VALUES ("+ formData.tagNum +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"','"+ formData.initiativeTargetsWomen +
+            "','"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +
+            "',(SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas +
+            "' AND activity = '" + formData.initiativeMainProgramActivity + "'), (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'),'" + formData.initiativeFeeAccess + "')"
+          }
+        }
 
-            })
-        },
-
-        ], function(err) {
-            if (err){
-                console.log(err)
-            }
-
+        async.parallel([
+            function(queryDB) {
+                pool.query(query12, {}, function(err, results) {
+                    if (err){
+                        return queryDB(err)
+                    }else{
+                        queryDB()
+                    }
+                })
+            },
+          ], function(err) {
+              if (err){
+                  console.log(err)
+              }
+          })
         })
 
 
@@ -3584,30 +3607,54 @@ dashboard.post('/update-form-temp', (req, res) =>{
            }
 
 
-          //Insert initative data
-          query12 = "UPDATE initiative SET initiativeName = '" + formData.initiativeName +"', initiativeWebsite ='"+ formData.initiativeURL +"', targetsWomen = '"+ formData.initiativeTargetsWomen +
-          "', startYear ='"+ formData.initiativeStart +"',endYear='"+ formData.initiativeEnd +"', description ='"+ formData.initiativeDescription +
-          "', mainProgrammingArea = (SELECT programArea FROM programarea WHERE programArea ='" + formData.initiativeProgramAreas
-          + "' AND activity = '" + formData.initiativeMainProgramActivity + "') , mainProgrammingActivity = (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '" + formData.initiativeMainProgramActivity + "'), feeToAccess = '"+ formData.initiativeFeeAccess
-          + "' WHERE tagNumber = " + formData.tagNum
-          async.parallel([
-              function(queryDB) {
-                  poolTemp.query(query12, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
-
-                  })
-              },
-
-              ], function(err) {
-                  if (err){
-                      console.log(err)
-                  }
-              })
-
+           var query12;
+           var queryNumInitiatives = "SELECT COUNT(tagNumber) FROM initiative WHERE tagNumber = " + formData.tagNum;  //Check if initiative exists in main db
+           async.parallel([
+             function(queryDB) {
+                 poolTemp.query(queryNumInitiatives, {}, function(err, results) {
+                     if (err){
+                         return queryDB(err, null)
+                     }else{
+                         queryDB(null, results)
+                     }
+                 })
+             }
+           ], function(err, results) {
+               if (err){
+                   console.log(err)
+               } else {
+                 // console.log("initiatives: " + JSON.parse(JSON.stringify(results[0][0]['COUNT(tagNumber)'])))
+                 let numInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(tagNumber)']));
+                 //If initiative doesn't exist in main db, insert initiative data. Otherwise, update existing initiative
+                 if (numInitiatives > 0) {
+                   query12 = "UPDATE initiative SET initiativeName = '" + formData.initiativeName +"', initiativeWebsite ='"+ formData.initiativeURL +"', targetsWomen = '"+ formData.initiativeTargetsWomen +
+                   "', startYear ='"+ formData.initiativeStart +"',endYear='"+ formData.initiativeEnd +"', description ='"+ formData.initiativeDescription +
+                   "', mainProgrammingArea = (SELECT programArea FROM programarea WHERE programArea ='" + formData.initiativeProgramAreas
+                   + "' AND activity = '" + formData.initiativeMainProgramActivity + "') , mainProgrammingActivity = (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '" + formData.initiativeMainProgramActivity + "'), feeToAccess = '"+ formData.initiativeFeeAccess
+                   + "' WHERE tagNumber = " + formData.tagNum
+                 } else {
+                   query12 = "INSERT into initiative VALUES ("+ formData.tagNum +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"','"+ formData.initiativeTargetsWomen +
+                   "','"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +
+                   "',(SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas +
+                   "' AND activity = '" + formData.initiativeMainProgramActivity + "'), (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'),'" + formData.initiativeFeeAccess + "')"
+                 }
+                 async.parallel([
+                     function(queryDB) {
+                         poolTemp.query(query12, {}, function(err, results) {
+                             if (err){
+                                 return queryDB(err)
+                             }else{
+                                 queryDB()
+                             }
+                         })
+                     },
+                   ], function(err) {
+                       if (err){
+                           console.log(err)
+                       }
+                   })
+                 }
+               })
 
               //delete initiative region data
               var query13= "DELETE FROM initiativeregion WHERE tagNumber = "+ formData.tagNum
@@ -3954,18 +4001,16 @@ dashboard.post('/update-form-temp', (req, res) =>{
                                   }else{
                                       queryDB()
                                   }
-
                               })
                           },
-
                       ], function(err) {
                           if (err){
                               console.log(err)
                           }
                       })
                     }
-                  }
-              })
+                }
+          })
 
 
           //delete initiative main education subsector data
@@ -4047,9 +4092,8 @@ dashboard.post('/update-form-temp', (req, res) =>{
                           }
                       })
                     }
-                  }
-
-              })
+                }
+          })
 
 
           //delete initiativetargetschoolmanagement data
@@ -4143,100 +4187,195 @@ dashboard.post('/update-form-temp', (req, res) =>{
                   }
               })
 
-        var query38 = "UPDATE comments SET comment = '"+ formData.comments +"' WHERE tagNumber = "+formData.tagNum
+        var query38;
+        var queryNumComments = "SELECT COUNT(tagNumber) FROM comments WHERE tagNumber = " + formData.tagNum; //Check if comments exist in temp db for this form
         async.parallel([
             function(queryDB) {
-                poolTemp.query(query38, {}, function(err, results) {
+                poolTemp.query(queryNumComments, {}, function(err, results) {
                     if (err){
-                        return queryDB(err)
+                        return queryDB(err, null)
                     }else{
-                        queryDB()
+                        queryDB(null, results)
                     }
-
                 })
             },
 
-            ], function(err) {
+          ], function(err, results) {
                 if (err){
                     console.log(err)
+                } else {
+                  let numComments = JSON.parse(JSON.stringify(results[0][0]['COUNT(tagNumber)']));
+                  //If comments row for this form doesn't exist in temp db, then insert it. Otherwise, update comments
+                  if (numComments > 0) {
+                    query38 = "UPDATE comments SET comment = '"+ formData.comments +"' WHERE tagNumber = "+ formData.tagNum
+                  } else {
+                    query38 = "INSERT INTO comments VALUES ("+ formData.tagNum + ",'"+ formData.comments +"')"
+                  }
+                  async.parallel([
+                      function(queryDB) {
+                          poolTemp.query(query38, {}, function(err, results) {
+                              if (err){
+                                  return queryDB(err)
+                              }else{
+                                  queryDB()
+                              }
+                          })
+                      },
+                    ], function(err) {
+                        if (err){
+                            console.log(err)
+                        }
+                  })
                 }
-
             })
 
 
-            var query39 = "UPDATE status SET inDB = " +formData.inDB + ", needsReview =" + formData.needsReview +" WHERE tagNumber = "+formData.tagNum
+            var query39;
+            var queryNumStatus = "SELECT COUNT(tagNumber) FROM status WHERE tagNumber = " + formData.tagNum; //Check if status exist in temp db for this form
             async.parallel([
                 function(queryDB) {
-                    poolTemp.query(query39, {}, function(err, results) {
+                    poolTemp.query(queryNumStatus, {}, function(err, results) {
                         if (err){
-                            return queryDB(err)
+                            return queryDB(err, null)
                         }else{
-                            //formData.table1 = results;
-                            queryDB()
+                            queryDB(null, results)
                         }
-
                     })
                 },
 
-                ], function(err) {
+              ], function(err, results) {
                     if (err){
                         console.log(err)
-                    }
+                    } else {
+                      let numStatus = JSON.parse(JSON.stringify(results[0][0]['COUNT(tagNumber)']));
+                      //If comments row for this form doesn't exist in temp db, then insert it. Otherwise, update comments
+                      if (numStatus > 0) {
+                        query39 = "UPDATE status SET inDB = " +formData.inDB + ", needsReview =" + formData.needsReview +" WHERE tagNumber = "+formData.tagNum
+                      } else {
+                        query39 = "INSERT INTO status VALUES ("+ formData.tagNum + ","+ formData.inDB + "," + formData.needsReview +")"
+                      }
+                      async.parallel([
+                          function(queryDB) {
+                              poolTemp.query(query39, {}, function(err, results) {
+                                  if (err){
+                                      return queryDB(err)
+                                  }else{
+                                      queryDB()
+                                  }
+                              })
+                          },
+                        ], function(err) {
+                            if (err){
+                                console.log(err)
+                            }
+                      })
+                  }
+            })
 
-                })
-
-            var query40 = "UPDATE sectionreviews SET funderNameApproval = "+
-            formData.funderNameApproval + ",funderUrlApproval = " +
-            formData.funderUrlApproval + ",funderMotiveApproval = " +
-            formData.funderMotiveApproval + ",funderImpactApproval = " +
-            formData.funderImpactApproval + ",funderOrganizationFormApproval = " +
-            formData.funderOrganizationFormApproval + ",funderInternationalBaseApproval = " +
-            formData.funderInternationalBaseApproval + ",funderEdSubsApproval  = " +
-            formData.funderEdSubsApproval + ",funderOrgTraitsApproval = " +
-            formData.funderOrgTraitsApproval+ ",funderAsiaBasesApproval= " +
-            formData.funderAsiaBasesApproval+ ",funderAsiaOperationsApproval= " +
-            formData.funderAsiaOperationsApproval+ ",initNameApproval = " +
-            formData.initNameApproval + ",initUrlApproval  = " +
-            formData.initUrlApproval+ ",initTargetsWomenApproval = " +
-            formData.initTargetsWomenApproval+ ",initStartApproval = " +
-            formData.initStartApproval+ ",initEndApproval = " +
-            formData.initEndApproval+ ",initDescriptionApproval = " +
-            formData.initDescriptionApproval+ ",initProgramAreasApproval = " +
-            formData.initProgramAreasApproval+ ",initMainProgramActivityApproval = " +
-            formData.initMainProgramActivityApproval+ ",initFeeAccessApproval = " +
-            formData.initFeeAccessApproval+ ",initRegionsApproval = " +
-            formData.initRegionsApproval+ ",initCountriesApproval = " +
-            formData.initCountriesApproval+ ",initActivitiesApproval = " +
-            formData.initActivitiesApproval + ", initSourceOfFeesApproval = " +
-            formData.initSourceOfFeesApproval+ ",initLaunchCountryApproval = " +
-            formData.initLaunchCountryApproval+ ",initTargetGeoApproval = " +
-            formData.initTargetGeoApproval+ ",initTargetPopulationSectorApproval = " +
-            formData.initTargetPopulationSectorApproval+ ",initOutcomesMonitoredApproval = " +
-            formData.initOutcomesMonitoredApproval+ ",initMEdSubsApproval = " +
-            formData.initMEdSubsApproval+ ",initOEdSubsApproval = " +
-            formData.initOEdSubsApproval + ", initManagementTypesApproval = " +
-            formData.initManagementTypesApproval+ ",implementorNameApproval = " +
-            formData.implementorNameApproval+ ",implementorMotiveApproval = " +
-            formData.implementorMotiveApproval + " WHERE tagNumber = "+formData.tagNum
-
-
+            var query40;
+            var queryNumReviews = "SELECT COUNT(tagNumber) FROM sectionreviews WHERE tagNumber = " + formData.tagNum; //Check if section reviews exist in temp db for this form
             async.parallel([
                 function(queryDB) {
-                    poolTemp.query(query40, {}, function(err, results) {
+                    poolTemp.query(queryNumReviews, {}, function(err, results) {
                         if (err){
-                            return queryDB(err)
+                            return queryDB(err, null)
                         }else{
-                            queryDB()
+                            queryDB(null, results)
                         }
-
                     })
                 },
 
-                ], function(err) {
+              ], function(err, results) {
                     if (err){
                         console.log(err)
+                    } else {
+                      let numReviews = JSON.parse(JSON.stringify(results[0][0]['COUNT(tagNumber)']));
+                      //If comments row for this form doesn't exist in temp db, then insert it. Otherwise, update comments
+                      if (numReviews > 0) {
+                        query40 = "UPDATE sectionreviews SET funderNameApproval = "+
+                        formData.funderNameApproval + ",funderUrlApproval = " +
+                        formData.funderUrlApproval + ",funderMotiveApproval = " +
+                        formData.funderMotiveApproval + ",funderImpactApproval = " +
+                        formData.funderImpactApproval + ",funderOrganizationFormApproval = " +
+                        formData.funderOrganizationFormApproval + ",funderInternationalBaseApproval = " +
+                        formData.funderInternationalBaseApproval + ",funderEdSubsApproval  = " +
+                        formData.funderEdSubsApproval + ",funderOrgTraitsApproval = " +
+                        formData.funderOrgTraitsApproval+ ",funderAsiaBasesApproval= " +
+                        formData.funderAsiaBasesApproval+ ",funderAsiaOperationsApproval= " +
+                        formData.funderAsiaOperationsApproval+ ",initNameApproval = " +
+                        formData.initNameApproval + ",initUrlApproval  = " +
+                        formData.initUrlApproval+ ",initTargetsWomenApproval = " +
+                        formData.initTargetsWomenApproval+ ",initStartApproval = " +
+                        formData.initStartApproval+ ",initEndApproval = " +
+                        formData.initEndApproval+ ",initDescriptionApproval = " +
+                        formData.initDescriptionApproval+ ",initProgramAreasApproval = " +
+                        formData.initProgramAreasApproval+ ",initMainProgramActivityApproval = " +
+                        formData.initMainProgramActivityApproval+ ",initFeeAccessApproval = " +
+                        formData.initFeeAccessApproval+ ",initRegionsApproval = " +
+                        formData.initRegionsApproval+ ",initCountriesApproval = " +
+                        formData.initCountriesApproval+ ",initActivitiesApproval = " +
+                        formData.initActivitiesApproval + ", initSourceOfFeesApproval = " +
+                        formData.initSourceOfFeesApproval+ ",initLaunchCountryApproval = " +
+                        formData.initLaunchCountryApproval+ ",initTargetGeoApproval = " +
+                        formData.initTargetGeoApproval+ ",initTargetPopulationSectorApproval = " +
+                        formData.initTargetPopulationSectorApproval+ ",initOutcomesMonitoredApproval = " +
+                        formData.initOutcomesMonitoredApproval+ ",initMEdSubsApproval = " +
+                        formData.initMEdSubsApproval+ ",initOEdSubsApproval = " +
+                        formData.initOEdSubsApproval + ", initManagementTypesApproval = " +
+                        formData.initManagementTypesApproval+ ",implementorNameApproval = " +
+                        formData.implementorNameApproval+ ",implementorMotiveApproval = " +
+                        formData.implementorMotiveApproval + " WHERE tagNumber = "+formData.tagNum
+                      } else {
+                        query40 = "INSERT INTO sectionreviews VALUES ("+ formData.tagNum + "," +
+                        formData.funderNameApproval + "," +
+                        formData.funderUrlApproval + "," +
+                        formData.funderMotiveApproval + "," +
+                        formData.funderImpactApproval + "," +
+                        formData.funderOrganizationFormApproval + "," +
+                        formData.funderInternationalBaseApproval + "," +
+                        formData.funderEdSubsApproval + "," +
+                        formData.funderOrgTraitsApproval+ "," +
+                        formData.funderAsiaBasesApproval+ "," +
+                        formData.funderAsiaOperationsApproval+ "," +
+                        formData.initNameApproval + "," +
+                        formData.initUrlApproval+ "," +
+                        formData.initTargetsWomenApproval+ "," +
+                        formData.initStartApproval+ "," +
+                        formData.initEndApproval+ "," +
+                        formData.initDescriptionApproval+ "," +
+                        formData.initProgramAreasApproval+ "," +
+                        formData.initMainProgramActivityApproval+ "," +
+                        formData.initFeeAccessApproval+ "," +
+                        formData.initRegionsApproval+ "," +
+                        formData.initCountriesApproval+ "," +
+                        formData.initActivitiesApproval + "," +
+                        formData.initSourceOfFeesApproval+ "," +
+                        formData.initLaunchCountryApproval+ "," +
+                        formData.initTargetGeoApproval+ "," +
+                        formData.initTargetPopulationSectorApproval+ "," +
+                        formData.initOutcomesMonitoredApproval+ "," +
+                        formData.initMEdSubsApproval+ "," +
+                        formData.initOEdSubsApproval + "," +
+                        formData.initManagementTypesApproval+ "," +
+                        formData.implementorNameApproval+ "," +
+                        formData.implementorMotiveApproval +")"
+                      }
+                      async.parallel([
+                          function(queryDB) {
+                              poolTemp.query(query40, {}, function(err, results) {
+                                  if (err){
+                                      return queryDB(err)
+                                  }else{
+                                      queryDB()
+                                  }
+                              })
+                          },
+                        ], function(err) {
+                            if (err){
+                                console.log(err)
+                            }
+                      })
                     }
-
                 })
         }
     })

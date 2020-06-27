@@ -381,46 +381,46 @@ const changeRequest = (form, inDB, isModified, isReviewed) => {
     impMotive: form.impMotive,
 
     //Section Reviews - Only to be used when submitting into temp db
-    fnameA: isReviewed === true ? form.fnameA : 0,
-    furlA: isReviewed === true ? form.furlA : 0,
-    motiveA: isReviewed === true ? form.motiveA : 0,
-    impactA: isReviewed === true ? form.impactA : 0,
-    organizationFormA: isReviewed === true ? form.organizationFormA : 0,
+    fnameA: isReviewed === true ? form.reviews.fnameA : 0,
+    furlA: isReviewed === true ? form.reviews.furlA : 0,
+    motiveA: isReviewed === true ? form.reviews.motiveA : 0,
+    impactA: isReviewed === true ? form.reviews.impactA : 0,
+    organizationFormA: isReviewed === true ? form.reviews.organizationFormA : 0,
     // multi val funder
-    internationalBasesA: isReviewed === true ? form.internationalBasesA : 0,
-    edSubsA: isReviewed === true ? form.edSubsA : 0,
-    orgTraitsA: isReviewed === true ? form.orgTraitsA : 0,
-    asialBasesA: isReviewed === true ? form.asialBasesA : 0,
-    asiaOperationsA: isReviewed === true ? form.asiaOperationsA : 0,
+    internationalBasesA: isReviewed === true ? form.reviews.internationalBasesA : 0,
+    edSubsA: isReviewed === true ? form.reviews.edSubsA : 0,
+    orgTraitsA: isReviewed === true ? form.reviews.orgTraitsA : 0,
+    asialBasesA: isReviewed === true ? form.reviews.asialBasesA : 0,
+    asiaOperationsA: isReviewed === true ? form.reviews.asiaOperationsA : 0,
     // single val initiative
-    initNameA: isReviewed === true ? form.initNameA : 0,
-    initURLA: isReviewed === true ? form.initURLA : 0,
-    tWomenA: isReviewed === true ? form.tWomenA : 0,
-    initStartA: isReviewed === true ? form.initStartA : 0,
-    initEndA: isReviewed === true ? form.initEndA : 0,
-    idescriptionA: isReviewed === true ? form.idescriptionA : 0,
-    programAreaA: isReviewed === true ? form.programAreaA : 0,
-    initiativeMainProgramActivityA: isReviewed === true ? form.initiativeMainProgramActivityA : 0,
-    feeAccessA: isReviewed === true ? form.feeAccessA : 0,
+    initNameA: isReviewed === true ? form.reviews.initNameA : 0,
+    initURLA: isReviewed === true ? form.reviews.initURLA : 0,
+    tWomenA: isReviewed === true ? form.reviews.tWomenA : 0,
+    initStartA: isReviewed === true ? form.reviews.initStartA : 0,
+    initEndA: isReviewed === true ? form.reviews.initEndA : 0,
+    idescriptionA: isReviewed === true ? form.reviews.idescriptionA : 0,
+    programAreaA: isReviewed === true ? form.reviews.programAreaA : 0,
+    initiativeMainProgramActivityA: isReviewed === true ? form.reviews.initiativeMainProgramActivityA : 0,
+    feeAccessA: isReviewed === true ? form.reviews.feeAccessA : 0,
     // multi val initiative
-    regionsA: isReviewed === true ? form.regionsA : 0,
-    countriesA: isReviewed === true ? form.countriesA : 0,
-    activitiesA: isReviewed === true ? form.activitiesA : 0,
-    sourceOfFeesA: isReviewed === true ? form.sourceOfFeesA : 0,
-    launchCountryA: isReviewed === true ? form.launchCountryA : 0,
-    targetGeosA: isReviewed === true ? form.targetGeosA : 0,
-    targetPopulationSectorsA: isReviewed === true ? form.targetPopulationSectorsA : 0,
-    outcomesMonitoredA: isReviewed === true ? form.outcomesMonitoredA : 0,
-    mEdSubsA: isReviewed === true ? form.mEdSubsA : 0,
-    oEdSubsA: isReviewed === true ? form.oEdSubsA : 0,
-    managementTypesA: isReviewed === true ? form.managementTypesA : 0,
+    regionsA: isReviewed === true ? form.reviews.regionsA : 0,
+    countriesA: isReviewed === true ? form.reviews.countriesA : 0,
+    activitiesA: isReviewed === true ? form.reviews.activitiesA : 0,
+    sourceOfFeesA: isReviewed === true ? form.reviews.sourceOfFeesA : 0,
+    launchCountryA: isReviewed === true ? form.reviews.launchCountryA : 0,
+    targetGeosA: isReviewed === true ? form.reviews.targetGeosA : 0,
+    targetPopulationSectorsA: isReviewed === true ? form.reviews.targetPopulationSectorsA : 0,
+    outcomesMonitoredA: isReviewed === true ? form.reviews.outcomesMonitoredA : 0,
+    mEdSubsA: isReviewed === true ? form.reviews.mEdSubsA : 0,
+    oEdSubsA: isReviewed === true ? form.reviews.oEdSubsA : 0,
+    managementTypesA: isReviewed === true ? form.reviews.managementTypesA : 0,
     // single val implementer
-    inameA: isReviewed === true ? form.inameA : 0,
-    impMotiveA: isReviewed === true ? form.impMotiveA : 0,
+    inameA: isReviewed === true ? form.reviews.inameA : 0,
+    impMotiveA: isReviewed === true ? form.reviews.impMotiveA : 0,
     // single val other
     comments: form.comments,
-    needsReview: 1,
-    inDB: (inDB === true) ? 1 : 0
+    needsReview: isReviewed === true ? form.needsReview : 1,
+    inDB: isReviewed === true ? (form.needsReview === 1 ? 0 : 1) : ((inDB === true) ? 1 : 0)
   }
 
   if (isModified) {
@@ -456,12 +456,29 @@ export const modifyFormRA = (form, isModified) => (dispatch) => {
     })
 }
 
-//RA user to submit rejection review of form to temp db
-export const addRejectionReview = (form, inDB, isModified) => (dispatch) => {
+//RA user to submit approved form to main db
+const approveForm = (form, isModified) => (dispatch) => {
+  const req = changeRequestRA(form, isModified);
+  axios.post(`/dashboard/update-form`, req)
+    .then(response => {
+      dispatch({type: FORM_REVIEW_SUCCESS});
+    })
+    .catch(err => {
+      dispatch({type: FORM_REVIEW_ERROR, payload: err});
+    })
+}
+
+//RA user to submit review of form to temp db
+export const reviewForm = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequest(form, inDB, isModified, true);
   axios.post(`/dashboard/update-form-temp`, req)
     .then(response => {
-      dispatch({type: FORM_REVIEW_SUCCESS});
+      //If form is approved, then submit approval
+      if (form.needsReview === 0) {
+        dispatch(approveForm(form, true));
+      } else {
+        dispatch({type: FORM_REVIEW_SUCCESS});
+      }
     })
     .catch(err => {
       dispatch({type: FORM_REVIEW_ERROR, payload: err});

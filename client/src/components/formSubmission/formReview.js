@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './formReview.css';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom'
-import {addForm, addFormRA, modifyForm, modifyFormRA} from '../../store/actions/dataActions'
+import {reviewForm} from '../../store/actions/dataActions'
 
 class formReview extends React.Component{
   constructor(props){
@@ -60,42 +60,44 @@ class formReview extends React.Component{
       //Reviews
       needsReview: null,
       //Section Reviews
-      fnameA: null,
-      furlA: null,
-      motiveA: null,
-      impactA: null,
-      organizationFormA: null,
-      // multi val funder
-      internationalBasesA: null,
-      edSubsA: null,
-      orgTraitsA: null,
-      asialBasesA: null,
-      asiaOperationsA: null,
-      // single val initiative
-      initNameA: null,
-      initURLA: null,
-      tWomenA: null,
-      initStartA: null,
-      initEndA: null,
-      idescriptionA: null,
-      programAreaA: null,
-      initiativeMainProgramActivityA: null,
-      feeAccessA: null,
-      // multi val initiative
-      regionsA: null,
-      countriesA: null,
-      activitiesA: null,
-      sourceOfFeesA: null,
-      launchCountryA: null,
-      targetGeosA: null,
-      targetPopulationSectorsA: null,
-      outcomesMonitoredA: null,
-      mEdSubsA: null,
-      oEdSubsA: null,
-      managementTypesA: null,
-      // single val implementer
-      inameA: null,
-      impMotiveA: null
+      reviews: {
+        fnameA: null,
+        furlA: null,
+        motiveA: null,
+        impactA: null,
+        organizationFormA: null,
+        // multi val funder
+        internationalBasesA: null,
+        edSubsA: null,
+        orgTraitsA: null,
+        asialBasesA: null,
+        asiaOperationsA: null,
+        // single val initiative
+        initNameA: null,
+        initURLA: null,
+        tWomenA: null,
+        initStartA: null,
+        initEndA: null,
+        idescriptionA: null,
+        programAreaA: null,
+        initiativeMainProgramActivityA: null,
+        feeAccessA: null,
+        // multi val initiative
+        regionsA: null,
+        countriesA: null,
+        activitiesA: null,
+        sourceOfFeesA: null,
+        launchCountryA: null,
+        targetGeosA: null,
+        targetPopulationSectorsA: null,
+        outcomesMonitoredA: null,
+        mEdSubsA: null,
+        oEdSubsA: null,
+        managementTypesA: null,
+        // single val implementer
+        inameA: null,
+        impMotiveA: null
+      }
     };
 
     this.addIBase = this.addIBase.bind(this);
@@ -105,6 +107,7 @@ class formReview extends React.Component{
     this.buttonMaker = this.buttonMaker.bind(this);
     this.addProgramActivity = this.addProgramActivity.bind(this);
     this.changeProgramArea = this.changeProgramArea.bind(this);
+    this.handleApprovalSelection = this.handleApprovalSelection.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.changeEdSub = this.changeEdSub.bind(this);
@@ -183,42 +186,44 @@ class formReview extends React.Component{
 
         //Review Setters
         needsReview: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].needsReview !== undefined ? props.form.status[0][0].needsReview : null) : null) : null) : null,
-        fnameA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null,
-        furlA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderUrlApproval : null) : null) : null) : null,
-        motiveA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderMotiveApproval : null) : null) : null) : null,
-        impactA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderImpactApproval : null) : null) : null) : null,
-        organizationFormA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrganizationFormApproval : null) : null) : null) : null,
-        // multi val funder
-        internationalBasesA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderInternationalBaseApproval : null) : null) : null) : null,
-        edSubsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderEdSubsApproval : null) : null) : null) : null,
-        orgTraitsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrgTraitsApproval : null) : null) : null) : null,
-        asialBasesA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaBasesApproval : null) : null) : null) : null,
-        asiaOperationsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaOperationsApproval : null) : null) : null) : null,
-        // single val initiative
-        initNameA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initNameApproval : null) : null) : null) : null,
-        initURLA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initUrlApproval : null) : null) : null) : null,
-        tWomenA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetsWomenApproval : null) : null) : null) : null,
-        initStartA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initStartApproval : null) : null) : null) : null,
-        initEndA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initEndApproval : null) : null) : null) : null,
-        idescriptionA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initDescriptionApproval : null) : null) : null) : null,
-        programAreaA: 1, //set to approved as this is not based on user input
-        initiativeMainProgramActivityA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMainProgramActivityApproval : null) : null) : null) : null,
-        feeAccessA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initFeeAccessApproval : null) : null) : null) : null,
-        // multi val initiative
-        regionsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initRegionsApproval : null) : null) : null) : null,
-        countriesA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initCountriesApproval : null) : null) : null) : null,
-        activitiesA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initActivitiesApproval : null) : null) : null) : null,
-        sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
-        launchCountryA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initLaunchCountryApproval : null) : null) : null) : null,
-        targetGeosA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetGeoApproval : null) : null) : null) : null,
-        targetPopulationSectorsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetPopulationSectorApproval : null) : null) : null) : null,
-        outcomesMonitoredA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOutcomesMonitoredApproval : null) : null) : null) : null,
-        mEdSubsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMEdSubsApproval : null) : null) : null) : null,
-        oEdSubsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOEdSubsApproval : null) : null) : null) : null,
-        managementTypesA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initManagementTypesApproval : null) : null) : null) : null,
-        // single val implementer
-        inameA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorNameApproval : null) : null) : null) : null,
-        impMotiveA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorMotiveApproval : null) : null) : null) : null
+        reviews: {
+          fnameA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null,
+          furlA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderUrlApproval : null) : null) : null) : null,
+          motiveA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderMotiveApproval : null) : null) : null) : null,
+          impactA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderImpactApproval : null) : null) : null) : null,
+          organizationFormA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrganizationFormApproval : null) : null) : null) : null,
+          // multi val funder
+          internationalBasesA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderInternationalBaseApproval : null) : null) : null) : null,
+          edSubsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderEdSubsApproval : null) : null) : null) : null,
+          orgTraitsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrgTraitsApproval : null) : null) : null) : null,
+          asialBasesA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaBasesApproval : null) : null) : null) : null,
+          asiaOperationsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaOperationsApproval : null) : null) : null) : null,
+          // single val initiative
+          initNameA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initNameApproval : null) : null) : null) : null,
+          initURLA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initUrlApproval : null) : null) : null) : null,
+          tWomenA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetsWomenApproval : null) : null) : null) : null,
+          initStartA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initStartApproval : null) : null) : null) : null,
+          initEndA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initEndApproval : null) : null) : null) : null,
+          idescriptionA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initDescriptionApproval : null) : null) : null) : null,
+          programAreaA: 1, //set to approved as this is not based on user input
+          initiativeMainProgramActivityA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMainProgramActivityApproval : null) : null) : null) : null,
+          feeAccessA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initFeeAccessApproval : null) : null) : null) : null,
+          // multi val initiative
+          regionsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initRegionsApproval : null) : null) : null) : null,
+          countriesA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initCountriesApproval : null) : null) : null) : null,
+          activitiesA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initActivitiesApproval : null) : null) : null) : null,
+          sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
+          launchCountryA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initLaunchCountryApproval : null) : null) : null) : null,
+          targetGeosA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetGeoApproval : null) : null) : null) : null,
+          targetPopulationSectorsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetPopulationSectorApproval : null) : null) : null) : null,
+          outcomesMonitoredA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOutcomesMonitoredApproval : null) : null) : null) : null,
+          mEdSubsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMEdSubsApproval : null) : null) : null) : null,
+          oEdSubsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOEdSubsApproval : null) : null) : null) : null,
+          managementTypesA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initManagementTypesApproval : null) : null) : null) : null,
+          // single val implementer
+          inameA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorNameApproval : null) : null) : null) : null,
+          impMotiveA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorMotiveApproval : null) : null) : null) : null
+        }
       });
     }
   }
@@ -796,6 +801,13 @@ class formReview extends React.Component{
     });
   }
 
+  handleApprovalSelection(e){
+    this.state.reviews[[e.target.name]] = parseInt(e.target.value);
+    this.setState({
+      reviews: this.state.reviews
+    });
+  }
+
   handleChange(e){
     console.log(e)
     this.setState({
@@ -811,7 +823,19 @@ class formReview extends React.Component{
       if (userData) {
         //If an RA or root user, then submit review to temp db
         if (userData.accessLevel !== 0) {
-          this.props.submitNonRA(this.state, this.props.inDB, false);
+          this.state.needsReview = 0;  //Form is ready for approval is the initial assumption
+          for (const [key, value] of Object.entries(this.state.reviews)) {
+            //If any field is found to be rejected, then form still requires further review
+            if (value == 0) {
+              this.state.needsReview = 1;
+            }
+            this.setState({
+              needsReview: this.state.needsReview
+            })
+          }
+          //If all fields in the form have been approved, then submit form to main and update temp form.
+          //otherwise, if some fields are rejected, then submit form only to temp
+          this.props.reviewForm(this.state, this.props.inDB, true);
         }
       }
     }
@@ -848,22 +872,22 @@ class formReview extends React.Component{
             <p>Name</p>
               <input type="text" id="fname" name="funderName" value={this.state.fname} placeholder="Funder Name" onChange={this.handleChange}/>
               <br></br>
-            <input type="radio" id="needsReview1" name="fnameA" value={1} checked = {this.state.fnameA == 1}  /> <label name="accept" htmlFor="needsReview1">Accept</label>
-            <input type="radio" id="needsReview2" name="fnameA" value={0} checked = {this.state.fnameA == 0}  /> <label name="reject" htmlFor="needsReview2">Reject</label>
+            <input type="radio" id="needsReview1" name="fnameA" value={1} checked = {this.state.reviews.fnameA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview1">Accept</label>
+            <input type="radio" id="needsReview2" name="fnameA" value={0} checked = {this.state.reviews.fnameA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview2">Reject</label>
 
             <p>Website</p>
               <input type="text" id="furl" name="funderWebsite" value={this.state.furl} placeholder="funderWebsite.com" onChange={this.handleChange}/>
               <br></br>
-            <input type="radio" id="needsReview3" name="furlA" value={1} checked = {this.state.furlA == 1}  /> <label name="accept" htmlFor="needsReview3">Accept</label>
-            <input type="radio" id="needsReview4" name="furlA" value={0} checked = {this.state.furlA == 0}  /> <label name="reject" htmlFor="needsReview4">Reject</label>
+            <input type="radio" id="needsReview3" name="furlA" value={1} checked = {this.state.reviews.furlA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview3">Accept</label>
+            <input type="radio" id="needsReview4" name="furlA" value={0} checked = {this.state.reviews.furlA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview4">Reject</label>
 
             <p>Profit Motive</p>
               <input type="radio" id="motive1" name="profitMotive" value="Not-for-profit" checked = {this.state.motive === 'Not-for-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive1">Not-For-Profit</label>
               <input type="radio" id="motive2" name="profitMotive" value="Hybrid" checked = {this.state.motive === 'Hybrid'} onChange={this.profitMotiveChange}/> <label htmlFor="motive2">Hybrid</label>
               <input type="radio" id="motive3" name="profitMotive" value="For-profit" checked = {this.state.motive === 'For-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive3">For-Profit</label>
               <br></br>
-            <input type="radio" id="needsReview3_5" name="motiveA" value={1} checked = {this.state.motiveA == 1}  /> <label name="accept" htmlFor="needsReview3_5">Accept</label>
-            <input type="radio" id="needsReview4_5" name="motiveA" value={0} checked = {this.state.motiveA == 0}  /> <label name="reject" htmlFor="needsReview4_5">Reject</label>
+            <input type="radio" id="needsReview3_5" name="motiveA" value={1} checked = {this.state.reviews.motiveA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview3_5">Accept</label>
+            <input type="radio" id="needsReview4_5" name="motiveA" value={0} checked = {this.state.reviews.motiveA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview4_5">Reject</label>
             <br></br><br></br>
 
             <p>Impact Investing?</p>
@@ -871,8 +895,8 @@ class formReview extends React.Component{
               <input type="radio" id="impact2" name="impactInvesting" value="No" checked = {this.state.impact === 'No'} onChange={this.impactChange}/> <label htmlFor="impact2">No</label>
               <input type="radio" id="impact3" name="impactInvesting" value="Unknown" checked = {this.state.impact === 'Unknown'} onChange={this.impactChange}/> <label htmlFor="impact3">Unknown</label>
               <br></br>
-              <input type="radio" id="needsReview5" name="impactA" value={1} checked = {this.state.impactA == 1}  /> <label name="accept" htmlFor="needsReview5">Accept</label>
-              <input type="radio" id="needsReview6" name="impactA" value={0} checked = {this.state.impactA == 0}  /> <label name="reject" htmlFor="needsReview6">Reject</label>
+              <input type="radio" id="needsReview5" name="impactA" value={1} checked = {this.state.reviews.impactA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview5">Accept</label>
+              <input type="radio" id="needsReview6" name="impactA" value={0} checked = {this.state.reviews.impactA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview6">Reject</label>
             <br></br><br></br>
 
             <p>Organizational Form</p>
@@ -886,8 +910,8 @@ class formReview extends React.Component{
               <input type="radio" id="organization8" name="organizationalForm" value="Multilateral" checked = {this.state.organizationForm === 'Multilateral'} onChange={this.organizationChange}/> <label htmlFor="organization8">Multilateral</label>
               <input type="radio" id="organization9" name="organizationalForm" value="Other" checked = {this.state.organizationForm === 'Other'} onChange={this.organizationChange}/> <label htmlFor="organization9">Other</label>
               <br></br>
-              <input type="radio" id="needsReview9" name="organizationFormA" value={1} checked = {this.state.organizationFormA == 1}  /> <label name="accept" htmlFor="needsReview9">Accept</label>
-              <input type="radio" id="needsReview10" name="organizationFormA" value={0} checked = {this.state.organizationFormA == 0}  /> <label name="reject" htmlFor="needsReview10">Reject</label>
+              <input type="radio" id="needsReview9" name="organizationFormA" value={1} checked = {this.state.reviews.organizationFormA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview9">Accept</label>
+              <input type="radio" id="needsReview10" name="organizationFormA" value={0} checked = {this.state.reviews.organizationFormA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview10">Reject</label>
             <br></br><br></br>
 
             <p>International Base(s)</p>
@@ -1128,8 +1152,8 @@ class formReview extends React.Component{
               </ul>
             </div>
             <br></br>
-            <input type="radio" id="needsReview11" name="internationalBasesA" value={1} checked = {this.state.internationalBasesA == 1}  /> <label name="accept" htmlFor="needsReview11">Accept</label>
-            <input type="radio" id="needsReview12" name="internationalBasesA" value={0} checked = {this.state.internationalBasesA == 0}  /> <label name="reject" htmlFor="needsReview12">Reject</label>
+            <input type="radio" id="needsReview11" name="internationalBasesA" value={1} checked = {this.state.reviews.internationalBasesA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview11">Accept</label>
+            <input type="radio" id="needsReview12" name="internationalBasesA" value={0} checked = {this.state.reviews.internationalBasesA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview12">Reject</label>
 
             <p>Education Subsector(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="edSub1" name="educationSubsector" value="Adult" checked = {this.state.edSubs.includes("Adult")} onChange={this.changeEdSub}/> <label htmlFor="edSub1" className="checkbox">Adult</label>
@@ -1152,8 +1176,8 @@ class formReview extends React.Component{
             <input type="checkbox" id="edSub18" name="educationSubsector" value="Workforce Development and Vocational Education" checked = {this.state.edSubs.includes("Workforce Development and Vocational Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="edSub19" name="educationSubsector" value="Workforce Development/Skills" checked = {this.state.edSubs.includes("Workforce Development/Skills")} onChange={this.changeEdSub}/> <label htmlFor="edSub19" className="checkbox">Workforce Development/Skills</label>
             <br></br>
-            <input type="radio" id="needsReview15" name="edSubsA" value={1} checked = {this.state.edSubsA == 1}  /> <label name="accept" htmlFor="needsReview15">Accept</label>
-            <input type="radio" id="needsReview16" name="edSubsA" value={0} checked = {this.state.edSubsA == 0}  /> <label name="reject" htmlFor="needsReview16">Reject</label>
+            <input type="radio" id="needsReview15" name="edSubsA" value={1} checked = {this.state.reviews.edSubsA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview15">Accept</label>
+            <input type="radio" id="needsReview16" name="edSubsA" value={0} checked = {this.state.reviews.edSubsA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview16">Reject</label>
 
 
             <p>Organizational Trait(s)<br></br>Select all that apply:</p>
@@ -1171,8 +1195,8 @@ class formReview extends React.Component{
             <input type="checkbox" id="orgTrait12" name="organizationalTrait" value="Use own financial resources (unlike NGOs)" checked = {this.state.orgTraits.includes("Use own financial resources (unlike NGOs)")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait12" className="checkbox">Use own financial resources (unlike NGOs)</label>
             <input type="checkbox" id="orgTrait13" name="organizationalTrait" value="Workforce Development/Skills" checked = {this.state.orgTraits.includes("Workforce Development/Skills")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait13" className="checkbox">Workforce Development/Skills</label>
             <br></br>
-            <input type="radio" id="needsReview17" name="orgTraitsA" value={1} checked = {this.state.orgTraitsA == 1}  /> <label name="accept" htmlFor="needsReview17">Accept</label>
-            <input type="radio" id="needsReview18" name="orgTraitsA" value={0} checked = {this.state.orgTraitsA == 0}  /> <label name="reject" htmlFor="needsReview18">Reject</label>
+            <input type="radio" id="needsReview17" name="orgTraitsA" value={1} checked = {this.state.reviews.orgTraitsA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview17">Accept</label>
+            <input type="radio" id="needsReview18" name="orgTraitsA" value={0} checked = {this.state.reviews.orgTraitsA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview18">Reject</label>
 
             <p>Asia International Base(s)</p>
             <select id="asiaInternationalBase" name="country" onChange={this.addAIBase}>
@@ -1413,8 +1437,8 @@ class formReview extends React.Component{
             </div>
             {/* MAKE ASIA INTERNATIONAL BASE NOT ACCEPT BASE CASE */}
             <br></br>
-            <input type="radio" id="needsReview19" name="asialBasesA" value={1} checked = {this.state.asialBasesA == 1}  /> <label name="accept" htmlFor="needsReview19">Accept</label>
-            <input type="radio" id="needsReview20" name="asialBasesA" value={0} checked = {this.state.asialBasesA == 0}  /> <label name="reject" htmlFor="needsReview20">Reject</label>
+            <input type="radio" id="needsReview19" name="asialBasesA" value={1} checked = {this.state.reviews.asialBasesA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview19">Accept</label>
+            <input type="radio" id="needsReview20" name="asialBasesA" value={0} checked = {this.state.reviews.asialBasesA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview20">Reject</label>
 
             <p>Asia Operation(s)</p>
             <select id="aOperations" name="opCountry" onChange={this.addAsiaOperation}>
@@ -1654,8 +1678,8 @@ class formReview extends React.Component{
               </ul>
             </div>
             <br></br>
-            <input type="radio" id="needsReview21" name="asiaOperationsA" value={1} checked = {this.state.asiaOperationsA == 1}  /> <label name="accept" htmlFor="needsReview21">Accept</label>
-            <input type="radio" id="needsReview22" name="asiaOperationsA" value={0} checked = {this.state.asiaOperationsA == 0}  /> <label name="reject" htmlFor="needsReview22">Reject</label>
+            <input type="radio" id="needsReview21" name="asiaOperationsA" value={1} checked = {this.state.reviews.asiaOperationsA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview21">Accept</label>
+            <input type="radio" id="needsReview22" name="asiaOperationsA" value={0} checked = {this.state.reviews.asiaOperationsA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview22">Reject</label>
 
             <br></br><br></br>
             <h4>Initiative</h4>
@@ -1663,33 +1687,33 @@ class formReview extends React.Component{
             <p>Name</p>
               <input type="text" id="initName" name="initiativeName" value = {this.state.initName} placeholder="Initiative Name" onChange={this.handleChange}/>
               <br></br>
-            <input type="radio" id="needsReview23" name="initNameA" value={1} checked = {this.state.initNameA == 1}  /> <label name="accept" htmlFor="needsReview23">Accept</label>
-            <input type="radio" id="needsReview24" name="initNameA" value={0} checked = {this.state.initNameA == 0}  /> <label name="reject" htmlFor="needsReview24">Reject</label>
+            <input type="radio" id="needsReview23" name="initNameA" value={1} checked = {this.state.reviews.initNameA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview23">Accept</label>
+            <input type="radio" id="needsReview24" name="initNameA" value={0} checked = {this.state.reviews.initNameA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview24">Reject</label>
 
             <p>Website</p>
               <input type="text" id="initURL" name="initiativeWebsite" value = {this.state.initURL} placeholder="initiativeWebsite.com" onChange={this.handleChange}/>
               <br></br>
-            <input type="radio" id="needsReview25" name="initURLA" value={1} checked = {this.state.initURLA == 1}  /> <label name="accept" htmlFor="needsReview25">Accept</label>
-            <input type="radio" id="needsReview26" name="initURLA" value={0} checked = {this.state.initURLA == 0}  /> <label name="reject" htmlFor="needsReview26">Reject</label>
+            <input type="radio" id="needsReview25" name="initURLA" value={1} checked = {this.state.reviews.initURLA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview25">Accept</label>
+            <input type="radio" id="needsReview26" name="initURLA" value={0} checked = {this.state.reviews.initURLA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview26">Reject</label>
 
             <p>Targets Women?</p>
               <input type="radio" id="tWomen1" name="targetsWomen" value="Yes" checked = {this.state.tWomen === "Yes"} onChange={this.tWomenChange}/> <label htmlFor="tWomen1">Yes</label>
               <input type="radio" id="tWomen2" name="targetsWomen" value="No" checked = {this.state.tWomen === "No"} onChange={this.tWomenChange}/> <label htmlFor="tWomen2">No</label>
               <br></br>
-            <input type="radio" id="needsReview27" name="tWomenA" value={1} checked = {this.state.tWomenA == 1}  /> <label name="accept" htmlFor="needsReview27">Accept</label>
-            <input type="radio" id="needsReview28" name="tWomenA" value={0} checked = {this.state.tWomenA == 0}  /> <label name="reject" htmlFor="needsReview28">Reject</label>
+            <input type="radio" id="needsReview27" name="tWomenA" value={1} checked = {this.state.reviews.tWomenA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview27">Accept</label>
+            <input type="radio" id="needsReview28" name="tWomenA" value={0} checked = {this.state.reviews.tWomenA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview28">Reject</label>
 
             <p>Start Year</p>
               <input type="number" id="initStart" name="startYear" defaultValue={this.state.initStart} placeholder="Start Year" onChange={this.startYearChange}/>
               <br></br>
-            <input type="radio" id="needsReview29" name="initStartA" value={1} checked = {this.state.initStartA == 1}  /> <label name="accept" htmlFor="needsReview29">Accept</label>
-            <input type="radio" id="needsReview30" name="initStartA" value={0} checked = {this.state.initStartA == 0}  /> <label name="reject" htmlFor="needsReview30">Reject</label>
+            <input type="radio" id="needsReview29" name="initStartA" value={1} checked = {this.state.reviews.initStartA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview29">Accept</label>
+            <input type="radio" id="needsReview30" name="initStartA" value={0} checked = {this.state.reviews.initStartA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview30">Reject</label>
 
             <p>End Year</p>
               <input type="number" id="initEnd" name="endYear" defaultValue={this.state.initEnd} placeholder="End Year" onChange={this.endYearChange}/>
               <br></br>
-            <input type="radio" id="needsReview31" name="initEndA" value={1} checked = {this.state.initEndA == 1}  /> <label name="accept" htmlFor="needsReview31">Accept</label>
-            <input type="radio" id="needsReview32" name="initEndA" value={0} checked = {this.state.initEndA == 0}  /> <label name="reject" htmlFor="needsReview32">Reject</label>
+            <input type="radio" id="needsReview31" name="initEndA" value={1} checked = {this.state.reviews.initEndA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview31">Accept</label>
+            <input type="radio" id="needsReview32" name="initEndA" value={0} checked = {this.state.reviews.initEndA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview32">Reject</label>
 
             <p>Launch Country</p>
             <select id="launchCountry" name="launchCountry" onChange={this.addLaunchCountry}>
@@ -1929,14 +1953,14 @@ class formReview extends React.Component{
               </ul>
             </div>
             <br></br>
-            <input type="radio" id="needsReview33" name="launchCountryA" value={1} checked = {this.state.launchCountryA == 1}  /> <label name="accept" htmlFor="needsReview33">Accept</label>
-            <input type="radio" id="needsReview34" name="launchCountryA" value={0} checked = {this.state.launchCountryA == 0}  /> <label name="reject" htmlFor="needsReview34">Reject</label>
+            <input type="radio" id="needsReview33" name="launchCountryA" value={1} checked = {this.state.reviews.launchCountryA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview33">Accept</label>
+            <input type="radio" id="needsReview34" name="launchCountryA" value={0} checked = {this.state.reviews.launchCountryA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview34">Reject</label>
 
             <p>Description</p>
             <textarea id="idescription" name="description" value = {this.state.idescription} placeholder="Write a description" onChange={this.handleChange}></textarea>
             <br></br>
-            <input type="radio" id="needsReview35" name="idescriptionA" value={1} checked = {this.state.idescriptionA == 1}  /> <label name="accept" htmlFor="needsReview35">Accept</label>
-            <input type="radio" id="needsReview36" name="idescriptionA" value={0} checked = {this.state.idescriptionA == 0}  /> <label name="reject" htmlFor="needsReview36">Reject</label>
+            <input type="radio" id="needsReview35" name="idescriptionA" value={1} checked = {this.state.reviews.idescriptionA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview35">Accept</label>
+            <input type="radio" id="needsReview36" name="idescriptionA" value={0} checked = {this.state.reviews.idescriptionA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview36">Reject</label>
 
             <p>Region(s)</p>
             <select id="region" name="regions" onChange={this.addInitRegion}>
@@ -2009,8 +2033,8 @@ class formReview extends React.Component{
               </ul>
             </div>
             <br></br>
-            <input type="radio" id="needsReview37" name="regionsA" value={1} checked = {this.state.regionsA == 1}  /> <label name="accept" htmlFor="needsReview37">Accept</label>
-            <input type="radio" id="needsReview38" name="regionsA" value={0} checked = {this.state.regionsA == 0}  /> <label name="reject" htmlFor="needsReview38">Reject</label>
+            <input type="radio" id="needsReview37" name="regionsA" value={1} checked = {this.state.reviews.regionsA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview37">Accept</label>
+            <input type="radio" id="needsReview38" name="regionsA" value={0} checked = {this.state.reviews.regionsA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview38">Reject</label>
 
             <p>Countries</p>
             <select id="initCountry" name="initiativeCountry" onChange={this.addInitCountry}>
@@ -2250,8 +2274,8 @@ class formReview extends React.Component{
               </ul>
             </div>
             <br></br>
-            <input type="radio" id="needsReview39" name="countriesA" value={1} checked = {this.state.countriesA == 1}  /> <label name="accept" htmlFor="needsReview39">Accept</label>
-            <input type="radio" id="needsReview40" name="countriesA" value={0} checked = {this.state.countriesA == 0}  /> <label name="reject" htmlFor="needsReview40">Reject</label>
+            <input type="radio" id="needsReview39" name="countriesA" value={1} checked = {this.state.reviews.countriesA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview39">Accept</label>
+            <input type="radio" id="needsReview40" name="countriesA" value={0} checked = {this.state.reviews.countriesA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview40">Reject</label>
 
             <p>Target Geography</p>
               <input type="checkbox" id="geography1" name="targetGeo" value="Urban" checked = {this.state.targetGeos.includes("Urban")} onChange={this.geographyChange}/> <label htmlFor="geography1" className="checkbox">Urban</label>
@@ -2262,8 +2286,8 @@ class formReview extends React.Component{
               <input type="checkbox" id="geography6" name="targetGeo" value="Unclear" checked = {this.state.targetGeos.includes("Unclear")} onChange={this.geographyChange}/> <label htmlFor="geography6" className="checkbox">Unclear</label>
               <input type="checkbox" id="geography7" name="targetGeo" value="Missing" checked = {this.state.targetGeos.includes("Missing")} onChange={this.geographyChange}/> <label htmlFor="geography7" className="checkbox">Missing</label>
             <br></br>
-            <input type="radio" id="needsReview41" name="targetGeosA" value={1} checked = {this.state.targetGeosA == 1}  /> <label name="accept" htmlFor="needsReview41">Accept</label>
-            <input type="radio" id="needsReview42" name="targetGeosA" value={0} checked = {this.state.targetGeosA == 0}  /> <label name="reject" htmlFor="needsReview42">Reject</label>
+            <input type="radio" id="needsReview41" name="targetGeosA" value={1} checked = {this.state.reviews.targetGeosA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview41">Accept</label>
+            <input type="radio" id="needsReview42" name="targetGeosA" value={0} checked = {this.state.reviews.targetGeosA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview42">Reject</label>
 
             <p>Main Education Subsector</p>
             <input type="checkbox" id="iEdSub1" name="educationSubsector" value="Adult" checked = {this.state.mEdSubs.includes("Adult")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub1" className="checkbox">Adult</label>
@@ -2286,8 +2310,8 @@ class formReview extends React.Component{
             <input type="checkbox" id="iEdSub18" name="educationSubsector" value="Workforce Development and Vocational Education" checked = {this.state.mEdSubs.includes("Workforce Development and Vocational Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="iEdSub19" name="educationSubsector" value="Workforce Development/Skills" checked = {this.state.mEdSubs.includes("Workforce Development/Skills")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub19" className="checkbox">Workforce Development/Skills</label>
             <br></br>
-            <input type="radio" id="needsReview43" name="mEdSubsA" value={1} checked = {this.state.mEdSubsA == 1} /> <label name="accept" htmlFor="needsReview43">Accept</label>
-            <input type="radio" id="needsReview44" name="mEdSubsA" value={0} checked = {this.state.mEdSubsA == 0} /> <label name="reject" htmlFor="needsReview44">Reject</label>
+            <input type="radio" id="needsReview43" name="mEdSubsA" value={1} checked = {this.state.reviews.mEdSubsA == 1} onChange = {this.handleApprovalSelection}/> <label name="accept" htmlFor="needsReview43">Accept</label>
+            <input type="radio" id="needsReview44" name="mEdSubsA" value={0} checked = {this.state.reviews.mEdSubsA == 0} onChange = {this.handleApprovalSelection}/> <label name="reject" htmlFor="needsReview44">Reject</label>
 
             <p>Other Education Subsector(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="oEdSub1" name="educationSubsector" value="Adult" checked = {this.state.oEdSubs.includes("Adult")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub1" className="checkbox">Adult</label>
@@ -2310,8 +2334,8 @@ class formReview extends React.Component{
             <input type="checkbox" id="oEdSub18" name="educationSubsector" value="Workforce Development and Vocational Education" checked = {this.state.oEdSubs.includes("Workforce Development and Vocational Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="oEdSub19" name="educationSubsector" value="Workforce Development/Skills" checked = {this.state.oEdSubs.includes("Workforce Development/Skills")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub19" className="checkbox">Workforce Development/Skills</label>
             <br></br>
-            <input type="radio" id="needsReview45" name="oEdSubsA" value={1} checked = {this.state.oEdSubsA == 1}  /> <label name="accept" htmlFor="needsReview45">Accept</label>
-            <input type="radio" id="needsReview46" name="oEdSubsA" value={0} checked = {this.state.oEdSubsA == 0}  /> <label name="reject" htmlFor="needsReview46">Reject</label>
+            <input type="radio" id="needsReview45" name="oEdSubsA" value={1} checked = {this.state.reviews.oEdSubsA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview45">Accept</label>
+            <input type="radio" id="needsReview46" name="oEdSubsA" value={0} checked = {this.state.reviews.oEdSubsA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview46">Reject</label>
 
             <p>Main Program Activity</p>
             <select id="mainProgramActivity" name="activity" onChange={this.changeProgramArea}>
@@ -2413,8 +2437,8 @@ class formReview extends React.Component{
             <option value=" Maternal Health Education" selected = {this.state.mainProgramActivity.includes("Maternal Health Education")}>Maternal Health Education</option>
             </select>
             <br></br>
-            <input type="radio" id="needsReview47" name="initiativeMainProgramActivityA" value={1} checked = {this.state.initiativeMainProgramActivityA == 1}  /> <label name="accept" htmlFor="needsReview47">Accept</label>
-            <input type="radio" id="needsReview48" name="initiativeMainProgramActivityA" value={0} checked = {this.state.initiativeMainProgramActivityA == 0}  /> <label name="reject" htmlFor="needsReview48">Reject</label>
+            <input type="radio" id="needsReview47" name="initiativeMainProgramActivityA" value={1} checked = {this.state.reviews.initiativeMainProgramActivityA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview47">Accept</label>
+            <input type="radio" id="needsReview48" name="initiativeMainProgramActivityA" value={0} checked = {this.state.reviews.initiativeMainProgramActivityA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview48">Reject</label>
 
             <p>Program Area</p>
             <div id="programArea">
@@ -2536,15 +2560,15 @@ class formReview extends React.Component{
               </ul>
             </div>
             <br></br>
-            <input type="radio" id="needsReview49" name="activitiesA" value={1} checked = {this.state.activitiesA == 1}  /> <label name="accept" htmlFor="needsReview49">Accept</label>
-            <input type="radio" id="needsReview50" name="activitiesA" value={0} checked = {this.state.activitiesA == 0}  /> <label name="reject" htmlFor="needsReview50">Reject</label>
+            <input type="radio" id="needsReview49" name="activitiesA" value={1} checked = {this.state.reviews.activitiesA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview49">Accept</label>
+            <input type="radio" id="needsReview50" name="activitiesA" value={0} checked = {this.state.reviews.activitiesA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview50">Reject</label>
 
             <p>Fee to Access?</p>
-              <input type="radio" id="feeAccess1" name="feeToAccess" value="Yes" checked = {this.state.feeAccess === "Yes"} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess1">Yes</label>
-              <input type="radio" id="feeAccess2" name="feeToAccess" value="No" checked = {this.state.feeAccess === "No"} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess2">No</label>
+              <input type="radio" id="feeAccess1" name="feeToAccess" value="Yes" checked = {this.state.reviews.feeAccess === "Yes"} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess1">Yes</label>
+              <input type="radio" id="feeAccess2" name="feeToAccess" value="No" checked = {this.state.reviews.feeAccess === "No"} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess2">No</label>
               <br></br>
-            <input type="radio" id="needsReview51" name="feeAccessA" value={1} checked = {this.state.feeAccessA == 1}  /> <label name="accept" htmlFor="needsReview51">Accept</label>
-            <input type="radio" id="needsReview52" name="feeAccessA" value={0} checked = {this.state.feeAccessA == 0}  /> <label name="reject" htmlFor="needsReview52">Reject</label>
+            <input type="radio" id="needsReview51" name="feeAccessA" value={1} checked = {this.state.reviews.feeAccessA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview51">Accept</label>
+            <input type="radio" id="needsReview52" name="feeAccessA" value={0} checked = {this.state.reviews.feeAccessA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview52">Reject</label>
 
             <p>Target School Management Type</p>
             <select id="manType" name="managementType" onChange={this.addManagementType}>
@@ -2568,8 +2592,8 @@ class formReview extends React.Component{
               </ul>
             </div>
             <br></br>
-            <input type="radio" id="needsReview53" name="managementTypesA" value={1} checked = {this.state.managementTypesA == 1}  /> <label name="accept" htmlFor="needsReview53">Accept</label>
-            <input type="radio" id="needsReview54" name="managementTypesA" value={0} checked = {this.state.managementTypesA == 0}  /> <label name="reject" htmlFor="needsReview54">Reject</label>
+            <input type="radio" id="needsReview53" name="managementTypesA" value={1} checked = {this.state.reviews.managementTypesA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview53">Accept</label>
+            <input type="radio" id="needsReview54" name="managementTypesA" value={0} checked = {this.state.reviews.managementTypesA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview54">Reject</label>
 
             <p>Target Population Sector(s)<br></br>Select all that apply:</p>
             <select id="popSector" name="targetPopulationSector" onChange={this.addPopSector}>
@@ -3226,8 +3250,8 @@ class formReview extends React.Component{
               </ul>
             </div>
             <br></br>
-            <input type="radio" id="needsReview55" name="targetPopulationSectorsA" value={1} checked = {this.state.targetPopulationSectorsA == 1}  /> <label name="accept" htmlFor="needsReview55">Accept</label>
-            <input type="radio" id="needsReview56" name="targetPopulationSectorsA" value={0} checked = {this.state.targetPopulationSectorsA == 0}  /> <label name="reject" htmlFor="needsReview56">Reject</label>
+            <input type="radio" id="needsReview55" name="targetPopulationSectorsA" value={1} checked = {this.state.reviews.targetPopulationSectorsA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview55">Accept</label>
+            <input type="radio" id="needsReview56" name="targetPopulationSectorsA" value={0} checked = {this.state.reviews.targetPopulationSectorsA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview56">Reject</label>
 
             <p>Outcomes Monitored<br></br>Select all that apply:</p>
             <select id="outcome" name="outcomesMonitored" onChange={this.addOutcome}>
@@ -3788,8 +3812,8 @@ class formReview extends React.Component{
               </ul>
             </div>
             <br></br>
-            <input type="radio" id="needsReview57" name="outcomesMonitoredA" value={1} checked = {this.state.outcomesMonitoredA == 1}  /> <label name="accept" htmlFor="needsReview57">Accept</label>
-            <input type="radio" id="needsReview58" name="outcomesMonitoredA" value={0} checked = {this.state.outcomesMonitoredA == 0}  /> <label name="reject" htmlFor="needsReview58">Reject</label>
+            <input type="radio" id="needsReview57" name="outcomesMonitoredA" value={1} checked = {this.state.reviews.outcomesMonitoredA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview57">Accept</label>
+            <input type="radio" id="needsReview58" name="outcomesMonitoredA" value={0} checked = {this.state.reviews.outcomesMonitoredA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview58">Reject</label>
 
             <br></br><br></br>
             <h4>Implementer</h4>
@@ -3797,16 +3821,16 @@ class formReview extends React.Component{
             <p>Name</p>
               <input type="text" id="iname" name="implementerName" value = {this.state.iname} placeholder="Implementer Name" onChange={this.handleChange}/>
               <br></br>
-            <input type="radio" id="needsReview61" name="inameA" value={1} checked = {this.state.inameA == 1}  /> <label name="accept" htmlFor="needsReview61">Accept</label>
-            <input type="radio" id="needsReview62" name="inameA" value={0} checked = {this.state.inameA == 0}  /> <label name="reject" htmlFor="needsReview62">Reject</label>
+            <input type="radio" id="needsReview61" name="inameA" value={1} checked = {this.state.reviews.inameA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview61">Accept</label>
+            <input type="radio" id="needsReview62" name="inameA" value={0} checked = {this.state.reviews.inameA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview62">Reject</label>
 
             <p>Profit Motive</p>
               <input type="radio" id="impMotive1" name="impProfitMotive" value="Not-for-profit" checked = {this.state.impMotive === "Not-for-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive1">Not-For-Profit</label>
               <input type="radio" id="impMotive2" name="impProfitMotive" value="Hybrid" checked = {this.state.impMotive === "Hybrid"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive2">Hybrid</label>
               <input type="radio" id="impMotive3" name="impProfitMotive" value="For-profit" checked = {this.state.impMotive === "For-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive3">For-Profit</label>
               <br></br>
-            <input type="radio" id="needsReview63" name="impMotiveA" value={1} checked = {this.state.impMotiveA == 1}  /> <label name="accept" htmlFor="needsReview63">Accept</label>
-            <input type="radio" id="needsReview64" name="impMotiveA" value={0} checked = {this.state.impMotiveA == 0}  /> <label name="reject" htmlFor="needsReview64">Reject</label>
+            <input type="radio" id="needsReview63" name="impMotiveA" value={1} checked = {this.state.reviews.impMotiveA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview63">Accept</label>
+            <input type="radio" id="needsReview64" name="impMotiveA" value={0} checked = {this.state.reviews.impMotiveA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview64">Reject</label>
             <br></br><br></br>
 
             <h4>Comments about Submission</h4>
@@ -3875,10 +3899,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    submitRA: (form, isModified) => {dispatch(addFormRA(form, isModified))},
-    submitNonRA: (form, inDB, isModified) => {dispatch(addForm(form, inDB, isModified))},
-    submitModifiedRA: (form, isModified) => {dispatch(modifyFormRA(form, isModified))},
-    submitModifiedNonRA: (form, inDB, isModified) => {dispatch(modifyForm(form, inDB, isModified))},
+    reviewForm: (form, inDB, isModified) => {dispatch(reviewForm(form, inDB, isModified))},
   };
 }
 

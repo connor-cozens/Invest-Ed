@@ -3,11 +3,18 @@ import ReactDOM from 'react-dom';
 import './formReview.css';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom'
+import {addForm, addFormRA, modifyForm, modifyFormRA} from '../../store/actions/dataActions'
 
 class formReview extends React.Component{
   constructor(props){
     super(props);
     this.state = {
+      //Original values
+      tagNum: null,
+      originalFunderName: null,
+      originalImplementerName: null,
+
+      //
       internationalBases: [], //Funder International Bases
       regions: [], //Initiative Regions
       countries: [], //Initiative Countries
@@ -34,8 +41,8 @@ class formReview extends React.Component{
       launchCountries: [],
       idescription: null,
       targetGeos: [],
-      mainProgramActivity: null,
-      programArea: null,
+      mainProgramActivity: '', //This isnt being set
+      programArea: '',
       feeAccess: null,
       targetPopulationSectors: [], //
       outcomesMonitored: [], //
@@ -50,10 +57,45 @@ class formReview extends React.Component{
       //Other
       comments: null,
 
-      //Review
-      needsReview: [] //34 Other sections, so 0-33 in the order the appear ON THE FORM
-
-
+      //Reviews
+      needsReview: null,
+      //Section Reviews
+      fnameA: null,
+      furlA: null,
+      motiveA: null,
+      impactA: null,
+      organizationFormA: null,
+      // multi val funder
+      internationalBasesA: null,
+      edSubsA: null,
+      orgTraitsA: null,
+      asialBasesA: null,
+      asiaOperationsA: null,
+      // single val initiative
+      initNameA: null,
+      initURLA: null,
+      tWomenA: null,
+      initStartA: null,
+      initEndA: null,
+      idescriptionA: null,
+      programAreaA: null,
+      initiativeMainProgramActivityA: null,
+      feeAccessA: null,
+      // multi val initiative
+      regionsA: null,
+      countriesA: null,
+      activitiesA: null,
+      sourceOfFeesA: null,
+      launchCountryA: null,
+      targetGeosA: null,
+      targetPopulationSectorsA: null,
+      outcomesMonitoredA: null,
+      mEdSubsA: null,
+      oEdSubsA: null,
+      managementTypesA: null,
+      // single val implementer
+      inameA: null,
+      impMotiveA: null
     };
 
     this.addIBase = this.addIBase.bind(this);
@@ -62,6 +104,7 @@ class formReview extends React.Component{
     this.addInitCountry = this.addInitCountry.bind(this);
     this.buttonMaker = this.buttonMaker.bind(this);
     this.addProgramActivity = this.addProgramActivity.bind(this);
+    this.changeProgramArea = this.changeProgramArea.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.changeEdSub = this.changeEdSub.bind(this);
@@ -84,55 +127,98 @@ class formReview extends React.Component{
     this.addLaunchCountry = this.addLaunchCountry.bind(this);
     this.startYearChange = this.startYearChange.bind(this);
     this.endYearChange = this.endYearChange.bind(this);
-    this.fillMultiValued = this.fillMultiValued.bind(this);
   }
 
   componentDidMount = () => {
-    if (this.props.formStatus === 'review') {
+    const {props} = this;
+    if (props.formStatus === 'review') {
       this.setState({
+        //Original value Setters
+        tagNum: props.form.tagNumber,
+        originalFunderName: props.form.funders.length > 0 ? props.form.funders[0].funderName : null,  //For now, retrieving and displaying first funder in the funder list
+        originalImplementerName: props.form.implementers.length > 0 ? props.form.implementers[0].implementorName : null,  //For now, retrieving and displaying first implementer in the implementer list
+
         //Initiative setters
-        initName: this.props.form.name,
-        initURL: this.props.form.website,
-        tWomen: this.props.form.targetsWomen,
-        initStart: this.props.form.startYear,
-        initEnd: this.props.form.endYear,
-        launchCountries: this.props.form.launchCountry !== undefined ? this.props.form.launchCountry : [],  //Not used yet
-        idescription: this.props.form.description,
-        targetGeos: this.props.form.targetGeographies.length !== undefined ? this.props.form.targetGeographies : [],
-        mainProgramActivity: this.props.form.mainProgrammingActivity !== undefined ? this.props.form.mainProgrammingActivity : [],  //Not used yet
-        programArea: this.props.form.mainProgrammingArea !== undefined ? this.props.form.mainProgrammingActivity : [],  //Not used yet
-        feeAccess: this.props.form.feeToAccess,
-        targetPopulationSectors: this.props.form.targetPopulationSectors !== undefined ? this.props.form.targetPopulationSectors : [],  //Not used yet
-        outcomesMonitored: this.props.form.monitoredOutcomes !== undefined ? this.props.form.monitoredOutcomes : [],  //Not used yet
-        mEdSubs: this.props.form.mainEducationSubSectors !== undefined ? this.props.form.mainEducationSubSectors : [],
-        oEdSubs: this.props.form.educationSubSectors !== undefined ? this.props.form.educationSubSectors : [],
-        managementTypes: this.props.form.targetSchoolManagementType !== undefined ? this.props.form.targetSchoolManagementType : [],  //Not used yet
-        regions: this.props.form.regions !== undefined ? this.props.form.regions : [], //Not used yet
-        countries: this.props.form.countriesOfOperation !== undefined ? this.props.form.countriesOfOperation : [], //Not used yet
-        activities: this.props.form.programmingActivities !== undefined ? this.props.form.programmingActivities : [], //Not used yet
-        sourceOfFees: this.props.form.sourcesOfFunding !== undefined ? this.props.form.sourcesOfFunding : [], //Not used yet
+        initName: props.form.name,
+        initURL: props.form.website,
+        tWomen: props.form.targetsWomen,
+        initStart: props.form.startYear,
+        initEnd: props.form.endYear,
+        launchCountries: props.form.launchCountry !== undefined ? props.form.launchCountry : [],
+        idescription: props.form.description,
+        targetGeos: props.form.targetGeographies.length !== undefined ? props.form.targetGeographies : [],
+        mainProgramActivity: props.form.mainProgrammingActivity !== undefined ? props.form.mainProgrammingActivity : '',
+        programArea: props.form.mainProgrammingArea !== undefined ? props.form.mainProgrammingArea : '',
+        feeAccess: props.form.feeToAccess,
+        targetPopulationSectors: props.form.targetPopulationSectors !== undefined ? props.form.targetPopulationSectors : [],
+        outcomesMonitored: props.form.monitoredOutcomes !== undefined ? props.form.monitoredOutcomes : [],
+        mEdSubs: props.form.mainEducationSubSectors !== undefined ? props.form.mainEducationSubSectors : [],
+        oEdSubs: props.form.educationSubSectors !== undefined ? props.form.educationSubSectors : [],
+        managementTypes: props.form.targetSchoolManagementType !== undefined ? props.form.targetSchoolManagementType : [],
+        regions: props.form.regions !== undefined ? props.form.regions : [],
+        countries: props.form.countriesOfOperation !== undefined ? props.form.countriesOfOperation : [],
+        activities: props.form.programmingActivities !== undefined ? props.form.programmingActivities : [],
+        sourceOfFees: props.form.sourcesOfFunding !== undefined ? props.form.sourcesOfFunding : [],
 
         //Funder Setters
-        fname: this.props.form.funders.length > 0 ? this.props.form.funders[0].funderName : null,
-        furl: this.props.form.funders.length > 0 ? this.props.form.funders[0].funderWebsite : null,
-        motive: this.props.form.funders.length > 0 ? this.props.form.funders[0].profitMotive : null,
-        organizationForm: this.props.form.funders.length > 0 ? this.props.form.funders[0].organizationalForm : null,
-        impact: this.props.form.funders.length > 0 ? this.props.form.funders[0].impactInvesting : null,
-        //Still need to retrieve this data for funders:
-        // edSubs: this.props.form.edSubs !== undefined ? this.props.form.edSubs : [],
-        // orgTraits: this.props.form.orgTraits !== undefined ? this.props.form.orgTraits : [],
-        // asiaIBases: this.props.form.asiaIBases !== undefined ? this.props.form.asiaIBases : [],
-        // asiaOperations: this.props.form.asiaOperations !== undefined ? this.props.form.asiaOperations : [],
-        // internationalBases: this.props.form.internationalBases !== undefined ? this.props.form.internationalBases : [],
+        fname: props.form.funders.length > 0 ? props.form.funders[0].funderName : null,
+        furl: props.form.funders.length > 0 ? props.form.funders[0].funderWebsite : null,
+        motive: props.form.funders.length > 0 ? props.form.funders[0].profitMotive : null,
+        organizationForm: props.form.funders.length > 0 ? props.form.funders[0].organizationalForm : null,
+        impact: props.form.funders.length > 0 ? props.form.funders[0].impactInvesting : null,
+
+        //Multi-valued funder attribute setters
+        edSubs: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].educationSubsector !== undefined ? props.form.funders[0].educationSubsector : []) : []) : [],
+        orgTraits: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].trait !== undefined ? props.form.funders[0].trait : []) : []) : [],
+        asiaIBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaBase !== undefined ? props.form.funders[0].asiaBase : []) : []) : [],
+        asiaOperations: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaOperatons !== undefined ? props.form.funders[0].asiaOperatons : []) : []) : [],
+        internationalBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].baseLocation !== undefined ? props.form.funders[0].baseLocation : []) : []) : [],
 
         //Implementer setters
-        iname: this.props.form.implementers.length > 0 ? this.props.form.implementers[0].implementorName : null,
-        impMotive: this.props.form.implementers.length > 0 ? this.props.form.implementers[0].profitMotive : null,
+        iname: props.form.implementers.length > 0 ? props.form.implementers[0].implementorName : null,
+        impMotive: props.form.implementers.length > 0 ? props.form.implementers[0].profitMotive : null,
 
         //Other Setters
-        comments: this.props.form.reviews, //Not used yet
-        //status: this.props.form.status === undefined ? (this.props.form.status.length > 0 ? this.props.form.status[0][0].needsReview : null) : null, //not used yet
-        reviews: this.props.form.reviews === undefined ? (this.props.form.reviews.length > 0 ? this.props.form.reviews[0][0] : null) : null //not used yet
+        comments: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].comment !== undefined ? props.form.status[0][0].comment : null) : null) : null) : null,
+
+        //Review Setters
+        needsReview: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].needsReview !== undefined ? props.form.status[0][0].needsReview : null) : null) : null) : null,
+        fnameA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null,
+        furlA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderUrlApproval : null) : null) : null) : null,
+        motiveA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderMotiveApproval : null) : null) : null) : null,
+        impactA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderImpactApproval : null) : null) : null) : null,
+        organizationFormA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrganizationFormApproval : null) : null) : null) : null,
+        // multi val funder
+        internationalBasesA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderInternationalBaseApproval : null) : null) : null) : null,
+        edSubsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderEdSubsApproval : null) : null) : null) : null,
+        orgTraitsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrgTraitsApproval : null) : null) : null) : null,
+        asialBasesA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaBasesApproval : null) : null) : null) : null,
+        asiaOperationsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaOperationsApproval : null) : null) : null) : null,
+        // single val initiative
+        initNameA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initNameApproval : null) : null) : null) : null,
+        initURLA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initUrlApproval : null) : null) : null) : null,
+        tWomenA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetsWomenApproval : null) : null) : null) : null,
+        initStartA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initStartApproval : null) : null) : null) : null,
+        initEndA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initEndApproval : null) : null) : null) : null,
+        idescriptionA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initDescriptionApproval : null) : null) : null) : null,
+        programAreaA: 1, //set to approved as this is not based on user input
+        initiativeMainProgramActivityA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMainProgramActivityApproval : null) : null) : null) : null,
+        feeAccessA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initFeeAccessApproval : null) : null) : null) : null,
+        // multi val initiative
+        regionsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initRegionsApproval : null) : null) : null) : null,
+        countriesA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initCountriesApproval : null) : null) : null) : null,
+        activitiesA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initActivitiesApproval : null) : null) : null) : null,
+        sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
+        launchCountryA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initLaunchCountryApproval : null) : null) : null) : null,
+        targetGeosA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetGeoApproval : null) : null) : null) : null,
+        targetPopulationSectorsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetPopulationSectorApproval : null) : null) : null) : null,
+        outcomesMonitoredA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOutcomesMonitoredApproval : null) : null) : null) : null,
+        mEdSubsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMEdSubsApproval : null) : null) : null) : null,
+        oEdSubsA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOEdSubsApproval : null) : null) : null) : null,
+        managementTypesA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initManagementTypesApproval : null) : null) : null) : null,
+        // single val implementer
+        inameA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorNameApproval : null) : null) : null) : null,
+        impMotiveA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorMotiveApproval : null) : null) : null) : null
       });
     }
   }
@@ -142,116 +228,137 @@ class formReview extends React.Component{
   }
 
   removeButton(props){
-    if (props.category == "iBase"){
+    if (props.category === "iBase"){
       for (var i = 0; i < this.state.internationalBases.length; i++){ //There is definitely a more efficient solution
-        if (this.state.internationalBases[i].key == props.name){
+        if (this.state.internationalBases[i] === props.name){
           this.state.internationalBases.splice(i, 1);
+          this.setState({
+            internationalBases: this.state.internationalBases
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.internationalBases}</ul>, document.getElementById('iBases'))
     }
-    else if (props.category == "opLoc"){
+    /*else if (props.category === "opLoc"){
       for (var i = 0; i < this.state.operations.length; i++){
-        if (this.state.operations[i].key == props.name){
+        if (this.state.operations[i].key === props.name){
           this.state.operations.splice(i, 1);
           break;
         }
       }
       ReactDOM.render(<ul>{this.state.operations}</ul>, document.getElementById('operationLocations'))
-    }
-    else if (props.category == "initRegions"){
+    }*/
+    else if (props.category === "initRegions"){
       for (var i = 0; i < this.state.regions.length; i++){
-        if (this.state.regions[i].key == props.name){
+        if (this.state.regions[i] === props.name){
           this.state.regions.splice(i, 1);
+          this.setState({
+            regions: this.state.regions
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.regions}</ul>, document.getElementById('initRegions'))
     }
-    else if (props.category == "initActivities"){
+    else if (props.category === "initActivities"){
       for (var i = 0; i < this.state.activities.length; i++){
-        if (this.state.activities[i].key == props.name){
+        if (this.state.activities[i] === props.name){
           this.state.activities.splice(i, 1);
+          this.setState({
+            activities: this.state.activities
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.activities}</ul>, document.getElementById('initActivities'))
     }
-    else if (props.category == "sourceOfFeesList"){
+    else if (props.category === "sourceOfFeesList"){
       for (var i = 0; i < this.state.sourceOfFees.length; i++){
-        if (this.state.sourceOfFees[i].key == props.name){
+        if (this.state.sourceOfFees[i] === props.name){
           this.state.sourceOfFees.splice(i, 1);
+          this.setState({
+            sourceOfFees: this.state.sourceOfFees
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.sourceOfFees}</ul>, document.getElementById('sourceOfFeesList'))
     }
-    else if (props.category == "outcomesMonitored"){
+    else if (props.category === "outcomesMonitored"){
       for (var i = 0; i < this.state.outcomesMonitored.length; i++){
-        if (this.state.outcomesMonitored[i].key == props.name){
+        if (this.state.outcomesMonitored[i] === props.name){
           this.state.outcomesMonitored.splice(i, 1);
+          this.setState({
+            outcomesMonitored: this.state.outcomesMonitored
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.outcomesMonitored}</ul>, document.getElementById('outcomesMonitored'))
     }
-    else if (props.category == "managementTypes"){
+    else if (props.category === "managementTypes"){
       for (var i = 0; i < this.state.managementTypes.length; i++){
-        if (this.state.managementTypes[i].key == props.name){
+        if (this.state.managementTypes[i] === props.name){
           this.state.managementTypes.splice(i, 1);
+          this.setState({
+            managementTypes: this.state.managementTypes
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.managementTypes}</ul>, document.getElementById('managementTypes'))
     }
-    else if (props.category == "targetPopSector"){
+    else if (props.category === "targetPopSector"){
       for (var i = 0; i < this.state.targetPopulationSectors.length; i++){
-        if (this.state.targetPopulationSectors[i].key == props.name){
+        if (this.state.targetPopulationSectors[i] === props.name){
           this.state.targetPopulationSectors.splice(i, 1);
+          this.setState({
+            targetPopulationSectors: this.state.targetPopulationSectors
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.targetPopulationSectors}</ul>, document.getElementById('targetPopSector'))
     }
-    else if (props.category == "aIBases"){
+    else if (props.category === "aIBases"){
       for (var i = 0; i < this.state.asiaIBases.length; i++){
-        if (this.state.asiaIBases[i].key == props.name){
+        if (this.state.asiaIBases[i] === props.name){
           this.state.asiaIBases.splice(i, 1);
+          this.setState({
+            asiaIBases: this.state.asiaIBases
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.asiaIBases}</ul>, document.getElementById('aIBases'))
     }
-    else if (props.category == "asiaOperationLocations"){
+    else if (props.category === "asiaOperationLocations"){
       for (var i = 0; i < this.state.asiaOperations.length; i++){
-        if (this.state.asiaOperations[i].key == props.name){
+        if (this.state.asiaOperations[i] === props.name){
           this.state.asiaOperations.splice(i, 1);
+          this.setState({
+            asiaOperations: this.state.asiaOperations
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.asiaOperations}</ul>, document.getElementById('asiaOperationLocations'))
     }
-    else if (props.category == "launchCountries"){
+    else if (props.category === "launchCountries"){
       for (var i = 0; i < this.state.launchCountries.length; i++){
-        if (this.state.launchCountries[i].key == props.name){
+        if (this.state.launchCountries[i] === props.name){
           this.state.launchCountries.splice(i, 1);
+          this.setState({
+            launchCountries: this.state.launchCountries
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.launchCountries}</ul>, document.getElementById('launchCountries'))
     }
     else{
       for (var i = 0; i < this.state.countries.length; i++){
-        if (this.state.countries[i].key == props.name){
+        if (this.state.countries[i] === props.name){
           this.state.countries.splice(i, 1);
+          this.setState({
+            countries: this.state.countries
+          })
           break;
         }
       }
-      ReactDOM.render(<ul>{this.state.countries}</ul>, document.getElementById('initCountries'))
     }
   }
-
 
 
   addIBase(e){
@@ -259,72 +366,60 @@ class formReview extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.internationalBases.length; i++){ //There is definitely a more efficient solution
-      if (this.state.internationalBases[i].key == base){
+      if (this.state.internationalBases[i] === base){
         present = true;
         break;
       }
     }
-    if (!present && base != "baseCase"){
-      this.state.internationalBases.push(<this.buttonMaker key={base} name={base} category="iBase"/> )
-      console.log(base);
-      ReactDOM.render(<ul>{this.state.internationalBases}</ul>, document.getElementById('iBases'))
+    if (!present && base !== "baseCase"){
+      this.state.internationalBases.push(base);
+      this.setState({
+        internationalBases: this.state.internationalBases
+      })
     }
   }
 
-  
-  fillIBase(){
-    for (var i = 0; i < this.state.internationalBases.length; i++){
-      if(this.state.internationalBases[i] !== ""){
-        this.state.internationalBases[i] = (<this.buttonMaker key={this.state.internationalBases[i]} name={this.state.internationalBases[i]} category="iBase"/>)
-        console.log(this.state.internationalBases[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.internationalBases}</ul>, document.getElementById('iBases'))
-  }
-
-  /*
-  addOpLoc(e){
+  /*addOpLoc(e){
     var country = e.currentTarget.value;
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.operations.length; i++){ //There is definitely a more efficient solution
-      if (this.state.operations[i].key == country){
+      if (this.state.operations[i].key === country){
         present = true;
         break;
       }
     }
-    if (!present && country != "baseCase"){
+    if (!present && country !== "baseCase"){
       this.state.operations.push(<this.buttonMaker key={country} name={country} category="opLoc"/>)
       console.log(country);
       ReactDOM.render(<ul>{this.state.operations}</ul>, document.getElementById('operationLocations'))
     }
+  }
+
+  fillOpLoc(){
+    for (var i = 0; i < this.state.operations.length; i++){
+      this.state.operations[i] = (<this.buttonMaker key={this.state.operations[i]} name={this.state.operations[i]} category="opLoc"/>)
+      console.log(this.state.operations[i]);
+    }
+    ReactDOM.render(<ul>{this.state.operations}</ul>, document.getElementById('operationLocations'))
   }*/
 
-  addInitRegion(e){
+  addInitRegion(e, onStart){
     var region = e.currentTarget.value;
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.regions.length; i++){ //There is definitely a more efficient solution
-      if (this.state.regions[i].key == region){
+      if (this.state.regions[i] === region){
         present = true;
         break;
       }
     }
-    if (!present && region != "baseCase"){
-      this.state.regions.push(<this.buttonMaker key={region} name={region} category="initRegions"/>)
-      console.log(region);
-      ReactDOM.render(<ul>{this.state.regions}</ul>, document.getElementById('initRegions'))
+    if (!present && region !== "baseCase"){
+      this.state.regions.push(region)
+      this.setState({
+        regions: this.state.regions
+      })
     }
-  }
-
-  fillInitRegion(){
-    for (var i = 0; i < this.state.regions.length; i++){
-      if(this.state.regions[i] !== ""){
-        this.state.regions[i] = (<this.buttonMaker key={this.state.regions[i]} name={this.state.regions[i]} category="initRegions"/>)
-        console.log(this.state.regions[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.regions}</ul>, document.getElementById('initRegions'))
   }
 
   addInitCountry(e){
@@ -332,26 +427,17 @@ class formReview extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.countries.length; i++){ //There is definitely a more efficient solution
-      if (this.state.countries[i].key == country){
+      if (this.state.countries[i] === country){
         present = true;
         break;
       }
     }
-    if (!present && country != "baseCase"){
-      this.state.countries.push(<this.buttonMaker key={country} name={country} category="initCountries"/>)
-      console.log(country);
-      ReactDOM.render(<ul>{this.state.countries}</ul>, document.getElementById('initCountries'))
+    if (!present && country !== "baseCase"){
+      this.state.countries.push(country)
+      this.setState({
+        countries: this.state.countries
+      })
     }
-  }
-
-  fillInitCountry(){
-    for (var i = 0; i < this.state.countries.length; i++){
-      if(this.state.countries[i] !== ""){
-        this.state.countries[i] = (<this.buttonMaker key={this.state.countries[i]} name={this.state.countries[i]} category="initCountries"/>)
-        console.log(this.state.countries[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.countries}</ul>, document.getElementById('initCountries'))
   }
 
   addProgramActivity(e){
@@ -359,26 +445,17 @@ class formReview extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.activities.length; i++){ //There is definitely a more efficient solution
-      if (this.state.activities[i].key == activity){
+      if (this.state.activities[i] === activity){
         present = true;
         break;
       }
     }
-    if (!present && activity != "baseCase"){
-      this.state.activities.push(<this.buttonMaker key={activity} name={activity} category="initActivities"/>)
-      console.log(activity);
-      ReactDOM.render(<ul>{this.state.activities}</ul>, document.getElementById('initActivities'))
+    if (!present && activity !== "baseCase"){
+      this.state.activities.push(activity)
+      this.setState({
+        activities: this.state.activities
+      })
     }
-  }
-
-  fillProgramActivity(){
-    for (var i = 0; i < this.state.activities.length; i++){
-      if(this.state.activities[i] !== ""){
-        this.state.activities[i] = (<this.buttonMaker key={this.state.activities[i]} name={this.state.activities[i]} category="initActivities"/>)
-        console.log(this.state.activities[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.activities}</ul>, document.getElementById('initActivities'))
   }
 
   addSourceFee(e){
@@ -386,26 +463,14 @@ class formReview extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.sourceOfFees.length; i++){ //There is definitely a more efficient solution
-      if (this.state.sourceOfFees[i].key == source){
+      if (this.state.sourceOfFees[i] === source){
         present = true;
         break;
       }
     }
-    if (!present && source != "base"){
+    if (!present && source !== "base"){
       this.state.sourceOfFees.push(<this.buttonMaker key={source} name={source} category="sourceOfFeesList"/>)
-      console.log(source);
-      ReactDOM.render(<ul>{this.state.sourceOfFees}</ul>, document.getElementById('sourceOfFeesList'))
     }
-  }
-
-  fillSourceFee(){
-    for (var i = 0; i < this.state.sourceOfFees.length; i++){
-      if(this.state.sourceOfFees[i] !== ""){
-        this.state.sourceOfFees[i] = (<this.buttonMaker key={this.state.sourceOfFees[i]} name={this.state.sourceOfFees[i]} category="sourceOfFeesList"/>)
-        console.log(this.state.sourceOfFees[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.sourceOfFees}</ul>, document.getElementById('sourceOfFeesList'))
   }
 
   addOutcome(e){
@@ -413,26 +478,17 @@ class formReview extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.outcomesMonitored.length; i++){ //There is definitely a more efficient solution
-      if (this.state.outcomesMonitored[i].key == outcome){
+      if (this.state.outcomesMonitored[i] === outcome){
         present = true;
         break;
       }
     }
-    if (!present && outcome != "base"){
-      this.state.outcomesMonitored.push(<this.buttonMaker key={outcome} name={outcome} category="outcomesMonitored"/>)
-      console.log(outcome);
-      ReactDOM.render(<ul>{this.state.outcomesMonitored}</ul>, document.getElementById('outcomesMonitored'))
+    if (!present && outcome !== "base"){
+      this.state.outcomesMonitored.push(outcome)
+      this.setState({
+        outcomesMonitored: this.state.outcomesMonitored
+      })
     }
-  }
-
-  fillOutcome(){
-    for (var i = 0; i < this.state.outcomesMonitored.length; i++){
-      if(this.state.outcomesMonitored[i] !== ""){
-        this.state.outcomesMonitored[i] = (<this.buttonMaker key={this.state.outcomesMonitored[i]} name={this.state.outcomesMonitored[i]} category="outcomesMonitored"/>)
-        console.log(this.state.outcomesMonitored[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.outcomesMonitored}</ul>, document.getElementById('outcomesMonitored'))
   }
 
   addManagementType(e){
@@ -440,26 +496,17 @@ class formReview extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.managementTypes.length; i++){ //There is definitely a more efficient solution
-      if (this.state.managementTypes[i].key == type){
+      if (this.state.managementTypes[i] === type){
         present = true;
         break;
       }
     }
-    if (!present && type != "base"){
-      this.state.managementTypes.push(<this.buttonMaker key={type} name={type} category="managementTypes"/>)
-      console.log(type);
-      ReactDOM.render(<ul>{this.state.managementTypes}</ul>, document.getElementById('managementTypes'))
+    if (!present && type !== "base"){
+      this.state.managementTypes.push(type)
+      this.setState({
+        managementTypes: this.state.managementTypes
+      })
     }
-  }
-
-  fillManagementType(){
-    for (var i = 0; i < this.state.managementTypes.length; i++){
-      if(this.state.managementTypes[i] !== ""){
-        this.state.managementTypes[i] = (<this.buttonMaker key={this.state.managementTypes[i]} name={this.state.managementTypes[i]} category="managementTypes"/>)
-        console.log(this.state.managementTypes[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.managementTypes}</ul>, document.getElementById('managementTypes'))
   }
 
   addPopSector(e){
@@ -467,26 +514,17 @@ class formReview extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.targetPopulationSectors.length; i++){ //There is definitely a more efficient solution
-      if (this.state.targetPopulationSectors[i].key == sector){
+      if (this.state.targetPopulationSectors[i] === sector){
         present = true;
         break;
       }
     }
-    if (!present && sector != "base"){
-      this.state.targetPopulationSectors.push(<this.buttonMaker key={sector} name={sector} category="targetPopSector"/>)
-      console.log(sector);
-      ReactDOM.render(<ul>{this.state.targetPopulationSectors}</ul>, document.getElementById('targetPopSector'))
+    if (!present && sector !== "base"){
+      this.state.targetPopulationSectors.push(sector)
+      this.setState({
+        targetPopulationSectors: this.state.targetPopulationSectors
+      })
     }
-  }
-
-  fillPopSector(){
-    for (var i = 0; i < this.state.targetPopulationSectors.length; i++){
-      if(this.state.targetPopulationSectors[i] !== ""){
-        this.state.targetPopulationSectors[i] = (<this.buttonMaker key={this.state.targetPopulationSectors[i]} name={this.state.targetPopulationSectors[i]} category="targetPopSector"/>)
-        console.log(this.state.targetPopulationSectors[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.targetPopulationSectors}</ul>, document.getElementById('targetPopSector'))
   }
 
   addAIBase(e){
@@ -494,26 +532,17 @@ class formReview extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.asiaIBases.length; i++){ //There is definitely a more efficient solution
-      if (this.state.asiaIBases[i].key == base){
+      if (this.state.asiaIBases[i] === base){
         present = true;
         break;
       }
     }
-    if (!present && base != "base"){
-      this.state.asiaIBases.push(<this.buttonMaker key={base} name={base} category="aIBases"/>)
-      console.log(base);
-      ReactDOM.render(<ul>{this.state.asiaIBases}</ul>, document.getElementById('aIBases'))
+    if (!present && base !== "base"){
+      this.state.asiaIBases.push(base);
+      this.setState({
+        asiaIBases: this.state.asiaIBases
+      })
     }
-  }
-
-  fillAIBase(){
-    for (var i = 0; i < this.state.asiaIBases.length; i++){
-      if(this.state.asiaIBases[i] !== ""){
-        this.state.asiaIBases[i] = (<this.buttonMaker key={this.state.asiaIBases[i]} name={this.state.asiaIBases[i]} category="aIBases"/>)
-        console.log(this.state.asiaIBases[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.asiaIBases}</ul>, document.getElementById('aIBases'))
   }
 
   addAsiaOperation(e){
@@ -521,26 +550,17 @@ class formReview extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.asiaOperations.length; i++){ //There is definitely a more efficient solution
-      if (this.state.asiaOperations[i].key == operation){
+      if (this.state.asiaOperations[i] === operation){
         present = true;
         break;
       }
     }
-    if (!present && operation != "base"){
-      this.state.asiaOperations.push(<this.buttonMaker key={operation} name={operation} category="asiaOperationLocations"/>)
-      console.log(operation);
-      ReactDOM.render(<ul>{this.state.asiaOperations}</ul>, document.getElementById('asiaOperationLocations'))
+    if (!present && operation !== "base"){
+      this.state.asiaOperations.push(operation)
+      this.setState({
+        asiaOperations: this.state.asiaOperations
+      })
     }
-  }
-
-  fillAsiaOperation(){
-    for (var i = 0; i < this.state.asiaOperations.length; i++){
-      if(this.state.asiaOperations[i] !== ""){
-        this.state.asiaOperations[i] = (<this.buttonMaker key={this.state.asiaOperations[i]} name={this.state.asiaOperations[i]} category="asiaOperationLocations"/>)
-        console.log(this.state.asiaOperations[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.asiaOperations}</ul>, document.getElementById('asiaOperationLocations'))
   }
 
   addLaunchCountry(e){
@@ -548,79 +568,75 @@ class formReview extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.launchCountries.length; i++){ //There is definitely a more efficient solution
-      if (this.state.launchCountries[i].key == country){
+      if (this.state.launchCountries[i] === country){
         present = true;
         break;
       }
     }
-    if (!present && country != "base"){
-      this.state.launchCountries.push(<this.buttonMaker key={country} name={country} category="launchCountries"/>)
-      console.log(country);
-      ReactDOM.render(<ul>{this.state.launchCountries}</ul>, document.getElementById('launchCountries'))
+    if (!present && country !== "base"){
+      this.state.launchCountries.push(country);
+      this.setState({
+        launchCountries: this.state.launchCountries
+      });
     }
   }
-
-  fillLaunchCountry(){
-    for (var i = 0; i < this.state.launchCountries.length; i++){
-      if(this.state.launchCountries[i] !== ""){
-        this.state.launchCountries[i] = (<this.buttonMaker key={this.state.launchCountries[i]} name={this.state.launchCountries[i]} category="launchCountries"/>)
-        console.log(this.state.launchCountries[i]);
-      }
-    }
-    ReactDOM.render(<ul>{this.state.launchCountries}</ul>, document.getElementById('launchCountries'))
-  }
-
 
   changeProgramArea(e){
     var activity = e.currentTarget.value;
     var updateArea = "";
-    console.log(activity);
-    if (activity == "Missing"){
+
+    if (activity === "Missing"){
       updateArea = "Missing";
     }
-    else if (activity == "Unclear"){
+    else if (activity === "Unclear"){
       updateArea = "Unclear";
     }
-    else if(activity.charAt(0) == 'a'){
+    else if(activity.charAt(0) === 'a'){
       updateArea = "Access to Education";
     }
-    else if(activity.charAt(0) == 'w'){
+    else if(activity.charAt(0) === 'w'){
       updateArea = "Skills, Workplace Transition, and Continuing Education";
     }
-    else if(activity.charAt(0) == 'e'){
+    else if(activity.charAt(0) === 'e'){
       updateArea = "Education Facilities";
     }
-    else if(activity.charAt(0) == 'f'){
+    else if(activity.charAt(0) === 'f'){
       updateArea = "Education Financing";
     }
-    else if(activity.charAt(0) == 'g'){
+    else if(activity.charAt(0) === 'g'){
       updateArea = "Educational Governance and School-Based Management";
     }
-    else if(activity.charAt(0) == 'p'){
+    else if(activity.charAt(0) === 'p'){
       updateArea = "Private Sector Delivery of Education";
     }
-    else if(activity.charAt(0) == 'i'){
+    else if(activity.charAt(0) === 'i'){
       updateArea = "Information and Communications Technology";
     }
-    else if(activity.charAt(0) == 'c'){
+    else if(activity.charAt(0) === 'c'){
       updateArea = "Curriculum and Extra-Curricular Support";
     }
-    else if(activity.charAt(0) == 's'){
+    else if(activity.charAt(0) === 's'){
       updateArea = "Student Assessment";
     }
-    else if(activity.charAt(0) == 't'){
-      updateArea = "Teachers and School Leaderhsip";
+    else if(activity.charAt(0) === 't'){
+      updateArea = "Teachers and School Leadership";
     }
-    else if(activity.charAt(0) == 'v'){
+    else if(activity.charAt(0) === 'v'){
       updateArea = "Advocacy and Policy";
     }
-    else if(activity.charAt(0) == 'o'){
+    else if(activity.charAt(0) === 'o'){
       updateArea = "Other Education";
     }
-    else if(activity.charAt(0) == ' '){
+    else if(activity.charAt(0) === ' '){
       updateArea = "Area Data Missing?";
     }
-    ReactDOM.render(<p><i>{updateArea}</i></p>, document.getElementById('programArea'))
+    //Set Program Area and Main Programming Activity
+    this.state.mainProgramActivity = activity.substring(1);
+    this.state.programArea = updateArea;
+    this.setState({
+      mainProgramActivity: this.state.mainProgramActivity,
+      programArea: this.state.programArea
+    })
   }
 
   changeOrgTrait(e){
@@ -628,7 +644,7 @@ class formReview extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.orgTraits.length; i++){ //There is definitely a more efficient solution
-      if (this.state.orgTraits[i] == orgTrait){
+      if (this.state.orgTraits[i] === orgTrait){
         present = true;
         this.state.orgTraits.splice(i, 1);
         break;
@@ -637,6 +653,9 @@ class formReview extends React.Component{
     if (!present){
       this.state.orgTraits.push(orgTrait)
     }
+    this.setState({
+      orgTraits: this.state.orgTraits
+    })
   }
 
   changeEdSub(e){
@@ -644,7 +663,7 @@ class formReview extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.edSubs.length; i++){ //There is definitely a more efficient solution
-      if (this.state.edSubs[i] == edSub){
+      if (this.state.edSubs[i] === edSub){
         present = true;
         this.state.edSubs.splice(i, 1);
         break;
@@ -653,6 +672,9 @@ class formReview extends React.Component{
     if (!present){
       this.state.edSubs.push(edSub)
     }
+    this.setState({
+      edSubs: this.state.edSubs
+    })
   }
 
   profitMotiveChange(e){
@@ -678,7 +700,7 @@ class formReview extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.mEdSubs.length; i++){ //There is definitely a more efficient solution
-      if (this.state.mEdSubs[i] == mEdSub){
+      if (this.state.mEdSubs[i] === mEdSub){
         present = true;
         this.state.mEdSubs.splice(i, 1);
         break;
@@ -687,6 +709,9 @@ class formReview extends React.Component{
     if (!present){
       this.state.mEdSubs.push(mEdSub)
     }
+    this.setState({
+      mEdSubs: this.state.mEdSubs
+    })
   }
 
   oEdSubChange(e){
@@ -694,7 +719,7 @@ class formReview extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.oEdSubs.length; i++){ //There is definitely a more efficient solution
-      if (this.state.oEdSubs[i] == oEdSub){
+      if (this.state.oEdSubs[i] === oEdSub){
         present = true;
         this.state.oEdSubs.splice(i, 1);
         break;
@@ -703,10 +728,21 @@ class formReview extends React.Component{
     if (!present){
       this.state.oEdSubs.push(oEdSub)
     }
+    this.setState({
+      oEdSubs: this.state.oEdSubs
+    })
   }
 
   tWomenChange(e){
-    this.state.tWomen = e.currentTarget.value == "Yes" ? 1 : 0;
+    let targetsWomen = e.target.value === "Yes" ? true : false;
+    if (targetsWomen === true) {
+      this.state.tWomen = "Yes";
+    } else {
+      this.state.tWomen = "No";
+    }
+    this.setState({
+      tWomen: this.state.tWomen
+    });
   }
 
   geographyChange(e){
@@ -714,7 +750,7 @@ class formReview extends React.Component{
     //Check if it's already there
     var present = false;
     for (var i = 0; i < this.state.targetGeos.length; i++){ //There is definitely a more efficient solution
-      if (this.state.targetGeos[i] == geo){
+      if (this.state.targetGeos[i] === geo){
         present = true;
         this.state.targetGeos.splice(i, 1);
         break;
@@ -723,10 +759,21 @@ class formReview extends React.Component{
     if (!present){
       this.state.targetGeos.push(geo)
     }
+    this.setState({
+      targetGeos: this.state.targetGeos
+    })
   }
 
   feeAccessChange(e){
-    this.state.feeAccess = e.currentTarget.value == "Yes" ? 1 : 0;
+    let feeToAccess = e.currentTarget.value === "Yes" ? true : false;
+    if (feeToAccess === true) {
+      this.state.feeAccess = "Yes";
+    } else {
+      this.state.feeAccess = "No";
+    }
+    this.setState({
+      feeAccess: this.state.feeAccess
+    });
   }
 
   impMotiveChange(e){
@@ -750,6 +797,7 @@ class formReview extends React.Component{
   }
 
   handleChange(e){
+    console.log(e)
     this.setState({
       [e.target.id]: e.target.value
     })
@@ -757,40 +805,38 @@ class formReview extends React.Component{
 
   handleFormSubmit(e) {
     e.preventDefault();
-    console.log(this.state);
+    const {formStatus, userData} = this.props;
+    //If submitting a new form
+    if (formStatus === 'review') {
+      if (userData) {
+        //If an RA or root user, then submit review to temp db
+        if (userData.accessLevel !== 0) {
+          this.props.submitNonRA(this.state, this.props.inDB, false);
+        }
+      }
+    }
   }
-
-  fillMultiValued(){
-    this.fillAIBase();
-    this.fillAsiaOperation();
-    this.fillIBase();
-    this.fillInitCountry();
-    this.fillInitRegion();
-    this.fillLaunchCountry();
-    this.fillManagementType();
-    //this.fillOpLoc();
-    this.fillOutcome();
-    this.fillPopSector();
-    this.fillProgramActivity();
-    this.fillSourceFee();
-  }
-
 
   render(){
-    const {authorized, accessLevel, formStatus} = this.props;
+    console.log(this.state);
+    const {authorized, formSubmitted, formSubmitError} = this.props;
     if (authorized === false) {
       return <Redirect to='/' />
     }
-    //If an organization user, shouldn't access form review page
-    if (accessLevel === 0) {
-      return <Redirect to='/' />
-    }
-    //If form status hasn't been set to review, shouldn't allow user to access form review page
-    if (formStatus !== 'review') {
-      return <Redirect to='/' />
+
+    if (formSubmitted === true){
+      return <Redirect to=
+        {{
+          pathname: '/form-submission-success',
+          state: {submission: true}
+        }} />
     }
 
-    document.addEventListener("DOMContentLoaded", this.fillMultiValued)
+    const submitError = formSubmitError ?
+    <div className="alert alert-danger alert-dismissible fade show" style = {{width: "25%"}}>
+      <h5 style = {{textAlign: "center"}}> {formSubmitError} </h5>
+    </div> : null
+
     return (
         <div className = "formReview" style = {{paddingTop: '50px'}}>
             <h3>Form Review</h3>
@@ -800,33 +846,33 @@ class formReview extends React.Component{
             <h4>Funder</h4>
 
             <p>Name</p>
-              <input type="text" id="fname" name="funderName" value = {this.state.fname} placeholder="Funder Name" onChange={this.handleChange}/>
+              <input type="text" id="fname" name="funderName" value={this.state.fname} placeholder="Funder Name" onChange={this.handleChange}/>
               <br></br>
-            <input type="radio" id="needsReview1" name="fnameCheck" value="checked"/> <label name="accept" htmlFor="needsReview1">Accept</label>
-            <input type="radio" id="needsReview2" name="fnameCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview2">Reject</label>
+            <input type="radio" id="needsReview1" name="fnameA" value={1} checked = {this.state.fnameA == 1}  /> <label name="accept" htmlFor="needsReview1">Accept</label>
+            <input type="radio" id="needsReview2" name="fnameA" value={0} checked = {this.state.fnameA == 0}  /> <label name="reject" htmlFor="needsReview2">Reject</label>
 
             <p>Website</p>
-              <input type="text" id="furl" name="funderWebsite"  value = {this.state.furl} placeholder="funderWebsite.com" onChange={this.handleChange}/>
+              <input type="text" id="furl" name="funderWebsite" value={this.state.furl} placeholder="funderWebsite.com" onChange={this.handleChange}/>
               <br></br>
-            <input type="radio" id="needsReview3" name="fnurlCheck" value="checked"/> <label name="accept" htmlFor="needsReview3">Accept</label>
-            <input type="radio" id="needsReview4" name="furlCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview4">Reject</label>
+            <input type="radio" id="needsReview3" name="furlA" value={1} checked = {this.state.furlA == 1}  /> <label name="accept" htmlFor="needsReview3">Accept</label>
+            <input type="radio" id="needsReview4" name="furlA" value={0} checked = {this.state.furlA == 0}  /> <label name="reject" htmlFor="needsReview4">Reject</label>
 
             <p>Profit Motive</p>
-            <input type="radio" id="motive1" name="profitMotive" value="Not-for-profit" checked = {this.state.motive == 'Not-for-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive1">Not-For-Profit</label>
-            <input type="radio" id="motive2" name="profitMotive" value="Hybrid" checked = {this.state.motive == 'Hybrid'} onChange={this.profitMotiveChange}/> <label htmlFor="motive2">Hybrid</label>
-            <input type="radio" id="motive3" name="profitMotive" value="For-profit" checked = {this.state.motive == 'For-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive3">For-Profit</label>
+              <input type="radio" id="motive1" name="profitMotive" value="Not-for-profit" checked = {this.state.motive === 'Not-for-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive1">Not-For-Profit</label>
+              <input type="radio" id="motive2" name="profitMotive" value="Hybrid" checked = {this.state.motive === 'Hybrid'} onChange={this.profitMotiveChange}/> <label htmlFor="motive2">Hybrid</label>
+              <input type="radio" id="motive3" name="profitMotive" value="For-profit" checked = {this.state.motive === 'For-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive3">For-Profit</label>
               <br></br>
-            <input type="radio" id="needsReview5" name="pmotiveCheck" value="checked"/> <label name="accept" htmlFor="needsReview5">Accept</label>
-            <input type="radio" id="needsReview6" name="pmotiveCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview6">Reject</label>
+            <input type="radio" id="needsReview3_5" name="motiveA" value={1} checked = {this.state.motiveA == 1}  /> <label name="accept" htmlFor="needsReview3_5">Accept</label>
+            <input type="radio" id="needsReview4_5" name="motiveA" value={0} checked = {this.state.motiveA == 0}  /> <label name="reject" htmlFor="needsReview4_5">Reject</label>
             <br></br><br></br>
 
             <p>Impact Investing?</p>
-            <input type="radio" id="impact1" name="impactInvesting" value="Yes" checked = {this.state.impact == 'Yes'} onChange={this.impactChange}/> <label htmlFor="impact1">Yes</label>
-            <input type="radio" id="impact2" name="impactInvesting" value="No" checked = {this.state.impact == 'No'} onChange={this.impactChange}/> <label htmlFor="impact2">No</label>
-            <input type="radio" id="impact3" name="impactInvesting" value="Unknown" checked = {this.state.impact == 'Unknown'} onChange={this.impactChange}/> <label htmlFor="impact3">Unknown</label>
+              <input type="radio" id="impact1" name="impactInvesting" value="Yes" checked = {this.state.impact === 'Yes'} onChange={this.impactChange}/> <label htmlFor="impact1">Yes</label>
+              <input type="radio" id="impact2" name="impactInvesting" value="No" checked = {this.state.impact === 'No'} onChange={this.impactChange}/> <label htmlFor="impact2">No</label>
+              <input type="radio" id="impact3" name="impactInvesting" value="Unknown" checked = {this.state.impact === 'Unknown'} onChange={this.impactChange}/> <label htmlFor="impact3">Unknown</label>
               <br></br>
-            <input type="radio" id="needsReview7" name="impactCheck" value="checked"/> <label name="accept" htmlFor="needsReview7">Accept</label>
-            <input type="radio" id="needsReview8" name="impactCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview8">Reject</label>
+              <input type="radio" id="needsReview5" name="impactA" value={1} checked = {this.state.impactA == 1}  /> <label name="accept" htmlFor="needsReview5">Accept</label>
+              <input type="radio" id="needsReview6" name="impactA" value={0} checked = {this.state.impactA == 0}  /> <label name="reject" htmlFor="needsReview6">Reject</label>
             <br></br><br></br>
 
             <p>Organizational Form</p>
@@ -839,9 +885,9 @@ class formReview extends React.Component{
               <input type="radio" id="organization7" name="organizationalForm" value="CSR Initiative / unit" checked = {this.state.organizationForm === 'CSR initiative / unit'} onChange={this.organizationChange}/> <label htmlFor="organization7">CSR Initiative / Unit</label>
               <input type="radio" id="organization8" name="organizationalForm" value="Multilateral" checked = {this.state.organizationForm === 'Multilateral'} onChange={this.organizationChange}/> <label htmlFor="organization8">Multilateral</label>
               <input type="radio" id="organization9" name="organizationalForm" value="Other" checked = {this.state.organizationForm === 'Other'} onChange={this.organizationChange}/> <label htmlFor="organization9">Other</label>
-            <br></br>
-            <input type="radio" id="needsReview9" name="orgFormCheck" value="checked"/> <label name="accept" htmlFor="needsReview9">Accept</label>
-            <input type="radio" id="needsReview10" name="orgFormCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview10">Reject</label>
+              <br></br>
+              <input type="radio" id="needsReview9" name="organizationFormA" value={1} checked = {this.state.organizationFormA == 1}  /> <label name="accept" htmlFor="needsReview9">Accept</label>
+              <input type="radio" id="needsReview10" name="organizationFormA" value={0} checked = {this.state.organizationFormA == 0}  /> <label name="reject" htmlFor="needsReview10">Reject</label>
             <br></br><br></br>
 
             <p>International Base(s)</p>
@@ -1070,10 +1116,20 @@ class formReview extends React.Component{
             <option value="Zimbabwe">Zimbabwe</option>
             </select>
 
-            <div id="iBases"></div>
+            <div id="iBases">
+              <ul>
+              {
+                this.state.internationalBases.map(base => {
+                  return (
+                    <this.buttonMaker key={base} name={base} category="iBase"/>
+                  );
+                })
+              }
+              </ul>
+            </div>
             <br></br>
-            <input type="radio" id="needsReview11" name="iBaseCheck" value="checked"/> <label name="accept" htmlFor="needsReview11">Accept</label>
-            <input type="radio" id="needsReview12" name="iBaseCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview12">Reject</label>
+            <input type="radio" id="needsReview11" name="internationalBasesA" value={1} checked = {this.state.internationalBasesA == 1}  /> <label name="accept" htmlFor="needsReview11">Accept</label>
+            <input type="radio" id="needsReview12" name="internationalBasesA" value={0} checked = {this.state.internationalBasesA == 0}  /> <label name="reject" htmlFor="needsReview12">Reject</label>
 
             <p>Education Subsector(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="edSub1" name="educationSubsector" value="Adult" checked = {this.state.edSubs.includes("Adult")} onChange={this.changeEdSub}/> <label htmlFor="edSub1" className="checkbox">Adult</label>
@@ -1089,15 +1145,16 @@ class formReview extends React.Component{
             <input type="checkbox" id="edSub11" name="educationSubsector" value="No Education" checked = {this.state.edSubs.includes("No Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub11" className="checkbox">No Education</label>
             <input type="checkbox" id="edSub12" name="educationSubsector" value="Other Education" checked = {this.state.edSubs.includes("Other Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub12" className="checkbox">Other Education</label>
             <input type="checkbox" id="edSub13" name="educationSubsector" value="Primary Education" checked = {this.state.edSubs.includes("Primary Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub13" className="checkbox">Primary Education</label>
-            <input type="checkbox" id="edSub14" name="educationSubsector" value="Public Administration - Education" checked = {this.state.edSubs.includes("Public Administration - Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub14" className="checkbox">Public Administration - Education</label>
+            <input type="checkbox" id="edSub14" name="educationSubsector" value="Public Administration – Education" checked = {this.state.edSubs.includes("Public Administration – Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub14" className="checkbox">Public Administration – Education</label>
             <input type="checkbox" id="edSub15" name="educationSubsector" value="Secondary Education" checked = {this.state.edSubs.includes("Secondary Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub15" className="checkbox">Secondary Education</label>
             <input type="checkbox" id="edSub16" name="educationSubsector" value="Tertiary Education" checked = {this.state.edSubs.includes("Tertiary Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub16" className="checkbox">Tertiary Education</label>
             <input type="checkbox" id="edSub17" name="educationSubsector" value="Unclear" checked = {this.state.edSubs.includes("Unclear")} onChange={this.changeEdSub}/> <label htmlFor="edSub17" className="checkbox">Unclear</label>
             <input type="checkbox" id="edSub18" name="educationSubsector" value="Workforce Development and Vocational Education" checked = {this.state.edSubs.includes("Workforce Development and Vocational Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="edSub19" name="educationSubsector" value="Workforce Development/Skills" checked = {this.state.edSubs.includes("Workforce Development/Skills")} onChange={this.changeEdSub}/> <label htmlFor="edSub19" className="checkbox">Workforce Development/Skills</label>
             <br></br>
-            <input type="radio" id="needsReview15" name="edSubCheck" value="checked"/> <label name="accept" htmlFor="needsReview15">Accept</label>
-            <input type="radio" id="needsReview16" name="edSubCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview16">Reject</label>
+            <input type="radio" id="needsReview15" name="edSubsA" value={1} checked = {this.state.edSubsA == 1}  /> <label name="accept" htmlFor="needsReview15">Accept</label>
+            <input type="radio" id="needsReview16" name="edSubsA" value={0} checked = {this.state.edSubsA == 0}  /> <label name="reject" htmlFor="needsReview16">Reject</label>
+
 
             <p>Organizational Trait(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="orgTrait1" name="organizationalTrait" value="Aim to address issues of common good" checked = {this.state.orgTraits.includes("Aim to address issues of common good")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait1" className="checkbox">Aim to address issues of common good</label>
@@ -1105,7 +1162,7 @@ class formReview extends React.Component{
             <input type="checkbox" id="orgTrait3" name="organizationalTrait" value="Commitment to measurement" checked = {this.state.orgTraits.includes("Commitment to measurement")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait3" className="checkbox">Commitment to measurement</label>
             <input type="checkbox" id="orgTrait4" name="organizationalTrait" value="Education Sub-sector unclear" checked = {this.state.orgTraits.includes("Education Sub-sector unclear")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait4" className="checkbox">Education Sub-sector unclear</label>
             <input type="checkbox" id="orgTrait5" name="organizationalTrait" value="Expects return on investment" checked = {this.state.orgTraits.includes("Expects return on investment")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait5" className="checkbox">Expects return on investment</label>
-            <input type="checkbox" id="orgTrait6" name="organizationalTrait" value="Explicit intention to have social impact in the education sector" checked = {this.state.orgTraits.includes("xplicit intention to have social impact in the education sector")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait6" className="checkbox">Explicit intention to have social impact in the education sector</label>
+            <input type="checkbox" id="orgTrait6" name="organizationalTrait" value="Explicit intention to have social impact in the education sector" checked = {this.state.orgTraits.includes("Explicit intention to have social impact in the education sector")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait6" className="checkbox">Explicit intention to have social impact in the education sector</label>
             <input type="checkbox" id="orgTrait7" name="organizationalTrait" value="Led by independent board of trustees or CEO" checked = {this.state.orgTraits.includes("Led by independent board of trustees or CEO")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait7" className="checkbox">Led by independent board of trustees or CEO</label>
             <input type="checkbox" id="orgTrait8" name="organizationalTrait" value="Not part of the public sector" checked = {this.state.orgTraits.includes("Not part of the public sector")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait8" className="checkbox">Not part of the public sector</label>
             <input type="checkbox" id="orgTrait9" name="organizationalTrait" value="Not-for-profit oriented" checked = {this.state.orgTraits.includes("Not-for-profit oriented")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait9" className="checkbox">Not-for-profit oriented</label>
@@ -1114,8 +1171,8 @@ class formReview extends React.Component{
             <input type="checkbox" id="orgTrait12" name="organizationalTrait" value="Use own financial resources (unlike NGOs)" checked = {this.state.orgTraits.includes("Use own financial resources (unlike NGOs)")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait12" className="checkbox">Use own financial resources (unlike NGOs)</label>
             <input type="checkbox" id="orgTrait13" name="organizationalTrait" value="Workforce Development/Skills" checked = {this.state.orgTraits.includes("Workforce Development/Skills")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait13" className="checkbox">Workforce Development/Skills</label>
             <br></br>
-            <input type="radio" id="needsReview17" name="orgTraitCheck" value="checked"/> <label name="accept" htmlFor="needsReview17">Accept</label>
-            <input type="radio" id="needsReview18" name="orgTraitCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview18">Reject</label>
+            <input type="radio" id="needsReview17" name="orgTraitsA" value={1} checked = {this.state.orgTraitsA == 1}  /> <label name="accept" htmlFor="needsReview17">Accept</label>
+            <input type="radio" id="needsReview18" name="orgTraitsA" value={0} checked = {this.state.orgTraitsA == 0}  /> <label name="reject" htmlFor="needsReview18">Reject</label>
 
             <p>Asia International Base(s)</p>
             <select id="asiaInternationalBase" name="country" onChange={this.addAIBase}>
@@ -1343,13 +1400,24 @@ class formReview extends React.Component{
             <option value="Zimbabwe">Zimbabwe</option>
             </select>
 
-            <div id="aIBases"></div>
+            <div id="aIBases">
+              <ul>
+              {
+                this.state.asiaIBases.map(base => {
+                  return (
+                    <this.buttonMaker key={base} name={base} category="aIBases"/>
+                  );
+                })
+              }
+              </ul>
+            </div>
+            {/* MAKE ASIA INTERNATIONAL BASE NOT ACCEPT BASE CASE */}
             <br></br>
-            <input type="radio" id="needsReview19" name="aIBasesCheck" value="checked"/> <label name="accept" htmlFor="needsReview19">Accept</label>
-            <input type="radio" id="needsReview20" name="aIBasesCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview20">Reject</label>
+            <input type="radio" id="needsReview19" name="asialBasesA" value={1} checked = {this.state.asialBasesA == 1}  /> <label name="accept" htmlFor="needsReview19">Accept</label>
+            <input type="radio" id="needsReview20" name="asialBasesA" value={0} checked = {this.state.asialBasesA == 0}  /> <label name="reject" htmlFor="needsReview20">Reject</label>
 
             <p>Asia Operation(s)</p>
-            <select id="operations" name="opCountry" onChange={this.addAsiaOperation}>
+            <select id="aOperations" name="opCountry" onChange={this.addAsiaOperation}>
             <option value="baseCase">Choose the Countries of Operation</option>
             <option value="Afghanistan">Afghanistan</option>
             <option value="Albania">Albania</option>
@@ -1574,48 +1642,58 @@ class formReview extends React.Component{
             <option value="Zimbabwe">Zimbabwe</option>
             </select>
 
-            <div id="asiaOperationLocations"></div>
+            <div id="asiaOperationLocations">
+              <ul>
+                {
+                  this.state.asiaOperations.map(operation => {
+                    return (
+                      <this.buttonMaker key={operation} name={operation} category="asiaOperationLocations"/>
+                    );
+                  })
+                }
+              </ul>
+            </div>
             <br></br>
-            <input type="radio" id="needsReview21" name="opCountryCheck" value="checked"/> <label name="accept" htmlFor="needsReview21">Accept</label>
-            <input type="radio" id="needsReview22" name="opCountryCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview22">Reject</label>
+            <input type="radio" id="needsReview21" name="asiaOperationsA" value={1} checked = {this.state.asiaOperationsA == 1}  /> <label name="accept" htmlFor="needsReview21">Accept</label>
+            <input type="radio" id="needsReview22" name="asiaOperationsA" value={0} checked = {this.state.asiaOperationsA == 0}  /> <label name="reject" htmlFor="needsReview22">Reject</label>
 
-
+            <br></br><br></br>
             <h4>Initiative</h4>
 
             <p>Name</p>
               <input type="text" id="initName" name="initiativeName" value = {this.state.initName} placeholder="Initiative Name" onChange={this.handleChange}/>
               <br></br>
-            <input type="radio" id="needsReview23" name="initNameCheck" value="checked"/> <label name="accept" htmlFor="needsReview23">Accept</label>
-            <input type="radio" id="needsReview24" name="initNameCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview24">Reject</label>
+            <input type="radio" id="needsReview23" name="initNameA" value={1} checked = {this.state.initNameA == 1}  /> <label name="accept" htmlFor="needsReview23">Accept</label>
+            <input type="radio" id="needsReview24" name="initNameA" value={0} checked = {this.state.initNameA == 0}  /> <label name="reject" htmlFor="needsReview24">Reject</label>
 
             <p>Website</p>
               <input type="text" id="initURL" name="initiativeWebsite" value = {this.state.initURL} placeholder="initiativeWebsite.com" onChange={this.handleChange}/>
               <br></br>
-            <input type="radio" id="needsReview25" name="initWebCheck" value="checked"/> <label name="accept" htmlFor="needsReview25">Accept</label>
-            <input type="radio" id="needsReview26" name="initWebCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview26">Reject</label>
+            <input type="radio" id="needsReview25" name="initURLA" value={1} checked = {this.state.initURLA == 1}  /> <label name="accept" htmlFor="needsReview25">Accept</label>
+            <input type="radio" id="needsReview26" name="initURLA" value={0} checked = {this.state.initURLA == 0}  /> <label name="reject" htmlFor="needsReview26">Reject</label>
 
             <p>Targets Women?</p>
-            <input type="radio" id="tWomen1" name="targetsWomen" value="Yes" defaultChecked = {this.state.tWomen} onClick={this.tWomenChange}/> <label htmlFor="tWomen1">Yes</label>
-            <input type="radio" id="tWomen2" name="targetsWomen" value="No" defaultChecked = {!this.state.tWomen} onClick={this.tWomenChange}/> <label htmlFor="tWomen2">No</label>
-            <br></br>
-            <input type="radio" id="needsReview27" name="targetsWomenCheck" value="checked"/> <label name="accept" htmlFor="needsReview27">Accept</label>
-            <input type="radio" id="needsReview28" name="targetsWomenCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview28">Reject</label>
+              <input type="radio" id="tWomen1" name="targetsWomen" value="Yes" checked = {this.state.tWomen === "Yes"} onChange={this.tWomenChange}/> <label htmlFor="tWomen1">Yes</label>
+              <input type="radio" id="tWomen2" name="targetsWomen" value="No" checked = {this.state.tWomen === "No"} onChange={this.tWomenChange}/> <label htmlFor="tWomen2">No</label>
+              <br></br>
+            <input type="radio" id="needsReview27" name="tWomenA" value={1} checked = {this.state.tWomenA == 1}  /> <label name="accept" htmlFor="needsReview27">Accept</label>
+            <input type="radio" id="needsReview28" name="tWomenA" value={0} checked = {this.state.tWomenA == 0}  /> <label name="reject" htmlFor="needsReview28">Reject</label>
 
             <p>Start Year</p>
-              <input type="number" id="initStart" name="startYear" defaultValue = {this.state.initStart} placeholder="Start Year" onChange={this.handleChange}/>
+              <input type="number" id="initStart" name="startYear" defaultValue={this.state.initStart} placeholder="Start Year" onChange={this.startYearChange}/>
               <br></br>
-            <input type="radio" id="needsReview29" name="startYearCheck" value="checked"/> <label name="accept" htmlFor="needsReview29">Accept</label>
-            <input type="radio" id="needsReview30" name="startYearCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview30">Reject</label>
+            <input type="radio" id="needsReview29" name="initStartA" value={1} checked = {this.state.initStartA == 1}  /> <label name="accept" htmlFor="needsReview29">Accept</label>
+            <input type="radio" id="needsReview30" name="initStartA" value={0} checked = {this.state.initStartA == 0}  /> <label name="reject" htmlFor="needsReview30">Reject</label>
 
             <p>End Year</p>
-              <input type="number" id="initEnd" name="endYear" defaultValue = {this.state.initEnd} placeholder="End Year" onChange={this.handleChange}/>
+              <input type="number" id="initEnd" name="endYear" defaultValue={this.state.initEnd} placeholder="End Year" onChange={this.endYearChange}/>
               <br></br>
-            <input type="radio" id="needsReview31" name="endYearCheck" value="checked"/> <label name="accept" htmlFor="needsReview31">Accept</label>
-            <input type="radio" id="needsReview32" name="endYearCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview32">Reject</label>
+            <input type="radio" id="needsReview31" name="initEndA" value={1} checked = {this.state.initEndA == 1}  /> <label name="accept" htmlFor="needsReview31">Accept</label>
+            <input type="radio" id="needsReview32" name="initEndA" value={0} checked = {this.state.initEndA == 0}  /> <label name="reject" htmlFor="needsReview32">Reject</label>
 
             <p>Launch Country</p>
             <select id="launchCountry" name="launchCountry" onChange={this.addLaunchCountry}>
-            <option value="baseCase">Choose a Country</option>
+            <option value="baseCase">Choose the Countries of Operation</option>
             <option value="Afghanistan">Afghanistan</option>
             <option value="Albania">Albania</option>
             <option value="Algeria">Algeria</option>
@@ -1838,17 +1916,27 @@ class formReview extends React.Component{
             <option value="Zambia">Zambia</option>
             <option value="Zimbabwe">Zimbabwe</option>
             </select>
-            <br></br>
-            <input type="radio" id="needsReview33" name="launchCountriesCheck" value="checked"/> <label name="accept" htmlFor="needsReview33">Accept</label>
-            <input type="radio" id="needsReview34" name="launchCountriesCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview34">Reject</label>
 
-            <div id="launchCountries"></div>
+            <div id="launchCountries">
+              <ul>
+              {
+                this.state.launchCountries.map(country => {
+                  return (
+                    <this.buttonMaker key={country} name={country} category="launchCountries"/>
+                  );
+                })
+              }
+              </ul>
+            </div>
+            <br></br>
+            <input type="radio" id="needsReview33" name="launchCountryA" value={1} checked = {this.state.launchCountryA == 1}  /> <label name="accept" htmlFor="needsReview33">Accept</label>
+            <input type="radio" id="needsReview34" name="launchCountryA" value={0} checked = {this.state.launchCountryA == 0}  /> <label name="reject" htmlFor="needsReview34">Reject</label>
 
             <p>Description</p>
-              <textarea id="idescription" name="description" value = {this.state.idescription} placeholder="Write a description" onChange={this.handleChange}></textarea>
-              <br></br>
-            <input type="radio" id="needsReview35" name="descriptionCheck" value="checked"/> <label name="accept" htmlFor="needsReview35">Accept</label>
-            <input type="radio" id="needsReview36" name="descriptionCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview36">Reject</label>
+            <textarea id="idescription" name="description" value = {this.state.idescription} placeholder="Write a description" onChange={this.handleChange}></textarea>
+            <br></br>
+            <input type="radio" id="needsReview35" name="idescriptionA" value={1} checked = {this.state.idescriptionA == 1}  /> <label name="accept" htmlFor="needsReview35">Accept</label>
+            <input type="radio" id="needsReview36" name="idescriptionA" value={0} checked = {this.state.idescriptionA == 0}  /> <label name="reject" htmlFor="needsReview36">Reject</label>
 
             <p>Region(s)</p>
             <select id="region" name="regions" onChange={this.addInitRegion}>
@@ -1902,17 +1990,27 @@ class formReview extends React.Component{
             {/* ???? I'm not sure about these */}
             <option value="Global">Global</option>
             <option value="Middle East and North Africa">Middle East and North Africa</option>
-            <option value="Latin Ameria and Caribbean">Latin Ameria and Caribbean</option>
+            <option value="Latin America and Caribbean">Latin America and Caribbean</option>
             <option value="East Asia and Pacific">East Asia and Pacific</option>
             <option value="Europe and Central Asia">Europe and Central Asia</option>
             <option value="World">World</option>
             <option value="World">World</option>
             </select>
 
-            <div id="initRegions"></div>
+            <div id="initRegions">
+              <ul>
+                {
+                  this.state.regions.map(region => {
+                    return (
+                      <this.buttonMaker key={region} name={region} category="initRegions"/>
+                    );
+                  })
+                }
+              </ul>
+            </div>
             <br></br>
-            <input type="radio" id="needsReview37" name="regionsCheck" value="checked"/> <label name="accept" htmlFor="needsReview37">Accept</label>
-            <input type="radio" id="needsReview38" name="regionsCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview38">Reject</label>
+            <input type="radio" id="needsReview37" name="regionsA" value={1} checked = {this.state.regionsA == 1}  /> <label name="accept" htmlFor="needsReview37">Accept</label>
+            <input type="radio" id="needsReview38" name="regionsA" value={0} checked = {this.state.regionsA == 0}  /> <label name="reject" htmlFor="needsReview38">Reject</label>
 
             <p>Countries</p>
             <select id="initCountry" name="initiativeCountry" onChange={this.addInitCountry}>
@@ -2140,22 +2238,32 @@ class formReview extends React.Component{
             <option value="Zimbabwe">Zimbabwe</option>
             </select>
 
-            <div id="initCountries"></div>
+            <div id="initCountries">
+              <ul>
+                {
+                  this.state.countries.map(country => {
+                    return (
+                      <this.buttonMaker key={country} name={country} category="initCountries"/>
+                    );
+                  })
+                }
+              </ul>
+            </div>
             <br></br>
-            <input type="radio" id="needsReview39" name="initCountryCheck" value="checked"/> <label name="accept" htmlFor="needsReview39">Accept</label>
-            <input type="radio" id="needsReview40" name="initCountryCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview40">Reject</label>
+            <input type="radio" id="needsReview39" name="countriesA" value={1} checked = {this.state.countriesA == 1}  /> <label name="accept" htmlFor="needsReview39">Accept</label>
+            <input type="radio" id="needsReview40" name="countriesA" value={0} checked = {this.state.countriesA == 0}  /> <label name="reject" htmlFor="needsReview40">Reject</label>
 
             <p>Target Geography</p>
               <input type="checkbox" id="geography1" name="targetGeo" value="Urban" checked = {this.state.targetGeos.includes("Urban")} onChange={this.geographyChange}/> <label htmlFor="geography1" className="checkbox">Urban</label>
               <input type="checkbox" id="geography2" name="targetGeo" value="Peri-Urban" checked = {this.state.targetGeos.includes("Peri-Urban")} onChange={this.geographyChange}/> <label htmlFor="geography2" className="checkbox">Peri-Urban</label>
               <input type="checkbox" id="geography3" name="targetGeo" value="Rural" checked = {this.state.targetGeos.includes("Rural")} onChange={this.geographyChange}/> <label htmlFor="geography3" className="checkbox">Rural</label>
-              <input type="checkbox" id="geography4" name="targetGeo" value="Online community" checked = {this.state.targetGeos.includes("Online Community")} onChange={this.geographyChange}/> <label htmlFor="geography4" className="checkbox">Online community</label>
+              <input type="checkbox" id="geography4" name="targetGeo" value="Online community" checked = {this.state.targetGeos.includes("Online community")} onChange={this.geographyChange}/> <label htmlFor="geography4" className="checkbox">Online community</label>
               <input type="checkbox" id="geography5" name="targetGeo" value="children with special needs" checked = {this.state.targetGeos.includes("children with special needs")} onChange={this.geographyChange}/> <label htmlFor="geography5" className="checkbox">children with special needs</label>
               <input type="checkbox" id="geography6" name="targetGeo" value="Unclear" checked = {this.state.targetGeos.includes("Unclear")} onChange={this.geographyChange}/> <label htmlFor="geography6" className="checkbox">Unclear</label>
               <input type="checkbox" id="geography7" name="targetGeo" value="Missing" checked = {this.state.targetGeos.includes("Missing")} onChange={this.geographyChange}/> <label htmlFor="geography7" className="checkbox">Missing</label>
             <br></br>
-            <input type="radio" id="needsReview41" name="targetGeoCheck" value="checked"/> <label name="accept" htmlFor="needsReview41">Accept</label>
-            <input type="radio" id="needsReview42" name="targetGeoCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview42">Reject</label>
+            <input type="radio" id="needsReview41" name="targetGeosA" value={1} checked = {this.state.targetGeosA == 1}  /> <label name="accept" htmlFor="needsReview41">Accept</label>
+            <input type="radio" id="needsReview42" name="targetGeosA" value={0} checked = {this.state.targetGeosA == 0}  /> <label name="reject" htmlFor="needsReview42">Reject</label>
 
             <p>Main Education Subsector</p>
             <input type="checkbox" id="iEdSub1" name="educationSubsector" value="Adult" checked = {this.state.mEdSubs.includes("Adult")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub1" className="checkbox">Adult</label>
@@ -2171,15 +2279,16 @@ class formReview extends React.Component{
             <input type="checkbox" id="iEdSub11" name="educationSubsector" value="No Education" checked = {this.state.mEdSubs.includes("No Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub11" className="checkbox">No Education</label>
             <input type="checkbox" id="iEdSub12" name="educationSubsector" value="Other Education" checked = {this.state.mEdSubs.includes("Other Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub12" className="checkbox">Other Education</label>
             <input type="checkbox" id="iEdSub13" name="educationSubsector" value="Primary Education" checked = {this.state.mEdSubs.includes("Primary Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub13" className="checkbox">Primary Education</label>
-            <input type="checkbox" id="iEdSub14" name="educationSubsector" value="Public Administration - Education" checked = {this.state.mEdSubs.includes("Public Administration - Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub14" className="checkbox">Public Administration - Education</label>
+            <input type="checkbox" id="iEdSub14" name="educationSubsector" value="Public Administration – Education" checked = {this.state.mEdSubs.includes("Public Administration – Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub14" className="checkbox">Public Administration – Education</label>
             <input type="checkbox" id="iEdSub15" name="educationSubsector" value="Secondary Education" checked = {this.state.mEdSubs.includes("Secondary Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub15" className="checkbox">Secondary Education</label>
             <input type="checkbox" id="iEdSub16" name="educationSubsector" value="Tertiary Education" checked = {this.state.mEdSubs.includes("Tertiary Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub16" className="checkbox">Tertiary Education</label>
             <input type="checkbox" id="iEdSub17" name="educationSubsector" value="Unclear" checked = {this.state.mEdSubs.includes("Unclear")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub17" className="checkbox">Unclear</label>
             <input type="checkbox" id="iEdSub18" name="educationSubsector" value="Workforce Development and Vocational Education" checked = {this.state.mEdSubs.includes("Workforce Development and Vocational Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="iEdSub19" name="educationSubsector" value="Workforce Development/Skills" checked = {this.state.mEdSubs.includes("Workforce Development/Skills")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub19" className="checkbox">Workforce Development/Skills</label>
             <br></br>
-            <input type="radio" id="needsReview43" name="iEdSubCheck" value="checked"/> <label name="accept" htmlFor="needsReview43">Accept</label>
-            <input type="radio" id="needsReview44" name="iEdSubCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview44">Reject</label>
+            <input type="radio" id="needsReview43" name="mEdSubsA" value={1} checked = {this.state.mEdSubsA == 1} /> <label name="accept" htmlFor="needsReview43">Accept</label>
+            <input type="radio" id="needsReview44" name="mEdSubsA" value={0} checked = {this.state.mEdSubsA == 0} /> <label name="reject" htmlFor="needsReview44">Reject</label>
+
             <p>Other Education Subsector(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="oEdSub1" name="educationSubsector" value="Adult" checked = {this.state.oEdSubs.includes("Adult")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub1" className="checkbox">Adult</label>
             <input type="checkbox" id="oEdSub2" name="educationSubsector" value="Adult Basic and Continuing Education" checked = {this.state.oEdSubs.includes("Adult Basic and Continuing Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub2" className="checkbox">Adult Basic and Continuing Education</label>
@@ -2194,121 +2303,125 @@ class formReview extends React.Component{
             <input type="checkbox" id="oEdSub11" name="educationSubsector" value="No Education" checked = {this.state.oEdSubs.includes("No Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub11" className="checkbox">No Education</label>
             <input type="checkbox" id="oEdSub12" name="educationSubsector" value="Other Education" checked = {this.state.oEdSubs.includes("Other Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub12" className="checkbox">Other Education</label>
             <input type="checkbox" id="oEdSub13" name="educationSubsector" value="Primary Education" checked = {this.state.oEdSubs.includes("Primary Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub13" className="checkbox">Primary Education</label>
-            <input type="checkbox" id="oEdSub14" name="educationSubsector" value="Public Administration - Education" checked = {this.state.oEdSubs.includes("Public Administration - Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub14" className="checkbox">Public Administration - Education</label>
+            <input type="checkbox" id="oEdSub14" name="educationSubsector" value="Public Administration – Education" checked = {this.state.oEdSubs.includes("Public Administration – Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub14" className="checkbox">Public Administration – Education</label>
             <input type="checkbox" id="oEdSub15" name="educationSubsector" value="Secondary Education" checked = {this.state.oEdSubs.includes("Secondary Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub15" className="checkbox">Secondary Education</label>
             <input type="checkbox" id="oEdSub16" name="educationSubsector" value="Tertiary Education" checked = {this.state.oEdSubs.includes("Tertiary Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub16" className="checkbox">Tertiary Education</label>
             <input type="checkbox" id="oEdSub17" name="educationSubsector" value="Unclear" checked = {this.state.oEdSubs.includes("Unclear")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub17" className="checkbox">Unclear</label>
             <input type="checkbox" id="oEdSub18" name="educationSubsector" value="Workforce Development and Vocational Education" checked = {this.state.oEdSubs.includes("Workforce Development and Vocational Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="oEdSub19" name="educationSubsector" value="Workforce Development/Skills" checked = {this.state.oEdSubs.includes("Workforce Development/Skills")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub19" className="checkbox">Workforce Development/Skills</label>
             <br></br>
-            <input type="radio" id="needsReview45" name="oEdSubCheck" value="checked"/> <label name="accept" htmlFor="needsReview45">Accept</label>
-            <input type="radio" id="needsReview46" name="oEdSubCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview46">Reject</label>
+            <input type="radio" id="needsReview45" name="oEdSubsA" value={1} checked = {this.state.oEdSubsA == 1}  /> <label name="accept" htmlFor="needsReview45">Accept</label>
+            <input type="radio" id="needsReview46" name="oEdSubsA" value={0} checked = {this.state.oEdSubsA == 0}  /> <label name="reject" htmlFor="needsReview46">Reject</label>
 
             <p>Main Program Activity</p>
             <select id="mainProgramActivity" name="activity" onChange={this.changeProgramArea}>
-            <option value="baseCase">Choose the Main Program Activity</option>
-            <option value="Missing Data">Missing</option>
-            <option value="Unclear">Unclear</option>
-            <option value="aTransitional Support">Transitional Support</option>
-            <option value="aIncreasing or Sustaining Enrollment">Increasing or Sustaining Enrollment</option>
-            <option value="aSchool Feeding Programs and Other Non-Financial Targeted Incentives">School Feeding Programs and Other Non-Financial Targeted Incentives</option>
-            <option value="aPrograms to improve access and equity in education">Programs to improve access and equity in education</option>
-            <option value="aAdult literacy and numeracy programs">Adult literacy and numeracy programs</option>
-            <option value="eSchool Infrastructure and equipment">School Infrastructure and equipment</option>
-            <option value="eSchool rehabilitation and construction">School rehabilitation and construction</option>
-            <option value="eCommunity resources towards education facilities">Community resources towards education facilities</option>
-            <option value="fVouchers and conditional cash transfers">Vouchers and conditional cash transfers</option>
-            <option value="fScholarships and financial aid">Scholarships and financial aid</option>
-            <option value="fStudent/household loans">Student/household loans</option>
-            <option value="fContracting">Contracting</option>
-            <option value="fSchool loans">School loans</option>
-            <option value="fPay-for-performance">Pay-for-performance</option>
-            <option value="fOther financial targeted incentives for attendance">Other financial targeted incentives for attendance</option>
-            <option value="gParental or community engagement for school accountability">Parental or community engagement for school accountability</option>
-            <option value="gSchool operations or management">School operations or management</option>
-            <option value="gSchool assessment/rating systems">School assessment/rating systems</option>
-            <option value="gCapacity development programs or services for education administration or bureaucracy">Capacity development programs or services for education administration or bureaucracy</option>
-            <option value="gEMIS/Data systems">EMIS/Data systems</option>
-            <option value="gRegulatory analysis focused on government policy">Regulatory analysis focused on government policy</option>
-            <option value="gRegulatory analysis focused on school policy">Regulatory analysis focused on school policy</option>
-            <option value="gSchool quality improvement">School quality improvement</option>
-            <option value="pFranchise of schools/centers">Franchise of schools/centers</option>
-            <option value="pChain of schools/centers">Chain of schools/centers</option>
-            <option value="pNetwork of schools/centers">Network of schools/centers</option>
-            <option value="pMobile schools/centers">Mobile schools/centers</option>
-            <option value="pOnline school/center">Online school/center</option>
-            <option value="pStand-alone schools/centers">Stand-alone schools/centers</option>
-            <option value="pNGO Schools">NGO Schools</option>
-            <option value="pFormal public-private partnership">Formal public-private partnership</option>
-            <option value="pPrivate schools">Private schools</option>
-            <option value="iOnline learning portals">Online learning portals</option>
-            <option value="iComputer-assisted instruction/learning programs/products">Computer-assisted instruction/learning programs/products</option>
-            <option value="iComputers and tablets/computing skills focus">Computers and tablets/computing skills focus</option>
-            <option value="iSchool WiFi/broadband initiatives">School WiFi/broadband initiatives</option>
-            <option value="iDigital classrooms">Digital classrooms</option>
-            <option value="iMOOC instruction">MOOC instruction</option>
-            <option value="iScience technology and innovation (STI) activities including research and development (R&D), training knowledge workers/ technology acquisition and diffusion/ STI grants">Science technology and innovation (STI) activities including research and development (R&D), training knowledge workers/ technology acquisition and diffusion/ STI grants</option>
-            <option value="cStandardized teaching materials">Standardized teaching materials</option>
-            <option value="cNon-traditional schedules">Non-traditional schedules</option>
-            <option value="cExtra-curricular activities">Extra-curricular activities</option>
-            <option value="cLearning materials for students">Learning materials for students</option>
-            <option value="cTextbooks/books">Textbooks/books</option>
-            <option value="cSTEM materials/focus/program">STEM materials/focus/program</option>
-            <option value="cEnglish/language materials">English/language materials</option>
-            <option value="cMaths materials">Maths materials</option>
-            <option value="sStudent assessment and progress">Student assessment and progress</option>
-            <option value="sExam preparation">Exam preparation</option>
-            <option value="sTutoring/private tuition (includes tutoring chains/centres)">Tutoring/private tuition (includes tutoring chains/centres)</option>
-            <option value="sParental or community engagement in support of students">Parental or community engagement in support of students</option>
-            <option value="sMentorship programs">Mentorship programs</option>
-            <option value="tTeacher training">Teacher training</option>
-            <option value="tSchool leader/principals training">School leader/principals training</option>
-            <option value="tTeacher/leader evaluation capacity development and mentorship programs">Teacher/leader evaluation capacity development and mentorship programs</option>
-            <option value="tTeacher recruitment/ deployment/ in-service training programs">Teacher recruitment/ deployment/ in-service training programs</option>
-            <option value="wMentorship/ internship/ job placement">Mentorship/ internship/ job placement</option>
-            <option value="wEmployment skills programs">Employment skills programs</option>
-            <option value="wEntrepreneurship and business skills programs">Entrepreneurship and business skills programs</option>
-            <option value="vLinking research and evidence with policy or implementation">Linking research and evidence with policy or implementation</option>
-            <option value="vAdvocacy campaigns/ initiatives/ movements">Advocacy campaigns/ initiatives/ movements</option>
-            <option value="vRegulatory analysis">Regulatory analysis</option>
-            <option value="vKnowledge production/mobilization">Knowledge production/mobilization</option>
-            <option value="vEducation sector research studies/ surveys/ assessments">Education sector research studies/ surveys/ assessments</option>
-            <option value="vCapacity building at the system level">Capacity building at the system level</option>
-            <option value="wLife skills and personal finance training">Life skills and personal finance training</option>
-            <option value="wContinuing education programs offered for adults">Continuing education programs offered for adults</option>
-            <option value="aCurriculum and Extra-Curricular Support">Curriculum and Extra-Curricular Support</option>
-            <option value="aPrograms targeting girls/women">Programs targeting girls/women</option>
-            <option value="aPrograms targeting special needs or people with disabilities">Programs targeting special needs or people with disabilities</option>
-            <option value="aPrograms targeting other marginalized groups">Programs targeting other marginalized groups</option>
-            <option value="aPrograms targeting tribal or indigenous groups">Programs targeting tribal or indigenous groups</option>
-            <option value="wProfessional certification/skills">Professional certification/skills</option>
-            <option value="wShort-term technical/vocational course">Short-term technical/vocational course</option>
-            <option value="wLonger-term technical/vocational course">Longer-term technical/vocational course</option>
-            <option value="oNon-formal education youth">Non-formal education youth</option>
-            <option value=" Private Sector Delivery of Education">Private Sector Delivery of Education</option>
-            <option value=" vocational training">vocational training</option>
-            <option value=" Education Finance (system-level)">Education Finance (system-level)</option>
-            <option value=" school finance">school finance</option>
-            <option value=" Capacity Building of Non-Education Professionals">Capacity Building of Non-Education Professionals</option>
-            <option value=" Enrichment/New Pedagogical or Curricular Programs">Enrichment/New Pedagogical or Curricular Programs</option>
-            <option value=" Academic research/academic exchange">Academic research/academic exchange</option>
-            <option value=" Main Programming Activity">Main Programming Activity</option>
-            <option value=" All Programming Activities">All Programming Activities</option>
-            <option value=" Civic/community education">Civic/community education</option>
-            <option value=" Scholarships and Financial Aid">Scholarship and Financial Aid</option>
-            <option value=" Employment Skills program">Employment Skills program</option>
-            <option value=" Advocacy campaigns/initiatives/movements">Advocacy campaigns/initiatives/movements</option>
-            <option value=" Knowledge production/mobilization">Knowledge production/mobilization</option>
-            <option value=" Program targeting special needs or people with disabilities">Program targeting special needs or people with disabilities</option>
-            <option value=" Literacy skills">Literacy skills</option>
-            <option value=" Maternal Health Education">Maternal Health Education</option>
+            <option value="baseCase" selected = {this.state.mainProgramActivity === null}>Choose the Main Program Activity</option>
+            <option value="Missing Data" selected = {this.state.mainProgramActivity.includes("Missing Data")}>Missing</option>
+            <option value="Unclear" selected = {this.state.mainProgramActivity.includes("Unclear")}>Unclear</option>
+            <option value="aTransitional Support" selected = {this.state.mainProgramActivity.includes("Transitional Support")}>Transitional Support</option>
+            <option value="aIncreasing or Sustaining Enrollment" selected = {this.state.mainProgramActivity.includes("Increasing or Sustaining Enrollment")}>Increasing or Sustaining Enrollment</option>
+            <option value="aSchool Feeding Programs and Other Non-Financial Targeted Incentives" selected = {this.state.mainProgramActivity.includes("School Feeding Programs and Other Non-Financial Targeted Incentives")}>School Feeding Programs and Other Non-Financial Targeted Incentives</option>
+            <option value="aPrograms to improve access and equity in education" selected = {this.state.mainProgramActivity.includes("Programs to improve access and equity in education")}>Programs to improve access and equity in education</option>
+            <option value="aAdult literacy and numeracy programs" selected = {this.state.mainProgramActivity.includes("Adult literacy and numeracy programs")}>Adult literacy and numeracy programs</option>
+            <option value="eSchool Infrastructure and equipment" selected = {this.state.mainProgramActivity.includes("School Infrastructure and equipment")}>School Infrastructure and equipment</option>
+            <option value="eSchool rehabilitation and construction" selected = {this.state.mainProgramActivity.includes("School rehabilitation and construction")}>School rehabilitation and construction</option>
+            <option value="eCommunity resources towards education facilities" selected = {this.state.mainProgramActivity.includes("Community resources towards education facilities")}>Community resources towards education facilities</option>
+            <option value="fVouchers and conditional cash transfers" selected = {this.state.mainProgramActivity.includes("Vouchers and conditional cash transfers")}>Vouchers and conditional cash transfers</option>
+            <option value="fScholarships and financial aid" selected = {this.state.mainProgramActivity.includes("Scholarships and financial aid")}>Scholarships and financial aid</option>
+            <option value="fStudent/household loans" selected = {this.state.mainProgramActivity.includes("Student/household loans")}>Student/household loans</option>
+            <option value="fContracting" selected = {this.state.mainProgramActivity.includes("Contracting")}>Contracting</option>
+            <option value="fSchool loans" selected = {this.state.mainProgramActivity.includes("School loans")}>School loans</option>
+            <option value="fPay-for-performance" selected = {this.state.mainProgramActivity.includes("Pay-for-performance")}>Pay-for-performance</option>
+            <option value="fOther financial targeted incentives for attendance" selected = {this.state.mainProgramActivity.includes("Other financial targeted incentives for attendance")}>Other financial targeted incentives for attendance</option>
+            <option value="gParental or community engagement for school accountability" selected = {this.state.mainProgramActivity.includes("Parental or community engagement for school accountability")}>Parental or community engagement for school accountability</option>
+            <option value="gSchool operations or management" selected = {this.state.mainProgramActivity.includes("School operations or management")}>School operations or management</option>
+            <option value="gSchool assessment/rating systems" selected = {this.state.mainProgramActivity.includes("School assessment/rating systems")}>School assessment/rating systems</option>
+            <option value="gCapacity development programs or services for education administration or bureaucracy" selected = {this.state.mainProgramActivity.includes("Capacity development programs or services for education administration or bureaucracy")}>Capacity development programs or services for education administration or bureaucracy</option>
+            <option value="gEMIS/Data systems" selected = {this.state.mainProgramActivity.includes("EMIS/Data systems")}>EMIS/Data systems</option>
+            <option value="gRegulatory analysis focused on government policy" selected = {this.state.mainProgramActivity.includes("Regulatory analysis focused on government policy")}>Regulatory analysis focused on government policy</option>
+            <option value="gRegulatory analysis focused on school policy" selected = {this.state.mainProgramActivity.includes("Regulatory analysis focused on school policy")}>Regulatory analysis focused on school policy</option>
+            <option value="gSchool quality improvement" selected = {this.state.mainProgramActivity.includes("School quality improvement")}>School quality improvement</option>
+            <option value="pFranchise of schools/centers" selected = {this.state.mainProgramActivity.includes("Franchise of schools/centers")}>Franchise of schools/centers</option>
+            <option value="pChain of schools/centers" selected = {this.state.mainProgramActivity.includes("Chain of schools/centers")}>Chain of schools/centers</option>
+            <option value="pNetwork of schools/centers" selected = {this.state.mainProgramActivity.includes("Network of schools/centers")}>Network of schools/centers</option>
+            <option value="pMobile schools/centers" selected = {this.state.mainProgramActivity.includes("Mobile schools/centers")}>Mobile schools/centers</option>
+            <option value="pOnline school/center" selected = {this.state.mainProgramActivity.includes("Online school/center")}>Online school/center</option>
+            <option value="pStand-alone schools/centers" selected = {this.state.mainProgramActivity.includes("Stand-alone schools/centers")}>Stand-alone schools/centers</option>
+            <option value="pNGO Schools" selected = {this.state.mainProgramActivity.includes("NGO Schools")}>NGO Schools</option>
+            <option value="pFormal public-private partnership" selected = {this.state.mainProgramActivity.includes("Formal public-private partnership")}>Formal public-private partnership</option>
+            <option value="pPrivate schools" selected = {this.state.mainProgramActivity.includes("Private schools")}>Private schools</option>
+            <option value="iOnline learning portals" selected = {this.state.mainProgramActivity.includes("Online learning portals")}>Online learning portals</option>
+            <option value="iComputer-assisted instruction/learning programs/products" selected = {this.state.mainProgramActivity.includes("Computer-assisted instruction/learning programs/products")}>Computer-assisted instruction/learning programs/products</option>
+            <option value="iComputers and tablets/computing skills focus" selected = {this.state.mainProgramActivity.includes("Computers and tablets/computing skills focus")}>Computers and tablets/computing skills focus</option>
+            <option value="iSchool WiFi/broadband initiatives" selected = {this.state.mainProgramActivity.includes("School WiFi/broadband initiatives")}>School WiFi/broadband initiatives</option>
+            <option value="iDigital classrooms" selected = {this.state.mainProgramActivity.includes("Digital classrooms")}>Digital classrooms</option>
+            <option value="iMOOC instruction" selected = {this.state.mainProgramActivity.includes("MOOC instruction")}>MOOC instruction</option>
+            <option value="iScience technology and innovation (STI) activities including research and development (R&D), training knowledge workers/ technology acquisition and diffusion/ STI grants" selected = {this.state.mainProgramActivity.includes("Science technology and innovation (STI) activities including research and development (R&D), training knowledge workers/ technology acquisition and diffusion/ STI grants")}>Science technology and innovation (STI) activities including research and development (R&D), training knowledge workers/ technology acquisition and diffusion/ STI grants</option>
+            <option value="cStandardized teaching materials" selected = {this.state.mainProgramActivity.includes("Standardized teaching materials")}>Standardized teaching materials</option>
+            <option value="cNon-traditional schedules" selected = {this.state.mainProgramActivity.includes("Non-traditional schedules")}>Non-traditional schedules</option>
+            <option value="cExtra-curricular activities" selected = {this.state.mainProgramActivity.includes("Extra-curricular activities")}>Extra-curricular activities</option>
+            <option value="cLearning materials for students" selected = {this.state.mainProgramActivity.includes("Learning materials for students")}>Learning materials for students</option>
+            <option value="cTextbooks/books" selected = {this.state.mainProgramActivity.includes("Textbooks/books")}>Textbooks/books</option>
+            <option value="cSTEM materials/focus/program" selected = {this.state.mainProgramActivity.includes("STEM materials/focus/program")}>STEM materials/focus/program</option>
+            <option value="cEnglish/language materials" selected = {this.state.mainProgramActivity.includes("English/language materials")}>English/language materials</option>
+            <option value="cMaths materials" selected = {this.state.mainProgramActivity.includes("Maths materials")}>Maths materials</option>
+            <option value="sStudent assessment and progress" selected = {this.state.mainProgramActivity.includes("Student assessment and progress")}>Student assessment and progress</option>
+            <option value="sExam preparation" selected = {this.state.mainProgramActivity.includes("Exam preparation")}>Exam preparation</option>
+            <option value="sTutoring/private tuition (includes tutoring chains/centres)" selected = {this.state.mainProgramActivity.includes("Tutoring/private tuition (includes tutoring chains/centres)")}>Tutoring/private tuition (includes tutoring chains/centres)</option>
+            <option value="sParental or community engagement in support of students" selected = {this.state.mainProgramActivity.includes("Parental or community engagement in support of students")}>Parental or community engagement in support of students</option>
+            <option value="sMentorship programs" selected = {this.state.mainProgramActivity.includes("Mentorship programs")}>Mentorship programs</option>
+            <option value="tTeacher training" selected = {this.state.mainProgramActivity.includes("Teacher training")}>Teacher training</option>
+            <option value="tSchool leader/principals training" selected = {this.state.mainProgramActivity.includes("School leader/principals training")}>School leader/principals training</option>
+            <option value="tTeacher/leader evaluation capacity development and mentorship programs" selected = {this.state.mainProgramActivity.includes("Teacher/leader evaluation capacity development and mentorship programs")}>Teacher/leader evaluation capacity development and mentorship programs</option>
+            <option value="tTeacher recruitment/ deployment/ in-service training programs" selected = {this.state.mainProgramActivity.includes("Teacher recruitment/ deployment/ in-service training programs")}>Teacher recruitment/ deployment/ in-service training programs</option>
+            <option value="wMentorship/ internship/ job placement" selected = {this.state.mainProgramActivity.includes("Mentorship/ internship/ job placement")}>Mentorship/ internship/ job placement</option>
+            <option value="wEmployment skills programs" selected = {this.state.mainProgramActivity.includes("Employment skills programs")}>Employment skills programs</option>
+            <option value="wEntrepreneurship and business skills programs" selected = {this.state.mainProgramActivity.includes("Entrepreneurship and business skills programs")}>Entrepreneurship and business skills programs</option>
+            <option value="vLinking research and evidence with policy or implementation" selected = {this.state.mainProgramActivity.includes("Linking research and evidence with policy or implementation")}>Linking research and evidence with policy or implementation</option>
+            <option value="vAdvocacy campaigns/ initiatives/ movements" selected = {this.state.mainProgramActivity.includes("Advocacy campaigns/ initiatives/ movements")}>Advocacy campaigns/ initiatives/ movements</option>
+            <option value="vRegulatory analysis" selected = {this.state.mainProgramActivity.includes("Regulatory analysis")}>Regulatory analysis</option>
+            <option value="vKnowledge production/mobilization" selected = {this.state.mainProgramActivity.includes("Knowledge production/mobilization")}>Knowledge production/mobilization</option>
+            <option value="vEducation sector research studies/ surveys/ assessments" selected = {this.state.mainProgramActivity.includes("Increasing or Sustaining Enrollment")}>Education sector research studies/ surveys/ assessments</option>
+            <option value="vCapacity building at the system level" selected = {this.state.mainProgramActivity.includes("Capacity building at the system level")}>Capacity building at the system level</option>
+            <option value="wLife skills and personal finance training" selected = {this.state.mainProgramActivity.includes("Life skills and personal finance training")}>Life skills and personal finance training</option>
+            <option value="wContinuing education programs offered for adults" selected = {this.state.mainProgramActivity.includes("Continuing education programs offered for adults")}>Continuing education programs offered for adults</option>
+            <option value="aCurriculum and Extra-Curricular Support" selected = {this.state.mainProgramActivity.includes("Curriculum and Extra-Curricular Support")}>Curriculum and Extra-Curricular Support</option>
+            <option value="aPrograms targeting girls/women" selected = {this.state.mainProgramActivity.includes("Programs targeting girls/women")}>Programs targeting girls/women</option>
+            <option value="aPrograms targeting special needs or people with disabilities" selected = {this.state.mainProgramActivity.includes("Programs targeting special needs or people with disabilities")}>Programs targeting special needs or people with disabilities</option>
+            <option value="aPrograms targeting other marginalized groups" selected = {this.state.mainProgramActivity.includes("Programs targeting other marginalized groups")}>Programs targeting other marginalized groups</option>
+            <option value="aPrograms targeting tribal or indigenous groups" selected = {this.state.mainProgramActivity.includes("Programs targeting tribal or indigenous groups")}>Programs targeting tribal or indigenous groups</option>
+            <option value="wProfessional certification/skills" selected = {this.state.mainProgramActivity.includes("Professional certification/skills")}>Professional certification/skills</option>
+            <option value="wShort-term technical/vocational course" selected = {this.state.mainProgramActivity.includes("Short-term technical/vocational course")}>Short-term technical/vocational course</option>
+            <option value="wLonger-term technical/vocational course" selected = {this.state.mainProgramActivity.includes("Longer-term technical/vocational course")}>Longer-term technical/vocational course</option>
+            <option value="oNon-formal education youth" selected = {this.state.mainProgramActivity.includes("Non-formal education youth")}>Non-formal education youth</option>
+            <option value=" Private Sector Delivery of Education" selected = {this.state.mainProgramActivity.includes("Private Sector Delivery of Education")}>Private Sector Delivery of Education</option>
+            <option value=" vocational training" selected = {this.state.mainProgramActivity.includes("vocational training")}>vocational training</option>
+            <option value=" Education Finance (system-level)" selected = {this.state.mainProgramActivity.includes("Education Finance (system-level)")}>Education Finance (system-level)</option>
+            <option value=" school finance" selected = {this.state.mainProgramActivity.includes("school finance")}>school finance</option>
+            <option value=" Capacity Building of Non-Education Professionals" selected = {this.state.mainProgramActivity.includes("Capacity Building of Non-Education Professionals")}>Capacity Building of Non-Education Professionals</option>
+            <option value=" Enrichment/New Pedagogical or Curricular Programs" selected = {this.state.mainProgramActivity.includes("Enrichment/New Pedagogical or Curricular Programs")}>Enrichment/New Pedagogical or Curricular Programs</option>
+            <option value=" Academic research/academic exchange" selected = {this.state.mainProgramActivity.includes("Academic research/academic exchange")}>Academic research/academic exchange</option>
+            <option value=" Main Programming Activity" selected = {this.state.mainProgramActivity.includes("Main Programming Activity")}>Main Programming Activity</option>
+            <option value=" All Programming Activities" selected = {this.state.mainProgramActivity.includes("All Programming Activities")}>All Programming Activities</option>
+            <option value=" Civic/community education" selected = {this.state.mainProgramActivity.includes("Civic/community education")}>Civic/community education</option>
+            <option value=" Scholarships and Financial Aid" selected = {this.state.mainProgramActivity.includes("Scholarships and Financial Aid")}>Scholarship and Financial Aid</option>
+            <option value=" Employment Skills program" selected = {this.state.mainProgramActivity.includes("Employment Skills program")}>Employment Skills program</option>
+            <option value=" Advocacy campaigns/initiatives/movements" selected = {this.state.mainProgramActivity.includes("Advocacy campaigns/initiatives/movements")}>Advocacy campaigns/initiatives/movements</option>
+            <option value=" Knowledge production/mobilization" selected = {this.state.mainProgramActivity.includes("Knowledge production/mobilization")}>Knowledge production/mobilization</option>
+            <option value=" Program targeting special needs or people with disabilities" selected = {this.state.mainProgramActivity.includes("Program targeting special needs or people with disabilities")}>Program targeting special needs or people with disabilities</option>
+            <option value=" Literacy skills" selected = {this.state.mainProgramActivity.includes("Literacy skills")}>Literacy skills</option>
+            <option value=" Maternal Health Education" selected = {this.state.mainProgramActivity.includes("Maternal Health Education")}>Maternal Health Education</option>
             </select>
-              <br></br>
-            <input type="radio" id="needsReview47" name="activityCheck" value="checked"/> <label name="accept" htmlFor="needsReview47">Accept</label>
-            <input type="radio" id="needsReview48" name="activityCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview48">Reject</label>
+            <br></br>
+            <input type="radio" id="needsReview47" name="initiativeMainProgramActivityA" value={1} checked = {this.state.initiativeMainProgramActivityA == 1}  /> <label name="accept" htmlFor="needsReview47">Accept</label>
+            <input type="radio" id="needsReview48" name="initiativeMainProgramActivityA" value={0} checked = {this.state.initiativeMainProgramActivityA == 0}  /> <label name="reject" htmlFor="needsReview48">Reject</label>
 
             <p>Program Area</p>
-            <div id="programArea"></div>
+            <div id="programArea">
+              <p>
+                <i>{this.state.programArea}</i>
+              </p>
+            </div>
             <br></br>
 
             <p>Other Programming Activities</p>
@@ -2411,21 +2524,31 @@ class formReview extends React.Component{
             <option value=" Maternal Health Education">Maternal Health Education</option>
             </select>
 
-            <div id="initActivities"></div>
+            <div id="initActivities">
+              <ul>
+                {
+                  this.state.activities.map(activity => {
+                    return (
+                      <this.buttonMaker key={activity} name={activity} category="initActivities"/>
+                    );
+                  })
+                }
+              </ul>
+            </div>
             <br></br>
-            <input type="radio" id="needsReview49" name="iniitActivitiesCheck" value="checked"/> <label name="accept" htmlFor="needsReview49">Accept</label>
-            <input type="radio" id="needsReview50" name="iniitActivitiesCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview50">Reject</label>
+            <input type="radio" id="needsReview49" name="activitiesA" value={1} checked = {this.state.activitiesA == 1}  /> <label name="accept" htmlFor="needsReview49">Accept</label>
+            <input type="radio" id="needsReview50" name="activitiesA" value={0} checked = {this.state.activitiesA == 0}  /> <label name="reject" htmlFor="needsReview50">Reject</label>
 
             <p>Fee to Access?</p>
-            <input type="radio" id="feeAccess1" name="feeToAccess" value="Yes" defaultChecked = {this.state.feeAccess} onClick={this.feeAccessChange}/> <label htmlFor="feeAccess1">Yes</label>
-            <input type="radio" id="feeAccess2" name="feeToAccess" value="No" defaultChecked = {!this.state.feeAccess} onClick={this.feeAccessChange}/> <label htmlFor="feeAccess2">No</label>
+              <input type="radio" id="feeAccess1" name="feeToAccess" value="Yes" checked = {this.state.feeAccess === "Yes"} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess1">Yes</label>
+              <input type="radio" id="feeAccess2" name="feeToAccess" value="No" checked = {this.state.feeAccess === "No"} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess2">No</label>
               <br></br>
-            <input type="radio" id="needsReview51" name="feeToAccessCheck" value="checked"/> <label name="accept" htmlFor="needsReview51">Accept</label>
-            <input type="radio" id="needsReview52" name="feeToAccessCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview52">Reject</label>
+            <input type="radio" id="needsReview51" name="feeAccessA" value={1} checked = {this.state.feeAccessA == 1}  /> <label name="accept" htmlFor="needsReview51">Accept</label>
+            <input type="radio" id="needsReview52" name="feeAccessA" value={0} checked = {this.state.feeAccessA == 0}  /> <label name="reject" htmlFor="needsReview52">Reject</label>
 
             <p>Target School Management Type</p>
             <select id="manType" name="managementType" onChange={this.addManagementType}>
-            <option value="base">Choose an Outcome</option>
+            <option value="base">Choose a School Management Type</option>
             <option value="Government/Public">Government/Public</option>
             <option value="Non-state/Private">Non-state/Private</option>
             <option value="Not Applicable">Not Applicable</option>
@@ -2433,11 +2556,20 @@ class formReview extends React.Component{
             <option value="Missing Data">Missing Data</option>
             </select>
 
-            <div id="managementTypes"></div>
+            <div id="managementTypes">
+              <ul>
+                {
+                  this.state.managementTypes.map(type => {
+                    return (
+                      <this.buttonMaker key={type} name={type} category="managementTypes"/>
+                    );
+                  })
+                }
+              </ul>
+            </div>
             <br></br>
-            <input type="radio" id="needsReview53" name="manTypeCheck" value="checked"/> <label name="accept" htmlFor="needsReview53">Accept</label>
-            <input type="radio" id="needsReview54" name="manTypeCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview54">Reject</label>
-
+            <input type="radio" id="needsReview53" name="managementTypesA" value={1} checked = {this.state.managementTypesA == 1}  /> <label name="accept" htmlFor="needsReview53">Accept</label>
+            <input type="radio" id="needsReview54" name="managementTypesA" value={0} checked = {this.state.managementTypesA == 0}  /> <label name="reject" htmlFor="needsReview54">Reject</label>
 
             <p>Target Population Sector(s)<br></br>Select all that apply:</p>
             <select id="popSector" name="targetPopulationSector" onChange={this.addPopSector}>
@@ -3082,10 +3214,20 @@ class formReview extends React.Component{
             <option value="Secondary school students in rural communities who don't have access to internet">Secondary school students in rural communities who don't have access to internet</option>
             </select>
 
-            <div id="targetPopSector"></div>
+            <div id="targetPopSector">
+              <ul>
+                {
+                  this.state.targetPopulationSectors.map(sector => {
+                    return (
+                      <this.buttonMaker key={sector} name={sector} category="targetPopSector"/>
+                    );
+                  })
+                }
+              </ul>
+            </div>
             <br></br>
-            <input type="radio" id="needsReview55" name="targetPopSectorCheck" value="checked"/> <label name="accept" htmlFor="needsReview55">Accept</label>
-            <input type="radio" id="needsReview56" name="targetPopSectorCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview56">Reject</label>
+            <input type="radio" id="needsReview55" name="targetPopulationSectorsA" value={1} checked = {this.state.targetPopulationSectorsA == 1}  /> <label name="accept" htmlFor="needsReview55">Accept</label>
+            <input type="radio" id="needsReview56" name="targetPopulationSectorsA" value={0} checked = {this.state.targetPopulationSectorsA == 0}  /> <label name="reject" htmlFor="needsReview56">Reject</label>
 
             <p>Outcomes Monitored<br></br>Select all that apply:</p>
             <select id="outcome" name="outcomesMonitored" onChange={this.addOutcome}>
@@ -3634,38 +3776,48 @@ class formReview extends React.Component{
             <option value="missing data">missing data</option>
             </select>
 
-            <div id="outcomesMonitored"></div>
-
-
-            <div id="sourceOfFeesList"></div>
+            <div id="outcomesMonitored">
+              <ul>
+                {
+                  this.state.outcomesMonitored.map(outcome => {
+                    return (
+                      <this.buttonMaker key={outcome} name={outcome} category="outcomesMonitored"/>
+                    );
+                  })
+                }
+              </ul>
+            </div>
             <br></br>
-            <input type="radio" id="needsReview57" name="sourceOfFeesCheck" value="checked"/> <label name="accept" htmlFor="needsReview57">Accept</label>
-            <input type="radio" id="needsReview58" name="sourceOfFeesCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview58">Reject</label>
+            <input type="radio" id="needsReview57" name="outcomesMonitoredA" value={1} checked = {this.state.outcomesMonitoredA == 1}  /> <label name="accept" htmlFor="needsReview57">Accept</label>
+            <input type="radio" id="needsReview58" name="outcomesMonitoredA" value={0} checked = {this.state.outcomesMonitoredA == 0}  /> <label name="reject" htmlFor="needsReview58">Reject</label>
 
+            <br></br><br></br>
             <h4>Implementer</h4>
 
             <p>Name</p>
               <input type="text" id="iname" name="implementerName" value = {this.state.iname} placeholder="Implementer Name" onChange={this.handleChange}/>
               <br></br>
-            <input type="radio" id="needsReview59" name="implementerCheck" value="checked"/> <label name="accept" htmlFor="needsReview59">Accept</label>
-            <input type="radio" id="needsReview60" name="implementerCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview60">Reject</label>
+            <input type="radio" id="needsReview61" name="inameA" value={1} checked = {this.state.inameA == 1}  /> <label name="accept" htmlFor="needsReview61">Accept</label>
+            <input type="radio" id="needsReview62" name="inameA" value={0} checked = {this.state.inameA == 0}  /> <label name="reject" htmlFor="needsReview62">Reject</label>
 
             <p>Profit Motive</p>
-            <input type="radio" id="impMotive1" name="impProfitMotive" value="Not-for-profit" checked = {this.state.impMotive == "Not-for-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive1">Not-For-Profit</label>
-            <input type="radio" id="impMotive2" name="impProfitMotive" value="Hybrid" checked = {this.state.impMotive == "Hybrid"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive2">Hybrid</label>
-            <input type="radio" id="impMotive3" name="impProfitMotive" value="For-profit" checked = {this.state.impMotive == "For-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive3">For-Profit</label>
+              <input type="radio" id="impMotive1" name="impProfitMotive" value="Not-for-profit" checked = {this.state.impMotive === "Not-for-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive1">Not-For-Profit</label>
+              <input type="radio" id="impMotive2" name="impProfitMotive" value="Hybrid" checked = {this.state.impMotive === "Hybrid"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive2">Hybrid</label>
+              <input type="radio" id="impMotive3" name="impProfitMotive" value="For-profit" checked = {this.state.impMotive === "For-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive3">For-Profit</label>
               <br></br>
-            <input type="radio" id="needsReview61" name="impProfitCheck" value="checked"/> <label name="accept" htmlFor="needsReview61">Accept</label>
-            <input type="radio" id="needsReview62" name="impProfitCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview62">Reject</label>
+            <input type="radio" id="needsReview63" name="impMotiveA" value={1} checked = {this.state.impMotiveA == 1}  /> <label name="accept" htmlFor="needsReview63">Accept</label>
+            <input type="radio" id="needsReview64" name="impMotiveA" value={0} checked = {this.state.impMotiveA == 0}  /> <label name="reject" htmlFor="needsReview64">Reject</label>
             <br></br><br></br>
 
             <h4>Comments about Submission</h4>
-              <textarea id="comments" name="comment" maxLength ="10000" placeholder="Write any comments you have about this form" onChange={this.handleChange}></textarea>
+              <textarea id="comments" name="comment" value = {this.state.comments} maxLength ="10000" placeholder="Write any comments you have about this form" onChange={this.handleChange}></textarea>
               <p>(10,000 character limit)</p>
             <br></br><br></br>
 
 
-            <input type="submit"value="Submit"/>
+            <input type="submit"value="Submit" onChange/>
+            <br/><br/>
+            {submitError}
             </form>
             </div>
         </div>
@@ -3700,17 +3852,34 @@ Program Area stuff that was part of AirTable but not the cleaned data
             <option value="pPrivate schools">Private schools</option>
             <option value="pFormal public-private partnership">Formal public-private partnership</option>
 
-
+            <div id="sourceOfFeesList"></div>
+            <br></br>
+            <input type="radio" id="needsReview59" name="sourceOfFeesCheck" value="checked"/> <label name="accept" htmlFor="needsReview57">Accept</label>
+            <input type="radio" id="needsReview60" name="sourceOfFeesCheck" value="unchecked"/> <label name="reject" htmlFor="needsReview58">Reject</label>
             */
 
 
 const mapStateToProps = (state) => {
   return {
     authorized: state.authenticate.auth,
-    accessLevel: state.data.userInformation.accessLevel,
-    form: state.data.form,  //data to populate form with when RA reviews it
-    formStatus: state.data.formStatus
+    userData: state.data.userInformation,
+
+    form: state.data.form,
+    formStatus: state.data.formStatus,
+    inDB: state.data.pulledformApproved,
+
+    formSubmitted: state.data.formSubmitted,
+    formSubmitError: state.data.formSubmitData
   };
 }
 
-export default connect(mapStateToProps)(formReview)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    submitRA: (form, isModified) => {dispatch(addFormRA(form, isModified))},
+    submitNonRA: (form, inDB, isModified) => {dispatch(addForm(form, inDB, isModified))},
+    submitModifiedRA: (form, isModified) => {dispatch(modifyFormRA(form, isModified))},
+    submitModifiedNonRA: (form, inDB, isModified) => {dispatch(modifyForm(form, inDB, isModified))},
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(formReview)

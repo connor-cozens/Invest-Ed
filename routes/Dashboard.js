@@ -866,10 +866,10 @@ dashboard.post('/submit-form-temp', (req, res) =>{
     })
 
    function function1(val){
-        query7 = "INSERT into initiative VALUES ("+ val +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"',"+ formData.initiativeTargetsWomen +
-        ",'"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +
-        "',(SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas
-        +"') , (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'),"+ formData.initiativeFeeAccess+")"
+        query7 = "INSERT into initiative VALUES ("+ val +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"','"+ formData.initiativeTargetsWomen +
+        "','"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +
+        "',(SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas +
+        "' AND activity = '" + formData.initiativeMainProgramActivity + "'), (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'),'" + formData.initiativeFeeAccess + "')"
         async.parallel([
         function(queryDB) {
             poolTemp.query(query7, {}, function(err, results) {
@@ -889,10 +889,6 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
         })
     }
-
-
-
-
 
      //Insert initiative region data
      test = client.get('tagNumber', function(err, reply){
@@ -1591,10 +1587,10 @@ dashboard.post('/submitform', (req, res) =>{
     })
 
    function function1(val){
-        query7 = "INSERT into initiative VALUES ("+ val +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"',"+ formData.initiativeTargetsWomen +
-        ",'"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +
-        "',(SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas
-        +"') , (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'),"+ formData.initiativeFeeAccess+")"
+        query7 = "INSERT into initiative VALUES ("+ val +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"','"+ formData.initiativeTargetsWomen +
+        "','"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +
+        "',(SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas +
+        "' AND activity = '" + formData.initiativeMainProgramActivity + "'), (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'),'" + formData.initiativeFeeAccess + "')"
         async.parallel([
         function(queryDB) {
             pool.query(query7, {}, function(err, results) {
@@ -1614,10 +1610,6 @@ dashboard.post('/submitform', (req, res) =>{
 
         })
     }
-
-
-
-
 
      //Insert initiative region data
      test = client.get('tagNumber', function(err, reply){

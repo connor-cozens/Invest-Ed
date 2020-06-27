@@ -16,6 +16,9 @@ export const CLEAR_FORM_STATUS = 'CLEAR_FORM_STATUS';
 export const FORM_SUBMIT_SUCCESS = 'FORM_SUBMIT_SUCCESS';
 export const FORM_SUBMIT_ERROR = 'FORM_SUBMIT_ERROR';
 export const FORM_SUBMIT_CLEAR = 'FORM_SUBMIT_CLEAR';
+export const FORM_REVIEW_SUCCESS = 'FORM_REVIEW_SUCCESS';
+export const FORM_REVIEW_ERROR = 'FORM_REVIEW_ERROR';
+export const FORM_REVIEW_CLEAR = 'FORM_REVIEW_CLEAR';
 
 export const SET_FUNDER_DATA = 'SET_FUNDER_DATA';
 export const SET_IMPLEMENTER_DATA = 'SET_IMPLEMENTER_DATA';
@@ -184,6 +187,24 @@ const dataReducer = (state = initState, action) => {
         ...state,
         formSubmitted: false,
         formSubmitError: action.payload
+      }
+    case FORM_REVIEW_SUCCESS:
+      return {
+        ...state,
+        formReviewed: true,
+        formReviewError: null
+      }
+    case FORM_REVIEW_CLEAR:
+      return {
+        ...state,
+        formReviewed: false,
+        formReviewError: null
+      }
+    case FORM_REVIEW_ERROR:
+      return {
+        ...state,
+        formReviewed: false,
+        formReviewError: action.payload
       }
 
 

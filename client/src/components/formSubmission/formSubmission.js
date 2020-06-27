@@ -56,10 +56,6 @@ class formSubmission extends React.Component{
 
       //Other
       comments: null,
-
-      //Review
-      reviews: [], //32 Other sections that matter, so 0-31 in the order the appear ON THE FORM
-      status: null
     };
 
     this.addIBase = this.addIBase.bind(this);
@@ -143,13 +139,10 @@ class formSubmission extends React.Component{
         impMotive: props.form.implementers.length > 0 ? props.form.implementers[0].profitMotive : null,
 
         //Other Setters
-        comments: props.form.reviews, //Not used yet
-        status: props.form.status === undefined ? (props.form.status.length > 0 ? props.form.status[0][0].needsReview : null) : null, //not used yet
-        reviews: props.form.reviews === undefined ? (props.form.reviews.length > 0 ? props.form.reviews[0][0] : null) : null //not used yet
+        comments: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].comment !== undefined ? props.form.status[0][0].comment : null) : null) : null) : null,
       });
     }
   }
-
 
 
   buttonMaker(props){
@@ -765,6 +758,7 @@ class formSubmission extends React.Component{
   }
 
   render(){
+    console.log(this.state);
     const {authorized, formSubmitted, formSubmitError} = this.props;
     if (authorized === false) {
       return <Redirect to='/' />
@@ -3668,7 +3662,7 @@ class formSubmission extends React.Component{
             <br></br><br></br>
 
             <h4>Comments about Submission</h4>
-              <textarea id="comments" name="comment" maxLength ="10000" placeholder="Write any comments you have about this form" onChange={this.handleChange}></textarea>
+              <textarea id="comments" name="comment" value = {this.state.comments} maxLength ="10000" placeholder="Write any comments you have about this form" onChange={this.handleChange}></textarea>
               <p>(10,000 character limit)</p>
             <br></br><br></br>
 

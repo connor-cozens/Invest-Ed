@@ -15,6 +15,9 @@ import {
   FORM_SUBMIT_SUCCESS,
   FORM_SUBMIT_ERROR,
   FORM_SUBMIT_CLEAR,
+  FORM_REVIEW_SUCCESS,
+  FORM_REVIEW_ERROR,
+  FORM_REVIEW_CLEAR,
 
   SET_FUNDER_DATA,
   SET_IMPLEMENTER_DATA,
@@ -184,9 +187,9 @@ const readForm = (response => {
     });
   }
 
-  let status = [];
+  let status_comments = [];
   if (response.data.table15 !== undefined) {
-    status.push(response.data.table15);
+    status_comments.push(response.data.table15);
   }
 
   let reviews = [];
@@ -222,7 +225,7 @@ const readForm = (response => {
     targetSchoolManagementType: initiativeTargetSchoolManagement,
     implementers: implementers,
     funders: funders,
-    status: status,
+    status: status_comments,
     reviews: reviews
   };
   return initiative;
@@ -337,7 +340,8 @@ const changeRequestRA = (form, isModified) => {
   return reqBody;
 }
 
-const changeRequest = (form, inDB, isModified) => {
+//Call on submission of new form or update of existing form from organization user, or on submission of review from RA user
+const changeRequest = (form, inDB, isModified, isReviewed) => {
   const reqBody = {
     fname: form.fname,
     furl: form.furl,
@@ -377,42 +381,42 @@ const changeRequest = (form, inDB, isModified) => {
     impMotive: form.impMotive,
 
     //Section Reviews - Only to be used when submitting into temp db
-    fnameA: 0,
-    furlA: 0,
-    motiveA: 0,
-    impactA: 0,
-    organizationFormA: 0,
+    fnameA: isReviewed === true ? form.fnameA : 0,
+    furlA: isReviewed === true ? form.furlA : 0,
+    motiveA: isReviewed === true ? form.motiveA : 0,
+    impactA: isReviewed === true ? form.impactA : 0,
+    organizationFormA: isReviewed === true ? form.organizationFormA : 0,
     // multi val funder
-    internationalBasesA: 0,
-    edSubsA: 0,
-    orgTraitsA: 0,
-    asialBasesA: 0,
-    asiaOperationsA: 0,
+    internationalBasesA: isReviewed === true ? form.internationalBasesA : 0,
+    edSubsA: isReviewed === true ? form.edSubsA : 0,
+    orgTraitsA: isReviewed === true ? form.orgTraitsA : 0,
+    asialBasesA: isReviewed === true ? form.asialBasesA : 0,
+    asiaOperationsA: isReviewed === true ? form.asiaOperationsA : 0,
     // single val initiative
-    initNameA: 0,
-    initURLA: 0,
-    tWomenA: 0,
-    initStartA: 0,
-    initEndA: 0,
-    idescriptionA: 0,
-    programAreaA: 0,
-    initiativeMainProgramActivityA: 0,
-    feeAccessA: 0,
+    initNameA: isReviewed === true ? form.initNameA : 0,
+    initURLA: isReviewed === true ? form.initURLA : 0,
+    tWomenA: isReviewed === true ? form.tWomenA : 0,
+    initStartA: isReviewed === true ? form.initStartA : 0,
+    initEndA: isReviewed === true ? form.initEndA : 0,
+    idescriptionA: isReviewed === true ? form.idescriptionA : 0,
+    programAreaA: isReviewed === true ? form.programAreaA : 0,
+    initiativeMainProgramActivityA: isReviewed === true ? form.initiativeMainProgramActivityA : 0,
+    feeAccessA: isReviewed === true ? form.feeAccessA : 0,
     // multi val initiative
-    regionsA: 0,
-    countriesA: 0,
-    activitiesA: 0,
-    sourceOfFeesA: 0,
-    launchCountryA: 0,
-    targetGeosA: 0,
-    targetPopulationSectorsA: 0,
-    outcomesMonitoredA: 0,
-    mEdSubsA: 0,
-    oEdSubsA: 0,
-    managementTypesA: 0,
+    regionsA: isReviewed === true ? form.regionsA : 0,
+    countriesA: isReviewed === true ? form.countriesA : 0,
+    activitiesA: isReviewed === true ? form.activitiesA : 0,
+    sourceOfFeesA: isReviewed === true ? form.sourceOfFeesA : 0,
+    launchCountryA: isReviewed === true ? form.launchCountryA : 0,
+    targetGeosA: isReviewed === true ? form.targetGeosA : 0,
+    targetPopulationSectorsA: isReviewed === true ? form.targetPopulationSectorsA : 0,
+    outcomesMonitoredA: isReviewed === true ? form.outcomesMonitoredA : 0,
+    mEdSubsA: isReviewed === true ? form.mEdSubsA : 0,
+    oEdSubsA: isReviewed === true ? form.oEdSubsA : 0,
+    managementTypesA: isReviewed === true ? form.managementTypesA : 0,
     // single val implementer
-    inameA: 0,
-    impMotiveA: 0,
+    inameA: isReviewed === true ? form.inameA : 0,
+    impMotiveA: isReviewed === true ? form.impMotiveA : 0,
     // single val other
     comments: form.comments,
     needsReview: 1,
@@ -428,9 +432,9 @@ const changeRequest = (form, inDB, isModified) => {
   return reqBody;
 }
 
-//Organization user to modify existing form in either main or temp DB (could be in main DB since might have been approved)
+//Organization user to modify existing form from either main or temp DB (could be in main DB since might have been approved) and submit it to temp db
 export const modifyForm = (form, inDB, isModified) => (dispatch) => {
-  const req = changeRequest(form, inDB, isModified);
+  const req = changeRequest(form, inDB, isModified, false);
   axios.post(`/dashboard/update-form-temp`, req)
     .then(response => {
       dispatch({type: FORM_SUBMIT_SUCCESS});
@@ -452,9 +456,22 @@ export const modifyFormRA = (form, isModified) => (dispatch) => {
     })
 }
 
+//RA user to submit rejection review of form to temp db
+export const addRejectionReview = (form, inDB, isModified) => (dispatch) => {
+  const req = changeRequest(form, inDB, isModified, true);
+  axios.post(`/dashboard/update-form-temp`, req)
+    .then(response => {
+      dispatch({type: FORM_REVIEW_SUCCESS});
+    })
+    .catch(err => {
+      dispatch({type: FORM_REVIEW_ERROR, payload: err});
+    })
+}
+
+
 //Organization user to add new form to temp DB
 export const addForm = (form, inDB, isModified) => (dispatch) => {
-  const req = changeRequest(form, inDB, isModified);
+  const req = changeRequest(form, inDB, isModified, false);
   axios.post(`/dashboard/submit-form-temp`, req)
     .then(response => {
       dispatch({type: FORM_SUBMIT_SUCCESS});

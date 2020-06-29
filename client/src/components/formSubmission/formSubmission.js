@@ -167,7 +167,6 @@ class formSubmission extends React.Component{
 
   componentDidMount = () => {
     const {props} = this;
-    console.log(props.inDB)
     if (props.formStatus === 'modify') {
       this.setState({
         //Original value Setters
@@ -299,7 +298,6 @@ class formSubmission extends React.Component{
   }
 
   static getDerivedStateFromProps = (props, state) => {
-    console.log(props.inDB)
     //Section Reviews
     return {
       //If changes are made to form, only set changed fields to not accepted
@@ -976,7 +974,6 @@ class formSubmission extends React.Component{
   }
 
   render(){
-    console.log(this.state);
     const {authorized, formSubmitted, formSubmitError} = this.props;
     if (authorized === false) {
       return <Redirect to='/' />
@@ -995,14 +992,25 @@ class formSubmission extends React.Component{
       <h5 style = {{textAlign: "center"}}> {formSubmitError} </h5>
     </div> : null
 
+    const approvalFeedback = this.state.needsReview === 0 ? (
+      <div class="alert alert-dismissible alert-success">
+        <strong>This form has been accepted.</strong> The information currently on this form is public.
+      </div>
+    ) :
+      <div class="alert alert-dismissible alert-danger">
+        <strong>This form is under review for approval.</strong> Please view the approval status of the below fields.
+      </div>
+
+
     return (
         <div className = "formSubmission" style = {{paddingTop: '50px'}}>
             <h3>Form Submission</h3>
             <div>
+            <br></br>
+            {approvalFeedback}
             <form onSubmit={this.handleFormSubmit}>
 
             <h4>Funder</h4>
-
 
             <p>Name</p>
               <input type="text" id="fname" name="funderName" value={this.state.fname} placeholder="Funder Name" onChange={this.handleChange}/>

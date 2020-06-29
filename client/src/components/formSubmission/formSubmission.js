@@ -94,6 +94,44 @@ class formSubmission extends React.Component{
       //Reviews
       needsReview: null,
       //Section Reviews
+      originalReviews: {
+        fnameA: null,
+        furlA: null,
+        motiveA: null,
+        impactA: null,
+        organizationFormA: null,
+        // multi val funder
+        internationalBasesA: null,
+        edSubsA: null,
+        orgTraitsA: null,
+        asialBasesA: null,
+        asiaOperationsA: null,
+        // single val initiative
+        initNameA: null,
+        initURLA: null,
+        tWomenA: null,
+        initStartA: null,
+        initEndA: null,
+        idescriptionA: null,
+        programAreaA: null,
+        initiativeMainProgramActivityA: null,
+        feeAccessA: null,
+        // multi val initiative
+        regionsA: null,
+        countriesA: null,
+        activitiesA: null,
+        sourceOfFeesA: null,
+        launchCountryA: null,
+        targetGeosA: null,
+        targetPopulationSectorsA: null,
+        outcomesMonitoredA: null,
+        mEdSubsA: null,
+        oEdSubsA: null,
+        managementTypesA: null,
+        // single val implementer
+        inameA: null,
+        impMotiveA: null
+      },
       reviews: {
         fnameA: null,
         furlA: null,
@@ -163,6 +201,7 @@ class formSubmission extends React.Component{
     this.addLaunchCountry = this.addLaunchCountry.bind(this);
     this.startYearChange = this.startYearChange.bind(this);
     this.endYearChange = this.endYearChange.bind(this);
+    this.fieldStatus = this.fieldStatus.bind(this);
   }
 
   componentDidMount = () => {
@@ -180,20 +219,20 @@ class formSubmission extends React.Component{
         otWomen: props.form.targetsWomen,
         oinitStart: props.form.startYear,
         oinitEnd: props.form.endYear,
-        olaunchCountries: props.form.launchCountry !== undefined ? props.form.launchCountry : [],
+        olaunchCountries: props.form.launchCountry !== undefined ? JSON.parse(JSON.stringify(props.form.launchCountry)) : [],
         oidescription: props.form.description,
-        otargetGeos: props.form.targetGeographies.length !== undefined ? props.form.targetGeographies : [],
+        otargetGeos: props.form.targetGeographies.length !== undefined ? JSON.parse(JSON.stringify(props.form.targetGeographies)) : [],
         omainProgramActivity: props.form.mainProgrammingActivity !== undefined ? props.form.mainProgrammingActivity : '',
         oprogramArea: props.form.mainProgrammingArea !== undefined ? props.form.mainProgrammingArea : '',
         ofeeAccess: props.form.feeToAccess,
-        otargetPopulationSectors: props.form.targetPopulationSectors !== undefined ? props.form.targetPopulationSectors : [],
-        oOutcomesMonitored: props.form.monitoredOutcomes !== undefined ? props.form.monitoredOutcomes : [],
-        omEdSubs: props.form.mainEducationSubSectors !== undefined ? props.form.mainEducationSubSectors : [],
-        oOEdSubs: props.form.educationSubSectors !== undefined ? props.form.educationSubSectors : [],
-        omanagementTypes: props.form.targetSchoolManagementType !== undefined ? props.form.targetSchoolManagementType : [],
-        oregions: props.form.regions !== undefined ? props.form.regions : [],
-        ocountries: props.form.countriesOfOperation !== undefined ? props.form.countriesOfOperation : [],
-        oactivities: props.form.programmingActivities !== undefined ? props.form.programmingActivities : [],
+        otargetPopulationSectors: props.form.targetPopulationSectors !== undefined ? JSON.parse(JSON.stringify(props.form.targetPopulationSectors)) : [],
+        oOutcomesMonitored: props.form.monitoredOutcomes !== undefined ? JSON.parse(JSON.stringify(props.form.monitoredOutcomes)) : [],
+        omEdSubs: props.form.mainEducationSubSectors !== undefined ? JSON.parse(JSON.stringify(props.form.mainEducationSubSectors)) : [],
+        oOEdSubs: props.form.educationSubSectors !== undefined ? JSON.parse(JSON.stringify(props.form.educationSubSectors)) : [],
+        omanagementTypes: props.form.targetSchoolManagementType !== undefined ? JSON.parse(JSON.stringify(props.form.targetSchoolManagementType)) : [],
+        oregions: props.form.regions !== undefined ? JSON.parse(JSON.stringify(props.form.regions)) : [],
+        ocountries: props.form.countriesOfOperation !== undefined ? JSON.parse(JSON.stringify(props.form.countriesOfOperation)) : [],
+        oactivities: props.form.programmingActivities !== undefined ? JSON.parse(JSON.stringify(props.form.programmingActivities)) : [],
         osourceOfFees: props.form.sourcesOfFunding !== undefined ? props.form.sourcesOfFunding : [],
 
         //Initiative setters
@@ -224,11 +263,11 @@ class formSubmission extends React.Component{
         oOrganizationForm: props.form.funders.length > 0 ? props.form.funders[0].organizationalForm : null,
         oimpact: props.form.funders.length > 0 ? props.form.funders[0].impactInvesting : null,
         //Multi-valued funder attribute setters
-        oedSubs: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].educationSubsector !== undefined ? props.form.funders[0].educationSubsector : []) : []) : [],
-        oOrgTraits: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].trait !== undefined ? props.form.funders[0].trait : []) : []) : [],
-        oasiaIBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaBase !== undefined ? props.form.funders[0].asiaBase : []) : []) : [],
-        oasiaOperations: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaOperatons !== undefined ? props.form.funders[0].asiaOperatons : []) : []) : [],
-        ointernationalBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].baseLocation !== undefined ? props.form.funders[0].baseLocation : []) : []) : [],
+        oedSubs: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].educationSubsector !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].educationSubsector)) : []) : []) : [],
+        oOrgTraits: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].trait !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].trait)) : []) : []) : [],
+        oasiaIBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaBase !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].asiaBase)) : []) : []) : [],
+        oasiaOperations: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaOperatons !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].asiaOperatons)) : []) : []) : [],
+        ointernationalBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].baseLocation !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].baseLocation)) : []) : []) : [],
 
         //Funder Setters
         fname: props.form.funders.length > 0 ? props.form.funders[0].funderName : null,
@@ -255,6 +294,44 @@ class formSubmission extends React.Component{
 
         //Review Setters
         needsReview: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].needsReview !== undefined ? props.form.status[0][0].needsReview : null) : null) : null) : null,
+        originalReviews: {
+          fnameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null) : 1,
+          furlA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderUrlApproval : null) : null) : null) : null) : 1,
+          motiveA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderMotiveApproval : null) : null) : null) : null) : 1,
+          impactA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderImpactApproval : null) : null) : null) : null) : 1,
+          organizationFormA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrganizationFormApproval : null) : null) : null) : null) : 1,
+          // multi val funder
+          internationalBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderInternationalBaseApproval : null) : null) : null) : null) : 1,
+          edSubsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderEdSubsApproval : null) : null) : null) : null) : 1,
+          orgTraitsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrgTraitsApproval : null) : null) : null) : null) : 1,
+          asialBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaBasesApproval : null) : null) : null) : null) : 1,
+          asiaOperationsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaOperationsApproval : null) : null) : null) : null) : 1,
+          // single val initiative
+          initNameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initNameApproval : null) : null) : null) : null) : 1,
+          initURLA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initUrlApproval : null) : null) : null) : null) : 1,
+          tWomenA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetsWomenApproval : null) : null) : null) : null) : 1,
+          initStartA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initStartApproval : null) : null) : null) : null) : 1,
+          initEndA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initEndApproval : null) : null) : null) : null) : 1,
+          idescriptionA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initDescriptionApproval : null) : null) : null) : null) : 1,
+          programAreaA: 1, //set to approved as this is not based on user input
+          initiativeMainProgramActivityA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMainProgramActivityApproval : null) : null) : null) : null) : 1,
+          feeAccessA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initFeeAccessApproval : null) : null) : null) : null) : 1,
+          // multi val initiative
+          regionsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initRegionsApproval : null) : null) : null) : null) : 1,
+          countriesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initCountriesApproval : null) : null) : null) : null) : 1,
+          activitiesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initActivitiesApproval : null) : null) : null) : null) : 1,
+          sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
+          launchCountryA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initLaunchCountryApproval : null) : null) : null) : null) : 1,
+          targetGeosA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetGeoApproval : null) : null) : null) : null) : 1,
+          targetPopulationSectorsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetPopulationSectorApproval : null) : null) : null) : null) : 1,
+          outcomesMonitoredA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOutcomesMonitoredApproval : null) : null) : null) : null) : 1,
+          mEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMEdSubsApproval : null) : null) : null) : null) : 1,
+          oEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOEdSubsApproval : null) : null) : null) : null) : 1,
+          managementTypesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initManagementTypesApproval : null) : null) : null) : null) : 1,
+          // single val implementer
+          inameA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorNameApproval : null) : null) : null) : null) : 1,
+          impMotiveA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorMotiveApproval : null) : null) : null) : null) : 1
+        },
         reviews: {
           fnameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null) : 1,
           furlA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderUrlApproval : null) : null) : null) : null) : 1,
@@ -300,44 +377,44 @@ class formSubmission extends React.Component{
   static getDerivedStateFromProps = (props, state) => {
     //Section Reviews
     return {
-      //If changes are made to form, only set changed fields to not accepted
+      //If changes are made to form, only set changed fields to not accepted (i.e. to 0)
       reviews: {
-        fnameA: state.fname !== state.originalFunderName ? 0 : state.reviews.fnameA,
-        furlA:  state.furl !== state.ofurl ? 0 : state.reviews.furlA ,
-        motiveA:  state.motive !==  state.omotive ? 0 :  state.reviews.motiveA,
-        impactA:  state.impact !==  state.oimpact ? 0 :  state.reviews.impactA,
-        organizationFormA:  state.organizationForm !==  state.oOrganizationForm ? 0 :  state.reviews.organizationFormA,
+        fnameA: state.fname !== state.originalFunderName ? 0 : state.originalReviews.fnameA,
+        furlA:  state.furl !== state.ofurl ? 0 : state.originalReviews.furlA ,
+        motiveA:  state.motive !==  state.omotive ? 0 :  state.originalReviews.motiveA,
+        impactA:  state.impact !==  state.oimpact ? 0 :  state.originalReviews.impactA,
+        organizationFormA:  state.organizationForm !==  state.oOrganizationForm ? 0 :  state.originalReviews.organizationFormA,
         // multi val funder
-        internationalBasesA:  state.internationalBases !==  state.ointernationalBases ? 0 :  state.reviews.internationalBasesA,
-        edSubsA:  state.edSubs !==  state.oedSubs ? 0 :  state.reviews.edSubsA,
-        orgTraitsA:  state.orgTraits !==  state.oOrgTraits ? 0 :  state.reviews.orgTraitsA,
-        asialBasesA:  state.asiaIBases !==  state.oasiaIBases ? 0 :  state.reviews.asialBasesA,
-        asiaOperationsA:  state.asiaOperations !==  state.oasiaOperations ? 0 :  state.reviews.asiaOperationsA,
+        internationalBasesA:  JSON.stringify(state.internationalBases) !== JSON.stringify(state.ointernationalBases) ? 0 :  state.originalReviews.internationalBasesA,
+        edSubsA:  JSON.stringify(state.edSubs) !== JSON.stringify(state.oedSubs) ? 0 :  state.originalReviews.edSubsA,
+        orgTraitsA:  JSON.stringify(state.orgTraits) !== JSON.stringify(state.oOrgTraits) ? 0 :  state.originalReviews.orgTraitsA,
+        asialBasesA:  JSON.stringify(state.asiaIBases) !== JSON.stringify(state.oasiaIBases) ? 0 :  state.originalReviews.asialBasesA,
+        asiaOperationsA:  JSON.stringify(state.asiaOperations) !== JSON.stringify(state.oasiaOperations) ? 0 :  state.originalReviews.asiaOperationsA,
         // single val initiative
-        initNameA:  state.initName !==  state.oinitName ? 0 :  state.reviews.initNameA,
-        initURLA:  state.initURL !==  state.oinitURL ? 0 :  state.reviews.initURLA,
-        tWomenA:  state.tWomen !==  state.otWomen ? 0 :  state.reviews.tWomenA,
-        initStartA:  state.initStart !==  state.oinitStart ? 0 :  state.reviews.initStartA,
-        initEndA:  state.initEnd !==  state.oinitEnd ? 0 :  state.reviews.initEndA,
-        idescriptionA:  state.idescription !==  state.oidescription ? 0 :  state.reviews.idescriptionA,
+        initNameA:  state.initName !==  state.oinitName ? 0 :  state.originalReviews.initNameA,
+        initURLA:  state.initURL !==  state.oinitURL ? 0 :  state.originalReviews.initURLA,
+        tWomenA:  state.tWomen !==  state.otWomen ? 0 :  state.originalReviews.tWomenA,
+        initStartA:  state.initStart !==  state.oinitStart ? 0 :  state.originalReviews.initStartA,
+        initEndA:  state.initEnd !==  state.oinitEnd ? 0 :  state.originalReviews.initEndA,
+        idescriptionA:  state.idescription !==  state.oidescription ? 0 :  state.originalReviews.idescriptionA,
         programAreaA: 1, //set to approved as this is not based on user input
-        initiativeMainProgramActivityA:  state.mainProgramActivity !==  state.omainProgramActivity ? 0 :  state.reviews.initiativeMainProgramActivityA,
-        feeAccessA:  state.feeAccess !==  state.ofeeAccess ? 0 :  state.reviews.feeAccessA,
+        initiativeMainProgramActivityA:  state.mainProgramActivity !==  state.omainProgramActivity ? 0 :  state.originalReviews.initiativeMainProgramActivityA,
+        feeAccessA:  state.feeAccess !==  state.ofeeAccess ? 0 :  state.originalReviews.feeAccessA,
         // multi val initiative
-        regionsA:  state.regions !==  state.oregions ? 0 :  state.reviews.regionsA,
-        countriesA:  state.countries !==  state.ocountries ? 0 :  state.reviews.countriesA,
-        activitiesA:  state.activities !==  state.oactivities ? 0 :  state.reviews.activitiesA,
+        regionsA:  JSON.stringify(state.regions) !== JSON.stringify(state.oregions) ? 0 : state.originalReviews.regionsA,
+        countriesA:  JSON.stringify(state.countries) !== JSON.stringify(state.ocountries) ? 0 : state.originalReviews.countriesA,
+        activitiesA:  JSON.stringify(state.activities) !== JSON.stringify(state.oactivities) ? 0 :  state.originalReviews.activitiesA,
         sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
-        launchCountryA:  state.launchCountries !==  state.olaunchCountries ? 0 :  state.reviews.launchCountryA,
-        targetGeosA:  state.targetGeos !==  state.otargetGeos ? 0 :  state.reviews.targetGeosA,
-        targetPopulationSectorsA:  state.targetPopulationSectors !==  state.otargetPopulationSectors ? 0 :  state.reviews.targetPopulationSectorsA,
-        outcomesMonitoredA:  state.outcomesMonitored !==  state.oOutcomesMonitored ? 0 :  state.reviews.outcomesMonitoredA,
-        mEdSubsA:  state.mEdSubs !==  state.omEdSubs ? 0 :  state.reviews.mEdSubsA,
-        oEdSubsA:  state.oEdSubs !==  state.oOEdSubs ? 0 :  state.reviews.oEdSubsA,
-        managementTypesA:  state.managementTypes !==  state.omanagementTypes ? 0 :  state.reviews.managementTypesA,
+        launchCountryA:  JSON.stringify(state.launchCountries) !== JSON.stringify(state.olaunchCountries) ? 0 :  state.originalReviews.launchCountryA,
+        targetGeosA:  JSON.stringify(state.targetGeos) !== JSON.stringify(state.otargetGeos) ? 0 :  state.originalReviews.targetGeosA,
+        targetPopulationSectorsA: JSON.stringify(state.targetPopulationSectors) !== JSON.stringify(state.otargetPopulationSectors) ? 0 :  state.originalReviews.targetPopulationSectorsA,
+        outcomesMonitoredA:  JSON.stringify(state.outcomesMonitored) !== JSON.stringify(state.oOutcomesMonitored) ? 0 :  state.originalReviews.outcomesMonitoredA,
+        mEdSubsA:  JSON.stringify(state.mEdSubs) !== JSON.stringify(state.omEdSubs) ? 0 :  state.originalReviews.mEdSubsA,
+        oEdSubsA:  JSON.stringify(state.oEdSubs) !== JSON.stringify(state.oOEdSubs) ? 0 :  state.originalReviews.oEdSubsA,
+        managementTypesA: JSON.stringify(state.managementTypes) !== JSON.stringify(state.omanagementTypes) ? 0 :  state.originalReviews.managementTypesA,
         // single val implementer
-        inameA:  state.iname !==  state.originalImplementerName ? 0 :  state.reviews.inameA,
-        impMotiveA:  state.impMotive !==  state.oimpMotive ? 0 :  state.reviews.impMotiveA,
+        inameA:  state.iname !==  state.originalImplementerName ? 0 :  state.originalReviews.inameA,
+        impMotiveA:  state.impMotive !==  state.oimpMotive ? 0 :  state.originalReviews.impMotiveA,
       }
     };
   }
@@ -916,6 +993,20 @@ class formSubmission extends React.Component{
     });
   }
 
+  fieldStatus(fieldReview) {
+    if (this.state.needsReview === 1) {
+      if (fieldReview === 0) {
+        return (
+          <span class="badge badge-warning">Not approved</span>
+        )
+      } else {
+        return (
+          <span class="badge badge-success">Approved</span>
+        )
+      }
+    }
+  }
+
   handleChange(e){
     console.log(e)
     this.setState({
@@ -974,6 +1065,7 @@ class formSubmission extends React.Component{
   }
 
   render(){
+    console.log(this.state);
     const {authorized, formSubmitted, formSubmitError} = this.props;
     if (authorized === false) {
       return <Redirect to='/' />
@@ -994,7 +1086,7 @@ class formSubmission extends React.Component{
 
     const approvalFeedback = this.state.needsReview === 0 ? (
       <div class="alert alert-dismissible alert-success">
-        <strong>This form has been accepted.</strong> The information currently on this form is public.
+        <strong>This form has been approved.</strong> The information currently on this form is public.
       </div>
     ) :
       <div class="alert alert-dismissible alert-danger">
@@ -1014,20 +1106,28 @@ class formSubmission extends React.Component{
 
             <p>Name</p>
               <input type="text" id="fname" name="funderName" value={this.state.fname} placeholder="Funder Name" onChange={this.handleChange}/>
+              {this.fieldStatus(this.state.originalReviews.fnameA)}
+              <br></br><br></br>
 
             <p>Website</p>
               <input type="text" id="furl" name="funderWebsite" value={this.state.furl} placeholder="funderWebsite.com" onChange={this.handleChange}/>
+              {this.fieldStatus(this.state.originalReviews.furlA)}
+              <br></br><br></br>
 
             <p>Profit Motive</p>
               <input type="radio" id="motive1" name="profitMotive" value="Not-for-profit" checked = {this.state.motive === 'Not-for-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive1">Not-For-Profit</label>
               <input type="radio" id="motive2" name="profitMotive" value="Hybrid" checked = {this.state.motive === 'Hybrid'} onChange={this.profitMotiveChange}/> <label htmlFor="motive2">Hybrid</label>
               <input type="radio" id="motive3" name="profitMotive" value="For-profit" checked = {this.state.motive === 'For-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive3">For-Profit</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.motiveA)}
             <br></br><br></br>
 
             <p>Impact Investing?</p>
               <input type="radio" id="impact1" name="impactInvesting" value="Yes" checked = {this.state.impact === 'Yes'} onChange={this.impactChange}/> <label htmlFor="impact1">Yes</label>
               <input type="radio" id="impact2" name="impactInvesting" value="No" checked = {this.state.impact === 'No'} onChange={this.impactChange}/> <label htmlFor="impact2">No</label>
               <input type="radio" id="impact3" name="impactInvesting" value="Unknown" checked = {this.state.impact === 'Unknown'} onChange={this.impactChange}/> <label htmlFor="impact3">Unknown</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.impactA)}
             <br></br><br></br>
 
             <p>Organizational Form</p>
@@ -1040,6 +1140,8 @@ class formSubmission extends React.Component{
               <input type="radio" id="organization7" name="organizationalForm" value="CSR Initiative / unit" checked = {this.state.organizationForm === 'CSR initiative / unit'} onChange={this.organizationChange}/> <label htmlFor="organization7">CSR Initiative / Unit</label>
               <input type="radio" id="organization8" name="organizationalForm" value="Multilateral" checked = {this.state.organizationForm === 'Multilateral'} onChange={this.organizationChange}/> <label htmlFor="organization8">Multilateral</label>
               <input type="radio" id="organization9" name="organizationalForm" value="Other" checked = {this.state.organizationForm === 'Other'} onChange={this.organizationChange}/> <label htmlFor="organization9">Other</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.organizationFormA)}
             <br></br><br></br>
 
             <p>International Base(s)</p>
@@ -1279,6 +1381,8 @@ class formSubmission extends React.Component{
               }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.internationalBasesA)}
+            <br></br><br></br>
 
             <p>Education Subsector(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="edSub1" name="educationSubsector" value="Adult" checked = {this.state.edSubs.includes("Adult")} onChange={this.changeEdSub}/> <label htmlFor="edSub1" className="checkbox">Adult</label>
@@ -1300,6 +1404,9 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="edSub17" name="educationSubsector" value="Unclear" checked = {this.state.edSubs.includes("Unclear")} onChange={this.changeEdSub}/> <label htmlFor="edSub17" className="checkbox">Unclear</label>
             <input type="checkbox" id="edSub18" name="educationSubsector" value="Workforce Development and Vocational Education" checked = {this.state.edSubs.includes("Workforce Development and Vocational Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="edSub19" name="educationSubsector" value="Workforce Development/Skills" checked = {this.state.edSubs.includes("Workforce Development/Skills")} onChange={this.changeEdSub}/> <label htmlFor="edSub19" className="checkbox">Workforce Development/Skills</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.edSubsA)}
+            <br></br><br></br>
 
             <p>Organizational Trait(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="orgTrait1" name="organizationalTrait" value="Aim to address issues of common good" checked = {this.state.orgTraits.includes("Aim to address issues of common good")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait1" className="checkbox">Aim to address issues of common good</label>
@@ -1315,6 +1422,9 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="orgTrait11" name="organizationalTrait" value="Secondary Education" checked = {this.state.orgTraits.includes("Secondary Education")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait11" className="checkbox">Secondary Education</label>
             <input type="checkbox" id="orgTrait12" name="organizationalTrait" value="Use own financial resources (unlike NGOs)" checked = {this.state.orgTraits.includes("Use own financial resources (unlike NGOs)")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait12" className="checkbox">Use own financial resources (unlike NGOs)</label>
             <input type="checkbox" id="orgTrait13" name="organizationalTrait" value="Workforce Development/Skills" checked = {this.state.orgTraits.includes("Workforce Development/Skills")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait13" className="checkbox">Workforce Development/Skills</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.orgTraitsA)}
+            <br></br><br></br>
 
             <p>Asia International Base(s)</p>
             <select id="asiaInternationalBase" name="country" onChange={this.addAIBase}>
@@ -1554,6 +1664,8 @@ class formSubmission extends React.Component{
               </ul>
             </div>
             {/* MAKE ASIA INTERNATIONAL BASE NOT ACCEPT BASE CASE */}
+            {this.fieldStatus(this.state.originalReviews.asialBasesA)}
+            <br></br><br></br>
 
             <p>Asia Operation(s)</p>
             <select id="aOperations" name="opCountry" onChange={this.addAsiaOperation}>
@@ -1792,24 +1904,39 @@ class formSubmission extends React.Component{
                 }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.asiaOperationsA)}
+            <br></br><br></br>
 
             <h4>Initiative</h4>
 
             <p>Name</p>
               <input type="text" id="initName" name="initiativeName" value = {this.state.initName} placeholder="Initiative Name" onChange={this.handleChange}/>
+            {this.fieldStatus(this.state.originalReviews.initNameA)}
+            <br></br><br></br>
 
             <p>Website</p>
               <input type="text" id="initURL" name="initiativeWebsite" value = {this.state.initURL} placeholder="initiativeWebsite.com" onChange={this.handleChange}/>
+            {this.fieldStatus(this.state.originalReviews.initURLA)}
+            <br></br><br></br>
 
             <p>Targets Women?</p>
               <input type="radio" id="tWomen1" name="targetsWomen" value="Yes" checked = {this.state.tWomen === "Yes"} onChange={this.tWomenChange}/> <label htmlFor="tWomen1">Yes</label>
               <input type="radio" id="tWomen2" name="targetsWomen" value="No" checked = {this.state.tWomen === "No"} onChange={this.tWomenChange}/> <label htmlFor="tWomen2">No</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.tWomenA)}
+            <br></br><br></br>
 
             <p>Start Year</p>
               <input type="number" id="initStart" name="startYear" defaultValue={this.state.initStart} placeholder="Start Year" onChange={this.startYearChange}/>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.initStartA)}
+            <br></br><br></br>
 
             <p>End Year</p>
               <input type="number" id="initEnd" name="endYear" defaultValue={this.state.initEnd} placeholder="End Year" onChange={this.endYearChange}/>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.initEndA)}
+            <br></br><br></br>
 
             <p>Launch Country</p>
             <select id="launchCountry" name="launchCountry" onChange={this.addLaunchCountry}>
@@ -2048,9 +2175,13 @@ class formSubmission extends React.Component{
               }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.launchCountryA)}
+            <br></br><br></br>
 
             <p>Description</p>
             <textarea id="idescription" name="description" value = {this.state.idescription} placeholder="Write a description" onChange={this.handleChange}></textarea>
+            {this.fieldStatus(this.state.originalReviews.idescriptionA)}
+            <br></br><br></br>
 
             <p>Region(s)</p>
             <select id="region" name="regions" onChange={this.addInitRegion}>
@@ -2122,6 +2253,8 @@ class formSubmission extends React.Component{
                 }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.regionsA)}
+            <br></br><br></br>
 
             <p>Countries</p>
             <select id="initCountry" name="initiativeCountry" onChange={this.addInitCountry}>
@@ -2360,6 +2493,8 @@ class formSubmission extends React.Component{
                 }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.countriesA)}
+            <br></br><br></br>
 
             <p>Target Geography</p>
               <input type="checkbox" id="geography1" name="targetGeo" value="Urban" checked = {this.state.targetGeos.includes("Urban")} onChange={this.geographyChange}/> <label htmlFor="geography1" className="checkbox">Urban</label>
@@ -2369,6 +2504,9 @@ class formSubmission extends React.Component{
               <input type="checkbox" id="geography5" name="targetGeo" value="children with special needs" checked = {this.state.targetGeos.includes("children with special needs")} onChange={this.geographyChange}/> <label htmlFor="geography5" className="checkbox">children with special needs</label>
               <input type="checkbox" id="geography6" name="targetGeo" value="Unclear" checked = {this.state.targetGeos.includes("Unclear")} onChange={this.geographyChange}/> <label htmlFor="geography6" className="checkbox">Unclear</label>
               <input type="checkbox" id="geography7" name="targetGeo" value="Missing" checked = {this.state.targetGeos.includes("Missing")} onChange={this.geographyChange}/> <label htmlFor="geography7" className="checkbox">Missing</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.targetGeosA)}
+            <br></br><br></br>
 
             <p>Main Education Subsector</p>
             <input type="checkbox" id="iEdSub1" name="educationSubsector" value="Adult" checked = {this.state.mEdSubs.includes("Adult")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub1" className="checkbox">Adult</label>
@@ -2390,6 +2528,9 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="iEdSub17" name="educationSubsector" value="Unclear" checked = {this.state.mEdSubs.includes("Unclear")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub17" className="checkbox">Unclear</label>
             <input type="checkbox" id="iEdSub18" name="educationSubsector" value="Workforce Development and Vocational Education" checked = {this.state.mEdSubs.includes("Workforce Development and Vocational Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="iEdSub19" name="educationSubsector" value="Workforce Development/Skills" checked = {this.state.mEdSubs.includes("Workforce Development/Skills")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub19" className="checkbox">Workforce Development/Skills</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.mEdSubsA)}
+            <br></br><br></br>
 
             <p>Other Education Subsector(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="oEdSub1" name="educationSubsector" value="Adult" checked = {this.state.oEdSubs.includes("Adult")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub1" className="checkbox">Adult</label>
@@ -2411,6 +2552,9 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="oEdSub17" name="educationSubsector" value="Unclear" checked = {this.state.oEdSubs.includes("Unclear")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub17" className="checkbox">Unclear</label>
             <input type="checkbox" id="oEdSub18" name="educationSubsector" value="Workforce Development and Vocational Education" checked = {this.state.oEdSubs.includes("Workforce Development and Vocational Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="oEdSub19" name="educationSubsector" value="Workforce Development/Skills" checked = {this.state.oEdSubs.includes("Workforce Development/Skills")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub19" className="checkbox">Workforce Development/Skills</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.oEdSubsA)}
+            <br></br><br></br>
 
             <p>Main Program Activity</p>
             <select id="mainProgramActivity" name="activity" onChange={this.changeProgramArea}>
@@ -2518,7 +2662,8 @@ class formSubmission extends React.Component{
                 <i>{this.state.programArea}</i>
               </p>
             </div>
-            <br></br>
+            {this.fieldStatus(this.state.originalReviews.initiativeMainProgramActivityA)}
+            <br></br><br></br>
 
             <p>Other Programming Activities</p>
             <select id="programActivity" name="activity" onChange={this.addProgramActivity}>
@@ -2631,10 +2776,15 @@ class formSubmission extends React.Component{
                 }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.activitiesA)}
+            <br></br><br></br>
 
             <p>Fee to Access?</p>
               <input type="radio" id="feeAccess1" name="feeToAccess" value="Yes" checked = {this.state.feeAccess === "Yes"} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess1">Yes</label>
               <input type="radio" id="feeAccess2" name="feeToAccess" value="No" checked = {this.state.feeAccess === "No"} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess2">No</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.feeAccessA)}
+            <br></br><br></br>
 
             <p>Target School Management Type</p>
             <select id="manType" name="managementType" onChange={this.addManagementType}>
@@ -2657,7 +2807,8 @@ class formSubmission extends React.Component{
                 }
               </ul>
             </div>
-
+            {this.fieldStatus(this.state.originalReviews.managementTypesA)}
+            <br></br><br></br>
 
             <p>Target Population Sector(s)<br></br>Select all that apply:</p>
             <select id="popSector" name="targetPopulationSector" onChange={this.addPopSector}>
@@ -3313,6 +3464,8 @@ class formSubmission extends React.Component{
                 }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.targetPopulationSectorsA)}
+            <br></br><br></br>
 
             <p>Outcomes Monitored<br></br>Select all that apply:</p>
             <select id="outcome" name="outcomesMonitored" onChange={this.addOutcome}>
@@ -3872,6 +4025,8 @@ class formSubmission extends React.Component{
                 }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.outcomesMonitoredA)}
+            <br></br><br></br>
 
 
             <div id="sourceOfFeesList"></div>
@@ -3880,11 +4035,15 @@ class formSubmission extends React.Component{
 
             <p>Name</p>
               <input type="text" id="iname" name="implementerName" value = {this.state.iname} placeholder="Implementer Name" onChange={this.handleChange}/>
+            {this.fieldStatus(this.state.originalReviews.inameA)}
+            <br></br><br></br>
 
             <p>Profit Motive</p>
               <input type="radio" id="impMotive1" name="impProfitMotive" value="Not-for-profit" checked = {this.state.impMotive === "Not-for-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive1">Not-For-Profit</label>
               <input type="radio" id="impMotive2" name="impProfitMotive" value="Hybrid" checked = {this.state.impMotive === "Hybrid"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive2">Hybrid</label>
               <input type="radio" id="impMotive3" name="impProfitMotive" value="For-profit" checked = {this.state.impMotive === "For-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive3">For-Profit</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.impMotiveA)}
             <br></br><br></br>
 
             <h4>Comments about Submission</h4>

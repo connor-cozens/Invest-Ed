@@ -7,7 +7,9 @@ import {
   CLEAR_REGISTER_ERROR,
   SET_USER,
   SET_REVIEW_FORM,
+  SET_REVIEW_APPROVED_FORM,
   SET_MODIFY_FORM,
+  SET_MODIFY_APPROVED_FORM,
   SET_ADD_FORM,
   PULLED_APPROVED_FORM,
   NOT_PULLED_APPROVED_FORM,
@@ -244,12 +246,10 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
         const initiative = readForm(response);
         //Dispatch action to store form data in store
         if (getType == 'modify') {
-          dispatch({type: SET_MODIFY_FORM, payload: initiative});
-          dispatch({type: PULLED_APPROVED_FORM});
+          dispatch({type: SET_MODIFY_APPROVED_FORM, payload: initiative});
         }
         else if (getType == 'review') {
-          dispatch({type: SET_REVIEW_FORM, payload: initiative});
-          dispatch({type: PULLED_APPROVED_FORM});
+          dispatch({type: SET_REVIEW_APPROVED_FORM, payload: initiative});
         }
         dispatch({type: CLEAR_ACCESS_ERROR});
       }
@@ -381,46 +381,46 @@ const changeRequest = (form, inDB, isModified, isReviewed) => {
     impMotive: form.impMotive,
 
     //Section Reviews - Only to be used when submitting into temp db
-    fnameA: isReviewed === true ? form.reviews.fnameA : 0,
-    furlA: isReviewed === true ? form.reviews.furlA : 0,
-    motiveA: isReviewed === true ? form.reviews.motiveA : 0,
-    impactA: isReviewed === true ? form.reviews.impactA : 0,
-    organizationFormA: isReviewed === true ? form.reviews.organizationFormA : 0,
+    fnameA: form.reviews.fnameA,
+    furlA: form.reviews.furlA,
+    motiveA: form.reviews.motiveA,
+    impactA: form.reviews.impactA,
+    organizationFormA: form.reviews.organizationFormA,
     // multi val funder
-    internationalBasesA: isReviewed === true ? form.reviews.internationalBasesA : 0,
-    edSubsA: isReviewed === true ? form.reviews.edSubsA : 0,
-    orgTraitsA: isReviewed === true ? form.reviews.orgTraitsA : 0,
-    asialBasesA: isReviewed === true ? form.reviews.asialBasesA : 0,
-    asiaOperationsA: isReviewed === true ? form.reviews.asiaOperationsA : 0,
+    internationalBasesA: form.reviews.internationalBasesA,
+    edSubsA: form.reviews.edSubsA,
+    orgTraitsA: form.reviews.orgTraitsA,
+    asialBasesA: form.reviews.asialBasesA,
+    asiaOperationsA: form.reviews.asiaOperationsA,
     // single val initiative
-    initNameA: isReviewed === true ? form.reviews.initNameA : 0,
-    initURLA: isReviewed === true ? form.reviews.initURLA : 0,
-    tWomenA: isReviewed === true ? form.reviews.tWomenA : 0,
-    initStartA: isReviewed === true ? form.reviews.initStartA : 0,
-    initEndA: isReviewed === true ? form.reviews.initEndA : 0,
-    idescriptionA: isReviewed === true ? form.reviews.idescriptionA : 0,
-    programAreaA: isReviewed === true ? form.reviews.programAreaA : 0,
-    initiativeMainProgramActivityA: isReviewed === true ? form.reviews.initiativeMainProgramActivityA : 0,
-    feeAccessA: isReviewed === true ? form.reviews.feeAccessA : 0,
+    initNameA: form.reviews.initNameA,
+    initURLA: form.reviews.initURLA,
+    tWomenA: form.reviews.tWomenA,
+    initStartA: form.reviews.initStartA,
+    initEndA: form.reviews.initEndA,
+    idescriptionA: form.reviews.idescriptionA,
+    programAreaA: form.reviews.programAreaA,
+    initiativeMainProgramActivityA: form.reviews.initiativeMainProgramActivityA,
+    feeAccessA: form.reviews.feeAccessA,
     // multi val initiative
-    regionsA: isReviewed === true ? form.reviews.regionsA : 0,
-    countriesA: isReviewed === true ? form.reviews.countriesA : 0,
-    activitiesA: isReviewed === true ? form.reviews.activitiesA : 0,
-    sourceOfFeesA: isReviewed === true ? form.reviews.sourceOfFeesA : 0,
-    launchCountryA: isReviewed === true ? form.reviews.launchCountryA : 0,
-    targetGeosA: isReviewed === true ? form.reviews.targetGeosA : 0,
-    targetPopulationSectorsA: isReviewed === true ? form.reviews.targetPopulationSectorsA : 0,
-    outcomesMonitoredA: isReviewed === true ? form.reviews.outcomesMonitoredA : 0,
-    mEdSubsA: isReviewed === true ? form.reviews.mEdSubsA : 0,
-    oEdSubsA: isReviewed === true ? form.reviews.oEdSubsA : 0,
-    managementTypesA: isReviewed === true ? form.reviews.managementTypesA : 0,
+    regionsA: form.reviews.regionsA,
+    countriesA: form.reviews.countriesA,
+    activitiesA: form.reviews.activitiesA,
+    sourceOfFeesA: form.reviews.sourceOfFeesA,
+    launchCountryA: form.reviews.launchCountryA,
+    targetGeosA: form.reviews.targetGeosA,
+    targetPopulationSectorsA: form.reviews.targetPopulationSectorsA,
+    outcomesMonitoredA: form.reviews.outcomesMonitoredA,
+    mEdSubsA: form.reviews.mEdSubsA,
+    oEdSubsA: form.reviews.oEdSubsA,
+    managementTypesA: form.reviews.managementTypesA,
     // single val implementer
-    inameA: isReviewed === true ? form.reviews.inameA : 0,
-    impMotiveA: isReviewed === true ? form.reviews.impMotiveA : 0,
+    inameA: form.reviews.inameA,
+    impMotiveA: form.reviews.impMotiveA,
     // single val other
     comments: form.comments,
-    needsReview: isReviewed === true ? form.needsReview : 1,
-    inDB: isReviewed === true ? (form.needsReview === 1 ? 0 : 1) : ((inDB === true) ? 1 : 0)
+    needsReview: form.needsReview,
+    inDB: isReviewed === true ? (form.needsReview === 1 ? 0 : 1) : (inDB === true ? 0 : (form.needsReview === 1 ? 0 : 1))
   }
 
   if (isModified) {

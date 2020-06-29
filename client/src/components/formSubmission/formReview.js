@@ -3673,36 +3673,6 @@ class formReview extends React.Component{
   }
 }
 
-/*
-Comment Storage: since you can't make HTML comments :(
-              <p>Tag Number</p>
-              <input type="number" id="initTag" name="initiativeTag" placeholder="Tag Number"/>
-
-
-Program Area stuff that was part of AirTable but not the cleaned data
-
-            <option value=" Private Sector Delivery of Education">Private Sector Delivery of Education</option>
-            <option value=" vocational training">vocational training</option>
-
-            <option value="sRegulatory analysis focused on government policy">Regulatory analysis focused on government policy</option>
-            <option value="sRegulatory analysis focused on school policy">Regulatory analysis focused on school policy</option>
-
-
-
-            <option value=" Capacity Building of Non-Education Professionals">Capacity Building of Non-Education Professionals</option>
-            <option value=" Enrichment/New Pedagogical or Curricular Programs">Enrichment/New Pedagogical or Curricular Programs</option>
-            <option value=" Academic research/academic exchange">Academic research/academic exchange</option>
-
-
-            <option value=" Education finance (system-level)">Education finance (system-level)</option>
-            <option value=" school finance">school finance</option>
-
-            <option value="pPrivate schools">Private schools</option>
-            <option value="pFormal public-private partnership">Formal public-private partnership</option>
-
-
-            */
-
 
 const mapStateToProps = (state) => {
   return {

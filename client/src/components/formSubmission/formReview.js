@@ -59,6 +59,44 @@ class formReview extends React.Component{
       //Reviews
       needsReview: null,
       //Section Reviews
+      originalReviews: {
+        fnameA: null,
+        furlA: null,
+        motiveA: null,
+        impactA: null,
+        organizationFormA: null,
+        // multi val funder
+        internationalBasesA: null,
+        edSubsA: null,
+        orgTraitsA: null,
+        asialBasesA: null,
+        asiaOperationsA: null,
+        // single val initiative
+        initNameA: null,
+        initURLA: null,
+        tWomenA: null,
+        initStartA: null,
+        initEndA: null,
+        idescriptionA: null,
+        programAreaA: null,
+        initiativeMainProgramActivityA: null,
+        feeAccessA: null,
+        // multi val initiative
+        regionsA: null,
+        countriesA: null,
+        activitiesA: null,
+        sourceOfFeesA: null,
+        launchCountryA: null,
+        targetGeosA: null,
+        targetPopulationSectorsA: null,
+        outcomesMonitoredA: null,
+        mEdSubsA: null,
+        oEdSubsA: null,
+        managementTypesA: null,
+        // single val implementer
+        inameA: null,
+        impMotiveA: null
+      },
       reviews: {
         fnameA: null,
         furlA: null,
@@ -96,7 +134,8 @@ class formReview extends React.Component{
         // single val implementer
         inameA: null,
         impMotiveA: null
-      }
+      },
+      isUpdated: null
     };
 
     this.handleApprovalSelection = this.handleApprovalSelection.bind(this);
@@ -158,6 +197,44 @@ class formReview extends React.Component{
 
         //Review Setters
         needsReview: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].needsReview !== undefined ? props.form.status[0][0].needsReview : null) : null) : null) : null,
+        originalReviews: {
+          fnameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null) : 1,
+          furlA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderUrlApproval : null) : null) : null) : null) : 1,
+          motiveA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderMotiveApproval : null) : null) : null) : null) : 1,
+          impactA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderImpactApproval : null) : null) : null) : null) : 1,
+          organizationFormA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrganizationFormApproval : null) : null) : null) : null) : 1,
+          // multi val funder
+          internationalBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderInternationalBaseApproval : null) : null) : null) : null) : 1,
+          edSubsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderEdSubsApproval : null) : null) : null) : null) : 1,
+          orgTraitsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrgTraitsApproval : null) : null) : null) : null) : 1,
+          asialBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaBasesApproval : null) : null) : null) : null) : 1,
+          asiaOperationsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaOperationsApproval : null) : null) : null) : null) : 1,
+          // single val initiative
+          initNameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initNameApproval : null) : null) : null) : null) : 1,
+          initURLA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initUrlApproval : null) : null) : null) : null) : 1,
+          tWomenA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetsWomenApproval : null) : null) : null) : null) : 1,
+          initStartA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initStartApproval : null) : null) : null) : null) : 1,
+          initEndA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initEndApproval : null) : null) : null) : null) : 1,
+          idescriptionA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initDescriptionApproval : null) : null) : null) : null) : 1,
+          programAreaA: 1, //set to approved as this is not based on user input
+          initiativeMainProgramActivityA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMainProgramActivityApproval : null) : null) : null) : null) : 1,
+          feeAccessA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initFeeAccessApproval : null) : null) : null) : null) : 1,
+          // multi val initiative
+          regionsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initRegionsApproval : null) : null) : null) : null) : 1,
+          countriesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initCountriesApproval : null) : null) : null) : null) : 1,
+          activitiesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initActivitiesApproval : null) : null) : null) : null) : 1,
+          sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
+          launchCountryA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initLaunchCountryApproval : null) : null) : null) : null) : 1,
+          targetGeosA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetGeoApproval : null) : null) : null) : null) : 1,
+          targetPopulationSectorsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetPopulationSectorApproval : null) : null) : null) : null) : 1,
+          outcomesMonitoredA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOutcomesMonitoredApproval : null) : null) : null) : null) : 1,
+          mEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMEdSubsApproval : null) : null) : null) : null) : 1,
+          oEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOEdSubsApproval : null) : null) : null) : null) : 1,
+          managementTypesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initManagementTypesApproval : null) : null) : null) : null) : 1,
+          // single val implementer
+          inameA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorNameApproval : null) : null) : null) : null) : 1,
+          impMotiveA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorMotiveApproval : null) : null) : null) : null) : 1
+        },
         reviews: {
           fnameA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null,
           furlA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderUrlApproval : null) : null) : null) : null,
@@ -220,21 +297,33 @@ class formReview extends React.Component{
     //If submitting a new form
     if (formStatus === 'review') {
       if (userData) {
+        //Check if form fields have been updated in terms of approval status
+        if (JSON.stringify(this.state.reviews) !== JSON.stringify(this.state.originalReviews)) {
+          this.state.isUpdated = true
+        } else {
+          this.state.isUpdated = false
+        }
+        this.setState({
+          isUpdated: this.state.isUpdated
+        });
         //If an RA or root user, then submit review to temp db
         if (userData.accessLevel !== 0) {
-          this.state.needsReview = 0;  //Form is ready for approval is the initial assumption
-          for (const [key, value] of Object.entries(this.state.reviews)) {
-            //If any field is found to be rejected, then form still requires further review
-            if (value == 0) {
-              this.state.needsReview = 1;
+          //Only allow submission if form fields have changed approval status
+          if (this.state.isUpdated === true) {
+            this.state.needsReview = 0;  //Form is ready for approval is the initial assumption
+            for (const [key, value] of Object.entries(this.state.reviews)) {
+              //If any field is found to be rejected, then form still requires further review
+              if (value == 0) {
+                this.state.needsReview = 1;
+              }
+              this.setState({
+                needsReview: this.state.needsReview
+              })
             }
-            this.setState({
-              needsReview: this.state.needsReview
-            })
+            //If all fields in the form have been approved, then submit form to main and update temp form.
+            //otherwise, if some fields are rejected, then submit form only to temp
+            this.props.reviewForm(this.state, this.props.inDB, true);
           }
-          //If all fields in the form have been approved, then submit form to main and update temp form.
-          //otherwise, if some fields are rejected, then submit form only to temp
-          this.props.reviewForm(this.state, this.props.inDB, true);
         }
       }
     }
@@ -255,17 +344,23 @@ class formReview extends React.Component{
     }
 
     const reviewError = formReviewError ?
-    <div className="alert alert-danger alert-dismissible fade show" style = {{width: "25%"}}>
-      <h5 style = {{textAlign: "center"}}> {formReviewError} </h5>
-    </div> : null
+    <div className="alert alert-dismissible alert-danger" style = {{width: "75%"}}>
+      <strong> {formReviewError} </strong>
+    </div> : (
+      this.state.isUpdated !== null ? (
+        this.state.isUpdated === false ? (
+          <div className="alert alert-dismissible alert-warning" style = {{width: "75%"}}>
+            <strong>No new reviews have been made to this form.</strong> Please make an approval change to one or more fields before submitting your review.
+          </div>
+        ) : null
+      ) : null
+    );
 
     return (
         <div className = "formReview" style = {{padding: '50px 300px 0 300px'}}>
           <h3>Form Review</h3>
           <div>
             <br></br>
-            {reviewError}
-
             <form onSubmit={this.handleFormSubmit}>
 
             <h4>Funder</h4>
@@ -708,7 +803,8 @@ class formReview extends React.Component{
             <br></br><br></br>
 
             <input type="submit"value="Submit Review" onChange/>
-            <br></br>
+            <br></br><br></br>
+            {reviewError}
             </form>
           </div>
         </div>

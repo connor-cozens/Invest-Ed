@@ -514,6 +514,10 @@ export const setFormSubmissionComplete = () => (dispatch) => {
   dispatch({type: FORM_SUBMIT_CLEAR});
 }
 
+export const setFormReviewComplete = () => (dispatch) => {
+  dispatch({type: FORM_REVIEW_CLEAR});
+}
+
 /////VISUALIZATION REQUESTS//////////////////////////////////////////////////////////
 
 //FUNDERS

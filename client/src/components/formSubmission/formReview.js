@@ -241,28 +241,31 @@ class formReview extends React.Component{
   }
 
   render(){
-    const {authorized, formSubmitted, formSubmitError} = this.props;
+    const {authorized, formReviewed, formReviewError} = this.props;
     if (authorized === false) {
       return <Redirect to='/' />
     }
 
-    if (formSubmitted === true){
+    if (formReviewed === true){
       return <Redirect to=
         {{
-          pathname: '/form-submission-success',
+          pathname: '/form-review-success',
           state: {submission: true}
         }} />
     }
 
-    const submitError = formSubmitError ?
+    const reviewError = formReviewError ?
     <div className="alert alert-danger alert-dismissible fade show" style = {{width: "25%"}}>
-      <h5 style = {{textAlign: "center"}}> {formSubmitError} </h5>
+      <h5 style = {{textAlign: "center"}}> {formReviewError} </h5>
     </div> : null
 
     return (
         <div className = "formReview" style = {{padding: '50px 300px 0 300px'}}>
-            <h3>Form Review</h3>
-            <div>
+          <h3>Form Review</h3>
+          <div>
+            <br></br>
+            {reviewError}
+
             <form onSubmit={this.handleFormSubmit}>
 
             <h4>Funder</h4>
@@ -705,10 +708,9 @@ class formReview extends React.Component{
             <br></br><br></br>
 
             <input type="submit"value="Submit Review" onChange/>
-            <br/><br/>
-            {submitError}
+            <br></br>
             </form>
-            </div>
+          </div>
         </div>
     );
   }
@@ -723,8 +725,8 @@ const mapStateToProps = (state) => {
     formStatus: state.data.formStatus,
     inDB: state.data.pulledformApproved,
 
-    formSubmitted: state.data.formSubmitted,
-    formSubmitError: state.data.formSubmitData
+    formReviewed: state.data.formReviewed,
+    formReviewError: state.data.formReviewError
   };
 }
 

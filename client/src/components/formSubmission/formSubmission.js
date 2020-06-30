@@ -1095,8 +1095,8 @@ class formSubmission extends React.Component{
 
     return (
         <div className = "formSubmission" style = {{padding: '50px 200px 0 200px'}}>
-            <h3>Form Submission</h3>
-            <div>
+          <h3>Form Submission</h3>
+          <div>
             <br></br>
             {approvalFeedback}
             <form onSubmit={this.handleFormSubmit}>

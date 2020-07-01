@@ -14,12 +14,16 @@ class formSubmission extends React.Component{
       originalFunderName: null,
       originalImplementerName: null,
 
-      //
-      internationalBases: [], //Funder International Bases
-      regions: [], //Initiative Regions
-      countries: [], //Initiative Countries
-      activities: [], //Initiative Activities (not counting Main Activity)
-      sourceOfFees: [], //Initiative Source of Fees
+      //Original Funder
+      ofurl: null,
+      omotive: null,
+      oOrganizationForm: null,
+      oimpact: null,
+      oedSubs: [],
+      oOrgTraits: [],
+      oasiaIBases: [],
+      oasiaOperations: [],
+      ointernationalBases: [],
 
       //Funder
       fname: null,
@@ -31,6 +35,29 @@ class formSubmission extends React.Component{
       orgTraits: [],
       asiaIBases: [],
       asiaOperations: [],
+      internationalBases: [], //Funder International Bases
+
+      //Original Initiative
+      oinitName: null,
+      oinitURL: null,
+      otWomen: null,
+      oinitStart: null,
+      oinitEnd: null,
+      olaunchCountries: [],
+      oidescription: null,
+      otargetGeos: [],
+      omainProgramActivity: '',
+      oprogramArea: '',
+      ofeeAccess: null,
+      otargetPopulationSectors: [],
+      oOutcomesMonitored: [],
+      omEdSubs: [],
+      oOEdSubs: [],
+      omanagementTypes: [],
+      oregions: [],
+      ocountries: [],
+      oactivities: [],
+      osourceOfFees: [],
 
       //Initiative
       initName: null,
@@ -41,25 +68,109 @@ class formSubmission extends React.Component{
       launchCountries: [],
       idescription: null,
       targetGeos: [],
-      mainProgramActivity: null, //This isnt being set
-      programArea: null,
+      mainProgramActivity: '',
+      programArea: '',
       feeAccess: null,
-      targetPopulationSectors: [], //
-      outcomesMonitored: [], //
+      targetPopulationSectors: [],
+      outcomesMonitored: [],
       mEdSubs: [],
       oEdSubs: [],
       managementTypes: [],
+      regions: [], //Initiative Regions
+      countries: [], //Initiative Countries
+      activities: [], //Initiative Activities (not counting Main Activity)
+      sourceOfFees: [], //Initiative Source of Fees
 
-      //Implementer, I barely know er!
+      //Initial Implementer
+      oimpMotive: null,
+
+      //Implementer
       iname: null,
       impMotive: null,
 
       //Other
       comments: null,
 
-      //Review
-      reviews: [], //32 Other sections that matter, so 0-31 in the order the appear ON THE FORM
-      status: null
+      //Reviews
+      needsReview: null,
+      //Section Reviews
+      originalReviews: {
+        fnameA: null,
+        furlA: null,
+        motiveA: null,
+        impactA: null,
+        organizationFormA: null,
+        // multi val funder
+        internationalBasesA: null,
+        edSubsA: null,
+        orgTraitsA: null,
+        asialBasesA: null,
+        asiaOperationsA: null,
+        // single val initiative
+        initNameA: null,
+        initURLA: null,
+        tWomenA: null,
+        initStartA: null,
+        initEndA: null,
+        idescriptionA: null,
+        programAreaA: null,
+        initiativeMainProgramActivityA: null,
+        feeAccessA: null,
+        // multi val initiative
+        regionsA: null,
+        countriesA: null,
+        activitiesA: null,
+        sourceOfFeesA: null,
+        launchCountryA: null,
+        targetGeosA: null,
+        targetPopulationSectorsA: null,
+        outcomesMonitoredA: null,
+        mEdSubsA: null,
+        oEdSubsA: null,
+        managementTypesA: null,
+        // single val implementer
+        inameA: null,
+        impMotiveA: null
+      },
+      reviews: {
+        fnameA: null,
+        furlA: null,
+        motiveA: null,
+        impactA: null,
+        organizationFormA: null,
+        // multi val funder
+        internationalBasesA: null,
+        edSubsA: null,
+        orgTraitsA: null,
+        asialBasesA: null,
+        asiaOperationsA: null,
+        // single val initiative
+        initNameA: null,
+        initURLA: null,
+        tWomenA: null,
+        initStartA: null,
+        initEndA: null,
+        idescriptionA: null,
+        programAreaA: null,
+        initiativeMainProgramActivityA: null,
+        feeAccessA: null,
+        // multi val initiative
+        regionsA: null,
+        countriesA: null,
+        activitiesA: null,
+        sourceOfFeesA: null,
+        launchCountryA: null,
+        targetGeosA: null,
+        targetPopulationSectorsA: null,
+        outcomesMonitoredA: null,
+        mEdSubsA: null,
+        oEdSubsA: null,
+        managementTypesA: null,
+        // single val implementer
+        inameA: null,
+        impMotiveA: null
+      },
+      isUpdated: null
     };
 
     this.addIBase = this.addIBase.bind(this);
@@ -68,6 +179,7 @@ class formSubmission extends React.Component{
     this.addInitCountry = this.addInitCountry.bind(this);
     this.buttonMaker = this.buttonMaker.bind(this);
     this.addProgramActivity = this.addProgramActivity.bind(this);
+    this.changeProgramArea = this.changeProgramArea.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.changeEdSub = this.changeEdSub.bind(this);
@@ -90,6 +202,7 @@ class formSubmission extends React.Component{
     this.addLaunchCountry = this.addLaunchCountry.bind(this);
     this.startYearChange = this.startYearChange.bind(this);
     this.endYearChange = this.endYearChange.bind(this);
+    this.fieldStatus = this.fieldStatus.bind(this);
   }
 
   componentDidMount = () => {
@@ -101,27 +214,61 @@ class formSubmission extends React.Component{
         originalFunderName: props.form.funders.length > 0 ? props.form.funders[0].funderName : null,  //For now, retrieving and displaying first funder in the funder list
         originalImplementerName: props.form.implementers.length > 0 ? props.form.implementers[0].implementorName : null,  //For now, retrieving and displaying first implementer in the implementer list
 
+        //Original Initiative setters
+        oinitName: props.form.name,
+        oinitURL: props.form.website,
+        otWomen: props.form.targetsWomen,
+        oinitStart: props.form.startYear,
+        oinitEnd: props.form.endYear,
+        olaunchCountries: props.form.launchCountry !== undefined ? JSON.parse(JSON.stringify(props.form.launchCountry)) : [],
+        oidescription: props.form.description,
+        otargetGeos: props.form.targetGeographies.length !== undefined ? JSON.parse(JSON.stringify(props.form.targetGeographies)) : [],
+        omainProgramActivity: props.form.mainProgrammingActivity !== undefined ? props.form.mainProgrammingActivity : '',
+        oprogramArea: props.form.mainProgrammingArea !== undefined ? props.form.mainProgrammingArea : '',
+        ofeeAccess: props.form.feeToAccess,
+        otargetPopulationSectors: props.form.targetPopulationSectors !== undefined ? JSON.parse(JSON.stringify(props.form.targetPopulationSectors)) : [],
+        oOutcomesMonitored: props.form.monitoredOutcomes !== undefined ? JSON.parse(JSON.stringify(props.form.monitoredOutcomes)) : [],
+        omEdSubs: props.form.mainEducationSubSectors !== undefined ? JSON.parse(JSON.stringify(props.form.mainEducationSubSectors)) : [],
+        oOEdSubs: props.form.educationSubSectors !== undefined ? JSON.parse(JSON.stringify(props.form.educationSubSectors)) : [],
+        omanagementTypes: props.form.targetSchoolManagementType !== undefined ? JSON.parse(JSON.stringify(props.form.targetSchoolManagementType)) : [],
+        oregions: props.form.regions !== undefined ? JSON.parse(JSON.stringify(props.form.regions)) : [],
+        ocountries: props.form.countriesOfOperation !== undefined ? JSON.parse(JSON.stringify(props.form.countriesOfOperation)) : [],
+        oactivities: props.form.programmingActivities !== undefined ? JSON.parse(JSON.stringify(props.form.programmingActivities)) : [],
+        osourceOfFees: props.form.sourcesOfFunding !== undefined ? props.form.sourcesOfFunding : [],
+
         //Initiative setters
         initName: props.form.name,
         initURL: props.form.website,
         tWomen: props.form.targetsWomen,
         initStart: props.form.startYear,
         initEnd: props.form.endYear,
-        launchCountries: props.form.launchCountry !== undefined ? props.form.launchCountry : [],  //Not used yet
+        launchCountries: props.form.launchCountry !== undefined ? props.form.launchCountry : [],
         idescription: props.form.description,
         targetGeos: props.form.targetGeographies.length !== undefined ? props.form.targetGeographies : [],
-        mainProgramActivity: props.form.mainProgrammingActivity !== undefined ? props.form.mainProgrammingActivity : [],  //Not used yet
-        programArea: props.form.mainProgrammingArea !== undefined ? props.form.mainProgrammingActivity : [],  //Not used yet
+        mainProgramActivity: props.form.mainProgrammingActivity !== undefined ? props.form.mainProgrammingActivity : '',
+        programArea: props.form.mainProgrammingArea !== undefined ? props.form.mainProgrammingArea : '',
         feeAccess: props.form.feeToAccess,
-        targetPopulationSectors: props.form.targetPopulationSectors !== undefined ? props.form.targetPopulationSectors : [],  //Not used yet
-        outcomesMonitored: props.form.monitoredOutcomes !== undefined ? props.form.monitoredOutcomes : [],  //Not used yet
+        targetPopulationSectors: props.form.targetPopulationSectors !== undefined ? props.form.targetPopulationSectors : [],
+        outcomesMonitored: props.form.monitoredOutcomes !== undefined ? props.form.monitoredOutcomes : [],
         mEdSubs: props.form.mainEducationSubSectors !== undefined ? props.form.mainEducationSubSectors : [],
         oEdSubs: props.form.educationSubSectors !== undefined ? props.form.educationSubSectors : [],
-        managementTypes: props.form.targetSchoolManagementType !== undefined ? props.form.targetSchoolManagementType : [],  //Not used yet
-        regions: props.form.regions !== undefined ? props.form.regions : [], //Not used yet
-        countries: props.form.countriesOfOperation !== undefined ? props.form.countriesOfOperation : [], //Not used yet
-        activities: props.form.programmingActivities !== undefined ? props.form.programmingActivities : [], //Not used yet
-        sourceOfFees: props.form.sourcesOfFunding !== undefined ? props.form.sourcesOfFunding : [], //Not used yet
+        managementTypes: props.form.targetSchoolManagementType !== undefined ? props.form.targetSchoolManagementType : [],
+        regions: props.form.regions !== undefined ? props.form.regions : [],
+        countries: props.form.countriesOfOperation !== undefined ? props.form.countriesOfOperation : [],
+        activities: props.form.programmingActivities !== undefined ? props.form.programmingActivities : [],
+        sourceOfFees: props.form.sourcesOfFunding !== undefined ? props.form.sourcesOfFunding : [],
+
+        //Original Funder Setters
+        ofurl: props.form.funders.length > 0 ? props.form.funders[0].funderWebsite : null,
+        omotive: props.form.funders.length > 0 ? props.form.funders[0].profitMotive : null,
+        oOrganizationForm: props.form.funders.length > 0 ? props.form.funders[0].organizationalForm : null,
+        oimpact: props.form.funders.length > 0 ? props.form.funders[0].impactInvesting : null,
+        //Multi-valued funder attribute setters
+        oedSubs: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].educationSubsector !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].educationSubsector)) : []) : []) : [],
+        oOrgTraits: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].trait !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].trait)) : []) : []) : [],
+        oasiaIBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaBase !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].asiaBase)) : []) : []) : [],
+        oasiaOperations: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaOperatons !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].asiaOperatons)) : []) : []) : [],
+        ointernationalBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].baseLocation !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].baseLocation)) : []) : []) : [],
 
         //Funder Setters
         fname: props.form.funders.length > 0 ? props.form.funders[0].funderName : null,
@@ -136,18 +283,142 @@ class formSubmission extends React.Component{
         asiaOperations: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaOperatons !== undefined ? props.form.funders[0].asiaOperatons : []) : []) : [],
         internationalBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].baseLocation !== undefined ? props.form.funders[0].baseLocation : []) : []) : [],
 
-        //Implementer setters
+        //Original Implementer Setters
+        oimpMotive: props.form.implementers.length > 0 ? props.form.implementers[0].profitMotive : null,
+
+        //Implementer Setters
         iname: props.form.implementers.length > 0 ? props.form.implementers[0].implementorName : null,
         impMotive: props.form.implementers.length > 0 ? props.form.implementers[0].profitMotive : null,
 
         //Other Setters
-        comments: props.form.reviews, //Not used yet
-        status: props.form.status === undefined ? (props.form.status.length > 0 ? props.form.status[0][0].needsReview : null) : null, //not used yet
-        reviews: props.form.reviews === undefined ? (props.form.reviews.length > 0 ? props.form.reviews[0][0] : null) : null //not used yet
+        comments: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].comment !== undefined ? props.form.status[0][0].comment : '') : '') : '') : '',
+
+        //Review Setters
+        needsReview: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].needsReview !== undefined ? props.form.status[0][0].needsReview : null) : null) : null) : null,
+        originalReviews: {
+          fnameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null) : 1,
+          furlA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderUrlApproval : null) : null) : null) : null) : 1,
+          motiveA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderMotiveApproval : null) : null) : null) : null) : 1,
+          impactA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderImpactApproval : null) : null) : null) : null) : 1,
+          organizationFormA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrganizationFormApproval : null) : null) : null) : null) : 1,
+          // multi val funder
+          internationalBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderInternationalBaseApproval : null) : null) : null) : null) : 1,
+          edSubsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderEdSubsApproval : null) : null) : null) : null) : 1,
+          orgTraitsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrgTraitsApproval : null) : null) : null) : null) : 1,
+          asialBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaBasesApproval : null) : null) : null) : null) : 1,
+          asiaOperationsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaOperationsApproval : null) : null) : null) : null) : 1,
+          // single val initiative
+          initNameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initNameApproval : null) : null) : null) : null) : 1,
+          initURLA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initUrlApproval : null) : null) : null) : null) : 1,
+          tWomenA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetsWomenApproval : null) : null) : null) : null) : 1,
+          initStartA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initStartApproval : null) : null) : null) : null) : 1,
+          initEndA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initEndApproval : null) : null) : null) : null) : 1,
+          idescriptionA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initDescriptionApproval : null) : null) : null) : null) : 1,
+          programAreaA: 1, //set to approved as this is not based on user input
+          initiativeMainProgramActivityA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMainProgramActivityApproval : null) : null) : null) : null) : 1,
+          feeAccessA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initFeeAccessApproval : null) : null) : null) : null) : 1,
+          // multi val initiative
+          regionsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initRegionsApproval : null) : null) : null) : null) : 1,
+          countriesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initCountriesApproval : null) : null) : null) : null) : 1,
+          activitiesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initActivitiesApproval : null) : null) : null) : null) : 1,
+          sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
+          launchCountryA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initLaunchCountryApproval : null) : null) : null) : null) : 1,
+          targetGeosA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetGeoApproval : null) : null) : null) : null) : 1,
+          targetPopulationSectorsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetPopulationSectorApproval : null) : null) : null) : null) : 1,
+          outcomesMonitoredA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOutcomesMonitoredApproval : null) : null) : null) : null) : 1,
+          mEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMEdSubsApproval : null) : null) : null) : null) : 1,
+          oEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOEdSubsApproval : null) : null) : null) : null) : 1,
+          managementTypesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initManagementTypesApproval : null) : null) : null) : null) : 1,
+          // single val implementer
+          inameA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorNameApproval : null) : null) : null) : null) : 1,
+          impMotiveA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorMotiveApproval : null) : null) : null) : null) : 1
+        },
+        reviews: {
+          fnameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null) : 1,
+          furlA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderUrlApproval : null) : null) : null) : null) : 1,
+          motiveA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderMotiveApproval : null) : null) : null) : null) : 1,
+          impactA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderImpactApproval : null) : null) : null) : null) : 1,
+          organizationFormA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrganizationFormApproval : null) : null) : null) : null) : 1,
+          // multi val funder
+          internationalBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderInternationalBaseApproval : null) : null) : null) : null) : 1,
+          edSubsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderEdSubsApproval : null) : null) : null) : null) : 1,
+          orgTraitsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrgTraitsApproval : null) : null) : null) : null) : 1,
+          asialBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaBasesApproval : null) : null) : null) : null) : 1,
+          asiaOperationsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaOperationsApproval : null) : null) : null) : null) : 1,
+          // single val initiative
+          initNameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initNameApproval : null) : null) : null) : null) : 1,
+          initURLA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initUrlApproval : null) : null) : null) : null) : 1,
+          tWomenA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetsWomenApproval : null) : null) : null) : null) : 1,
+          initStartA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initStartApproval : null) : null) : null) : null) : 1,
+          initEndA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initEndApproval : null) : null) : null) : null) : 1,
+          idescriptionA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initDescriptionApproval : null) : null) : null) : null) : 1,
+          programAreaA: 1, //set to approved as this is not based on user input
+          initiativeMainProgramActivityA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMainProgramActivityApproval : null) : null) : null) : null) : 1,
+          feeAccessA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initFeeAccessApproval : null) : null) : null) : null) : 1,
+          // multi val initiative
+          regionsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initRegionsApproval : null) : null) : null) : null) : 1,
+          countriesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initCountriesApproval : null) : null) : null) : null) : 1,
+          activitiesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initActivitiesApproval : null) : null) : null) : null) : 1,
+          sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
+          launchCountryA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initLaunchCountryApproval : null) : null) : null) : null) : 1,
+          targetGeosA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetGeoApproval : null) : null) : null) : null) : 1,
+          targetPopulationSectorsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetPopulationSectorApproval : null) : null) : null) : null) : 1,
+          outcomesMonitoredA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOutcomesMonitoredApproval : null) : null) : null) : null) : 1,
+          mEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMEdSubsApproval : null) : null) : null) : null) : 1,
+          oEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOEdSubsApproval : null) : null) : null) : null) : 1,
+          managementTypesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initManagementTypesApproval : null) : null) : null) : null) : 1,
+          // single val implementer
+          inameA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorNameApproval : null) : null) : null) : null) : 1,
+          impMotiveA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorMotiveApproval : null) : null) : null) : null) : 1
+        }
       });
     }
   }
 
+  static getDerivedStateFromProps = (props, state) => {
+    //Section Reviews
+    return {
+      //If changes are made to form, only set changed fields to not accepted (i.e. to 0)
+      reviews: {
+        fnameA: state.fname !== state.originalFunderName ? 0 : state.originalReviews.fnameA,
+        furlA:  state.furl !== state.ofurl ? 0 : state.originalReviews.furlA ,
+        motiveA:  state.motive !==  state.omotive ? 0 :  state.originalReviews.motiveA,
+        impactA:  state.impact !==  state.oimpact ? 0 :  state.originalReviews.impactA,
+        organizationFormA:  state.organizationForm !==  state.oOrganizationForm ? 0 :  state.originalReviews.organizationFormA,
+        // multi val funder
+        internationalBasesA:  JSON.stringify(state.internationalBases) !== JSON.stringify(state.ointernationalBases) ? 0 :  state.originalReviews.internationalBasesA,
+        edSubsA:  JSON.stringify(state.edSubs) !== JSON.stringify(state.oedSubs) ? 0 :  state.originalReviews.edSubsA,
+        orgTraitsA:  JSON.stringify(state.orgTraits) !== JSON.stringify(state.oOrgTraits) ? 0 :  state.originalReviews.orgTraitsA,
+        asialBasesA:  JSON.stringify(state.asiaIBases) !== JSON.stringify(state.oasiaIBases) ? 0 :  state.originalReviews.asialBasesA,
+        asiaOperationsA:  JSON.stringify(state.asiaOperations) !== JSON.stringify(state.oasiaOperations) ? 0 :  state.originalReviews.asiaOperationsA,
+        // single val initiative
+        initNameA:  state.initName !==  state.oinitName ? 0 :  state.originalReviews.initNameA,
+        initURLA:  state.initURL !==  state.oinitURL ? 0 :  state.originalReviews.initURLA,
+        tWomenA:  state.tWomen !==  state.otWomen ? 0 :  state.originalReviews.tWomenA,
+        initStartA:  state.initStart !==  state.oinitStart ? 0 :  state.originalReviews.initStartA,
+        initEndA:  state.initEnd !==  state.oinitEnd ? 0 :  state.originalReviews.initEndA,
+        idescriptionA:  state.idescription !==  state.oidescription ? 0 :  state.originalReviews.idescriptionA,
+        programAreaA: 1, //set to approved as this is not based on user input
+        initiativeMainProgramActivityA:  state.mainProgramActivity !==  state.omainProgramActivity ? 0 :  state.originalReviews.initiativeMainProgramActivityA,
+        feeAccessA:  state.feeAccess !==  state.ofeeAccess ? 0 :  state.originalReviews.feeAccessA,
+        // multi val initiative
+        regionsA:  JSON.stringify(state.regions) !== JSON.stringify(state.oregions) ? 0 : state.originalReviews.regionsA,
+        countriesA:  JSON.stringify(state.countries) !== JSON.stringify(state.ocountries) ? 0 : state.originalReviews.countriesA,
+        activitiesA:  JSON.stringify(state.activities) !== JSON.stringify(state.oactivities) ? 0 :  state.originalReviews.activitiesA,
+        sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
+        launchCountryA:  JSON.stringify(state.launchCountries) !== JSON.stringify(state.olaunchCountries) ? 0 :  state.originalReviews.launchCountryA,
+        targetGeosA:  JSON.stringify(state.targetGeos) !== JSON.stringify(state.otargetGeos) ? 0 :  state.originalReviews.targetGeosA,
+        targetPopulationSectorsA: JSON.stringify(state.targetPopulationSectors) !== JSON.stringify(state.otargetPopulationSectors) ? 0 :  state.originalReviews.targetPopulationSectorsA,
+        outcomesMonitoredA:  JSON.stringify(state.outcomesMonitored) !== JSON.stringify(state.oOutcomesMonitored) ? 0 :  state.originalReviews.outcomesMonitoredA,
+        mEdSubsA:  JSON.stringify(state.mEdSubs) !== JSON.stringify(state.omEdSubs) ? 0 :  state.originalReviews.mEdSubsA,
+        oEdSubsA:  JSON.stringify(state.oEdSubs) !== JSON.stringify(state.oOEdSubs) ? 0 :  state.originalReviews.oEdSubsA,
+        managementTypesA: JSON.stringify(state.managementTypes) !== JSON.stringify(state.omanagementTypes) ? 0 :  state.originalReviews.managementTypesA,
+        // single val implementer
+        inameA:  state.iname !==  state.originalImplementerName ? 0 :  state.originalReviews.inameA,
+        impMotiveA:  state.impMotive !==  state.oimpMotive ? 0 :  state.originalReviews.impMotiveA,
+      }
+    };
+  }
 
 
   buttonMaker(props){
@@ -546,7 +817,7 @@ class formSubmission extends React.Component{
       updateArea = "Student Assessment";
     }
     else if(activity.charAt(0) === 't'){
-      updateArea = "Teachers and School Leaderhsip";
+      updateArea = "Teachers and School Leadership";
     }
     else if(activity.charAt(0) === 'v'){
       updateArea = "Advocacy and Policy";
@@ -557,7 +828,13 @@ class formSubmission extends React.Component{
     else if(activity.charAt(0) === ' '){
       updateArea = "Area Data Missing?";
     }
-    ReactDOM.render(<p><i>{updateArea}</i></p>, document.getElementById('programArea'))
+    //Set Program Area and Main Programming Activity
+    this.state.mainProgramActivity = activity.substring(1);
+    this.state.programArea = updateArea;
+    this.setState({
+      mainProgramActivity: this.state.mainProgramActivity,
+      programArea: this.state.programArea
+    })
   }
 
   changeOrgTrait(e){
@@ -656,8 +933,13 @@ class formSubmission extends React.Component{
 
   tWomenChange(e){
     let targetsWomen = e.target.value === "Yes" ? true : false;
+    if (targetsWomen === true) {
+      this.state.tWomen = "Yes";
+    } else {
+      this.state.tWomen = "No";
+    }
     this.setState({
-      tWomen: targetsWomen
+      tWomen: this.state.tWomen
     });
   }
 
@@ -682,8 +964,13 @@ class formSubmission extends React.Component{
 
   feeAccessChange(e){
     let feeToAccess = e.currentTarget.value === "Yes" ? true : false;
+    if (feeToAccess === true) {
+      this.state.feeAccess = "Yes";
+    } else {
+      this.state.feeAccess = "No";
+    }
     this.setState({
-      feeAccess: feeToAccess
+      feeAccess: this.state.feeAccess
     });
   }
 
@@ -705,6 +992,20 @@ class formSubmission extends React.Component{
     this.setState({
       initEnd: date
     });
+  }
+
+  fieldStatus(fieldReview) {
+    if (this.state.needsReview === 1) {
+      if (fieldReview === 0) {
+        return (
+          <span class="badge badge-warning">Not approved</span>
+        )
+      } else {
+        return (
+          <span class="badge badge-success">Approved</span>
+        )
+      }
+    }
   }
 
   handleChange(e){
@@ -733,13 +1034,77 @@ class formSubmission extends React.Component{
     else {
       if (formStatus == 'modify') {
         if (userData) {
+          //Check if at least one of the form fields has been updated
+          if (this.state.fname !== this.state.originalFunderName ||
+            this.state.furl !== this.state.ofurl ||
+            this.state.motive !==  this.state.omotive ||
+            this.state.impact !==  this.state.oimpact ||
+            this.state.organizationForm !==  this.state.oOrganizationForm ||
+            JSON.stringify(this.state.internationalBases) !== JSON.stringify(this.state.ointernationalBases) ||
+            JSON.stringify(this.state.edSubs) !== JSON.stringify(this.state.oedSubs) ||
+            JSON.stringify(this.state.orgTraits) !== JSON.stringify(this.state.oOrgTraits) ||
+            JSON.stringify(this.state.asiaIBases) !== JSON.stringify(this.state.oasiaIBases) ||
+            JSON.stringify(this.state.asiaOperations) !== JSON.stringify(this.state.oasiaOperations) ||
+            this.state.initName !==  this.state.oinitName ||
+            this.state.initURL !==  this.state.oinitURL ||
+            this.state.tWomen !==  this.state.otWomen ||
+            this.state.initStart !==  this.state.oinitStart ||
+            this.state.initEnd !==  this.state.oinitEnd ||
+            this.state.idescription !==  this.state.oidescription ||
+            this.state.mainProgramActivity !==  this.state.omainProgramActivity ||
+            this.state.feeAccess !==  this.state.ofeeAccess ||
+            JSON.stringify(this.state.regions) !== JSON.stringify(this.state.oregions) ||
+            JSON.stringify(this.state.countries) !== JSON.stringify(this.state.ocountries) ||
+            JSON.stringify(this.state.activities) !== JSON.stringify(this.state.oactivities) ||
+            JSON.stringify(this.state.launchCountries) !== JSON.stringify(this.state.olaunchCountries) ||
+            JSON.stringify(this.state.targetGeos) !== JSON.stringify(this.state.otargetGeos) ||
+            JSON.stringify(this.state.targetPopulationSectors) !== JSON.stringify(this.state.otargetPopulationSectors) ||
+            JSON.stringify(this.state.outcomesMonitored) !== JSON.stringify(this.state.oOutcomesMonitored) ||
+            JSON.stringify(this.state.mEdSubs) !== JSON.stringify(this.state.omEdSubs) ||
+            JSON.stringify(this.state.oEdSubs) !== JSON.stringify(this.state.oOEdSubs) ||
+            JSON.stringify(this.state.managementTypes) !== JSON.stringify(this.state.omanagementTypes) ||
+            this.state.iname !==  this.state.originalImplementerName ||
+            this.state.impMotive !==  this.state.oimpMotive) {
+              this.state.isUpdated = true
+          }
+          else {
+            this.state.isUpdated = false
+          }
+          this.setState({
+            isUpdated: this.state.isUpdated
+          });
           //If an organization user, then submit modified form to temp db for review
           if (userData.accessLevel == 0) {
-            this.props.submitModifiedNonRA(this.state, this.props.inDB, true);
+            //Only allow submission if form fields have been updated
+            if (this.state.isUpdated === true) {
+              for (const [key, value] of Object.entries(this.state.reviews)) {
+                //If any field is found to be rejected, then form still requires further review
+                if (value == 0) {
+                  this.state.needsReview = 1;
+                }
+                this.setState({
+                  needsReview: this.state.needsReview
+                })
+              }
+              this.props.submitModifiedNonRA(this.state, this.props.inDB, true);
+            }
           }
           //Otherwise, if an RA or root user, submit modified form directly to main db
           else {
-            this.props.submitModifiedRA(this.state, true);
+            //Only allow submission if form fields have been updated
+            if (this.state.isUpdated === true) {
+              //Set all fields to approved if RA is updating the form.
+              for (const [key, value] of Object.entries(this.state.reviews)) {
+                this.state.reviews[key] = 1
+              }
+              this.state.needsReview = 0;
+              this.setState({
+                reviews: this.state.reviews,
+                needsReview: this.state.needsReview
+              })
+
+              this.props.submitModifiedRA(this.state, true);
+            }
           }
         }
       }
@@ -761,35 +1126,62 @@ class formSubmission extends React.Component{
     }
 
     const submitError = formSubmitError ?
-    <div className="alert alert-danger alert-dismissible fade show" style = {{width: "25%"}}>
-      <h5 style = {{textAlign: "center"}}> {formSubmitError} </h5>
-    </div> : null
+    <div className="alert alert-dismissible alert-danger" style = {{width: "75%"}}>
+      <strong> {formSubmitError} </strong>
+    </div> : (
+      this.state.isUpdated !== null ? (
+        this.state.isUpdated === false ? (
+          <div className="alert alert-dismissible alert-warning" style = {{width: "75%"}}>
+            <strong>No new updates have been made to this form.</strong> Please make a change before submitting.
+          </div>
+        ) : null
+      ) : null
+    );
+
+    const approvalFeedback = this.state.needsReview === 0 ? (
+      <div class="alert alert-dismissible alert-success">
+        <strong>This form has been approved.</strong> The information currently on this form is public.
+      </div>
+    ) :
+      <div class="alert alert-dismissible alert-danger">
+        <strong>This form is under review for approval.</strong> Please review the approval status of the below fields.
+      </div>
+
 
     return (
-        <div className = "formSubmission" style = {{paddingTop: '50px'}}>
-            <h3>Form Submission</h3>
-            <div>
+        <div className = "formSubmission" style = {{padding: '50px 200px 0 200px'}}>
+          <h3>Form Submission</h3>
+          <div>
+            <br></br>
+            {approvalFeedback}
             <form onSubmit={this.handleFormSubmit}>
 
             <h4>Funder</h4>
 
-
             <p>Name</p>
               <input type="text" id="fname" name="funderName" value={this.state.fname} placeholder="Funder Name" onChange={this.handleChange}/>
+              {this.fieldStatus(this.state.originalReviews.fnameA)}
+              <br></br><br></br>
 
             <p>Website</p>
               <input type="text" id="furl" name="funderWebsite" value={this.state.furl} placeholder="funderWebsite.com" onChange={this.handleChange}/>
+              {this.fieldStatus(this.state.originalReviews.furlA)}
+              <br></br><br></br>
 
             <p>Profit Motive</p>
               <input type="radio" id="motive1" name="profitMotive" value="Not-for-profit" checked = {this.state.motive === 'Not-for-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive1">Not-For-Profit</label>
               <input type="radio" id="motive2" name="profitMotive" value="Hybrid" checked = {this.state.motive === 'Hybrid'} onChange={this.profitMotiveChange}/> <label htmlFor="motive2">Hybrid</label>
               <input type="radio" id="motive3" name="profitMotive" value="For-profit" checked = {this.state.motive === 'For-profit'} onChange={this.profitMotiveChange}/> <label htmlFor="motive3">For-Profit</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.motiveA)}
             <br></br><br></br>
 
             <p>Impact Investing?</p>
               <input type="radio" id="impact1" name="impactInvesting" value="Yes" checked = {this.state.impact === 'Yes'} onChange={this.impactChange}/> <label htmlFor="impact1">Yes</label>
               <input type="radio" id="impact2" name="impactInvesting" value="No" checked = {this.state.impact === 'No'} onChange={this.impactChange}/> <label htmlFor="impact2">No</label>
               <input type="radio" id="impact3" name="impactInvesting" value="Unknown" checked = {this.state.impact === 'Unknown'} onChange={this.impactChange}/> <label htmlFor="impact3">Unknown</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.impactA)}
             <br></br><br></br>
 
             <p>Organizational Form</p>
@@ -802,6 +1194,8 @@ class formSubmission extends React.Component{
               <input type="radio" id="organization7" name="organizationalForm" value="CSR Initiative / unit" checked = {this.state.organizationForm === 'CSR initiative / unit'} onChange={this.organizationChange}/> <label htmlFor="organization7">CSR Initiative / Unit</label>
               <input type="radio" id="organization8" name="organizationalForm" value="Multilateral" checked = {this.state.organizationForm === 'Multilateral'} onChange={this.organizationChange}/> <label htmlFor="organization8">Multilateral</label>
               <input type="radio" id="organization9" name="organizationalForm" value="Other" checked = {this.state.organizationForm === 'Other'} onChange={this.organizationChange}/> <label htmlFor="organization9">Other</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.organizationFormA)}
             <br></br><br></br>
 
             <p>International Base(s)</p>
@@ -1041,6 +1435,8 @@ class formSubmission extends React.Component{
               }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.internationalBasesA)}
+            <br></br><br></br>
 
             <p>Education Subsector(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="edSub1" name="educationSubsector" value="Adult" checked = {this.state.edSubs.includes("Adult")} onChange={this.changeEdSub}/> <label htmlFor="edSub1" className="checkbox">Adult</label>
@@ -1056,12 +1452,15 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="edSub11" name="educationSubsector" value="No Education" checked = {this.state.edSubs.includes("No Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub11" className="checkbox">No Education</label>
             <input type="checkbox" id="edSub12" name="educationSubsector" value="Other Education" checked = {this.state.edSubs.includes("Other Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub12" className="checkbox">Other Education</label>
             <input type="checkbox" id="edSub13" name="educationSubsector" value="Primary Education" checked = {this.state.edSubs.includes("Primary Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub13" className="checkbox">Primary Education</label>
-            <input type="checkbox" id="edSub14" name="educationSubsector" value="Public Administration - Education" checked = {this.state.edSubs.includes("Public Administration - Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub14" className="checkbox">Public Administration - Education</label>
+            <input type="checkbox" id="edSub14" name="educationSubsector" value="Public Administration – Education" checked = {this.state.edSubs.includes("Public Administration – Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub14" className="checkbox">Public Administration – Education</label>
             <input type="checkbox" id="edSub15" name="educationSubsector" value="Secondary Education" checked = {this.state.edSubs.includes("Secondary Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub15" className="checkbox">Secondary Education</label>
             <input type="checkbox" id="edSub16" name="educationSubsector" value="Tertiary Education" checked = {this.state.edSubs.includes("Tertiary Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub16" className="checkbox">Tertiary Education</label>
             <input type="checkbox" id="edSub17" name="educationSubsector" value="Unclear" checked = {this.state.edSubs.includes("Unclear")} onChange={this.changeEdSub}/> <label htmlFor="edSub17" className="checkbox">Unclear</label>
             <input type="checkbox" id="edSub18" name="educationSubsector" value="Workforce Development and Vocational Education" checked = {this.state.edSubs.includes("Workforce Development and Vocational Education")} onChange={this.changeEdSub}/> <label htmlFor="edSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="edSub19" name="educationSubsector" value="Workforce Development/Skills" checked = {this.state.edSubs.includes("Workforce Development/Skills")} onChange={this.changeEdSub}/> <label htmlFor="edSub19" className="checkbox">Workforce Development/Skills</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.edSubsA)}
+            <br></br><br></br>
 
             <p>Organizational Trait(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="orgTrait1" name="organizationalTrait" value="Aim to address issues of common good" checked = {this.state.orgTraits.includes("Aim to address issues of common good")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait1" className="checkbox">Aim to address issues of common good</label>
@@ -1077,6 +1476,9 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="orgTrait11" name="organizationalTrait" value="Secondary Education" checked = {this.state.orgTraits.includes("Secondary Education")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait11" className="checkbox">Secondary Education</label>
             <input type="checkbox" id="orgTrait12" name="organizationalTrait" value="Use own financial resources (unlike NGOs)" checked = {this.state.orgTraits.includes("Use own financial resources (unlike NGOs)")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait12" className="checkbox">Use own financial resources (unlike NGOs)</label>
             <input type="checkbox" id="orgTrait13" name="organizationalTrait" value="Workforce Development/Skills" checked = {this.state.orgTraits.includes("Workforce Development/Skills")} onChange={this.changeOrgTrait}/> <label htmlFor="orgTrait13" className="checkbox">Workforce Development/Skills</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.orgTraitsA)}
+            <br></br><br></br>
 
             <p>Asia International Base(s)</p>
             <select id="asiaInternationalBase" name="country" onChange={this.addAIBase}>
@@ -1316,6 +1718,8 @@ class formSubmission extends React.Component{
               </ul>
             </div>
             {/* MAKE ASIA INTERNATIONAL BASE NOT ACCEPT BASE CASE */}
+            {this.fieldStatus(this.state.originalReviews.asialBasesA)}
+            <br></br><br></br>
 
             <p>Asia Operation(s)</p>
             <select id="aOperations" name="opCountry" onChange={this.addAsiaOperation}>
@@ -1554,24 +1958,39 @@ class formSubmission extends React.Component{
                 }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.asiaOperationsA)}
+            <br></br><br></br>
 
             <h4>Initiative</h4>
 
             <p>Name</p>
               <input type="text" id="initName" name="initiativeName" value = {this.state.initName} placeholder="Initiative Name" onChange={this.handleChange}/>
+            {this.fieldStatus(this.state.originalReviews.initNameA)}
+            <br></br><br></br>
 
             <p>Website</p>
               <input type="text" id="initURL" name="initiativeWebsite" value = {this.state.initURL} placeholder="initiativeWebsite.com" onChange={this.handleChange}/>
+            {this.fieldStatus(this.state.originalReviews.initURLA)}
+            <br></br><br></br>
 
             <p>Targets Women?</p>
-              <input type="radio" id="tWomen1" name="targetsWomen" value="Yes" checked = {this.state.tWomen === true} onChange={this.tWomenChange}/> <label htmlFor="tWomen1">Yes</label>
-              <input type="radio" id="tWomen2" name="targetsWomen" value="No" checked = {this.state.tWomen === false} onChange={this.tWomenChange}/> <label htmlFor="tWomen2">No</label>
+              <input type="radio" id="tWomen1" name="targetsWomen" value="Yes" checked = {this.state.tWomen === "Yes"} onChange={this.tWomenChange}/> <label htmlFor="tWomen1">Yes</label>
+              <input type="radio" id="tWomen2" name="targetsWomen" value="No" checked = {this.state.tWomen === "No"} onChange={this.tWomenChange}/> <label htmlFor="tWomen2">No</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.tWomenA)}
+            <br></br><br></br>
 
             <p>Start Year</p>
               <input type="number" id="initStart" name="startYear" defaultValue={this.state.initStart} placeholder="Start Year" onChange={this.startYearChange}/>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.initStartA)}
+            <br></br><br></br>
 
             <p>End Year</p>
               <input type="number" id="initEnd" name="endYear" defaultValue={this.state.initEnd} placeholder="End Year" onChange={this.endYearChange}/>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.initEndA)}
+            <br></br><br></br>
 
             <p>Launch Country</p>
             <select id="launchCountry" name="launchCountry" onChange={this.addLaunchCountry}>
@@ -1810,9 +2229,13 @@ class formSubmission extends React.Component{
               }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.launchCountryA)}
+            <br></br><br></br>
 
             <p>Description</p>
             <textarea id="idescription" name="description" value = {this.state.idescription} placeholder="Write a description" onChange={this.handleChange}></textarea>
+            {this.fieldStatus(this.state.originalReviews.idescriptionA)}
+            <br></br><br></br>
 
             <p>Region(s)</p>
             <select id="region" name="regions" onChange={this.addInitRegion}>
@@ -1866,7 +2289,7 @@ class formSubmission extends React.Component{
             {/* ???? I'm not sure about these */}
             <option value="Global">Global</option>
             <option value="Middle East and North Africa">Middle East and North Africa</option>
-            <option value="Latin Ameria and Caribbean">Latin Ameria and Caribbean</option>
+            <option value="Latin America and Caribbean">Latin America and Caribbean</option>
             <option value="East Asia and Pacific">East Asia and Pacific</option>
             <option value="Europe and Central Asia">Europe and Central Asia</option>
             <option value="World">World</option>
@@ -1884,6 +2307,8 @@ class formSubmission extends React.Component{
                 }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.regionsA)}
+            <br></br><br></br>
 
             <p>Countries</p>
             <select id="initCountry" name="initiativeCountry" onChange={this.addInitCountry}>
@@ -2122,6 +2547,8 @@ class formSubmission extends React.Component{
                 }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.countriesA)}
+            <br></br><br></br>
 
             <p>Target Geography</p>
               <input type="checkbox" id="geography1" name="targetGeo" value="Urban" checked = {this.state.targetGeos.includes("Urban")} onChange={this.geographyChange}/> <label htmlFor="geography1" className="checkbox">Urban</label>
@@ -2131,6 +2558,9 @@ class formSubmission extends React.Component{
               <input type="checkbox" id="geography5" name="targetGeo" value="children with special needs" checked = {this.state.targetGeos.includes("children with special needs")} onChange={this.geographyChange}/> <label htmlFor="geography5" className="checkbox">children with special needs</label>
               <input type="checkbox" id="geography6" name="targetGeo" value="Unclear" checked = {this.state.targetGeos.includes("Unclear")} onChange={this.geographyChange}/> <label htmlFor="geography6" className="checkbox">Unclear</label>
               <input type="checkbox" id="geography7" name="targetGeo" value="Missing" checked = {this.state.targetGeos.includes("Missing")} onChange={this.geographyChange}/> <label htmlFor="geography7" className="checkbox">Missing</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.targetGeosA)}
+            <br></br><br></br>
 
             <p>Main Education Subsector</p>
             <input type="checkbox" id="iEdSub1" name="educationSubsector" value="Adult" checked = {this.state.mEdSubs.includes("Adult")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub1" className="checkbox">Adult</label>
@@ -2146,12 +2576,15 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="iEdSub11" name="educationSubsector" value="No Education" checked = {this.state.mEdSubs.includes("No Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub11" className="checkbox">No Education</label>
             <input type="checkbox" id="iEdSub12" name="educationSubsector" value="Other Education" checked = {this.state.mEdSubs.includes("Other Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub12" className="checkbox">Other Education</label>
             <input type="checkbox" id="iEdSub13" name="educationSubsector" value="Primary Education" checked = {this.state.mEdSubs.includes("Primary Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub13" className="checkbox">Primary Education</label>
-            <input type="checkbox" id="iEdSub14" name="educationSubsector" value="Public Administration - Education" checked = {this.state.mEdSubs.includes("Public Administration - Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub14" className="checkbox">Public Administration - Education</label>
+            <input type="checkbox" id="iEdSub14" name="educationSubsector" value="Public Administration – Education" checked = {this.state.mEdSubs.includes("Public Administration – Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub14" className="checkbox">Public Administration – Education</label>
             <input type="checkbox" id="iEdSub15" name="educationSubsector" value="Secondary Education" checked = {this.state.mEdSubs.includes("Secondary Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub15" className="checkbox">Secondary Education</label>
             <input type="checkbox" id="iEdSub16" name="educationSubsector" value="Tertiary Education" checked = {this.state.mEdSubs.includes("Tertiary Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub16" className="checkbox">Tertiary Education</label>
             <input type="checkbox" id="iEdSub17" name="educationSubsector" value="Unclear" checked = {this.state.mEdSubs.includes("Unclear")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub17" className="checkbox">Unclear</label>
             <input type="checkbox" id="iEdSub18" name="educationSubsector" value="Workforce Development and Vocational Education" checked = {this.state.mEdSubs.includes("Workforce Development and Vocational Education")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="iEdSub19" name="educationSubsector" value="Workforce Development/Skills" checked = {this.state.mEdSubs.includes("Workforce Development/Skills")} onChange={this.mEdSubChange}/> <label htmlFor="iEdSub19" className="checkbox">Workforce Development/Skills</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.mEdSubsA)}
+            <br></br><br></br>
 
             <p>Other Education Subsector(s)<br></br>Select all that apply:</p>
             <input type="checkbox" id="oEdSub1" name="educationSubsector" value="Adult" checked = {this.state.oEdSubs.includes("Adult")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub1" className="checkbox">Adult</label>
@@ -2167,116 +2600,124 @@ class formSubmission extends React.Component{
             <input type="checkbox" id="oEdSub11" name="educationSubsector" value="No Education" checked = {this.state.oEdSubs.includes("No Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub11" className="checkbox">No Education</label>
             <input type="checkbox" id="oEdSub12" name="educationSubsector" value="Other Education" checked = {this.state.oEdSubs.includes("Other Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub12" className="checkbox">Other Education</label>
             <input type="checkbox" id="oEdSub13" name="educationSubsector" value="Primary Education" checked = {this.state.oEdSubs.includes("Primary Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub13" className="checkbox">Primary Education</label>
-            <input type="checkbox" id="oEdSub14" name="educationSubsector" value="Public Administration - Education" checked = {this.state.oEdSubs.includes("Public Administration - Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub14" className="checkbox">Public Administration - Education</label>
+            <input type="checkbox" id="oEdSub14" name="educationSubsector" value="Public Administration – Education" checked = {this.state.oEdSubs.includes("Public Administration – Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub14" className="checkbox">Public Administration – Education</label>
             <input type="checkbox" id="oEdSub15" name="educationSubsector" value="Secondary Education" checked = {this.state.oEdSubs.includes("Secondary Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub15" className="checkbox">Secondary Education</label>
             <input type="checkbox" id="oEdSub16" name="educationSubsector" value="Tertiary Education" checked = {this.state.oEdSubs.includes("Tertiary Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub16" className="checkbox">Tertiary Education</label>
             <input type="checkbox" id="oEdSub17" name="educationSubsector" value="Unclear" checked = {this.state.oEdSubs.includes("Unclear")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub17" className="checkbox">Unclear</label>
             <input type="checkbox" id="oEdSub18" name="educationSubsector" value="Workforce Development and Vocational Education" checked = {this.state.oEdSubs.includes("Workforce Development and Vocational Education")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub18" className="checkbox">Workforce Development and Vocational Education</label>
             <input type="checkbox" id="oEdSub19" name="educationSubsector" value="Workforce Development/Skills" checked = {this.state.oEdSubs.includes("Workforce Development/Skills")} onChange={this.oEdSubChange}/> <label htmlFor="oEdSub19" className="checkbox">Workforce Development/Skills</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.oEdSubsA)}
+            <br></br><br></br>
 
             <p>Main Program Activity</p>
             <select id="mainProgramActivity" name="activity" onChange={this.changeProgramArea}>
-            <option value="baseCase">Choose the Main Program Activity</option>
-            <option value="Missing Data">Missing</option>
-            <option value="Unclear">Unclear</option>
-            <option value="aTransitional Support">Transitional Support</option>
-            <option value="aIncreasing or Sustaining Enrollment">Increasing or Sustaining Enrollment</option>
-            <option value="aSchool Feeding Programs and Other Non-Financial Targeted Incentives">School Feeding Programs and Other Non-Financial Targeted Incentives</option>
-            <option value="aPrograms to improve access and equity in education">Programs to improve access and equity in education</option>
-            <option value="aAdult literacy and numeracy programs">Adult literacy and numeracy programs</option>
-            <option value="eSchool Infrastructure and equipment">School Infrastructure and equipment</option>
-            <option value="eSchool rehabilitation and construction">School rehabilitation and construction</option>
-            <option value="eCommunity resources towards education facilities">Community resources towards education facilities</option>
-            <option value="fVouchers and conditional cash transfers">Vouchers and conditional cash transfers</option>
-            <option value="fScholarships and financial aid">Scholarships and financial aid</option>
-            <option value="fStudent/household loans">Student/household loans</option>
-            <option value="fContracting">Contracting</option>
-            <option value="fSchool loans">School loans</option>
-            <option value="fPay-for-performance">Pay-for-performance</option>
-            <option value="fOther financial targeted incentives for attendance">Other financial targeted incentives for attendance</option>
-            <option value="gParental or community engagement for school accountability">Parental or community engagement for school accountability</option>
-            <option value="gSchool operations or management">School operations or management</option>
-            <option value="gSchool assessment/rating systems">School assessment/rating systems</option>
-            <option value="gCapacity development programs or services for education administration or bureaucracy">Capacity development programs or services for education administration or bureaucracy</option>
-            <option value="gEMIS/Data systems">EMIS/Data systems</option>
-            <option value="gRegulatory analysis focused on government policy">Regulatory analysis focused on government policy</option>
-            <option value="gRegulatory analysis focused on school policy">Regulatory analysis focused on school policy</option>
-            <option value="gSchool quality improvement">School quality improvement</option>
-            <option value="pFranchise of schools/centers">Franchise of schools/centers</option>
-            <option value="pChain of schools/centers">Chain of schools/centers</option>
-            <option value="pNetwork of schools/centers">Network of schools/centers</option>
-            <option value="pMobile schools/centers">Mobile schools/centers</option>
-            <option value="pOnline school/center">Online school/center</option>
-            <option value="pStand-alone schools/centers">Stand-alone schools/centers</option>
-            <option value="pNGO Schools">NGO Schools</option>
-            <option value="pFormal public-private partnership">Formal public-private partnership</option>
-            <option value="pPrivate schools">Private schools</option>
-            <option value="iOnline learning portals">Online learning portals</option>
-            <option value="iComputer-assisted instruction/learning programs/products">Computer-assisted instruction/learning programs/products</option>
-            <option value="iComputers and tablets/computing skills focus">Computers and tablets/computing skills focus</option>
-            <option value="iSchool WiFi/broadband initiatives">School WiFi/broadband initiatives</option>
-            <option value="iDigital classrooms">Digital classrooms</option>
-            <option value="iMOOC instruction">MOOC instruction</option>
-            <option value="iScience technology and innovation (STI) activities including research and development (R&D), training knowledge workers/ technology acquisition and diffusion/ STI grants">Science technology and innovation (STI) activities including research and development (R&D), training knowledge workers/ technology acquisition and diffusion/ STI grants</option>
-            <option value="cStandardized teaching materials">Standardized teaching materials</option>
-            <option value="cNon-traditional schedules">Non-traditional schedules</option>
-            <option value="cExtra-curricular activities">Extra-curricular activities</option>
-            <option value="cLearning materials for students">Learning materials for students</option>
-            <option value="cTextbooks/books">Textbooks/books</option>
-            <option value="cSTEM materials/focus/program">STEM materials/focus/program</option>
-            <option value="cEnglish/language materials">English/language materials</option>
-            <option value="cMaths materials">Maths materials</option>
-            <option value="sStudent assessment and progress">Student assessment and progress</option>
-            <option value="sExam preparation">Exam preparation</option>
-            <option value="sTutoring/private tuition (includes tutoring chains/centres)">Tutoring/private tuition (includes tutoring chains/centres)</option>
-            <option value="sParental or community engagement in support of students">Parental or community engagement in support of students</option>
-            <option value="sMentorship programs">Mentorship programs</option>
-            <option value="tTeacher training">Teacher training</option>
-            <option value="tSchool leader/principals training">School leader/principals training</option>
-            <option value="tTeacher/leader evaluation capacity development and mentorship programs">Teacher/leader evaluation capacity development and mentorship programs</option>
-            <option value="tTeacher recruitment/ deployment/ in-service training programs">Teacher recruitment/ deployment/ in-service training programs</option>
-            <option value="wMentorship/ internship/ job placement">Mentorship/ internship/ job placement</option>
-            <option value="wEmployment skills programs">Employment skills programs</option>
-            <option value="wEntrepreneurship and business skills programs">Entrepreneurship and business skills programs</option>
-            <option value="vLinking research and evidence with policy or implementation">Linking research and evidence with policy or implementation</option>
-            <option value="vAdvocacy campaigns/ initiatives/ movements">Advocacy campaigns/ initiatives/ movements</option>
-            <option value="vRegulatory analysis">Regulatory analysis</option>
-            <option value="vKnowledge production/mobilization">Knowledge production/mobilization</option>
-            <option value="vEducation sector research studies/ surveys/ assessments">Education sector research studies/ surveys/ assessments</option>
-            <option value="vCapacity building at the system level">Capacity building at the system level</option>
-            <option value="wLife skills and personal finance training">Life skills and personal finance training</option>
-            <option value="wContinuing education programs offered for adults">Continuing education programs offered for adults</option>
-            <option value="aCurriculum and Extra-Curricular Support">Curriculum and Extra-Curricular Support</option>
-            <option value="aPrograms targeting girls/women">Programs targeting girls/women</option>
-            <option value="aPrograms targeting special needs or people with disabilities">Programs targeting special needs or people with disabilities</option>
-            <option value="aPrograms targeting other marginalized groups">Programs targeting other marginalized groups</option>
-            <option value="aPrograms targeting tribal or indigenous groups">Programs targeting tribal or indigenous groups</option>
-            <option value="wProfessional certification/skills">Professional certification/skills</option>
-            <option value="wShort-term technical/vocational course">Short-term technical/vocational course</option>
-            <option value="wLonger-term technical/vocational course">Longer-term technical/vocational course</option>
-            <option value="oNon-formal education youth">Non-formal education youth</option>
-            <option value=" Private Sector Delivery of Education">Private Sector Delivery of Education</option>
-            <option value=" vocational training">vocational training</option>
-            <option value=" Education Finance (system-level)">Education Finance (system-level)</option>
-            <option value=" school finance">school finance</option>
-            <option value=" Capacity Building of Non-Education Professionals">Capacity Building of Non-Education Professionals</option>
-            <option value=" Enrichment/New Pedagogical or Curricular Programs">Enrichment/New Pedagogical or Curricular Programs</option>
-            <option value=" Academic research/academic exchange">Academic research/academic exchange</option>
-            <option value=" Main Programming Activity">Main Programming Activity</option>
-            <option value=" All Programming Activities">All Programming Activities</option>
-            <option value=" Civic/community education">Civic/community education</option>
-            <option value=" Scholarships and Financial Aid">Scholarship and Financial Aid</option>
-            <option value=" Employment Skills program">Employment Skills program</option>
-            <option value=" Advocacy campaigns/initiatives/movements">Advocacy campaigns/initiatives/movements</option>
-            <option value=" Knowledge production/mobilization">Knowledge production/mobilization</option>
-            <option value=" Program targeting special needs or people with disabilities">Program targeting special needs or people with disabilities</option>
-            <option value=" Literacy skills">Literacy skills</option>
-            <option value=" Maternal Health Education">Maternal Health Education</option>
+            <option value="baseCase" selected = {this.state.mainProgramActivity === null}>Choose the Main Program Activity</option>
+            <option value="Missing Data" selected = {this.state.mainProgramActivity.includes("Missing Data")}>Missing</option>
+            <option value="Unclear" selected = {this.state.mainProgramActivity.includes("Unclear")}>Unclear</option>
+            <option value="aTransitional Support" selected = {this.state.mainProgramActivity.includes("Transitional Support")}>Transitional Support</option>
+            <option value="aIncreasing or Sustaining Enrollment" selected = {this.state.mainProgramActivity.includes("Increasing or Sustaining Enrollment")}>Increasing or Sustaining Enrollment</option>
+            <option value="aSchool Feeding Programs and Other Non-Financial Targeted Incentives" selected = {this.state.mainProgramActivity.includes("School Feeding Programs and Other Non-Financial Targeted Incentives")}>School Feeding Programs and Other Non-Financial Targeted Incentives</option>
+            <option value="aPrograms to improve access and equity in education" selected = {this.state.mainProgramActivity.includes("Programs to improve access and equity in education")}>Programs to improve access and equity in education</option>
+            <option value="aAdult literacy and numeracy programs" selected = {this.state.mainProgramActivity.includes("Adult literacy and numeracy programs")}>Adult literacy and numeracy programs</option>
+            <option value="eSchool Infrastructure and equipment" selected = {this.state.mainProgramActivity.includes("School Infrastructure and equipment")}>School Infrastructure and equipment</option>
+            <option value="eSchool rehabilitation and construction" selected = {this.state.mainProgramActivity.includes("School rehabilitation and construction")}>School rehabilitation and construction</option>
+            <option value="eCommunity resources towards education facilities" selected = {this.state.mainProgramActivity.includes("Community resources towards education facilities")}>Community resources towards education facilities</option>
+            <option value="fVouchers and conditional cash transfers" selected = {this.state.mainProgramActivity.includes("Vouchers and conditional cash transfers")}>Vouchers and conditional cash transfers</option>
+            <option value="fScholarships and financial aid" selected = {this.state.mainProgramActivity.includes("Scholarships and financial aid")}>Scholarships and financial aid</option>
+            <option value="fStudent/household loans" selected = {this.state.mainProgramActivity.includes("Student/household loans")}>Student/household loans</option>
+            <option value="fContracting" selected = {this.state.mainProgramActivity.includes("Contracting")}>Contracting</option>
+            <option value="fSchool loans" selected = {this.state.mainProgramActivity.includes("School loans")}>School loans</option>
+            <option value="fPay-for-performance" selected = {this.state.mainProgramActivity.includes("Pay-for-performance")}>Pay-for-performance</option>
+            <option value="fOther financial targeted incentives for attendance" selected = {this.state.mainProgramActivity.includes("Other financial targeted incentives for attendance")}>Other financial targeted incentives for attendance</option>
+            <option value="gParental or community engagement for school accountability" selected = {this.state.mainProgramActivity.includes("Parental or community engagement for school accountability")}>Parental or community engagement for school accountability</option>
+            <option value="gSchool operations or management" selected = {this.state.mainProgramActivity.includes("School operations or management")}>School operations or management</option>
+            <option value="gSchool assessment/rating systems" selected = {this.state.mainProgramActivity.includes("School assessment/rating systems")}>School assessment/rating systems</option>
+            <option value="gCapacity development programs or services for education administration or bureaucracy" selected = {this.state.mainProgramActivity.includes("Capacity development programs or services for education administration or bureaucracy")}>Capacity development programs or services for education administration or bureaucracy</option>
+            <option value="gEMIS/Data systems" selected = {this.state.mainProgramActivity.includes("EMIS/Data systems")}>EMIS/Data systems</option>
+            <option value="gRegulatory analysis focused on government policy" selected = {this.state.mainProgramActivity.includes("Regulatory analysis focused on government policy")}>Regulatory analysis focused on government policy</option>
+            <option value="gRegulatory analysis focused on school policy" selected = {this.state.mainProgramActivity.includes("Regulatory analysis focused on school policy")}>Regulatory analysis focused on school policy</option>
+            <option value="gSchool quality improvement" selected = {this.state.mainProgramActivity.includes("School quality improvement")}>School quality improvement</option>
+            <option value="pFranchise of schools/centers" selected = {this.state.mainProgramActivity.includes("Franchise of schools/centers")}>Franchise of schools/centers</option>
+            <option value="pChain of schools/centers" selected = {this.state.mainProgramActivity.includes("Chain of schools/centers")}>Chain of schools/centers</option>
+            <option value="pNetwork of schools/centers" selected = {this.state.mainProgramActivity.includes("Network of schools/centers")}>Network of schools/centers</option>
+            <option value="pMobile schools/centers" selected = {this.state.mainProgramActivity.includes("Mobile schools/centers")}>Mobile schools/centers</option>
+            <option value="pOnline school/center" selected = {this.state.mainProgramActivity.includes("Online school/center")}>Online school/center</option>
+            <option value="pStand-alone schools/centers" selected = {this.state.mainProgramActivity.includes("Stand-alone schools/centers")}>Stand-alone schools/centers</option>
+            <option value="pNGO Schools" selected = {this.state.mainProgramActivity.includes("NGO Schools")}>NGO Schools</option>
+            <option value="pFormal public-private partnership" selected = {this.state.mainProgramActivity.includes("Formal public-private partnership")}>Formal public-private partnership</option>
+            <option value="pPrivate schools" selected = {this.state.mainProgramActivity.includes("Private schools")}>Private schools</option>
+            <option value="iOnline learning portals" selected = {this.state.mainProgramActivity.includes("Online learning portals")}>Online learning portals</option>
+            <option value="iComputer-assisted instruction/learning programs/products" selected = {this.state.mainProgramActivity.includes("Computer-assisted instruction/learning programs/products")}>Computer-assisted instruction/learning programs/products</option>
+            <option value="iComputers and tablets/computing skills focus" selected = {this.state.mainProgramActivity.includes("Computers and tablets/computing skills focus")}>Computers and tablets/computing skills focus</option>
+            <option value="iSchool WiFi/broadband initiatives" selected = {this.state.mainProgramActivity.includes("School WiFi/broadband initiatives")}>School WiFi/broadband initiatives</option>
+            <option value="iDigital classrooms" selected = {this.state.mainProgramActivity.includes("Digital classrooms")}>Digital classrooms</option>
+            <option value="iMOOC instruction" selected = {this.state.mainProgramActivity.includes("MOOC instruction")}>MOOC instruction</option>
+            <option value="iScience technology and innovation (STI) activities including research and development (R&D), training knowledge workers/ technology acquisition and diffusion/ STI grants" selected = {this.state.mainProgramActivity.includes("Science technology and innovation (STI) activities including research and development (R&D), training knowledge workers/ technology acquisition and diffusion/ STI grants")}>Science technology and innovation (STI) activities including research and development (R&D), training knowledge workers/ technology acquisition and diffusion/ STI grants</option>
+            <option value="cStandardized teaching materials" selected = {this.state.mainProgramActivity.includes("Standardized teaching materials")}>Standardized teaching materials</option>
+            <option value="cNon-traditional schedules" selected = {this.state.mainProgramActivity.includes("Non-traditional schedules")}>Non-traditional schedules</option>
+            <option value="cExtra-curricular activities" selected = {this.state.mainProgramActivity.includes("Extra-curricular activities")}>Extra-curricular activities</option>
+            <option value="cLearning materials for students" selected = {this.state.mainProgramActivity.includes("Learning materials for students")}>Learning materials for students</option>
+            <option value="cTextbooks/books" selected = {this.state.mainProgramActivity.includes("Textbooks/books")}>Textbooks/books</option>
+            <option value="cSTEM materials/focus/program" selected = {this.state.mainProgramActivity.includes("STEM materials/focus/program")}>STEM materials/focus/program</option>
+            <option value="cEnglish/language materials" selected = {this.state.mainProgramActivity.includes("English/language materials")}>English/language materials</option>
+            <option value="cMaths materials" selected = {this.state.mainProgramActivity.includes("Maths materials")}>Maths materials</option>
+            <option value="sStudent assessment and progress" selected = {this.state.mainProgramActivity.includes("Student assessment and progress")}>Student assessment and progress</option>
+            <option value="sExam preparation" selected = {this.state.mainProgramActivity.includes("Exam preparation")}>Exam preparation</option>
+            <option value="sTutoring/private tuition (includes tutoring chains/centres)" selected = {this.state.mainProgramActivity.includes("Tutoring/private tuition (includes tutoring chains/centres)")}>Tutoring/private tuition (includes tutoring chains/centres)</option>
+            <option value="sParental or community engagement in support of students" selected = {this.state.mainProgramActivity.includes("Parental or community engagement in support of students")}>Parental or community engagement in support of students</option>
+            <option value="sMentorship programs" selected = {this.state.mainProgramActivity.includes("Mentorship programs")}>Mentorship programs</option>
+            <option value="tTeacher training" selected = {this.state.mainProgramActivity.includes("Teacher training")}>Teacher training</option>
+            <option value="tSchool leader/principals training" selected = {this.state.mainProgramActivity.includes("School leader/principals training")}>School leader/principals training</option>
+            <option value="tTeacher/leader evaluation capacity development and mentorship programs" selected = {this.state.mainProgramActivity.includes("Teacher/leader evaluation capacity development and mentorship programs")}>Teacher/leader evaluation capacity development and mentorship programs</option>
+            <option value="tTeacher recruitment/ deployment/ in-service training programs" selected = {this.state.mainProgramActivity.includes("Teacher recruitment/ deployment/ in-service training programs")}>Teacher recruitment/ deployment/ in-service training programs</option>
+            <option value="wMentorship/ internship/ job placement" selected = {this.state.mainProgramActivity.includes("Mentorship/ internship/ job placement")}>Mentorship/ internship/ job placement</option>
+            <option value="wEmployment skills programs" selected = {this.state.mainProgramActivity.includes("Employment skills programs")}>Employment skills programs</option>
+            <option value="wEntrepreneurship and business skills programs" selected = {this.state.mainProgramActivity.includes("Entrepreneurship and business skills programs")}>Entrepreneurship and business skills programs</option>
+            <option value="vLinking research and evidence with policy or implementation" selected = {this.state.mainProgramActivity.includes("Linking research and evidence with policy or implementation")}>Linking research and evidence with policy or implementation</option>
+            <option value="vAdvocacy campaigns/ initiatives/ movements" selected = {this.state.mainProgramActivity.includes("Advocacy campaigns/ initiatives/ movements")}>Advocacy campaigns/ initiatives/ movements</option>
+            <option value="vRegulatory analysis" selected = {this.state.mainProgramActivity.includes("Regulatory analysis")}>Regulatory analysis</option>
+            <option value="vKnowledge production/mobilization" selected = {this.state.mainProgramActivity.includes("Knowledge production/mobilization")}>Knowledge production/mobilization</option>
+            <option value="vEducation sector research studies/ surveys/ assessments" selected = {this.state.mainProgramActivity.includes("Increasing or Sustaining Enrollment")}>Education sector research studies/ surveys/ assessments</option>
+            <option value="vCapacity building at the system level" selected = {this.state.mainProgramActivity.includes("Capacity building at the system level")}>Capacity building at the system level</option>
+            <option value="wLife skills and personal finance training" selected = {this.state.mainProgramActivity.includes("Life skills and personal finance training")}>Life skills and personal finance training</option>
+            <option value="wContinuing education programs offered for adults" selected = {this.state.mainProgramActivity.includes("Continuing education programs offered for adults")}>Continuing education programs offered for adults</option>
+            <option value="aCurriculum and Extra-Curricular Support" selected = {this.state.mainProgramActivity.includes("Curriculum and Extra-Curricular Support")}>Curriculum and Extra-Curricular Support</option>
+            <option value="aPrograms targeting girls/women" selected = {this.state.mainProgramActivity.includes("Programs targeting girls/women")}>Programs targeting girls/women</option>
+            <option value="aPrograms targeting special needs or people with disabilities" selected = {this.state.mainProgramActivity.includes("Programs targeting special needs or people with disabilities")}>Programs targeting special needs or people with disabilities</option>
+            <option value="aPrograms targeting other marginalized groups" selected = {this.state.mainProgramActivity.includes("Programs targeting other marginalized groups")}>Programs targeting other marginalized groups</option>
+            <option value="aPrograms targeting tribal or indigenous groups" selected = {this.state.mainProgramActivity.includes("Programs targeting tribal or indigenous groups")}>Programs targeting tribal or indigenous groups</option>
+            <option value="wProfessional certification/skills" selected = {this.state.mainProgramActivity.includes("Professional certification/skills")}>Professional certification/skills</option>
+            <option value="wShort-term technical/vocational course" selected = {this.state.mainProgramActivity.includes("Short-term technical/vocational course")}>Short-term technical/vocational course</option>
+            <option value="wLonger-term technical/vocational course" selected = {this.state.mainProgramActivity.includes("Longer-term technical/vocational course")}>Longer-term technical/vocational course</option>
+            <option value="oNon-formal education youth" selected = {this.state.mainProgramActivity.includes("Non-formal education youth")}>Non-formal education youth</option>
+            <option value=" Private Sector Delivery of Education" selected = {this.state.mainProgramActivity.includes("Private Sector Delivery of Education")}>Private Sector Delivery of Education</option>
+            <option value=" vocational training" selected = {this.state.mainProgramActivity.includes("vocational training")}>vocational training</option>
+            <option value=" Education Finance (system-level)" selected = {this.state.mainProgramActivity.includes("Education Finance (system-level)")}>Education Finance (system-level)</option>
+            <option value=" school finance" selected = {this.state.mainProgramActivity.includes("school finance")}>school finance</option>
+            <option value=" Capacity Building of Non-Education Professionals" selected = {this.state.mainProgramActivity.includes("Capacity Building of Non-Education Professionals")}>Capacity Building of Non-Education Professionals</option>
+            <option value=" Enrichment/New Pedagogical or Curricular Programs" selected = {this.state.mainProgramActivity.includes("Enrichment/New Pedagogical or Curricular Programs")}>Enrichment/New Pedagogical or Curricular Programs</option>
+            <option value=" Academic research/academic exchange" selected = {this.state.mainProgramActivity.includes("Academic research/academic exchange")}>Academic research/academic exchange</option>
+            <option value=" Main Programming Activity" selected = {this.state.mainProgramActivity.includes("Main Programming Activity")}>Main Programming Activity</option>
+            <option value=" All Programming Activities" selected = {this.state.mainProgramActivity.includes("All Programming Activities")}>All Programming Activities</option>
+            <option value=" Civic/community education" selected = {this.state.mainProgramActivity.includes("Civic/community education")}>Civic/community education</option>
+            <option value=" Scholarships and Financial Aid" selected = {this.state.mainProgramActivity.includes("Scholarships and Financial Aid")}>Scholarship and Financial Aid</option>
+            <option value=" Employment Skills program" selected = {this.state.mainProgramActivity.includes("Employment Skills program")}>Employment Skills program</option>
+            <option value=" Advocacy campaigns/initiatives/movements" selected = {this.state.mainProgramActivity.includes("Advocacy campaigns/initiatives/movements")}>Advocacy campaigns/initiatives/movements</option>
+            <option value=" Knowledge production/mobilization" selected = {this.state.mainProgramActivity.includes("Knowledge production/mobilization")}>Knowledge production/mobilization</option>
+            <option value=" Program targeting special needs or people with disabilities" selected = {this.state.mainProgramActivity.includes("Program targeting special needs or people with disabilities")}>Program targeting special needs or people with disabilities</option>
+            <option value=" Literacy skills" selected = {this.state.mainProgramActivity.includes("Literacy skills")}>Literacy skills</option>
+            <option value=" Maternal Health Education" selected = {this.state.mainProgramActivity.includes("Maternal Health Education")}>Maternal Health Education</option>
             </select>
 
             <p>Program Area</p>
-            <div id="programArea"></div>
-            <br></br>
+            <div id="programArea">
+              <p>
+                <i>{this.state.programArea}</i>
+              </p>
+            </div>
+            {this.fieldStatus(this.state.originalReviews.initiativeMainProgramActivityA)}
+            <br></br><br></br>
 
             <p>Other Programming Activities</p>
             <select id="programActivity" name="activity" onChange={this.addProgramActivity}>
@@ -2389,10 +2830,15 @@ class formSubmission extends React.Component{
                 }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.activitiesA)}
+            <br></br><br></br>
 
             <p>Fee to Access?</p>
-              <input type="radio" id="feeAccess1" name="feeToAccess" value="Yes" checked = {this.state.feeAccess === true} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess1">Yes</label>
-              <input type="radio" id="feeAccess2" name="feeToAccess" value="No" checked = {this.state.feeAccess === false} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess2">No</label>
+              <input type="radio" id="feeAccess1" name="feeToAccess" value="Yes" checked = {this.state.feeAccess === "Yes"} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess1">Yes</label>
+              <input type="radio" id="feeAccess2" name="feeToAccess" value="No" checked = {this.state.feeAccess === "No"} onChange={this.feeAccessChange}/> <label htmlFor="feeAccess2">No</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.feeAccessA)}
+            <br></br><br></br>
 
             <p>Target School Management Type</p>
             <select id="manType" name="managementType" onChange={this.addManagementType}>
@@ -2415,7 +2861,8 @@ class formSubmission extends React.Component{
                 }
               </ul>
             </div>
-
+            {this.fieldStatus(this.state.originalReviews.managementTypesA)}
+            <br></br><br></br>
 
             <p>Target Population Sector(s)<br></br>Select all that apply:</p>
             <select id="popSector" name="targetPopulationSector" onChange={this.addPopSector}>
@@ -3071,6 +3518,8 @@ class formSubmission extends React.Component{
                 }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.targetPopulationSectorsA)}
+            <br></br><br></br>
 
             <p>Outcomes Monitored<br></br>Select all that apply:</p>
             <select id="outcome" name="outcomesMonitored" onChange={this.addOutcome}>
@@ -3630,6 +4079,8 @@ class formSubmission extends React.Component{
                 }
               </ul>
             </div>
+            {this.fieldStatus(this.state.originalReviews.outcomesMonitoredA)}
+            <br></br><br></br>
 
 
             <div id="sourceOfFeesList"></div>
@@ -3638,21 +4089,25 @@ class formSubmission extends React.Component{
 
             <p>Name</p>
               <input type="text" id="iname" name="implementerName" value = {this.state.iname} placeholder="Implementer Name" onChange={this.handleChange}/>
+            {this.fieldStatus(this.state.originalReviews.inameA)}
+            <br></br><br></br>
 
             <p>Profit Motive</p>
               <input type="radio" id="impMotive1" name="impProfitMotive" value="Not-for-profit" checked = {this.state.impMotive === "Not-for-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive1">Not-For-Profit</label>
               <input type="radio" id="impMotive2" name="impProfitMotive" value="Hybrid" checked = {this.state.impMotive === "Hybrid"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive2">Hybrid</label>
               <input type="radio" id="impMotive3" name="impProfitMotive" value="For-profit" checked = {this.state.impMotive === "For-profit"} onChange={this.impMotiveChange}/> <label htmlFor="impMotive3">For-Profit</label>
+            <br></br>
+            {this.fieldStatus(this.state.originalReviews.impMotiveA)}
             <br></br><br></br>
 
             <h4>Comments about Submission</h4>
-              <textarea id="comments" name="comment" maxLength ="10000" placeholder="Write any comments you have about this form" onChange={this.handleChange}></textarea>
+              <textarea id="comments" name="comment" value = {this.state.comments} maxLength ="10000" placeholder="Write any comments you have about this form" onChange={this.handleChange}></textarea>
               <p>(10,000 character limit)</p>
             <br></br><br></br>
 
 
             <input type="submit"value="Submit" onChange/>
-            <br/><br/>
+            <br></br><br></br>
             {submitError}
             </form>
             </div>

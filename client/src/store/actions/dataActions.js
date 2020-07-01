@@ -7,7 +7,9 @@ import {
   CLEAR_REGISTER_ERROR,
   SET_USER,
   SET_REVIEW_FORM,
+  SET_REVIEW_APPROVED_FORM,
   SET_MODIFY_FORM,
+  SET_MODIFY_APPROVED_FORM,
   SET_ADD_FORM,
   PULLED_APPROVED_FORM,
   NOT_PULLED_APPROVED_FORM,
@@ -15,6 +17,9 @@ import {
   FORM_SUBMIT_SUCCESS,
   FORM_SUBMIT_ERROR,
   FORM_SUBMIT_CLEAR,
+  FORM_REVIEW_SUCCESS,
+  FORM_REVIEW_ERROR,
+  FORM_REVIEW_CLEAR,
 
   SET_FUNDER_DATA,
   SET_IMPLEMENTER_DATA,
@@ -82,7 +87,6 @@ export const getUser = () => (dispatch) => {
     {withCredentials: true, accepts: "application/json"})
     .then(response => {
       if (response.data.error == false) {
-        console.log(response)
         dispatch({type: SET_USER, payload: response.data.message[0]});
       } else {
         //If user not authorized to access content but they are set to authorized, need to log them out immediately
@@ -184,9 +188,9 @@ const readForm = (response => {
     });
   }
 
-  let status = [];
+  let status_comments = [];
   if (response.data.table15 !== undefined) {
-    status.push(response.data.table15);
+    status_comments.push(response.data.table15);
   }
 
   let reviews = [];
@@ -205,10 +209,10 @@ const readForm = (response => {
     website: response.data.table1[0].initiativeWebsite,
     startYear: startYear,
     endYear: endYear,
-    mainProgrammingArea: response.data.table1[0].mainProgrammingArea,
-    mainProgrammingActivity: response.data.table1[0].mainProgrammingActivity,
-    targetsWomen: response.data.table1[0].startYear == 0 ? false : true,
-    feeToAccess: response.data.table1[0].feeToAccess == 0 ? false: true,
+    mainProgrammingArea: response.data.table1[0].mainProgrammingArea !== null ? response.data.table1[0].mainProgrammingArea : '' ,
+    mainProgrammingActivity: response.data.table1[0].mainProgrammingActivity !== null ? response.data.table1[0].mainProgrammingActivity : '',
+    targetsWomen: response.data.table1[0].targetsWomen,
+    feeToAccess: response.data.table1[0].feeToAccess,
     regions: initiativeRegions,
     countriesOfOperation: initiativeCountries,
     programmingActivities: initiativeProgrammingActivities,
@@ -216,13 +220,13 @@ const readForm = (response => {
     launchCountry: initiativeLaunchCountries,
     targetGeographies: initiativeTargetGeographies,
     targetPopulationSectors: initiativeTargetPopulationSectors,
-    monitoredOutcomes:initiativeMonitoredOutcomes,
+    monitoredOutcomes: initiativeMonitoredOutcomes,
     mainEducationSubSectors: initiativeMainEducationSubsectors,
     educationSubSectors: initiativeEducationSubsectors,
     targetSchoolManagementType: initiativeTargetSchoolManagement,
     implementers: implementers,
     funders: funders,
-    status: status,
+    status: status_comments,
     reviews: reviews
   };
   return initiative;
@@ -241,12 +245,10 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
         const initiative = readForm(response);
         //Dispatch action to store form data in store
         if (getType == 'modify') {
-          dispatch({type: SET_MODIFY_FORM, payload: initiative});
-          dispatch({type: PULLED_APPROVED_FORM});
+          dispatch({type: SET_MODIFY_APPROVED_FORM, payload: initiative});
         }
         else if (getType == 'review') {
-          dispatch({type: SET_REVIEW_FORM, payload: initiative});
-          dispatch({type: PULLED_APPROVED_FORM});
+          dispatch({type: SET_REVIEW_APPROVED_FORM, payload: initiative});
         }
         dispatch({type: CLEAR_ACCESS_ERROR});
       }
@@ -337,7 +339,8 @@ const changeRequestRA = (form, isModified) => {
   return reqBody;
 }
 
-const changeRequest = (form, inDB, isModified) => {
+//Call on submission of new form or update of existing form from organization user, or on submission of review from RA user
+const changeRequest = (form, inDB, isModified, isReviewed) => {
   const reqBody = {
     fname: form.fname,
     furl: form.furl,
@@ -377,46 +380,46 @@ const changeRequest = (form, inDB, isModified) => {
     impMotive: form.impMotive,
 
     //Section Reviews - Only to be used when submitting into temp db
-    fnameA: 0,
-    furlA: 0,
-    motiveA: 0,
-    impactA: 0,
-    organizationFormA: 0,
+    fnameA: form.reviews.fnameA,
+    furlA: form.reviews.furlA,
+    motiveA: form.reviews.motiveA,
+    impactA: form.reviews.impactA,
+    organizationFormA: form.reviews.organizationFormA,
     // multi val funder
-    internationalBasesA: 0,
-    edSubsA: 0,
-    orgTraitsA: 0,
-    asialBasesA: 0,
-    asiaOperationsA: 0,
+    internationalBasesA: form.reviews.internationalBasesA,
+    edSubsA: form.reviews.edSubsA,
+    orgTraitsA: form.reviews.orgTraitsA,
+    asialBasesA: form.reviews.asialBasesA,
+    asiaOperationsA: form.reviews.asiaOperationsA,
     // single val initiative
-    initNameA: 0,
-    initURLA: 0,
-    tWomenA: 0,
-    initStartA: 0,
-    initEndA: 0,
-    idescriptionA: 0,
-    programAreaA: 0,
-    initiativeMainProgramActivityA: 0,
-    feeAccessA: 0,
+    initNameA: form.reviews.initNameA,
+    initURLA: form.reviews.initURLA,
+    tWomenA: form.reviews.tWomenA,
+    initStartA: form.reviews.initStartA,
+    initEndA: form.reviews.initEndA,
+    idescriptionA: form.reviews.idescriptionA,
+    programAreaA: form.reviews.programAreaA,
+    initiativeMainProgramActivityA: form.reviews.initiativeMainProgramActivityA,
+    feeAccessA: form.reviews.feeAccessA,
     // multi val initiative
-    regionsA: 0,
-    countriesA: 0,
-    activitiesA: 0,
-    sourceOfFeesA: 0,
-    launchCountryA: 0,
-    targetGeosA: 0,
-    targetPopulationSectorsA: 0,
-    outcomesMonitoredA: 0,
-    mEdSubsA: 0,
-    oEdSubsA: 0,
-    managementTypesA: 0,
+    regionsA: form.reviews.regionsA,
+    countriesA: form.reviews.countriesA,
+    activitiesA: form.reviews.activitiesA,
+    sourceOfFeesA: form.reviews.sourceOfFeesA,
+    launchCountryA: form.reviews.launchCountryA,
+    targetGeosA: form.reviews.targetGeosA,
+    targetPopulationSectorsA: form.reviews.targetPopulationSectorsA,
+    outcomesMonitoredA: form.reviews.outcomesMonitoredA,
+    mEdSubsA: form.reviews.mEdSubsA,
+    oEdSubsA: form.reviews.oEdSubsA,
+    managementTypesA: form.reviews.managementTypesA,
     // single val implementer
-    inameA: 0,
-    impMotiveA: 0,
+    inameA: form.reviews.inameA,
+    impMotiveA: form.reviews.impMotiveA,
     // single val other
     comments: form.comments,
-    needsReview: 1,
-    inDB: (inDB === true) ? 1 : 0
+    needsReview: form.needsReview,
+    inDB: isReviewed === true ? (form.needsReview === 1 ? 0 : 1) : (inDB === true ? 0 : (form.needsReview === 1 ? 0 : 1))
   }
 
   if (isModified) {
@@ -428,9 +431,9 @@ const changeRequest = (form, inDB, isModified) => {
   return reqBody;
 }
 
-//Organization user to modify existing form in either main or temp DB (could be in main DB since might have been approved)
+//Organization user to modify existing form from either main or temp DB (could be in main DB since might have been approved) and submit it to temp db
 export const modifyForm = (form, inDB, isModified) => (dispatch) => {
-  const req = changeRequest(form, inDB, isModified);
+  const req = changeRequest(form, inDB, isModified, false);
   axios.post(`/dashboard/update-form-temp`, req)
     .then(response => {
       dispatch({type: FORM_SUBMIT_SUCCESS});
@@ -452,9 +455,39 @@ export const modifyFormRA = (form, isModified) => (dispatch) => {
     })
 }
 
+//RA user to submit approved form to main db
+const approveForm = (form, isModified) => (dispatch) => {
+  const req = changeRequestRA(form, isModified);
+  axios.post(`/dashboard/update-form`, req)
+    .then(response => {
+      dispatch({type: FORM_REVIEW_SUCCESS});
+    })
+    .catch(err => {
+      dispatch({type: FORM_REVIEW_ERROR, payload: err});
+    })
+}
+
+//RA user to submit review of form to temp db
+export const reviewForm = (form, inDB, isModified) => (dispatch) => {
+  const req = changeRequest(form, inDB, isModified, true);
+  axios.post(`/dashboard/update-form-temp`, req)
+    .then(response => {
+      //If form is approved, then submit approval
+      if (form.needsReview === 0) {
+        dispatch(approveForm(form, true));
+      } else {
+        dispatch({type: FORM_REVIEW_SUCCESS});
+      }
+    })
+    .catch(err => {
+      dispatch({type: FORM_REVIEW_ERROR, payload: err});
+    })
+}
+
+
 //Organization user to add new form to temp DB
 export const addForm = (form, inDB, isModified) => (dispatch) => {
-  const req = changeRequest(form, inDB, isModified);
+  const req = changeRequest(form, inDB, isModified, false);
   axios.post(`/dashboard/submit-form-temp`, req)
     .then(response => {
       dispatch({type: FORM_SUBMIT_SUCCESS});
@@ -478,6 +511,10 @@ export const addFormRA = (form, isModified) => (dispatch) => {
 
 export const setFormSubmissionComplete = () => (dispatch) => {
   dispatch({type: FORM_SUBMIT_CLEAR});
+}
+
+export const setFormReviewComplete = () => (dispatch) => {
+  dispatch({type: FORM_REVIEW_CLEAR});
 }
 
 /////VISUALIZATION REQUESTS//////////////////////////////////////////////////////////

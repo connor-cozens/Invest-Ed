@@ -7,15 +7,20 @@ export const CLEAR_REGISTER_ERROR = 'CLEAR_REGISTER_ERROR';
 export const SET_USER = 'SET_USER'
 export const UNSET_USER = 'UNSET_USER';
 
-export const SET_REVIEW_FORM = 'SET_REVIEW_FORMS';
+export const SET_REVIEW_FORM = 'SET_REVIEW_FORM';
+export const SET_REVIEW_APPROVED_FORM = 'SET_REVIEW_APPROVED_FORM';
 export const SET_ADD_FORM = 'SET_ADD_FORM';
 export const SET_MODIFY_FORM = 'SET_MODIFY_FORM';
+export const SET_MODIFY_APPROVED_FORM = 'SET_MODIFY_APPROVED_FORM';
 export const PULLED_APPROVED_FORM = 'PULLED_APPROVED_FORM';
 export const NOT_PULLED_APPROVED_FORM = 'NOT_PULLED_APPROVED_FORM';
 export const CLEAR_FORM_STATUS = 'CLEAR_FORM_STATUS';
 export const FORM_SUBMIT_SUCCESS = 'FORM_SUBMIT_SUCCESS';
 export const FORM_SUBMIT_ERROR = 'FORM_SUBMIT_ERROR';
 export const FORM_SUBMIT_CLEAR = 'FORM_SUBMIT_CLEAR';
+export const FORM_REVIEW_SUCCESS = 'FORM_REVIEW_SUCCESS';
+export const FORM_REVIEW_ERROR = 'FORM_REVIEW_ERROR';
+export const FORM_REVIEW_CLEAR = 'FORM_REVIEW_CLEAR';
 
 export const SET_FUNDER_DATA = 'SET_FUNDER_DATA';
 export const SET_IMPLEMENTER_DATA = 'SET_IMPLEMENTER_DATA';
@@ -139,11 +144,25 @@ const dataReducer = (state = initState, action) => {
         form: action.payload,
         formStatus: 'review',
       };
+    case SET_REVIEW_APPROVED_FORM:
+      return {
+        ...state,
+        form: action.payload,
+        formStatus: 'review',
+        pulledformApproved: true
+      };
     case SET_MODIFY_FORM:
       return {
         ...state,
         form: action.payload,
         formStatus: 'modify'
+      };
+    case SET_MODIFY_APPROVED_FORM:
+      return {
+        ...state,
+        form: action.payload,
+        formStatus: 'modify',
+        pulledformApproved: true
       };
     case SET_ADD_FORM:
       return {
@@ -184,6 +203,24 @@ const dataReducer = (state = initState, action) => {
         ...state,
         formSubmitted: false,
         formSubmitError: action.payload
+      }
+    case FORM_REVIEW_SUCCESS:
+      return {
+        ...state,
+        formReviewed: true,
+        formReviewError: null
+      }
+    case FORM_REVIEW_CLEAR:
+      return {
+        ...state,
+        formReviewed: false,
+        formReviewError: null
+      }
+    case FORM_REVIEW_ERROR:
+      return {
+        ...state,
+        formReviewed: false,
+        formReviewError: action.payload
       }
 
 

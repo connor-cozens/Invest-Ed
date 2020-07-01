@@ -437,6 +437,7 @@ export const modifyForm = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequest(form, inDB, isModified, false);
   axios.post(`/dashboard/update-form-temp`, req)
     .then(response => {
+      console.log('updating')
       dispatch({type: FORM_SUBMIT_SUCCESS});
     })
     .catch(err => {
@@ -511,6 +512,7 @@ export const addFormRA = (form, isModified) => (dispatch) => {
 }
 
 export const setFormSubmissionComplete = () => (dispatch) => {
+  console.log('clearing')
   dispatch({type: FORM_SUBMIT_CLEAR});
 }
 

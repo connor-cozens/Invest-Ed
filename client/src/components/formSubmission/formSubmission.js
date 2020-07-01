@@ -84,7 +84,7 @@ class formSubmission extends React.Component{
       //Initial Implementer
       oimpMotive: null,
 
-      //Implementer, I barely know er!
+      //Implementer
       iname: null,
       impMotive: null,
 
@@ -1075,9 +1075,9 @@ class formSubmission extends React.Component{
           });
           //If an organization user, then submit modified form to temp db for review
           if (userData.accessLevel == 0) {
-            for (const [key, value] of Object.entries(this.state.reviews)) {
-              //Only allow submission if form fields have been updated
-              if (this.state.isUpdated === true) {
+            //Only allow submission if form fields have been updated
+            if (this.state.isUpdated === true) {
+              for (const [key, value] of Object.entries(this.state.reviews)) {
                 //If any field is found to be rejected, then form still requires further review
                 if (value == 0) {
                   this.state.needsReview = 1;
@@ -1085,8 +1085,8 @@ class formSubmission extends React.Component{
                 this.setState({
                   needsReview: this.state.needsReview
                 })
-                this.props.submitModifiedNonRA(this.state, this.props.inDB, true);
               }
+              this.props.submitModifiedNonRA(this.state, this.props.inDB, true);
             }
           }
           //Otherwise, if an RA or root user, submit modified form directly to main db

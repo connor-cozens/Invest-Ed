@@ -49,7 +49,7 @@ class formReview extends React.Component{
       oEdSubs: [],
       managementTypes: [],
 
-      //Implementer, I barely know er!
+      //Implementer
       iname: null,
       impMotive: null,
 
@@ -308,7 +308,7 @@ class formReview extends React.Component{
         });
         //If an RA or root user, then submit review to temp db
         if (userData.accessLevel !== 0) {
-          //Only allow submission if form fields have changed approval status
+          //Only allow submission if at least one of the form fields' approval status has been updated
           if (this.state.isUpdated === true) {
             this.state.needsReview = 0;  //Form is ready for approval is the initial assumption
             for (const [key, value] of Object.entries(this.state.reviews)) {

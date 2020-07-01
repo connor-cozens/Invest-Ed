@@ -87,7 +87,6 @@ export const getUser = () => (dispatch) => {
     {withCredentials: true, accepts: "application/json"})
     .then(response => {
       if (response.data.error == false) {
-        console.log(response)
         dispatch({type: SET_USER, payload: response.data.message[0]});
       } else {
         //If user not authorized to access content but they are set to authorized, need to log them out immediately
@@ -437,7 +436,6 @@ export const modifyForm = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequest(form, inDB, isModified, false);
   axios.post(`/dashboard/update-form-temp`, req)
     .then(response => {
-      console.log('updating')
       dispatch({type: FORM_SUBMIT_SUCCESS});
     })
     .catch(err => {
@@ -512,7 +510,6 @@ export const addFormRA = (form, isModified) => (dispatch) => {
 }
 
 export const setFormSubmissionComplete = () => (dispatch) => {
-  console.log('clearing')
   dispatch({type: FORM_SUBMIT_CLEAR});
 }
 

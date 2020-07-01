@@ -2076,7 +2076,6 @@ dashboard.post('/update-form', (req, res) =>{
          if (err){
            res.json(err)
          } else {
-           console.log('Num funder init: ' + JSON.parse(JSON.stringify(results)));
            numFunderInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(funderName)']));
            //If funder existed in temp already but hasnt been added to main db yet
            if (numFunderInitiatives == 0) {
@@ -2463,7 +2462,6 @@ dashboard.post('/update-form', (req, res) =>{
         if (err){
             console.log(err)
         } else {
-          // console.log("initiatives: " + JSON.parse(JSON.stringify(results[0])));
           let numInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(tagNumber)']));
           //If initiative doesn't exist in main db, insert initiative data. Otherwise, update existing initiative
           if (numInitiatives > 0) {
@@ -3623,7 +3621,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                if (err){
                    console.log(err)
                } else {
-                 // console.log("initiatives: " + JSON.parse(JSON.stringify(results[0][0]['COUNT(tagNumber)'])))
                  let numInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(tagNumber)']));
                  //If initiative doesn't exist in main db, insert initiative data. Otherwise, update existing initiative
                  if (numInitiatives > 0) {

@@ -1288,3 +1288,17 @@ export const getInitiativeImplementersByAttr = () => (dispatch) => {
       console.log(err);
     });
 }
+
+export const userSendEmail = (contents) => (dispatch) => {
+  axios.post(`/contact/email`, {
+  firstName: contents.firstName,
+  lastName: contents.lastName,
+  emailSubject: contents.emailSubject,
+  organization: contents.organization,
+  emailBody: contents.emailBody,
+  senderEmail: contents.senderEmail
+  })
+  .then(response => {
+    console.log("Emailed");
+  })
+}

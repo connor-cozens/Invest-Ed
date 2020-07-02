@@ -92,83 +92,83 @@ class formSubmission extends React.Component{
       comments: null,
 
       //Reviews
-      needsReview: null,
+      needsReview: 1,
       //Section Reviews
       originalReviews: {
-        fnameA: null,
-        furlA: null,
-        motiveA: null,
-        impactA: null,
-        organizationFormA: null,
+        fnameA: 0,
+        furlA: 0,
+        motiveA: 0,
+        impactA: 0,
+        organizationFormA: 0,
         // multi val funder
-        internationalBasesA: null,
-        edSubsA: null,
-        orgTraitsA: null,
-        asialBasesA: null,
-        asiaOperationsA: null,
+        internationalBasesA: 0,
+        edSubsA: 0,
+        orgTraitsA: 0,
+        asialBasesA: 0,
+        asiaOperationsA: 0,
         // single val initiative
-        initNameA: null,
-        initURLA: null,
-        tWomenA: null,
-        initStartA: null,
-        initEndA: null,
-        idescriptionA: null,
-        programAreaA: null,
-        initiativeMainProgramActivityA: null,
-        feeAccessA: null,
+        initNameA: 0,
+        initURLA: 0,
+        tWomenA: 0,
+        initStartA: 0,
+        initEndA: 0,
+        idescriptionA: 0,
+        programAreaA: 0,
+        initiativeMainProgramActivityA: 0,
+        feeAccessA: 0,
         // multi val initiative
-        regionsA: null,
-        countriesA: null,
-        activitiesA: null,
-        sourceOfFeesA: null,
-        launchCountryA: null,
-        targetGeosA: null,
-        targetPopulationSectorsA: null,
-        outcomesMonitoredA: null,
-        mEdSubsA: null,
-        oEdSubsA: null,
-        managementTypesA: null,
+        regionsA: 0,
+        countriesA: 0,
+        activitiesA: 0,
+        sourceOfFeesA: 0,
+        launchCountryA: 0,
+        targetGeosA: 0,
+        targetPopulationSectorsA: 0,
+        outcomesMonitoredA: 0,
+        mEdSubsA: 0,
+        oEdSubsA: 0,
+        managementTypesA: 0,
         // single val implementer
-        inameA: null,
-        impMotiveA: null
+        inameA: 0,
+        impMotiveA: 0
       },
       reviews: {
-        fnameA: null,
-        furlA: null,
-        motiveA: null,
-        impactA: null,
-        organizationFormA: null,
+        fnameA: 0,
+        furlA: 0,
+        motiveA: 0,
+        impactA: 0,
+        organizationFormA: 0,
         // multi val funder
-        internationalBasesA: null,
-        edSubsA: null,
-        orgTraitsA: null,
-        asialBasesA: null,
-        asiaOperationsA: null,
+        internationalBasesA: 0,
+        edSubsA: 0,
+        orgTraitsA: 0,
+        asialBasesA: 0,
+        asiaOperationsA: 0,
         // single val initiative
-        initNameA: null,
-        initURLA: null,
-        tWomenA: null,
-        initStartA: null,
-        initEndA: null,
-        idescriptionA: null,
-        programAreaA: null,
-        initiativeMainProgramActivityA: null,
-        feeAccessA: null,
+        initNameA: 0,
+        initURLA: 0,
+        tWomenA: 0,
+        initStartA: 0,
+        initEndA: 0,
+        idescriptionA: 0,
+        programAreaA: 0,
+        initiativeMainProgramActivityA: 0,
+        feeAccessA: 0,
         // multi val initiative
-        regionsA: null,
-        countriesA: null,
-        activitiesA: null,
-        sourceOfFeesA: null,
-        launchCountryA: null,
-        targetGeosA: null,
-        targetPopulationSectorsA: null,
-        outcomesMonitoredA: null,
-        mEdSubsA: null,
-        oEdSubsA: null,
-        managementTypesA: null,
+        regionsA: 0,
+        countriesA: 0,
+        activitiesA: 0,
+        sourceOfFeesA: 0,
+        launchCountryA: 0,
+        targetGeosA: 0,
+        targetPopulationSectorsA: 0,
+        outcomesMonitoredA: 0,
+        mEdSubsA: 0,
+        oEdSubsA: 0,
+        managementTypesA: 0,
         // single val implementer
-        inameA: null,
-        impMotiveA: null
+        inameA: 0,
+        impMotiveA: 0
       },
       isUpdated: null
     };
@@ -995,15 +995,17 @@ class formSubmission extends React.Component{
   }
 
   fieldStatus(fieldReview) {
-    if (this.state.needsReview === 1) {
-      if (fieldReview === 0) {
-        return (
-          <span class="badge badge-warning">Not approved</span>
-        )
-      } else {
-        return (
-          <span class="badge badge-success">Approved</span>
-        )
+    if (this.props.formStatus === 'modify') {
+      if (this.state.needsReview === 1) {
+        if (fieldReview === 0) {
+          return (
+            <span class="badge badge-warning">Not approved</span>
+          )
+        } else {
+          return (
+            <span class="badge badge-success">Approved</span>
+          )
+        }
       }
     }
   }
@@ -1112,7 +1114,7 @@ class formSubmission extends React.Component{
   }
 
   render(){
-    const {authorized, formSubmitted, formSubmitError} = this.props;
+    const {authorized, formSubmitted, formSubmitError, formStatus, inDB} = this.props;
     if (authorized === false) {
       return <Redirect to='/' />
     }
@@ -1138,14 +1140,24 @@ class formSubmission extends React.Component{
       ) : null
     );
 
-    const approvalFeedback = this.state.needsReview === 0 ? (
-      <div class="alert alert-dismissible alert-success">
-        <strong>This form has been approved.</strong> The information currently on this form is public.
-      </div>
-    ) :
-      <div class="alert alert-dismissible alert-danger">
-        <strong>This form is under review for approval.</strong> Please review the approval status of the below fields.
-      </div>
+    const approvalFeedback = formStatus === 'modify' ? (
+      inDB === true ? (
+        <div class="alert alert-dismissible alert-success">
+          <strong>This form has been approved.</strong> The information currently on this form is public.
+        </div>
+      ) : (
+        this.state.needsReview === 0 ? (
+          <div class="alert alert-dismissible alert-success">
+            <strong>This form has been approved.</strong> The information currently on this form is public.
+          </div>
+        ) : (
+          <div class="alert alert-dismissible alert-danger">
+            <strong>This form is under review for approval.</strong> Please review the approval status of the below fields.
+          </div>
+        )
+      )
+    ) : null
+
 
 
     return (

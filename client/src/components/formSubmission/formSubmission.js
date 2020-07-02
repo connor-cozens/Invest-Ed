@@ -2627,9 +2627,9 @@ class formSubmission extends React.Component{
             <option value="baseCase" selected = {this.state.mainProgramActivity === null}>Choose the Main Program Activity</option>
             <option value="Missing Data" selected = {this.state.mainProgramActivity.includes("Missing Data")}>Missing</option>
             <option value="Unclear" selected = {this.state.mainProgramActivity.includes("Unclear")}>Unclear</option>
-            <option value="aTransitional Support" selected = {this.state.mainProgramActivity.includes("Transitional Support")}>Transitional Support</option>
-            <option value="aIncreasing or Sustaining Enrollment" selected = {this.state.mainProgramActivity.includes("Increasing or Sustaining Enrollment")}>Increasing or Sustaining Enrollment</option>
-            <option value="aSchool Feeding Programs and Other Non-Financial Targeted Incentives" selected = {this.state.mainProgramActivity.includes("School Feeding Programs and Other Non-Financial Targeted Incentives")}>School Feeding Programs and Other Non-Financial Targeted Incentives</option>
+            <option value="aTransitional Support" selected = {this.state.mainProgramActivity.includes("Transitional support")}>Transitional Support</option>
+            <option value="aIncreasing or Sustaining Enrollment" selected = {this.state.mainProgramActivity.includes("Increasing or sustaining enrollment")}>Increasing or Sustaining Enrollment</option>
+            <option value="aSchool Feeding Programs and Other Non-Financial Targeted Incentives" selected = {this.state.mainProgramActivity.includes("school feeding programs and other non-financial targeted incentives")}>School Feeding Programs and Other Non-Financial Targeted Incentives</option>
             <option value="aPrograms to improve access and equity in education" selected = {this.state.mainProgramActivity.includes("Programs to improve access and equity in education")}>Programs to improve access and equity in education</option>
             <option value="aAdult literacy and numeracy programs" selected = {this.state.mainProgramActivity.includes("Adult literacy and numeracy programs")}>Adult literacy and numeracy programs</option>
             <option value="eSchool Infrastructure and equipment" selected = {this.state.mainProgramActivity.includes("School Infrastructure and equipment")}>School Infrastructure and equipment</option>

@@ -1992,7 +1992,7 @@ class formSubmission extends React.Component{
             {this.fieldStatus(this.state.originalReviews.initEndA)}
             <br></br><br></br>
 
-            <p>Launch Country</p>
+            <p>Launch Countries</p>
             <select id="launchCountry" name="launchCountry" onChange={this.addLaunchCountry}>
             <option value="baseCase">Choose the Countries of Operation</option>
             <option value="Afghanistan">Afghanistan</option>

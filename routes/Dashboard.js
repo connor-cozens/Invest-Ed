@@ -1419,7 +1419,18 @@ function function16(val){
             })
     }
 
-   res.json("Form successfully added to the DB")
+    client.exists('tagNumber', function(err, reply){
+        if(reply != 1){
+           client.set('tagNumber', 1521)
+        }else{
+            client.incr('tagNumber')
+            client.get('tagNumber', function(err, reply){
+              console.log(reply)
+            })
+        }
+    })
+
+    res.json("Form successfully added to the DB")
 
 })
 
@@ -2053,8 +2064,18 @@ function function5(val){
         })
     }
 
-   res.json("Form successfully added to the DB")
+    client.exists('tagNumber', function(err, reply){
+        if(reply != 1){
+           client.set('tagNumber', 1521)
+        }else{
+            client.incr('tagNumber')
+            client.get('tagNumber', function(err, reply){
+              console.log(reply)
+            })
+        }
+    })
 
+    res.json("Form successfully added to the DB")
 })
 
 dashboard.post('/update-form', (req, res) =>{

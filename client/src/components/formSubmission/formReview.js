@@ -387,7 +387,6 @@ class formReview extends React.Component{
   }
 
   render(){
-    console.log(this.state.isUnsaved)
     const {authorized, formReviewed, formReviewError} = this.props;
     if (authorized === false) {
       return <Redirect to='/' />

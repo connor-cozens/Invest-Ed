@@ -11,7 +11,12 @@ const FormSubmissionSuccess = (props) => {
 
   useEffect(() => {
     window.onpopstate = (e) => {
-      history.push('/dashboard')
+      history.push({
+        pathname: '/dashboard',
+        state: {
+          confirmed: true
+        }
+      });
     }
   }, [history])
 

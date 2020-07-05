@@ -213,7 +213,6 @@ class formSubmission extends React.Component{
     if (props.formStatus === 'modify') {
       if (props.location.state !== undefined) {
         if (props.location.state.savedState !== undefined) {
-          console.log('hi')
           const {savedState, isUnsaved} = props.location.state;
           this.setState({
             //Original value Setters
@@ -579,7 +578,6 @@ class formSubmission extends React.Component{
   componentDidUpdate = () => {
     //On browser back button click
     window.onpopstate = (e) => {
-      console.log(this.state.isUnsaved);
       //If one of the fields was changed or inputted, then stay on page, otherwise leave page
       if (this.state.fname !== this.state.originalFunderName ||
           this.state.furl !== this.state.ofurl ||
@@ -1387,7 +1385,6 @@ class formSubmission extends React.Component{
   }
 
   render(){
-    console.log(this.state.isUnsaved)
     const {authorized, formSubmitted, formSubmitError, formStatus, inDB} = this.props;
     if (authorized === false) {
       return <Redirect to='/' />

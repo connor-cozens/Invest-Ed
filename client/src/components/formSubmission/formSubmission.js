@@ -170,7 +170,8 @@ class formSubmission extends React.Component{
         inameA: 0,
         impMotiveA: 0
       },
-      isUpdated: null
+      isUpdated: null,
+      isUnsaved: false
     };
 
     this.addIBase = this.addIBase.bind(this);
@@ -203,221 +204,475 @@ class formSubmission extends React.Component{
     this.startYearChange = this.startYearChange.bind(this);
     this.endYearChange = this.endYearChange.bind(this);
     this.fieldStatus = this.fieldStatus.bind(this);
+    this.handleLeave = this.handleLeave.bind(this);
+    this.handleStay = this.handleStay.bind(this);
   }
 
   componentDidMount = () => {
     const {props} = this;
     if (props.formStatus === 'modify') {
-      this.setState({
-        //Original value Setters
-        tagNum: props.form.tagNumber,
-        originalFunderName: props.form.funders.length > 0 ? props.form.funders[0].funderName : null,  //For now, retrieving and displaying first funder in the funder list
-        originalImplementerName: props.form.implementers.length > 0 ? props.form.implementers[0].implementorName : null,  //For now, retrieving and displaying first implementer in the implementer list
+      if (props.location.state !== undefined) {
+        if (props.location.state.savedState !== undefined) {
+          console.log('hi')
+          const {savedState, isUnsaved} = props.location.state;
+          this.setState({
+            //Original value Setters
+            tagNum: savedState.tagNum,
+            originalFunderName: savedState.originalFunderName,
+            originalImplementerName: savedState.originalImplementerName,
 
-        //Original Initiative setters
-        oinitName: props.form.name,
-        oinitURL: props.form.website,
-        otWomen: props.form.targetsWomen,
-        oinitStart: props.form.startYear,
-        oinitEnd: props.form.endYear,
-        olaunchCountries: props.form.launchCountry !== undefined ? JSON.parse(JSON.stringify(props.form.launchCountry)) : [],
-        oidescription: props.form.description,
-        otargetGeos: props.form.targetGeographies.length !== undefined ? JSON.parse(JSON.stringify(props.form.targetGeographies)) : [],
-        omainProgramActivity: props.form.mainProgrammingActivity !== undefined ? props.form.mainProgrammingActivity : '',
-        oprogramArea: props.form.mainProgrammingArea !== undefined ? props.form.mainProgrammingArea : '',
-        ofeeAccess: props.form.feeToAccess,
-        otargetPopulationSectors: props.form.targetPopulationSectors !== undefined ? JSON.parse(JSON.stringify(props.form.targetPopulationSectors)) : [],
-        oOutcomesMonitored: props.form.monitoredOutcomes !== undefined ? JSON.parse(JSON.stringify(props.form.monitoredOutcomes)) : [],
-        omEdSubs: props.form.mainEducationSubSectors !== undefined ? JSON.parse(JSON.stringify(props.form.mainEducationSubSectors)) : [],
-        oOEdSubs: props.form.educationSubSectors !== undefined ? JSON.parse(JSON.stringify(props.form.educationSubSectors)) : [],
-        omanagementTypes: props.form.targetSchoolManagementType !== undefined ? JSON.parse(JSON.stringify(props.form.targetSchoolManagementType)) : [],
-        oregions: props.form.regions !== undefined ? JSON.parse(JSON.stringify(props.form.regions)) : [],
-        ocountries: props.form.countriesOfOperation !== undefined ? JSON.parse(JSON.stringify(props.form.countriesOfOperation)) : [],
-        oactivities: props.form.programmingActivities !== undefined ? JSON.parse(JSON.stringify(props.form.programmingActivities)) : [],
-        osourceOfFees: props.form.sourcesOfFunding !== undefined ? props.form.sourcesOfFunding : [],
+            //Original Initiative setters
+            oinitName: savedState.oinitName,
+            oinitURL: savedState.oinitURL,
+            otWomen: savedState.otWomen,
+            oinitStart: savedState.oinitStart,
+            oinitEnd: savedState.oinitEnd,
+            olaunchCountries: savedState.olaunchCountries,
+            oidescription: savedState.oidescription,
+            otargetGeos: savedState.otargetGeos,
+            omainProgramActivity: savedState.omainProgramActivity,
+            oprogramArea: savedState.oprogramArea,
+            ofeeAccess: savedState.ofeeAccess,
+            otargetPopulationSectors: savedState.otargetPopulationSectors,
+            oOutcomesMonitored: savedState.oOutcomesMonitored,
+            omEdSubs: savedState.omEdSubs,
+            oOEdSubs: savedState.oOEdSubs,
+            omanagementTypes: savedState.omanagementTypes,
+            oregions: savedState.oregions,
+            ocountries: savedState.ocountries,
+            oactivities: savedState.oactivities,
+            osourceOfFees: savedState.osourceOfFees,
 
-        //Initiative setters
-        initName: props.form.name,
-        initURL: props.form.website,
-        tWomen: props.form.targetsWomen,
-        initStart: props.form.startYear,
-        initEnd: props.form.endYear,
-        launchCountries: props.form.launchCountry !== undefined ? props.form.launchCountry : [],
-        idescription: props.form.description,
-        targetGeos: props.form.targetGeographies.length !== undefined ? props.form.targetGeographies : [],
-        mainProgramActivity: props.form.mainProgrammingActivity !== undefined ? props.form.mainProgrammingActivity : '',
-        programArea: props.form.mainProgrammingArea !== undefined ? props.form.mainProgrammingArea : '',
-        feeAccess: props.form.feeToAccess,
-        targetPopulationSectors: props.form.targetPopulationSectors !== undefined ? props.form.targetPopulationSectors : [],
-        outcomesMonitored: props.form.monitoredOutcomes !== undefined ? props.form.monitoredOutcomes : [],
-        mEdSubs: props.form.mainEducationSubSectors !== undefined ? props.form.mainEducationSubSectors : [],
-        oEdSubs: props.form.educationSubSectors !== undefined ? props.form.educationSubSectors : [],
-        managementTypes: props.form.targetSchoolManagementType !== undefined ? props.form.targetSchoolManagementType : [],
-        regions: props.form.regions !== undefined ? props.form.regions : [],
-        countries: props.form.countriesOfOperation !== undefined ? props.form.countriesOfOperation : [],
-        activities: props.form.programmingActivities !== undefined ? props.form.programmingActivities : [],
-        sourceOfFees: props.form.sourcesOfFunding !== undefined ? props.form.sourcesOfFunding : [],
+            //Initiative setters
+            initName: savedState.initName,
+            initURL: savedState.initURL,
+            tWomen: savedState.tWomen,
+            initStart: savedState.initStart,
+            initEnd: savedState.initEnd,
+            launchCountries: savedState.launchCountries,
+            idescription: savedState.idescription,
+            targetGeos: savedState.targetGeos,
+            mainProgramActivity: savedState.mainProgramActivity,
+            programArea: savedState.programArea,
+            feeAccess: savedState.feeAccess,
+            targetPopulationSectors: savedState.targetPopulationSectors,
+            outcomesMonitored: savedState.outcomesMonitored,
+            mEdSubs: savedState.mEdSubs,
+            oEdSubs: savedState.oEdSubs,
+            managementTypes: savedState.managementTypes,
+            regions: savedState.regions,
+            countries: savedState.countries,
+            activities: savedState.activities,
+            sourceOfFees: savedState.sourceOfFees,
 
-        //Original Funder Setters
-        ofurl: props.form.funders.length > 0 ? props.form.funders[0].funderWebsite : null,
-        omotive: props.form.funders.length > 0 ? props.form.funders[0].profitMotive : null,
-        oOrganizationForm: props.form.funders.length > 0 ? props.form.funders[0].organizationalForm : null,
-        oimpact: props.form.funders.length > 0 ? props.form.funders[0].impactInvesting : null,
-        //Multi-valued funder attribute setters
-        oedSubs: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].educationSubsector !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].educationSubsector)) : []) : []) : [],
-        oOrgTraits: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].trait !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].trait)) : []) : []) : [],
-        oasiaIBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaBase !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].asiaBase)) : []) : []) : [],
-        oasiaOperations: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaOperatons !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].asiaOperatons)) : []) : []) : [],
-        ointernationalBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].baseLocation !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].baseLocation)) : []) : []) : [],
+            //Original Funder Setters
+            ofurl: savedState.ofurl,
+            omotive: savedState.omotive,
+            oOrganizationForm: savedState.oOrganizationForm,
+            oimpact: savedState.oimpact,
+            //Multi-valued funder attribute setters
+            oedSubs: savedState.oedSubs,
+            oOrgTraits: savedState.oOrgTraits,
+            oasiaIBases: savedState.oasiaIBases,
+            oasiaOperations: savedState.oasiaOperations,
+            ointernationalBases: savedState.ointernationalBases,
 
-        //Funder Setters
-        fname: props.form.funders.length > 0 ? props.form.funders[0].funderName : null,
-        furl: props.form.funders.length > 0 ? props.form.funders[0].funderWebsite : null,
-        motive: props.form.funders.length > 0 ? props.form.funders[0].profitMotive : null,
-        organizationForm: props.form.funders.length > 0 ? props.form.funders[0].organizationalForm : null,
-        impact: props.form.funders.length > 0 ? props.form.funders[0].impactInvesting : null,
-        //Multi-valued funder attribute setters
-        edSubs: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].educationSubsector !== undefined ? props.form.funders[0].educationSubsector : []) : []) : [],
-        orgTraits: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].trait !== undefined ? props.form.funders[0].trait : []) : []) : [],
-        asiaIBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaBase !== undefined ? props.form.funders[0].asiaBase : []) : []) : [],
-        asiaOperations: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaOperatons !== undefined ? props.form.funders[0].asiaOperatons : []) : []) : [],
-        internationalBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].baseLocation !== undefined ? props.form.funders[0].baseLocation : []) : []) : [],
+            //Funder Setters
+            fname: savedState.fname,
+            furl: savedState.furl,
+            motive: savedState.motive,
+            organizationForm: savedState.organizationForm,
+            impact: savedState.impact,
+            //Multi-valued funder attribute setters
+            edSubs: savedState.edSubs,
+            orgTraits: savedState.orgTraits,
+            asiaIBases: savedState.asiaIBases,
+            asiaOperations: savedState.asiaOperations,
+            internationalBases: savedState.internationalBases,
 
-        //Original Implementer Setters
-        oimpMotive: props.form.implementers.length > 0 ? props.form.implementers[0].profitMotive : null,
+            //Original Implementer Setters
+            oimpMotive: savedState.oimpMotive,
 
-        //Implementer Setters
-        iname: props.form.implementers.length > 0 ? props.form.implementers[0].implementorName : null,
-        impMotive: props.form.implementers.length > 0 ? props.form.implementers[0].profitMotive : null,
+            //Implementer Setters
+            iname: savedState.iname,
+            impMotive: savedState.impMotive,
 
-        //Other Setters
-        comments: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].comment !== undefined ? props.form.status[0][0].comment : '') : '') : '') : '',
+            //Other Setters
+            comments: savedState.comments,
 
-        //Review Setters
-        needsReview: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].needsReview !== undefined ? props.form.status[0][0].needsReview : null) : null) : null) : null,
-        originalReviews: {
-          fnameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null) : 1,
-          furlA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderUrlApproval : null) : null) : null) : null) : 1,
-          motiveA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderMotiveApproval : null) : null) : null) : null) : 1,
-          impactA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderImpactApproval : null) : null) : null) : null) : 1,
-          organizationFormA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrganizationFormApproval : null) : null) : null) : null) : 1,
-          // multi val funder
-          internationalBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderInternationalBaseApproval : null) : null) : null) : null) : 1,
-          edSubsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderEdSubsApproval : null) : null) : null) : null) : 1,
-          orgTraitsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrgTraitsApproval : null) : null) : null) : null) : 1,
-          asialBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaBasesApproval : null) : null) : null) : null) : 1,
-          asiaOperationsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaOperationsApproval : null) : null) : null) : null) : 1,
-          // single val initiative
-          initNameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initNameApproval : null) : null) : null) : null) : 1,
-          initURLA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initUrlApproval : null) : null) : null) : null) : 1,
-          tWomenA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetsWomenApproval : null) : null) : null) : null) : 1,
-          initStartA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initStartApproval : null) : null) : null) : null) : 1,
-          initEndA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initEndApproval : null) : null) : null) : null) : 1,
-          idescriptionA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initDescriptionApproval : null) : null) : null) : null) : 1,
-          programAreaA: 1, //set to approved as this is not based on user input
-          initiativeMainProgramActivityA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMainProgramActivityApproval : null) : null) : null) : null) : 1,
-          feeAccessA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initFeeAccessApproval : null) : null) : null) : null) : 1,
-          // multi val initiative
-          regionsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initRegionsApproval : null) : null) : null) : null) : 1,
-          countriesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initCountriesApproval : null) : null) : null) : null) : 1,
-          activitiesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initActivitiesApproval : null) : null) : null) : null) : 1,
-          sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
-          launchCountryA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initLaunchCountryApproval : null) : null) : null) : null) : 1,
-          targetGeosA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetGeoApproval : null) : null) : null) : null) : 1,
-          targetPopulationSectorsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetPopulationSectorApproval : null) : null) : null) : null) : 1,
-          outcomesMonitoredA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOutcomesMonitoredApproval : null) : null) : null) : null) : 1,
-          mEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMEdSubsApproval : null) : null) : null) : null) : 1,
-          oEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOEdSubsApproval : null) : null) : null) : null) : 1,
-          managementTypesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initManagementTypesApproval : null) : null) : null) : null) : 1,
-          // single val implementer
-          inameA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorNameApproval : null) : null) : null) : null) : 1,
-          impMotiveA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorMotiveApproval : null) : null) : null) : null) : 1
-        },
-        reviews: {
-          fnameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null) : 1,
-          furlA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderUrlApproval : null) : null) : null) : null) : 1,
-          motiveA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderMotiveApproval : null) : null) : null) : null) : 1,
-          impactA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderImpactApproval : null) : null) : null) : null) : 1,
-          organizationFormA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrganizationFormApproval : null) : null) : null) : null) : 1,
-          // multi val funder
-          internationalBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderInternationalBaseApproval : null) : null) : null) : null) : 1,
-          edSubsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderEdSubsApproval : null) : null) : null) : null) : 1,
-          orgTraitsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrgTraitsApproval : null) : null) : null) : null) : 1,
-          asialBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaBasesApproval : null) : null) : null) : null) : 1,
-          asiaOperationsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaOperationsApproval : null) : null) : null) : null) : 1,
-          // single val initiative
-          initNameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initNameApproval : null) : null) : null) : null) : 1,
-          initURLA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initUrlApproval : null) : null) : null) : null) : 1,
-          tWomenA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetsWomenApproval : null) : null) : null) : null) : 1,
-          initStartA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initStartApproval : null) : null) : null) : null) : 1,
-          initEndA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initEndApproval : null) : null) : null) : null) : 1,
-          idescriptionA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initDescriptionApproval : null) : null) : null) : null) : 1,
-          programAreaA: 1, //set to approved as this is not based on user input
-          initiativeMainProgramActivityA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMainProgramActivityApproval : null) : null) : null) : null) : 1,
-          feeAccessA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initFeeAccessApproval : null) : null) : null) : null) : 1,
-          // multi val initiative
-          regionsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initRegionsApproval : null) : null) : null) : null) : 1,
-          countriesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initCountriesApproval : null) : null) : null) : null) : 1,
-          activitiesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initActivitiesApproval : null) : null) : null) : null) : 1,
-          sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
-          launchCountryA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initLaunchCountryApproval : null) : null) : null) : null) : 1,
-          targetGeosA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetGeoApproval : null) : null) : null) : null) : 1,
-          targetPopulationSectorsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetPopulationSectorApproval : null) : null) : null) : null) : 1,
-          outcomesMonitoredA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOutcomesMonitoredApproval : null) : null) : null) : null) : 1,
-          mEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMEdSubsApproval : null) : null) : null) : null) : 1,
-          oEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOEdSubsApproval : null) : null) : null) : null) : 1,
-          managementTypesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initManagementTypesApproval : null) : null) : null) : null) : 1,
-          // single val implementer
-          inameA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorNameApproval : null) : null) : null) : null) : 1,
-          impMotiveA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorMotiveApproval : null) : null) : null) : null) : 1
+            //Review Setters
+            needsReview: savedState.needsReview,
+            originalReviews: savedState.originalReviews,
+            reviews: savedState.reviews,
+            isUnsaved: isUnsaved
+          });
         }
-      });
+      } else {
+        this.setState({
+          //Original value Setters
+          tagNum: props.form.tagNumber,
+          originalFunderName: props.form.funders.length > 0 ? props.form.funders[0].funderName : null,  //For now, retrieving and displaying first funder in the funder list
+          originalImplementerName: props.form.implementers.length > 0 ? props.form.implementers[0].implementorName : null,  //For now, retrieving and displaying first implementer in the implementer list
+
+          //Original Initiative setters
+          oinitName: props.form.name,
+          oinitURL: props.form.website,
+          otWomen: props.form.targetsWomen,
+          oinitStart: props.form.startYear,
+          oinitEnd: props.form.endYear,
+          olaunchCountries: props.form.launchCountry !== undefined ? JSON.parse(JSON.stringify(props.form.launchCountry)) : [],
+          oidescription: props.form.description,
+          otargetGeos: props.form.targetGeographies.length !== undefined ? JSON.parse(JSON.stringify(props.form.targetGeographies)) : [],
+          omainProgramActivity: props.form.mainProgrammingActivity !== undefined ? props.form.mainProgrammingActivity : '',
+          oprogramArea: props.form.mainProgrammingArea !== undefined ? props.form.mainProgrammingArea : '',
+          ofeeAccess: props.form.feeToAccess,
+          otargetPopulationSectors: props.form.targetPopulationSectors !== undefined ? JSON.parse(JSON.stringify(props.form.targetPopulationSectors)) : [],
+          oOutcomesMonitored: props.form.monitoredOutcomes !== undefined ? JSON.parse(JSON.stringify(props.form.monitoredOutcomes)) : [],
+          omEdSubs: props.form.mainEducationSubSectors !== undefined ? JSON.parse(JSON.stringify(props.form.mainEducationSubSectors)) : [],
+          oOEdSubs: props.form.educationSubSectors !== undefined ? JSON.parse(JSON.stringify(props.form.educationSubSectors)) : [],
+          omanagementTypes: props.form.targetSchoolManagementType !== undefined ? JSON.parse(JSON.stringify(props.form.targetSchoolManagementType)) : [],
+          oregions: props.form.regions !== undefined ? JSON.parse(JSON.stringify(props.form.regions)) : [],
+          ocountries: props.form.countriesOfOperation !== undefined ? JSON.parse(JSON.stringify(props.form.countriesOfOperation)) : [],
+          oactivities: props.form.programmingActivities !== undefined ? JSON.parse(JSON.stringify(props.form.programmingActivities)) : [],
+          osourceOfFees: props.form.sourcesOfFunding !== undefined ? props.form.sourcesOfFunding : [],
+
+          //Initiative setters
+          initName: props.form.name,
+          initURL: props.form.website,
+          tWomen: props.form.targetsWomen,
+          initStart: props.form.startYear,
+          initEnd: props.form.endYear,
+          launchCountries: props.form.launchCountry !== undefined ? props.form.launchCountry : [],
+          idescription: props.form.description,
+          targetGeos: props.form.targetGeographies.length !== undefined ? props.form.targetGeographies : [],
+          mainProgramActivity: props.form.mainProgrammingActivity !== undefined ? props.form.mainProgrammingActivity : '',
+          programArea: props.form.mainProgrammingArea !== undefined ? props.form.mainProgrammingArea : '',
+          feeAccess: props.form.feeToAccess,
+          targetPopulationSectors: props.form.targetPopulationSectors !== undefined ? props.form.targetPopulationSectors : [],
+          outcomesMonitored: props.form.monitoredOutcomes !== undefined ? props.form.monitoredOutcomes : [],
+          mEdSubs: props.form.mainEducationSubSectors !== undefined ? props.form.mainEducationSubSectors : [],
+          oEdSubs: props.form.educationSubSectors !== undefined ? props.form.educationSubSectors : [],
+          managementTypes: props.form.targetSchoolManagementType !== undefined ? props.form.targetSchoolManagementType : [],
+          regions: props.form.regions !== undefined ? props.form.regions : [],
+          countries: props.form.countriesOfOperation !== undefined ? props.form.countriesOfOperation : [],
+          activities: props.form.programmingActivities !== undefined ? props.form.programmingActivities : [],
+          sourceOfFees: props.form.sourcesOfFunding !== undefined ? props.form.sourcesOfFunding : [],
+
+          //Original Funder Setters
+          ofurl: props.form.funders.length > 0 ? props.form.funders[0].funderWebsite : null,
+          omotive: props.form.funders.length > 0 ? props.form.funders[0].profitMotive : null,
+          oOrganizationForm: props.form.funders.length > 0 ? props.form.funders[0].organizationalForm : null,
+          oimpact: props.form.funders.length > 0 ? props.form.funders[0].impactInvesting : null,
+          //Multi-valued funder attribute setters
+          oedSubs: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].educationSubsector !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].educationSubsector)) : []) : []) : [],
+          oOrgTraits: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].trait !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].trait)) : []) : []) : [],
+          oasiaIBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaBase !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].asiaBase)) : []) : []) : [],
+          oasiaOperations: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaOperatons !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].asiaOperatons)) : []) : []) : [],
+          ointernationalBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].baseLocation !== undefined ? JSON.parse(JSON.stringify(props.form.funders[0].baseLocation)) : []) : []) : [],
+
+          //Funder Setters
+          fname: props.form.funders.length > 0 ? props.form.funders[0].funderName : null,
+          furl: props.form.funders.length > 0 ? props.form.funders[0].funderWebsite : null,
+          motive: props.form.funders.length > 0 ? props.form.funders[0].profitMotive : null,
+          organizationForm: props.form.funders.length > 0 ? props.form.funders[0].organizationalForm : null,
+          impact: props.form.funders.length > 0 ? props.form.funders[0].impactInvesting : null,
+          //Multi-valued funder attribute setters
+          edSubs: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].educationSubsector !== undefined ? props.form.funders[0].educationSubsector : []) : []) : [],
+          orgTraits: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].trait !== undefined ? props.form.funders[0].trait : []) : []) : [],
+          asiaIBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaBase !== undefined ? props.form.funders[0].asiaBase : []) : []) : [],
+          asiaOperations: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].asiaOperatons !== undefined ? props.form.funders[0].asiaOperatons : []) : []) : [],
+          internationalBases: props.form.funders !== undefined ? (props.form.funders.length > 0 ? (props.form.funders[0].baseLocation !== undefined ? props.form.funders[0].baseLocation : []) : []) : [],
+
+          //Original Implementer Setters
+          oimpMotive: props.form.implementers.length > 0 ? props.form.implementers[0].profitMotive : null,
+
+          //Implementer Setters
+          iname: props.form.implementers.length > 0 ? props.form.implementers[0].implementorName : null,
+          impMotive: props.form.implementers.length > 0 ? props.form.implementers[0].profitMotive : null,
+
+          //Other Setters
+          comments: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].comment !== undefined ? props.form.status[0][0].comment : '') : '') : '') : '',
+
+          //Review Setters
+          needsReview: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].needsReview !== undefined ? props.form.status[0][0].needsReview : null) : null) : null) : null,
+          originalReviews: {
+            fnameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null) : 1,
+            furlA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderUrlApproval : null) : null) : null) : null) : 1,
+            motiveA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderMotiveApproval : null) : null) : null) : null) : 1,
+            impactA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderImpactApproval : null) : null) : null) : null) : 1,
+            organizationFormA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrganizationFormApproval : null) : null) : null) : null) : 1,
+            // multi val funder
+            internationalBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderInternationalBaseApproval : null) : null) : null) : null) : 1,
+            edSubsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderEdSubsApproval : null) : null) : null) : null) : 1,
+            orgTraitsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrgTraitsApproval : null) : null) : null) : null) : 1,
+            asialBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaBasesApproval : null) : null) : null) : null) : 1,
+            asiaOperationsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaOperationsApproval : null) : null) : null) : null) : 1,
+            // single val initiative
+            initNameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initNameApproval : null) : null) : null) : null) : 1,
+            initURLA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initUrlApproval : null) : null) : null) : null) : 1,
+            tWomenA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetsWomenApproval : null) : null) : null) : null) : 1,
+            initStartA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initStartApproval : null) : null) : null) : null) : 1,
+            initEndA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initEndApproval : null) : null) : null) : null) : 1,
+            idescriptionA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initDescriptionApproval : null) : null) : null) : null) : 1,
+            programAreaA: 1, //set to approved as this is not based on user input
+            initiativeMainProgramActivityA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMainProgramActivityApproval : null) : null) : null) : null) : 1,
+            feeAccessA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initFeeAccessApproval : null) : null) : null) : null) : 1,
+            // multi val initiative
+            regionsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initRegionsApproval : null) : null) : null) : null) : 1,
+            countriesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initCountriesApproval : null) : null) : null) : null) : 1,
+            activitiesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initActivitiesApproval : null) : null) : null) : null) : 1,
+            sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
+            launchCountryA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initLaunchCountryApproval : null) : null) : null) : null) : 1,
+            targetGeosA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetGeoApproval : null) : null) : null) : null) : 1,
+            targetPopulationSectorsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetPopulationSectorApproval : null) : null) : null) : null) : 1,
+            outcomesMonitoredA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOutcomesMonitoredApproval : null) : null) : null) : null) : 1,
+            mEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMEdSubsApproval : null) : null) : null) : null) : 1,
+            oEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOEdSubsApproval : null) : null) : null) : null) : 1,
+            managementTypesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initManagementTypesApproval : null) : null) : null) : null) : 1,
+            // single val implementer
+            inameA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorNameApproval : null) : null) : null) : null) : 1,
+            impMotiveA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorMotiveApproval : null) : null) : null) : null) : 1
+          },
+          reviews: {
+            fnameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null) : 1,
+            furlA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderUrlApproval : null) : null) : null) : null) : 1,
+            motiveA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderMotiveApproval : null) : null) : null) : null) : 1,
+            impactA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderImpactApproval : null) : null) : null) : null) : 1,
+            organizationFormA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrganizationFormApproval : null) : null) : null) : null) : 1,
+            // multi val funder
+            internationalBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderInternationalBaseApproval : null) : null) : null) : null) : 1,
+            edSubsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderEdSubsApproval : null) : null) : null) : null) : 1,
+            orgTraitsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrgTraitsApproval : null) : null) : null) : null) : 1,
+            asialBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaBasesApproval : null) : null) : null) : null) : 1,
+            asiaOperationsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaOperationsApproval : null) : null) : null) : null) : 1,
+            // single val initiative
+            initNameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initNameApproval : null) : null) : null) : null) : 1,
+            initURLA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initUrlApproval : null) : null) : null) : null) : 1,
+            tWomenA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetsWomenApproval : null) : null) : null) : null) : 1,
+            initStartA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initStartApproval : null) : null) : null) : null) : 1,
+            initEndA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initEndApproval : null) : null) : null) : null) : 1,
+            idescriptionA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initDescriptionApproval : null) : null) : null) : null) : 1,
+            programAreaA: 1, //set to approved as this is not based on user input
+            initiativeMainProgramActivityA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMainProgramActivityApproval : null) : null) : null) : null) : 1,
+            feeAccessA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initFeeAccessApproval : null) : null) : null) : null) : 1,
+            // multi val initiative
+            regionsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initRegionsApproval : null) : null) : null) : null) : 1,
+            countriesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initCountriesApproval : null) : null) : null) : null) : 1,
+            activitiesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initActivitiesApproval : null) : null) : null) : null) : 1,
+            sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
+            launchCountryA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initLaunchCountryApproval : null) : null) : null) : null) : 1,
+            targetGeosA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetGeoApproval : null) : null) : null) : null) : 1,
+            targetPopulationSectorsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetPopulationSectorApproval : null) : null) : null) : null) : 1,
+            outcomesMonitoredA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOutcomesMonitoredApproval : null) : null) : null) : null) : 1,
+            mEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMEdSubsApproval : null) : null) : null) : null) : 1,
+            oEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOEdSubsApproval : null) : null) : null) : null) : 1,
+            managementTypesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initManagementTypesApproval : null) : null) : null) : null) : 1,
+            // single val implementer
+            inameA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorNameApproval : null) : null) : null) : null) : 1,
+            impMotiveA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorMotiveApproval : null) : null) : null) : null) : 1
+          }
+        });
+      }
+    } else {
+      if (props.formStatus === 'add') {
+        if (props.location.state !== undefined) {
+          if (props.location.state.savedState !== undefined) {
+            const {savedState, isUnsaved} = props.location.state;
+            this.setState({
+              //Original value Setters
+              tagNum: savedState.tagNum,
+              originalFunderName: savedState.originalFunderName,
+              originalImplementerName: savedState.originalImplementerName,
+
+              //Original Initiative setters
+              oinitName: savedState.oinitName,
+              oinitURL: savedState.oinitURL,
+              otWomen: savedState.otWomen,
+              oinitStart: savedState.oinitStart,
+              oinitEnd: savedState.oinitEnd,
+              olaunchCountries: savedState.olaunchCountries,
+              oidescription: savedState.oidescription,
+              otargetGeos: savedState.otargetGeos,
+              omainProgramActivity: savedState.omainProgramActivity,
+              oprogramArea: savedState.oprogramArea,
+              ofeeAccess: savedState.ofeeAccess,
+              otargetPopulationSectors: savedState.otargetPopulationSectors,
+              oOutcomesMonitored: savedState.oOutcomesMonitored,
+              omEdSubs: savedState.omEdSubs,
+              oOEdSubs: savedState.oOEdSubs,
+              omanagementTypes: savedState.omanagementTypes,
+              oregions: savedState.oregions,
+              ocountries: savedState.ocountries,
+              oactivities: savedState.oactivities,
+              osourceOfFees: savedState.osourceOfFees,
+
+              //Initiative setters
+              initName: savedState.initName,
+              initURL: savedState.initURL,
+              tWomen: savedState.tWomen,
+              initStart: savedState.initStart,
+              initEnd: savedState.initEnd,
+              launchCountries: savedState.launchCountries,
+              idescription: savedState.idescription,
+              targetGeos: savedState.targetGeos,
+              mainProgramActivity: savedState.mainProgramActivity,
+              programArea: savedState.programArea,
+              feeAccess: savedState.feeAccess,
+              targetPopulationSectors: savedState.targetPopulationSectors,
+              outcomesMonitored: savedState.outcomesMonitored,
+              mEdSubs: savedState.mEdSubs,
+              oEdSubs: savedState.oEdSubs,
+              managementTypes: savedState.managementTypes,
+              regions: savedState.regions,
+              countries: savedState.countries,
+              activities: savedState.activities,
+              sourceOfFees: savedState.sourceOfFees,
+
+              //Original Funder Setters
+              ofurl: savedState.ofurl,
+              omotive: savedState.omotive,
+              oOrganizationForm: savedState.oOrganizationForm,
+              oimpact: savedState.oimpact,
+              //Multi-valued funder attribute setters
+              oedSubs: savedState.oedSubs,
+              oOrgTraits: savedState.oOrgTraits,
+              oasiaIBases: savedState.oasiaIBases,
+              oasiaOperations: savedState.oasiaOperations,
+              ointernationalBases: savedState.ointernationalBases,
+
+              //Funder Setters
+              fname: savedState.fname,
+              furl: savedState.furl,
+              motive: savedState.motive,
+              organizationForm: savedState.organizationForm,
+              impact: savedState.impact,
+              //Multi-valued funder attribute setters
+              edSubs: savedState.edSubs,
+              orgTraits: savedState.orgTraits,
+              asiaIBases: savedState.asiaIBases,
+              asiaOperations: savedState.asiaOperations,
+              internationalBases: savedState.internationalBases,
+
+              //Original Implementer Setters
+              oimpMotive: savedState.oimpMotive,
+
+              //Implementer Setters
+              iname: savedState.iname,
+              impMotive: savedState.impMotive,
+
+              //Other Setters
+              comments: savedState.comments,
+
+              //Review Setters
+              needsReview: savedState.needsReview,
+              originalReviews: savedState.originalReviews,
+              reviews: savedState.reviews,
+
+              isUnsaved: isUnsaved
+            })
+          }
+        }
+      }
     }
   }
 
-  static getDerivedStateFromProps = (props, state) => {
-    //Section Reviews
-    return {
-      //If changes are made to form, only set changed fields to not accepted (i.e. to 0)
-      reviews: {
-        fnameA: state.fname !== state.originalFunderName ? 0 : state.originalReviews.fnameA,
-        furlA:  state.furl !== state.ofurl ? 0 : state.originalReviews.furlA ,
-        motiveA:  state.motive !==  state.omotive ? 0 :  state.originalReviews.motiveA,
-        impactA:  state.impact !==  state.oimpact ? 0 :  state.originalReviews.impactA,
-        organizationFormA:  state.organizationForm !==  state.oOrganizationForm ? 0 :  state.originalReviews.organizationFormA,
-        // multi val funder
-        internationalBasesA:  JSON.stringify(state.internationalBases) !== JSON.stringify(state.ointernationalBases) ? 0 :  state.originalReviews.internationalBasesA,
-        edSubsA:  JSON.stringify(state.edSubs) !== JSON.stringify(state.oedSubs) ? 0 :  state.originalReviews.edSubsA,
-        orgTraitsA:  JSON.stringify(state.orgTraits) !== JSON.stringify(state.oOrgTraits) ? 0 :  state.originalReviews.orgTraitsA,
-        asialBasesA:  JSON.stringify(state.asiaIBases) !== JSON.stringify(state.oasiaIBases) ? 0 :  state.originalReviews.asialBasesA,
-        asiaOperationsA:  JSON.stringify(state.asiaOperations) !== JSON.stringify(state.oasiaOperations) ? 0 :  state.originalReviews.asiaOperationsA,
-        // single val initiative
-        initNameA:  state.initName !==  state.oinitName ? 0 :  state.originalReviews.initNameA,
-        initURLA:  state.initURL !==  state.oinitURL ? 0 :  state.originalReviews.initURLA,
-        tWomenA:  state.tWomen !==  state.otWomen ? 0 :  state.originalReviews.tWomenA,
-        initStartA:  state.initStart !==  state.oinitStart ? 0 :  state.originalReviews.initStartA,
-        initEndA:  state.initEnd !==  state.oinitEnd ? 0 :  state.originalReviews.initEndA,
-        idescriptionA:  state.idescription !==  state.oidescription ? 0 :  state.originalReviews.idescriptionA,
-        programAreaA: 1, //set to approved as this is not based on user input
-        initiativeMainProgramActivityA:  state.mainProgramActivity !==  state.omainProgramActivity ? 0 :  state.originalReviews.initiativeMainProgramActivityA,
-        feeAccessA:  state.feeAccess !==  state.ofeeAccess ? 0 :  state.originalReviews.feeAccessA,
-        // multi val initiative
-        regionsA:  JSON.stringify(state.regions) !== JSON.stringify(state.oregions) ? 0 : state.originalReviews.regionsA,
-        countriesA:  JSON.stringify(state.countries) !== JSON.stringify(state.ocountries) ? 0 : state.originalReviews.countriesA,
-        activitiesA:  JSON.stringify(state.activities) !== JSON.stringify(state.oactivities) ? 0 :  state.originalReviews.activitiesA,
-        sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
-        launchCountryA:  JSON.stringify(state.launchCountries) !== JSON.stringify(state.olaunchCountries) ? 0 :  state.originalReviews.launchCountryA,
-        targetGeosA:  JSON.stringify(state.targetGeos) !== JSON.stringify(state.otargetGeos) ? 0 :  state.originalReviews.targetGeosA,
-        targetPopulationSectorsA: JSON.stringify(state.targetPopulationSectors) !== JSON.stringify(state.otargetPopulationSectors) ? 0 :  state.originalReviews.targetPopulationSectorsA,
-        outcomesMonitoredA:  JSON.stringify(state.outcomesMonitored) !== JSON.stringify(state.oOutcomesMonitored) ? 0 :  state.originalReviews.outcomesMonitoredA,
-        mEdSubsA:  JSON.stringify(state.mEdSubs) !== JSON.stringify(state.omEdSubs) ? 0 :  state.originalReviews.mEdSubsA,
-        oEdSubsA:  JSON.stringify(state.oEdSubs) !== JSON.stringify(state.oOEdSubs) ? 0 :  state.originalReviews.oEdSubsA,
-        managementTypesA: JSON.stringify(state.managementTypes) !== JSON.stringify(state.omanagementTypes) ? 0 :  state.originalReviews.managementTypesA,
-        // single val implementer
-        inameA:  state.iname !==  state.originalImplementerName ? 0 :  state.originalReviews.inameA,
-        impMotiveA:  state.impMotive !==  state.oimpMotive ? 0 :  state.originalReviews.impMotiveA,
+  componentDidUpdate = () => {
+    //On browser back button click
+    window.onpopstate = (e) => {
+      console.log(this.state.isUnsaved);
+      //If one of the fields was changed or inputted, then stay on page, otherwise leave page
+      if (this.state.fname !== this.state.originalFunderName ||
+          this.state.furl !== this.state.ofurl ||
+          this.state.motive !==  this.state.omotive ||
+          this.state.impact !==  this.state.oimpact ||
+          this.state.organizationForm !==  this.state.oOrganizationForm ||
+          JSON.stringify(this.state.internationalBases) !== JSON.stringify(this.state.ointernationalBases) ||
+          JSON.stringify(this.state.edSubs) !== JSON.stringify(this.state.oedSubs) ||
+          JSON.stringify(this.state.orgTraits) !== JSON.stringify(this.state.oOrgTraits) ||
+          JSON.stringify(this.state.asiaIBases) !== JSON.stringify(this.state.oasiaIBases) ||
+          JSON.stringify(this.state.asiaOperations) !== JSON.stringify(this.state.oasiaOperations) ||
+          this.state.initName !==  this.state.oinitName ||
+          this.state.initURL !==  this.state.oinitURL ||
+          this.state.tWomen !==  this.state.otWomen ||
+          this.state.initStart !==  this.state.oinitStart ||
+          this.state.initEnd !==  this.state.oinitEnd ||
+          this.state.idescription !==  this.state.oidescription ||
+          this.state.mainProgramActivity !==  this.state.omainProgramActivity ||
+          this.state.feeAccess !==  this.state.ofeeAccess ||
+          JSON.stringify(this.state.regions) !== JSON.stringify(this.state.oregions) ||
+          JSON.stringify(this.state.countries) !== JSON.stringify(this.state.ocountries) ||
+          JSON.stringify(this.state.activities) !== JSON.stringify(this.state.oactivities) ||
+          JSON.stringify(this.state.launchCountries) !== JSON.stringify(this.state.olaunchCountries) ||
+          JSON.stringify(this.state.targetGeos) !== JSON.stringify(this.state.otargetGeos) ||
+          JSON.stringify(this.state.targetPopulationSectors) !== JSON.stringify(this.state.otargetPopulationSectors) ||
+          JSON.stringify(this.state.outcomesMonitored) !== JSON.stringify(this.state.oOutcomesMonitored) ||
+          JSON.stringify(this.state.mEdSubs) !== JSON.stringify(this.state.omEdSubs) ||
+          JSON.stringify(this.state.oEdSubs) !== JSON.stringify(this.state.oOEdSubs) ||
+          JSON.stringify(this.state.managementTypes) !== JSON.stringify(this.state.omanagementTypes) ||
+          this.state.iname !==  this.state.originalImplementerName ||
+          this.state.impMotive !==  this.state.oimpMotive) {
+              this.setState({
+                isUnsaved: true
+              })
+              this.props.history.push({
+                pathname: '/formsubmission',
+                state: {
+                  savedState: this.state,
+                  isUnsaved: true
+                }
+              });
+          } else {
+              //Go back
+              this.props.history.push('/dashboard')
+          }
       }
-    };
+  }
+
+  static getDerivedStateFromProps = (props, state) => {
+    if (props.formStatus === 'modify') {
+      //Section Reviews
+      return {
+        //If changes are made to form, only set changed fields to not accepted (i.e. to 0)
+        reviews: {
+          fnameA: state.fname !== state.originalFunderName ? 0 : state.originalReviews.fnameA,
+          furlA:  state.furl !== state.ofurl ? 0 : state.originalReviews.furlA ,
+          motiveA:  state.motive !==  state.omotive ? 0 :  state.originalReviews.motiveA,
+          impactA:  state.impact !==  state.oimpact ? 0 :  state.originalReviews.impactA,
+          organizationFormA:  state.organizationForm !==  state.oOrganizationForm ? 0 :  state.originalReviews.organizationFormA,
+          // multi val funder
+          internationalBasesA:  JSON.stringify(state.internationalBases) !== JSON.stringify(state.ointernationalBases) ? 0 :  state.originalReviews.internationalBasesA,
+          edSubsA:  JSON.stringify(state.edSubs) !== JSON.stringify(state.oedSubs) ? 0 :  state.originalReviews.edSubsA,
+          orgTraitsA:  JSON.stringify(state.orgTraits) !== JSON.stringify(state.oOrgTraits) ? 0 :  state.originalReviews.orgTraitsA,
+          asialBasesA:  JSON.stringify(state.asiaIBases) !== JSON.stringify(state.oasiaIBases) ? 0 :  state.originalReviews.asialBasesA,
+          asiaOperationsA:  JSON.stringify(state.asiaOperations) !== JSON.stringify(state.oasiaOperations) ? 0 :  state.originalReviews.asiaOperationsA,
+          // single val initiative
+          initNameA:  state.initName !==  state.oinitName ? 0 :  state.originalReviews.initNameA,
+          initURLA:  state.initURL !==  state.oinitURL ? 0 :  state.originalReviews.initURLA,
+          tWomenA:  state.tWomen !==  state.otWomen ? 0 :  state.originalReviews.tWomenA,
+          initStartA:  state.initStart !==  state.oinitStart ? 0 :  state.originalReviews.initStartA,
+          initEndA:  state.initEnd !==  state.oinitEnd ? 0 :  state.originalReviews.initEndA,
+          idescriptionA:  state.idescription !==  state.oidescription ? 0 :  state.originalReviews.idescriptionA,
+          programAreaA: 1, //set to approved as this is not based on user input
+          initiativeMainProgramActivityA:  state.mainProgramActivity !==  state.omainProgramActivity ? 0 :  state.originalReviews.initiativeMainProgramActivityA,
+          feeAccessA:  state.feeAccess !==  state.ofeeAccess ? 0 :  state.originalReviews.feeAccessA,
+          // multi val initiative
+          regionsA:  JSON.stringify(state.regions) !== JSON.stringify(state.oregions) ? 0 : state.originalReviews.regionsA,
+          countriesA:  JSON.stringify(state.countries) !== JSON.stringify(state.ocountries) ? 0 : state.originalReviews.countriesA,
+          activitiesA:  JSON.stringify(state.activities) !== JSON.stringify(state.oactivities) ? 0 :  state.originalReviews.activitiesA,
+          sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
+          launchCountryA:  JSON.stringify(state.launchCountries) !== JSON.stringify(state.olaunchCountries) ? 0 :  state.originalReviews.launchCountryA,
+          targetGeosA:  JSON.stringify(state.targetGeos) !== JSON.stringify(state.otargetGeos) ? 0 :  state.originalReviews.targetGeosA,
+          targetPopulationSectorsA: JSON.stringify(state.targetPopulationSectors) !== JSON.stringify(state.otargetPopulationSectors) ? 0 :  state.originalReviews.targetPopulationSectorsA,
+          outcomesMonitoredA:  JSON.stringify(state.outcomesMonitored) !== JSON.stringify(state.oOutcomesMonitored) ? 0 :  state.originalReviews.outcomesMonitoredA,
+          mEdSubsA:  JSON.stringify(state.mEdSubs) !== JSON.stringify(state.omEdSubs) ? 0 :  state.originalReviews.mEdSubsA,
+          oEdSubsA:  JSON.stringify(state.oEdSubs) !== JSON.stringify(state.oOEdSubs) ? 0 :  state.originalReviews.oEdSubsA,
+          managementTypesA: JSON.stringify(state.managementTypes) !== JSON.stringify(state.omanagementTypes) ? 0 :  state.originalReviews.managementTypesA,
+          // single val implementer
+          inameA:  state.iname !==  state.originalImplementerName ? 0 :  state.originalReviews.inameA,
+          impMotiveA:  state.impMotive !==  state.oimpMotive ? 0 :  state.originalReviews.impMotiveA,
+        }
+      };
+    }
   }
 
 
@@ -1010,6 +1265,24 @@ class formSubmission extends React.Component{
     }
   }
 
+  //Leave with unsaved changes
+  handleLeave(e) {
+    this.state.isUnsaved = false;
+    this.setState({
+      isUnsaved: this.state.isUnsaved
+    });
+    //Return to dashboard
+    this.props.history.replace('/dashboard')
+  }
+
+  //Stay with unsaved changes
+  handleStay(e) {
+    this.state.isUnsaved = false;
+    this.setState({
+      isUnsaved: this.state.isUnsaved
+    });
+  }
+
   handleChange(e){
     console.log(e)
     this.setState({
@@ -1114,6 +1387,7 @@ class formSubmission extends React.Component{
   }
 
   render(){
+    console.log(this.state.isUnsaved)
     const {authorized, formSubmitted, formSubmitError, formStatus, inDB} = this.props;
     if (authorized === false) {
       return <Redirect to='/' />
@@ -1158,13 +1432,19 @@ class formSubmission extends React.Component{
       )
     ) : null
 
-
+    const unsavedWarning = this.state.isUnsaved === true ?
+    <div className="alert alert-dismissible alert-warning" style = {{width: "100%"}}>
+      <strong> You have unsaved changes. </strong>Are you sure you want to leave?
+      <button type="button" class="btn btn-warning" style = {{margin: '0 0 0 25px'}} onClick = {this.handleLeave}>Yes</button>
+      <button type="button" class="btn btn-warning" style = {{margin: '0 0 0 10px'}} onClick = {this.handleStay}>No</button>
+    </div> : null
 
     return (
         <div className = "formSubmission" style = {{padding: '50px 200px 0 200px'}}>
           <h3>Form Submission</h3>
           <div>
             <br></br>
+            {unsavedWarning}
             {approvalFeedback}
             <form onSubmit={this.handleFormSubmit}>
 

@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
@@ -21,6 +21,12 @@ class dashboard extends Component {
     this.handleModifyClick = this.handleModifyClick.bind(this);
     this.handleReviewClick = this.handleReviewClick.bind(this);
     this.handleAddClick = this.handleAddClick.bind(this);
+  }
+
+  componentDidUpdate = () => {
+    window.onpopstate = (e) => {
+      this.props.history.push('/')
+    }
   }
 
   handleModifyClick(e){

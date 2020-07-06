@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import './contactUs.css';
 import {Redirect} from 'react-router-dom'
 import {userSendEmail} from '../../store/actions/dataActions';
-import {getUser} from '../../store/actions/dataActions';
 
 class contactUs extends React.Component{
     constructor(props){
@@ -71,7 +70,7 @@ class contactUs extends React.Component{
 
                 <h4>Message Body</h4>
                 <textarea id="body" name="emailBody" required rows="10" placeholder="Write your message here!" onChange={this.bodyChange}></textarea>
-                
+
                 {/* <Link to = '/'> */}
                 <input type="submit"value="Send"/>
                 {/* </Link> */}
@@ -111,8 +110,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return{
     sendEmail: (contents) => dispatch(userSendEmail(contents)),
-    getUser: () => dispatch(getUser())
   }
 }
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(contactUs)
+
+export default connect(mapStateToProps, mapDispatchToProps)(contactUs)

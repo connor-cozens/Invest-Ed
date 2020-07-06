@@ -35,6 +35,7 @@ import {
   CLEAR_ACCESS_ERROR
 } from '../reducers/dataReducer';
 
+import {LOGIN_SUCCESS} from '../reducers/authReducer';
 import {forceLogout} from './authActions';
 
 export const registerUser = (user) => (dispatch) => {
@@ -88,6 +89,7 @@ export const getUser = () => (dispatch) => {
     .then(response => {
       if (response.data.error == false) {
         dispatch({type: SET_USER, payload: response.data.message[0]});
+        dispatch({type: LOGIN_SUCCESS})
       } else {
         //If user not authorized to access content but they are set to authorized, need to log them out immediately
         if (response.data.message == "Not authorized to view this content") {

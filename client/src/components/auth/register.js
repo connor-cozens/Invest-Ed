@@ -46,8 +46,10 @@ class Register extends PureComponent {
       return <Redirect to='/' />
     }
 
-    if (userData.accessLevel == 0) {
-      return <Redirect to='/' />
+    if (userData) {
+      if (userData.accessLevel == 0) {
+        return <Redirect to='/' />
+      }
     }
 
     if (registered === true){

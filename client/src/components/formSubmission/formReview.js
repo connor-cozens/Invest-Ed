@@ -387,9 +387,15 @@ class formReview extends React.Component{
   }
 
   render(){
-    const {authorized, formReviewed, formReviewError} = this.props;
+    const {authorized, formReviewed, formReviewError, userData} = this.props;
     if (authorized === false) {
       return <Redirect to='/' />
+    }
+
+    if (userData) {
+      if (userData.accessLevel == 0) {
+        return <Redirect to='/' />
+      }
     }
 
     if (formReviewed === true){

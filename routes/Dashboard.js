@@ -1,7 +1,6 @@
 const express   = require("express")
 const sql       = require("mysql2")
 const async     = require('async');
-const cors      = require('cors')
 var storage     = require ('node-persist')
 var redis       = require("redis")
 
@@ -22,9 +21,6 @@ client.exists('tagNumber', function(err, reply){
 })
 
 const dashboard = express.Router()
-dashboard.use(cors())
-
-
 
 //Create pool connection to DB
 const pool = sql.createPool({
@@ -48,7 +44,8 @@ const poolTemp = sql.createPool({
 })
 
 //GET from from DB
-dashboard.get('/form/:tagNum', cors(),(req, res) =>{
+dashboard.get('/form/:tagNum', (req, res) =>{
+  if(req.user){
     var tagNum = req.params.tagNum
 
     //initiative queries
@@ -240,7 +237,7 @@ dashboard.get('/form/:tagNum', cors(),(req, res) =>{
 
      ], function(err) {
           if (err){
-            res.json({error: err})
+            res.json({"error": err})
           }else{
             funderQueries(formData.table14)
 
@@ -330,11 +327,15 @@ dashboard.get('/form/:tagNum', cors(),(req, res) =>{
           })
         })
     }
+  } else {
+    res.json({"error": "Error: Not authorized to access this page"})
+  }
 })
 
 
 //GET form from temp DB
 dashboard.get('/form-temp/:tagNum', (req, res) =>{
+  if(req.user){
     var tagNum = req.params.tagNum
 
     //initiative queries
@@ -555,7 +556,7 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
 
      ], function(err) {
           if (err){
-            res.json({error: err})
+            res.json({"error": err})
           }else{
             funderQueries(formData.table14)
           }
@@ -639,11 +640,14 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
           })
         })
     }
+  } else {
+    res.json({"error": "Error: Not authorized to access this page"})
+  }
 })
 
 //POST new form to temp DB
 dashboard.post('/submit-form-temp', (req, res) =>{
-
+  if(req.user) {
     const formData = {
         // single val funder
         funderName: req.body.fname, //f
@@ -1431,12 +1435,14 @@ function function16(val){
     })
 
     res.json("Form successfully added to the DB")
-
+  } else {
+    res.json({"error": "Error: Action not authorized"})
+  }
 })
 
 //POST new form to DB
 dashboard.post('/submitform', (req, res) =>{
-
+  if(req.user){
     const formData = {
         // single val funder
         funderName: req.body.fname, //f
@@ -2076,10 +2082,13 @@ function function5(val){
     })
 
     res.json("Form successfully added to the DB")
+  } else {
+    res.json({"error": "Error: Action not authorized"})
+  }
 })
 
 dashboard.post('/update-form', (req, res) =>{
-
+  if(req.user){
     const formData = {
         //original values
         tagNum: req.body.tagNum,
@@ -3192,10 +3201,13 @@ dashboard.post('/update-form', (req, res) =>{
     })
 
     res.send("Inves431_girlsEd updated successfully!")
+  } else {
+    res.json({"error": "Error: Action not authorized"})
+  }
 })
 
 dashboard.post('/update-form-temp', (req, res) =>{
-
+  if (req.user){
     const formData = {
         //original values
         tagNum: req.body.tagNum,
@@ -4549,10 +4561,14 @@ dashboard.post('/update-form-temp', (req, res) =>{
     })
 
     res.send("Inves431_girlsEd updated successfully!")
+  } else {
+    res.json({"error": "Error: Action not authorized"})
+  }
 })
 
 //delete form from database
 dashboard.post('/delete-funder/:funder', (req,res) =>{
+  if(req.user){
     var funderName = req.params.funder
 
     //delete funds
@@ -4703,10 +4719,13 @@ dashboard.post('/delete-funder/:funder', (req,res) =>{
          })
 
     res.send("Funder deleted successfully!")
-
+  } else {
+    res.json({"error": "Error: Action not authorized"})
+  }
 })
 
 dashboard.post('/delete-funder-temp/:funder', (req,res)=>{
+  if(req.user) {
     var funderName = req.params.funder
 
     //delete funds
@@ -4857,10 +4876,14 @@ dashboard.post('/delete-funder-temp/:funder', (req,res)=>{
          })
 
     res.send("Funder deleted successfully!")
+  } else {
+    res.json({"error": "Error: Action not authorized"})
+  }
 })
 
 //delete implementor from db
 dashboard.post('/delete-implementor/:iname', (req,res) =>{
+  if(req.user){
     var implementorName = req.params.iname
 
     //delete implementor
@@ -4906,10 +4929,14 @@ dashboard.post('/delete-implementor/:iname', (req,res) =>{
             })
 
     res.send("Implementor deleted successfully!")
+  } else {
+    res.json({"error": "Error: Action not authorized"})
+  }
 })
 
 //delete implementor from temp db
 dashboard.post('/delete-implementor-temp/:iname', (req,res) =>{
+  if(req.user){
     var implementorName = req.params.iname
 
     //delete implementor
@@ -4955,10 +4982,14 @@ dashboard.post('/delete-implementor-temp/:iname', (req,res) =>{
             })
 
     res.send("Implementor deleted successfully!")
+  } else {
+    res.json({"error": "Error: Action not authorized"})
+  }
 })
 
 //delete intiative from db
 dashboard.post('/delete-initiative/:tagNum', (req,res) =>{
+  if(req.user){
     var tagNumber = req.params.tagNum
 
     //delete funds
@@ -5216,10 +5247,14 @@ dashboard.post('/delete-initiative/:tagNum', (req,res) =>{
         })
 
     res.send("Initiative deleted successfully!")
+  } else {
+    res.json({"error": "Error: Action not authorized"})
+  }
 })
 
 //delete intiative from temp db
 dashboard.post('/delete-initiative-temp/:tagNum', (req,res) =>{
+  if(req.user){
     var tagNumber = req.params.tagNum
 
     //delete funds
@@ -5476,5 +5511,8 @@ dashboard.post('/delete-initiative-temp/:tagNum', (req,res) =>{
 
         })
     res.send("Initiative deleted successfully!")
+  } else {
+    res.json({"error": "Error: Action not authorized"})
+  }
 })
 module.exports = dashboard

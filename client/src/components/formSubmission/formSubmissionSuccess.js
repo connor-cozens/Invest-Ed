@@ -31,7 +31,7 @@ const FormSubmissionSuccess = (props) => {
   if (authorized === true && fromForm === true) {
     props.formSubmissionComplete();
 
-    //If an organization user
+    //If an organization user, change request submitted message displays, otherwise changes made message displays for RA/root users
     const message = userData ? (userData.accessLevel == 0 ?
       <h4>Your change request was submitted successfully</h4> :
       <h4>Your changes were made successfully</h4>

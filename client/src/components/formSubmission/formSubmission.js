@@ -4446,7 +4446,7 @@ const mapStateToProps = (state) => {
     inDB: state.data.pulledformApproved,
 
     formSubmitted: state.data.formSubmitted,
-    formSubmitError: state.data.formSubmitData
+    formSubmitError: state.data.formSubmitError
   };
 }
 

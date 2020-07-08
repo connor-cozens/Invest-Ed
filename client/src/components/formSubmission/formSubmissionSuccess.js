@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useHistory} from 'react-router';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {Link} from 'react-router-dom';
@@ -6,6 +7,18 @@ import {setFormSubmissionComplete} from '../../store/actions/dataActions';
 
 const FormSubmissionSuccess = (props) => {
   const {authorized, userData} = props;
+  const history = useHistory();
+
+  useEffect(() => {
+    window.onpopstate = (e) => {
+      history.push({
+        pathname: '/dashboard',
+        state: {
+          confirmed: true
+        }
+      });
+    }
+  }, [history])
 
   //Block access from register success component if logged in and attempting to access via url
   var fromForm = false;
@@ -18,7 +31,7 @@ const FormSubmissionSuccess = (props) => {
   if (authorized === true && fromForm === true) {
     props.formSubmissionComplete();
 
-    //If an organization user
+    //If an organization user, change request submitted message displays, otherwise changes made message displays for RA/root users
     const message = userData ? (userData.accessLevel == 0 ?
       <h4>Your change request was submitted successfully</h4> :
       <h4>Your changes were made successfully</h4>

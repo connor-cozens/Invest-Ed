@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import {connect} from 'react-redux';
 import Navbar from './components/layout/navbar';
 import Register from './components/auth/register';
 import Login from './components/auth/login';
@@ -14,8 +15,18 @@ import FormSubmissionSuccess from './components/formSubmission/formSubmissionSuc
 import FormReviewSuccess from './components/formSubmission/formReviewSuccess';
 import contactUs from './components/contactUs/contactUs';
 import formReview from './components/formSubmission/formReview';
+import {getUser} from './store/actions/dataActions';
 
 class App extends Component {
+  componentDidMount() {
+    this.props.getUser();
+  }
+
+  //Only fire when redux state change updates props passed into component
+  static getDerivedStateFromProps(props, state){
+    props.getUser();
+  }
+
   render() {
     return (
       <BrowserRouter>
@@ -42,4 +53,16 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    //State property that changes to rerender app component
+    authorized: state.authenticate.auth
+  };
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUser: () => dispatch(getUser())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

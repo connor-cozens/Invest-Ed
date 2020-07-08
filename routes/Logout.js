@@ -6,7 +6,6 @@ const passport = require('passport')
 logout.get('/', (req, res) => {
 
   if(req.user){
-
     console.log('key: ' + req.session.key)
     //Check if session exists using the session's key
     if(req.session.key !== undefined) {

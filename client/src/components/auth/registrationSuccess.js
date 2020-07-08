@@ -1,10 +1,18 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import {useHistory} from 'react-router';
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import {setRegistrationComplete} from '../../store/actions/dataActions';
 
 const RegistrationSuccess = (props) => {
   const {authorized} = props;
+  const history = useHistory();
+
+  useEffect(() => {
+    window.onpopstate = (e) => {
+      history.push('/register')
+    }
+  }, [history])
 
   //Block access from register success component if logged in and attempting to access via url
   var fromRegister = false;

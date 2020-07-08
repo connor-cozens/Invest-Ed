@@ -8,10 +8,6 @@ import FormIcon from '../images/forms.png'
 import MapIcon from '../images/map.PNG'
 
 class Landing extends Component{
-  componentDidMount(){
-      this.props.getUser()
-  }
-
   render() {
     const {authorized, userData, accessError} = this.props;
     const showAuthStatus = authorized ? (accessError ? <h4 style = {{paddingTop: '50px', textAlign: "left"}}>There was an error retrieving your information</h4> : (userData ? <h4 style = {{paddingTop: '50px', textAlign: "left"}}>Welcome, {userData.firstname}</h4>: <h4>Loading</h4>)) : null
@@ -49,10 +45,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getUser: () => dispatch(getUser())
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Landing)
+export default connect(mapStateToProps, null)(Landing)

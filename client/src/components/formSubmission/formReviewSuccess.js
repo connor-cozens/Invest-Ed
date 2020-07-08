@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useHistory} from 'react-router';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {Link} from 'react-router-dom';
@@ -6,6 +7,13 @@ import {setFormReviewComplete} from '../../store/actions/dataActions';
 
 const FormReviewSuccess = (props) => {
   const {authorized, userData} = props;
+  const history = useHistory();
+  
+  useEffect(() => {
+    window.onpopstate = (e) => {
+      history.push('/dashboard')
+    }
+  }, [history])
 
   //Block access from register success component if logged in and attempting to access via url
   var fromForm = false;

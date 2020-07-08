@@ -35,6 +35,7 @@ import {
   CLEAR_ACCESS_ERROR
 } from '../reducers/dataReducer';
 
+import {LOGIN_SUCCESS} from '../reducers/authReducer';
 import {forceLogout} from './authActions';
 
 export const registerUser = (user) => (dispatch) => {
@@ -88,6 +89,7 @@ export const getUser = () => (dispatch) => {
     .then(response => {
       if (response.data.error == false) {
         dispatch({type: SET_USER, payload: response.data.message[0]});
+        dispatch({type: LOGIN_SUCCESS})
       } else {
         //If user not authorized to access content but they are set to authorized, need to log them out immediately
         if (response.data.message == "Not authorized to view this content") {
@@ -236,7 +238,7 @@ const readForm = (response => {
 export const getApprovedForm = (tag, getType) => (dispatch) => {
   const tagNum = tag
   const url = `/dashboard/form/${tagNum}`;
-  axios.get(url, null, {tagNum})
+  axios.get(url, {withCredentials: true, accepts: "application/json"}, {tagNum})
     .then(response => {
       if (response.data.error !== undefined) {
         dispatch({type: ACCESS_ERROR, payload: response.data.error});
@@ -263,7 +265,7 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
 export const getNonApprovedForm = (tag, getType) => (dispatch) => {
   const tagNum = tag
   const url = `/dashboard/form-temp/${tagNum}`;
-  axios.get(url, null, {tagNum})
+  axios.get(url, {withCredentials: true, accepts: "application/json"}, {tagNum})
     .then(response => {
       if (response.data.error !== undefined) {
         dispatch({type: NOT_PULLED_APPROVED_FORM});
@@ -434,9 +436,13 @@ const changeRequest = (form, inDB, isModified, isReviewed) => {
 //Organization user to modify existing form from either main or temp DB (could be in main DB since might have been approved) and submit it to temp db
 export const modifyForm = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequest(form, inDB, isModified, false);
-  axios.post(`/dashboard/update-form-temp`, req)
+  axios.post(`/dashboard/update-form-temp`, req, {withCredentials: true})
     .then(response => {
-      dispatch({type: FORM_SUBMIT_SUCCESS});
+      if (response.data.error !== undefined) {
+        dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error});
+      } else {
+        dispatch({type: FORM_SUBMIT_SUCCESS});
+      }
     })
     .catch(err => {
       dispatch({type: FORM_SUBMIT_ERROR, payload: err});
@@ -446,9 +452,13 @@ export const modifyForm = (form, inDB, isModified) => (dispatch) => {
 //RA user to modify existing form in main DB
 export const modifyFormRA = (form, isModified) => (dispatch) => {
   const req = changeRequestRA(form, isModified);
-  axios.post(`/dashboard/update-form`, req)
+  axios.post(`/dashboard/update-form`, req, {withCredentials: true})
     .then(response => {
-      dispatch(modifyForm(form, true, true));
+      if (response.data.error !== undefined) {
+        dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error});
+      } else {
+        dispatch(modifyForm(form, true, true));
+      }
     })
     .catch(err => {
       dispatch({type: FORM_SUBMIT_ERROR, payload: err});
@@ -458,9 +468,13 @@ export const modifyFormRA = (form, isModified) => (dispatch) => {
 //RA user to submit approved form to main db
 const approveForm = (form, isModified) => (dispatch) => {
   const req = changeRequestRA(form, isModified);
-  axios.post(`/dashboard/update-form`, req)
+  axios.post(`/dashboard/update-form`, req, {withCredentials: true})
     .then(response => {
-      dispatch({type: FORM_REVIEW_SUCCESS});
+      if (response.data.error !== undefined) {
+        dispatch({type: FORM_REVIEW_ERROR, payload: response.data.error});
+      } else {
+        dispatch({type: FORM_REVIEW_SUCCESS});
+      }
     })
     .catch(err => {
       dispatch({type: FORM_REVIEW_ERROR, payload: err});
@@ -470,13 +484,17 @@ const approveForm = (form, isModified) => (dispatch) => {
 //RA user to submit review of form to temp db
 export const reviewForm = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequest(form, inDB, isModified, true);
-  axios.post(`/dashboard/update-form-temp`, req)
+  axios.post(`/dashboard/update-form-temp`, req, {withCredentials: true})
     .then(response => {
-      //If form is approved, then submit approval
-      if (form.needsReview === 0) {
-        dispatch(approveForm(form, true));
+      if (response.data.error !== undefined) {
+        dispatch({type: FORM_REVIEW_ERROR, payload: response.data.error});
       } else {
-        dispatch({type: FORM_REVIEW_SUCCESS});
+        //If form is approved, then submit approval
+        if (form.needsReview === 0) {
+          dispatch(approveForm(form, true));
+        } else {
+          dispatch({type: FORM_REVIEW_SUCCESS});
+        }
       }
     })
     .catch(err => {
@@ -488,9 +506,13 @@ export const reviewForm = (form, inDB, isModified) => (dispatch) => {
 //Organization user to add new form to temp DB
 export const addForm = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequest(form, inDB, isModified, false);
-  axios.post(`/dashboard/submit-form-temp`, req)
+  axios.post(`/dashboard/submit-form-temp`, req, {withCredentials: true})
     .then(response => {
-      dispatch({type: FORM_SUBMIT_SUCCESS});
+      if (response.data.error !== undefined) {
+        dispatch({type: FORM_SUBMIT_SUCCESS, payload: response.data.error});
+      } else {
+        dispatch({type: FORM_SUBMIT_SUCCESS});
+      }
     })
     .catch(err => {
       dispatch({type: FORM_SUBMIT_ERROR, payload: err});
@@ -500,9 +522,13 @@ export const addForm = (form, inDB, isModified) => (dispatch) => {
 //RA user to add new form to main DB
 export const addFormRA = (form, isModified) => (dispatch) => {
     const req = changeRequestRA(form, isModified);
-    axios.post(`/dashboard/submitform`, req)
+    axios.post(`/dashboard/submitform`, req, {withCredentials: true})
       .then(response => {
-        dispatch({type: FORM_SUBMIT_SUCCESS});
+        if (response.data.error !== undefined) {
+          dispatch({type: FORM_SUBMIT_SUCCESS, payload: response.data.error});
+        } else {
+          dispatch({type: FORM_SUBMIT_SUCCESS});
+        }
       })
       .catch(err => {
         dispatch({type: FORM_SUBMIT_ERROR, payload: err});

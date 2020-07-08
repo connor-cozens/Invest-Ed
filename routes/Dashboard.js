@@ -49,24 +49,24 @@ dashboard.get('/form/:tagNum', (req, res) =>{
     var tagNum = req.params.tagNum
 
     //initiative queries
-    var query1 = "SELECT * FROM initiative WHERE tagNumber =" + tagNum
-    var query2 = "SELECT * FROM initiativeregion WHERE tagNumber =" + tagNum
-    var query3 = "SELECT * FROM initiativecountryofoperation WHERE tagNumber =" + tagNum
-    var query4 = "SELECT * FROM initiativeprogrammingactivities WHERE tagNumber =" + tagNum
-    var query5 = "SELECT * FROM initiativefundingsource WHERE tagNumber =" + tagNum
-    var query6 = "SELECT * FROM initiativelaunchcountry WHERE tagNumber =" + tagNum
-    var query7 = "SELECT * FROM initiativetargetgeography WHERE tagNumber =" + tagNum
-    var query8 = "SELECT * FROM initiativetargetpopulationsector WHERE tagNumber =" + tagNum
-    var query9 = "SELECT * FROM initiativemonitoredoutcomes WHERE tagNumber =" + tagNum
-    var query10 = "SELECT * FROM initiativeMainEducationSubsector WHERE tagNumber =" + tagNum
-    var query11 = "SELECT * FROM initiativeEducationSubsectors WHERE initiativeTagNumber =" + tagNum
-    var query12 = "SELECT * FROM initiativetargetschoolmanagement WHERE tagNumber =" + tagNum
+    var query1 = 'SELECT * FROM initiative WHERE tagNumber =' + sql.escape(tagNum)
+    var query2 = 'SELECT * FROM initiativeregion WHERE tagNumber =' + sql.escape(tagNum)
+    var query3 = 'SELECT * FROM initiativecountryofoperation WHERE tagNumber =' + sql.escape(tagNum)
+    var query4 = 'SELECT * FROM initiativeprogrammingactivities WHERE tagNumber =' + sql.escape(tagNum)
+    var query5 = 'SELECT * FROM initiativefundingsource WHERE tagNumber =' + sql.escape(tagNum)
+    var query6 = 'SELECT * FROM initiativelaunchcountry WHERE tagNumber =' + sql.escape(tagNum)
+    var query7 = 'SELECT * FROM initiativetargetgeography WHERE tagNumber =' + sql.escape(tagNum)
+    var query8 = 'SELECT * FROM initiativetargetpopulationsector WHERE tagNumber =' + sql.escape(tagNum)
+    var query9 = 'SELECT * FROM initiativemonitoredoutcomes WHERE tagNumber =' + sql.escape(tagNum)
+    var query10 = 'SELECT * FROM initiativeMainEducationSubsector WHERE tagNumber =' + sql.escape(tagNum)
+    var query11 = 'SELECT * FROM initiativeEducationSubsectors WHERE initiativeTagNumber =' + sql.escape(tagNum)
+    var query12 = 'SELECT * FROM initiativetargetschoolmanagement WHERE tagNumber =' + sql.escape(tagNum)
 
      //implementor queries
-     var query13 = "SELECT * FROM implements INNER JOIN implementor USING (implementorName) WHERE tagNum =" + tagNum
+     var query13 = 'SELECT * FROM implements INNER JOIN implementor USING (implementorName) WHERE tagNum =' + sql.escape(tagNum)
 
     //funder queries
-    var query14 = "SELECT * FROM funds INNER JOIN funder USING (funderName) WHERE tagNum =" + tagNum
+    var query14 = 'SELECT * FROM funds INNER JOIN funder USING (funderName) WHERE tagNum =' + sql.escape(tagNum)
 
 
     var formData = {}
@@ -251,11 +251,11 @@ dashboard.get('/form/:tagNum', (req, res) =>{
         var final = 0
         //nest them here
         funderData.forEach(funder => {
-          var query15 = "SELECT * FROM funderasiabases WHERE funderName ='" +funder.funderName+"'"
-          var query16 = "SELECT * FROM funderasiaoperations WHERE funderName ='" +funder.funderName+"'"
-          var query17 = "SELECT * FROM fundereducationsubsectors WHERE funderName ='" +funder.funderName+"'"
-          var query18 = "SELECT * FROM funderinternationalbases WHERE funderName ='" +funder.funderName+"'"
-          var query19 = "SELECT * FROM funderorganizationtraits WHERE funderName ='" +funder.funderName+"'"
+          var query15 = 'SELECT * FROM funderasiabases WHERE funderName =' + sql.escape(funder.funderName)
+          var query16 = 'SELECT * FROM funderasiaoperations WHERE funderName =' + sql.escape(funder.funderName)
+          var query17 = 'SELECT * FROM fundereducationsubsectors WHERE funderName =' + sql.escape(funder.funderName)
+          var query18 = 'SELECT * FROM funderinternationalbases WHERE funderName =' + sql.escape(funder.funderName)
+          var query19 = 'SELECT * FROM funderorganizationtraits WHERE funderName =' + sql.escape(funder.funderName)
 
 
           async.parallel([
@@ -339,28 +339,28 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
     var tagNum = req.params.tagNum
 
     //initiative queries
-    var query1 = "SELECT * FROM initiative WHERE tagNumber =" + tagNum
-    var query2 = "SELECT * FROM initiativeregion WHERE tagNumber =" + tagNum
-    var query3 = "SELECT * FROM initiativecountryofoperation WHERE tagNumber =" + tagNum
-    var query4 = "SELECT * FROM initiativeprogrammingactivities WHERE tagNumber =" + tagNum
-    var query5 = "SELECT * FROM initiativefundingsource WHERE tagNumber =" + tagNum
-    var query6 = "SELECT * FROM initiativelaunchcountry WHERE tagNumber =" + tagNum
-    var query7 = "SELECT * FROM initiativetargetgeography WHERE tagNumber =" + tagNum
-    var query8 = "SELECT * FROM initiativetargetpopulationsector WHERE tagNumber =" + tagNum
-    var query9 = "SELECT * FROM initiativemonitoredoutcomes WHERE tagNumber =" + tagNum
-    var query10 = "SELECT * FROM initiativemaineducationsubsector WHERE tagNumber =" + tagNum
-    var query11 = "SELECT * FROM initiativeeducationsubsectors WHERE initiativeTagNumber =" + tagNum
-    var query12 = "SELECT * FROM initiativetargetschoolmanagement WHERE tagNumber =" + tagNum
+    var query1 = 'SELECT * FROM initiative WHERE tagNumber = ' + sql.escape(tagNum)
+    var query2 = 'SELECT * FROM initiativeregion WHERE tagNumber =' + sql.escape(tagNum)
+    var query3 = 'SELECT * FROM initiativecountryofoperation WHERE tagNumber =' + sql.escape(tagNum)
+    var query4 = 'SELECT * FROM initiativeprogrammingactivities WHERE tagNumber =' + sql.escape(tagNum)
+    var query5 = 'SELECT * FROM initiativefundingsource WHERE tagNumber =' + sql.escape(tagNum)
+    var query6 = 'SELECT * FROM initiativelaunchcountry WHERE tagNumber =' + sql.escape(tagNum)
+    var query7 = 'SELECT * FROM initiativetargetgeography WHERE tagNumber =' + sql.escape(tagNum)
+    var query8 = 'SELECT * FROM initiativetargetpopulationsector WHERE tagNumber =' + sql.escape(tagNum)
+    var query9 = 'SELECT * FROM initiativemonitoredoutcomes WHERE tagNumber =' + sql.escape(tagNum)
+    var query10 = 'SELECT * FROM initiativemaineducationsubsector WHERE tagNumber =' + sql.escape(tagNum)
+    var query11 = 'SELECT * FROM initiativeeducationsubsectors WHERE initiativeTagNumber =' + sql.escape(tagNum)
+    var query12 = 'SELECT * FROM initiativetargetschoolmanagement WHERE tagNumber =' + sql.escape(tagNum)
 
      //implementor queries
-     var query13 = "SELECT * FROM implements INNER JOIN implementor USING (implementorName) WHERE tagNum =" + tagNum
+     var query13 = 'SELECT * FROM implements INNER JOIN implementor USING (implementorName) WHERE tagNum =' + sql.escape(tagNum)
 
     //funder queries
-    var query14 = "SELECT * FROM funds INNER JOIN funder USING (funderName) WHERE tagNum =" + tagNum
+    var query14 = 'SELECT * FROM funds INNER JOIN funder USING (funderName) WHERE tagNum =' + sql.escape(tagNum)
 
     //status & comments queries
-    var query15 = "SELECT * FROM status INNER JOIN comments USING (tagNumber) WHERE tagNumber=" + tagNum
-    var query16 = "SELECT * FROM sectionReviews WHERE tagNumber="+tagNum
+    var query15 = 'SELECT * FROM status INNER JOIN comments USING (tagNumber) WHERE tagNumber=' + sql.escape(tagNum)
+    var query16 = 'SELECT * FROM sectionReviews WHERE tagNumber=' + sql.escape(tagNum)
 
     var formData = {}
     var fundersData = {}
@@ -567,11 +567,11 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
         var final = 0
         //nest them here
         funderData.forEach(funder => {
-          var query15 = "SELECT * FROM funderasiabases WHERE funderName ='" +funder.funderName+"'"
-          var query16 = "SELECT * FROM funderasiaoperations WHERE funderName ='" +funder.funderName+"'"
-          var query17 = "SELECT * FROM fundereducationsubsectors WHERE funderName ='" +funder.funderName+"'"
-          var query18 = "SELECT * FROM funderinternationalbases WHERE funderName ='" +funder.funderName+"'"
-          var query19 = "SELECT * FROM funderorganizationtraits WHERE funderName ='" +funder.funderName+"'"
+          var query15 = 'SELECT * FROM funderasiabases WHERE funderName =' + sql.escape(funder.funderName)
+          var query16 = 'SELECT * FROM funderasiaoperations WHERE funderName =' + sql.escape(funder.funderName)
+          var query17 = 'SELECT * FROM fundereducationsubsectors WHERE funderName =' + sql.escape(funder.funderName)
+          var query18 = 'SELECT * FROM funderinternationalbases WHERE funderName =' + sql.escape(funder.funderName)
+          var query19 = 'SELECT * FROM funderorganizationtraits WHERE funderName =' + sql.escape(funder.funderName)
 
           async.parallel([
               function(queryDB) {
@@ -728,10 +728,11 @@ dashboard.post('/submit-form-temp', (req, res) =>{
     }
 
    //Insert funder data
-   var query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
-   async.parallel([
+  var query1 = 'INSERT into funder VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderUrl) + ',' + sql.escape(formData.funderMotive) + ',' + sql.escape(formData.funderImpact) + ',' + sql.escape(formData.funderOrganizationForm) + ')'
+  console.log(query1);
+  async.parallel([
     function(queryDB) {
-        poolTemp.query(query1, {}, function(err, results) {
+        poolTemp.query(query1, function(err, results) {
             if (err){
                 return queryDB(err)
             }else{
@@ -750,7 +751,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
    //Insert funder international bases data
    for(var i = 0; i <formData.funderInternationalBases.length; i++) {
-        var query2 = "INSERT into funderinternationalbases VALUES ('" + formData.funderName +"','"+ formData.funderInternationalBases[i] +"')"
+        var query2 = 'INSERT into funderinternationalbases VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderInternationalBases[i]) + ')'
         //console.log(query2)
         async.parallel([
             function(queryDB) {
@@ -774,7 +775,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
     //Insert funder education subsector data
   for(var i = 0; i <formData.funderEducationSubsector.length; i++) {
-    var query3 = "INSERT into fundereducationsubsectors VALUES ('" + formData.funderName +"','"+ formData.funderEducationSubsector[i]+"')"
+    var query3 = 'INSERT into fundereducationsubsectors VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderEducationSubsector[i]) + ')'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query3, {}, function(err, results) {
@@ -797,7 +798,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
     //Insert funder education organizational traits data
    for(var i = 0; i <formData.funderOrgTraits.length; i++) {
-    var query4 = "INSERT into funderorganizationtraits VALUES ('" + formData.funderName +"','"+ formData.funderOrgTraits[i]+"')"
+    var query4 = 'INSERT into funderorganizationtraits VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderOrgTraits[i]) + ')'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query4, {}, function(err, results) {
@@ -820,7 +821,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
     //Insert funder education funder asia bases data
    for(var i = 0; i <formData.funderAsiaBases.length; i++) {
-    var query5 = "INSERT into funderasiabases VALUES ('" + formData.funderName +"','"+ formData.funderAsiaBases[i]+"')"
+    var query5 = 'INSERT into funderasiabases VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderAsiaBases[i]) + ')'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query5, {}, function(err, results) {
@@ -843,7 +844,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
     //Insert funder education funder asia operations data
    for(var i = 0; i < formData.funderAsiaOperations.length; i++) {
-    var query6 = "INSERT into funderasiaoperations VALUES ('" + formData.funderName +"','"+ formData.funderAsiaOperations[i]+"')"
+    var query6 = 'INSERT into funderasiaoperations VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderAsiaOperations[i])+')'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query6, {}, function(err, results) {
@@ -870,10 +871,10 @@ dashboard.post('/submit-form-temp', (req, res) =>{
     })
 
    function function1(val){
-        query7 = "INSERT into initiative VALUES ("+ val +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"','"+ formData.initiativeTargetsWomen +
-        "','"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +
-        "',(SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas +
-        "' AND activity = '" + formData.initiativeMainProgramActivity + "'), (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'),'" + formData.initiativeFeeAccess + "')"
+        query7 = 'INSERT into initiative VALUES ('+ sql.escape(val) +','+ sql.escape(formData.initiativeName) + ',' + sql.escape(formData.initiativeURL) + ',' + sql.escape(formData.initiativeTargetsWomen) +
+        ',' + sql.escape(formData.initiativeStart) + ',' + sql.escape(formData.initiativeEnd) + ',' + sql.escape(formData.initiativeDescription) +
+        ',(SELECT programArea FROM programarea WHERE programArea =' + sql.escape(formData.initiativeProgramAreas) +
+        ' AND activity = ' + sql.escape(formData.initiativeMainProgramActivity) + '), (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = ' + sql.escape(formData.initiativeMainProgramActivity) + '),' + sql.escape(formData.initiativeFeeAccess) + ')'
         async.parallel([
         function(queryDB) {
             poolTemp.query(query7, {}, function(err, results) {
@@ -913,7 +914,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
       //Retrieve the region names required to be inserted
       async.map(countryRegions, function(region, queryDB) {
-          poolTemp.query("SELECT regionName from regions WHERE regionName = '" + region.region + "' AND includedCountry = '" + region.country + "'", {}, function(err, results) {
+          poolTemp.query('SELECT regionName from regions WHERE regionName = ' + sql.escape(region.region) + ' AND includedCountry = ' + sql.escape(region.country), {}, function(err, results) {
             if (err) {
               return queryDB(err, null)
             } else {
@@ -934,7 +935,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
             regionsFiltered = [...new Set(regions)];
             //Insert filtered out region data
             async.map(regionsFiltered, function(region, queryDB) {
-              poolTemp.query("INSERT into initiativeregion VALUES ("+ val +", '" + region + "')", {}, function(err, results) {
+              poolTemp.query('INSERT into initiativeregion VALUES ('+ sql.escape(val) + ',' + sql.escape(region) + ')', {}, function(err, results) {
                 if (err) {
                   return queryDB(err, null)
                 } else {
@@ -959,7 +960,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
    function function3(val){
    for(var i = 0; i < formData.initiativeCountries.length; i++) {
-    var query9 = "INSERT into initiativecountryofoperation VALUES ( " + val+", (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
+    var query9 = 'INSERT into initiativecountryofoperation VALUES ( ' + sql.escape(val) + ', (SELECT countryName from country WHERE countryName=' + sql.escape(formData.initiativeCountries[i]) + '))'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query9, {}, function(err, results) {
@@ -988,7 +989,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
    function function4(val){
    for(var i = 0; i < formData.initiativeActivities.length; i++) {
-    var query10 = "INSERT into initiativeprogrammingactivities VALUES (" + val +",'"+ formData.initiativeActivities[i]+"')"
+    var query10 = 'INSERT into initiativeprogrammingactivities VALUES (' + sql.escape(val) + ',' + sql.escape(formData.initiativeActivities[i]) + ')'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query10, {}, function(err, results) {
@@ -1017,7 +1018,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
 
 function function5(val){
    for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
-    var query11= "INSERT into initiativefundingsource VALUES (" + val +",'"+ formData.initiativeSourceOfFees[i]+"')"
+    var query11= 'INSERT into initiativefundingsource VALUES (' + sql.escape(val) + ',' + sql.escape(formData.initiativeSourceOfFees[i]) + ')'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query11, {}, function(err, results) {
@@ -1046,7 +1047,7 @@ function function5(val){
 
    function function6(val){
    for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
-    var query12 =  "INSERT into initiativelaunchcountry VALUES (" + val +",(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
+    var query12 =  'INSERT into initiativelaunchcountry VALUES (' + sql.escape(val) + ',(SELECT countryName from country WHERE countryName=' + sql.escape(formData.initiativeLaunchCountry[i]) + '))'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query12, {}, function(err, results) {
@@ -1075,7 +1076,7 @@ function function5(val){
 
    function function7(val){
    for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
-    var query13 = "INSERT into initiativetargetgeography VALUES ( " + val +",'"+ formData.initiativeTargetGeo[i]+"')"
+    var query13 = 'INSERT into initiativetargetgeography VALUES ( ' + sql.escape(val) + ',' + sql.escape(formData.initiativeTargetGeo[i]) + ')'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query13, {}, function(err, results) {
@@ -1104,7 +1105,7 @@ function function5(val){
 
    function function8(val){
    for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
-    var query14 = "INSERT into initiativetargetpopulationsector VALUES (" + val +",'"+ formData.initiativetargetPopulationSector[i]+"')"
+    var query14 = 'INSERT into initiativetargetpopulationsector VALUES (' + sql.escape(val) + ',' + sql.escape(formData.initiativetargetPopulationSector[i]) + ')'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query14, {}, function(err, results) {
@@ -1133,7 +1134,7 @@ function function5(val){
 
    function function9(val){
    for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
-    var query15 = "INSERT into initiativemonitoredoutcomes VALUES (" + val +",'"+ formData.initiativeOutcomesMonitored[i]+"')"
+    var query15 = 'INSERT into initiativemonitoredoutcomes VALUES (' + sql.escape(val) + ',' + sql.escape(formData.initiativeOutcomesMonitored[i]) + ')'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query15, {}, function(err, results) {
@@ -1163,8 +1164,8 @@ function function5(val){
 
    function function10(val){
    for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
-    var query16 = "INSERT into initiativemaineducationsubsector VALUES (" + val +
-    ",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
+    var query16 = 'INSERT into initiativemaineducationsubsector VALUES (' + sql.escape(val) +
+    ',(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector =' + sql.escape(formData.initiativeMEdSubs[i]) + '))'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query16, {}, function(err, results) {
@@ -1193,8 +1194,8 @@ function function5(val){
 
    function function11(val){
    for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
-    var query17 = "INSERT into initiativeeducationsubsectors VALUES (" + val +
-    ",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
+    var query17 = 'INSERT into initiativeeducationsubsectors VALUES (' + sql.escape(val) +
+    ',(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector =' + sql.escape(formData.initiativeOEdSubs[i]) + '))'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query17, {}, function(err, results) {
@@ -1223,7 +1224,7 @@ function function5(val){
 
    function function12(val){
    for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
-    var query18 = "INSERT into initiativetargetschoolmanagement VALUES (" + val +",'"+ formData.initiativeManagementTypes[i]+"')"
+    var query18 = 'INSERT into initiativetargetschoolmanagement VALUES (' + sql.escape(val) + ',' + sql.escape(formData.initiativeManagementTypes[i]) + ')'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query18, {}, function(err, results) {
@@ -1246,7 +1247,7 @@ function function5(val){
     }
 
     //implementor queries
-    var query19 = "INSERT INTO implementor VALUES ('" + formData.implementorName + "','" + formData.implementorMotive+"')"
+    var query19 = 'INSERT INTO implementor VALUES (' + sql.escape(formData.implementorName) + ',' + sql.escape(formData.implementorMotive) + ')'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query19, {}, function(err, results) {
@@ -1274,12 +1275,12 @@ function function5(val){
    function function13(val){
 
   // funder - funds - relationship
-    var query20 = "INSERT INTO funds VALUES ("+ val + ",'"
-    + formData.funderName+ "','"+formData.initiativeStart + "','" + formData.initiativeEnd +"')"
+    var query20 = 'INSERT INTO funds VALUES (' + sql.escape(val) + ','
+    + sql.escape(formData.funderName) + ',' + sql.escape(formData.initiativeStart) + ',' + sql.escape(formData.initiativeEnd) + ')'
 
     // //implementor - implements - initiative
-    var query21 = "INSERT INTO implements VALUES ("+ val +",'"+
-    formData.implementorName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd +"')"
+    var query21 = 'INSERT INTO implements VALUES (' + sql.escape(val) + ',' +
+    sql.escape(formData.implementorName) + ',' + sql.escape(formData.initiativeStart) + ',' + sql.escape(formData.initiativeEnd) + ')'
 
     async.parallel([
         function(queryDB) {
@@ -1316,7 +1317,7 @@ function function5(val){
     })
 
    function function15(val){
-    var query22 = "INSERT INTO comments VALUES ("+ val+ ",'"+ formData.comments +"')"
+    var query22 = 'INSERT INTO comments VALUES (' + sql.escape(val) + ',' + sql.escape(formData.comments) + ')'
     async.parallel([
         function(queryDB) {
             poolTemp.query(query22, {}, function(err, results) {
@@ -1342,7 +1343,7 @@ function function5(val){
     })
 
 function function16(val){
-        var query23 = "INSERT INTO status VALUES ("+ val+ ","+ formData.inDB + "," + formData.needsReview +")"
+        var query23 = 'INSERT INTO status VALUES ('+ sql.escape(val) + ',' + sql.escape(formData.inDB) + ',' + sql.escape(formData.needsReview) +')'
         async.parallel([
             function(queryDB) {
                 poolTemp.query(query23, {}, function(err, results) {
@@ -1368,39 +1369,39 @@ function function16(val){
     })
 
    function function17(val){
-        var query24 = "INSERT INTO sectionreviews VALUES ("+ val + "," +
-        formData.funderNameApproval + "," +
-        formData.funderUrlApproval + "," +
-        formData.funderMotiveApproval + "," +
-        formData.funderImpactApproval + "," +
-        formData.funderOrganizationFormApproval + "," +
-        formData.funderInternationalBaseApproval + "," +
-        formData.funderEdSubsApproval + "," +
-        formData.funderOrgTraitsApproval+ "," +
-        formData.funderAsiaBasesApproval+ "," +
-        formData.funderAsiaOperationsApproval+ "," +
-        formData.initNameApproval + "," +
-        formData.initUrlApproval+ "," +
-        formData.initTargetsWomenApproval+ "," +
-        formData.initStartApproval+ "," +
-        formData.initEndApproval+ "," +
-        formData.initDescriptionApproval+ "," +
-        formData.initProgramAreasApproval+ "," +
-        formData.initMainProgramActivityApproval+ "," +
-        formData.initFeeAccessApproval+ "," +
-        formData.initRegionsApproval+ "," +
-        formData.initCountriesApproval+ "," +
-        formData.initActivitiesApproval + "," +
-        formData.initSourceOfFeesApproval+ "," +
-        formData.initLaunchCountryApproval+ "," +
-        formData.initTargetGeoApproval+ "," +
-        formData.initTargetPopulationSectorApproval+ "," +
-        formData.initOutcomesMonitoredApproval+ "," +
-        formData.initMEdSubsApproval+ "," +
-        formData.initOEdSubsApproval + "," +
-        formData.initManagementTypesApproval+ "," +
-        formData.implementorNameApproval+ "," +
-        formData.implementorMotiveApproval +")"
+        var query24 = 'INSERT INTO sectionreviews VALUES (' + sql.escape(val) + ',' +
+        sql.escape(formData.funderNameApproval) + ',' +
+        sql.escape(formData.funderUrlApproval) + ',' +
+        sql.escape(formData.funderMotiveApproval) + ',' +
+        sql.escape(formData.funderImpactApproval) + ',' +
+        sql.escape(formData.funderOrganizationFormApproval) + ',' +
+        sql.escape(formData.funderInternationalBaseApproval) + ',' +
+        sql.escape(formData.funderEdSubsApproval) + ',' +
+        sql.escape(formData.funderOrgTraitsApproval) + ',' +
+        sql.escape(formData.funderAsiaBasesApproval) + ',' +
+        sql.escape(formData.funderAsiaOperationsApproval) + ',' +
+        sql.escape(formData.initNameApproval) + ',' +
+        sql.escape(formData.initUrlApproval) + ',' +
+        sql.escape(formData.initTargetsWomenApproval) + ',' +
+        sql.escape(formData.initStartApproval) + ',' +
+        sql.escape(formData.initEndApproval) + ',' +
+        sql.escape(formData.initDescriptionApproval) + ',' +
+        sql.escape(formData.initProgramAreasApproval) + ',' +
+        sql.escape(formData.initMainProgramActivityApproval) + ',' +
+        sql.escape(formData.initFeeAccessApproval) + ',' +
+        sql.escape(formData.initRegionsApproval) + ',' +
+        sql.escape(formData.initCountriesApproval) + ',' +
+        sql.escape(formData.initActivitiesApproval) + ',' +
+        sql.escape(formData.initSourceOfFeesApproval) + ',' +
+        sql.escape(formData.initLaunchCountryApproval) + ',' +
+        sql.escape(formData.initTargetGeoApproval) + ',' +
+        sql.escape(formData.initTargetPopulationSectorApproval) + ',' +
+        sql.escape(formData.initOutcomesMonitoredApproval) + ',' +
+        sql.escape(formData.initMEdSubsApproval) + ',' +
+        sql.escape(formData.initOEdSubsApproval) + ',' +
+        sql.escape(formData.initManagementTypesApproval) + ',' +
+        sql.escape(formData.implementorNameApproval) + ',' +
+        sql.escape(formData.implementorMotiveApproval) + ')'
 
 
         async.parallel([
@@ -1483,592 +1484,590 @@ dashboard.post('/submitform', (req, res) =>{
         implementorMotive: req.body.impMotive, //im
     }
 
-   //Insert funder data
-   var query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
+    //Insert funder data
+   var query1 = 'INSERT into funder VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderUrl) + ',' + sql.escape(formData.funderMotive) + ',' + sql.escape(formData.funderImpact) + ',' + sql.escape(formData.funderOrganizationForm) + ')'
+   console.log(query1);
    async.parallel([
-    function(queryDB) {
-        pool.query(query1, {}, function(err, results) {
-            if (err){
-                return queryDB(err)
-            }else{
-                queryDB()
-            }
+     function(queryDB) {
+         pool.query(query1, function(err, results) {
+             if (err){
+                 return queryDB(err)
+             }else{
+                 queryDB()
+             }
 
-        })
-    },
+         })
+     },
 
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-
-
-   //Insert funder international bases data
-   for(var i = 0; i <formData.funderInternationalBases.length; i++) {
-        var query2 = "INSERT into funderinternationalbases VALUES ('" + formData.funderName +"','"+ formData.funderInternationalBases[i] +"')"
-        //console.log(query2)
-        async.parallel([
-            function(queryDB) {
-                pool.query(query2, {}, function(err, results) {
-                    if (err){
-                        return queryDB(err)
-                    }else{
-                        queryDB()
-                    }
-
-                })
-            },
-
-        ], function(err) {
-            if (err){
-                console.log(err)
-            }
-
-    })
-    }
-
-    //Insert funder education subsector data
-  for(var i = 0; i <formData.funderEducationSubsector.length; i++) {
-    var query3 = "INSERT into fundereducationsubsectors VALUES ('" + formData.funderName +"','"+ formData.funderEducationSubsector[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query3, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
-
-    //Insert funder education organizational traits data
-   for(var i = 0; i <formData.funderOrgTraits.length; i++) {
-    var query4 = "INSERT into funderorganizationtraits VALUES ('" + formData.funderName +"','"+ formData.funderOrgTraits[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query4, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
-
-    //Insert funder education funder asia bases data
-   for(var i = 0; i <formData.funderAsiaBases.length; i++) {
-    var query5 = "INSERT into funderasiabases VALUES ('" + formData.funderName +"','"+ formData.funderAsiaBases[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query5, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
-
-    //Insert funder education funder asia operations data
-   for(var i = 0; i < formData.funderAsiaOperations.length; i++) {
-    var query6 = "INSERT into funderasiaoperations VALUES ('" + formData.funderName +"','"+ formData.funderAsiaOperations[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query6, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
-
-
-    //Insert initative data
-    test = client.get('tagNumber', function(err, reply){
-        function1(reply)
-    })
-
-   function function1(val){
-        query7 = "INSERT into initiative VALUES ("+ val +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"','"+ formData.initiativeTargetsWomen +
-        "','"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +
-        "',(SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas +
-        "' AND activity = '" + formData.initiativeMainProgramActivity + "'), (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'),'" + formData.initiativeFeeAccess + "')"
-        async.parallel([
-        function(queryDB) {
-            pool.query(query7, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-        ], function(err) {
-            if (err){
-                console.log(err)
-            }
-
-        })
-    }
-
-     //Insert initiative region data
-     test = client.get('tagNumber', function(err, reply){
-       function2(reply)
-    })
-
-   function function2(val){
-     const countryRegions = [];
-     for (var i = 0; i < formData.initiativeRegions.length; i++) {
-       for (var j = 0; j < formData.initiativeCountries.length; j++) {
-         //Add each region and just ONE of its associated countries as object into the countryRegions list
-         const regionFound = countryRegions.find(region => region.region == formData.initiativeRegions[i] && region.country == formData.initiativeCountries[j]);
-         if (regionFound === undefined) {
-           countryRegions.push({region: formData.initiativeRegions[i], country: formData.initiativeCountries[j] })
+     ], function(err) {
+         if (err){
+             console.log(err)
          }
-       }
+
+     })
+
+    //Insert funder international bases data
+    for(var i = 0; i <formData.funderInternationalBases.length; i++) {
+         var query2 = 'INSERT into funderinternationalbases VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderInternationalBases[i]) + ')'
+         //console.log(query2)
+         async.parallel([
+             function(queryDB) {
+                 pool.query(query2, {}, function(err, results) {
+                     if (err){
+                         return queryDB(err)
+                     }else{
+                         queryDB()
+                     }
+
+                 })
+             },
+
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+     })
      }
 
-     //Retrieve the region names required to be inserted
-     async.map(countryRegions, function(region, queryDB) {
-         pool.query("SELECT regionName from regions WHERE regionName = '" + region.region + "' AND includedCountry = '" + region.country + "'", {}, function(err, results) {
-           if (err) {
-             return queryDB(err, null)
-           } else {
-             queryDB(null, results)
-           }
-         })
-       }, function(err, results) {
-         if (err) {
-           console.log(err);
-         } else {
-           let res = JSON.parse(JSON.stringify(results));
-           const regions = [];
-           res.forEach(regionListing => {
-             if (regionListing.length > 0) {
-               regions.push(regionListing[0].regionName);
-             }
-           });
-           regionsFiltered = [...new Set(regions)];
-           //Insert filtered out region data
-           async.map(regionsFiltered, function(region, queryDB) {
-             pool.query("INSERT into initiativeregion VALUES ("+ val +", '" + region + "')", {}, function(err, results) {
-               if (err) {
-                 return queryDB(err, null)
-               } else {
-                 queryDB(null, results)
-               }
+     //Insert funder education subsector data
+   for(var i = 0; i <formData.funderEducationSubsector.length; i++) {
+     var query3 = 'INSERT into fundereducationsubsectors VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderEducationSubsector[i]) + ')'
+     async.parallel([
+         function(queryDB) {
+             pool.query(query3, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
+
              })
-           }, function(err, results) {
+         },
+
+     ], function(err) {
+         if (err){
+             console.log(err)
+         }
+
+     })
+     }
+
+     //Insert funder education organizational traits data
+    for(var i = 0; i <formData.funderOrgTraits.length; i++) {
+     var query4 = 'INSERT into funderorganizationtraits VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderOrgTraits[i]) + ')'
+     async.parallel([
+         function(queryDB) {
+             pool.query(query4, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
+
+             })
+         },
+
+     ], function(err) {
+         if (err){
+             console.log(err)
+         }
+
+     })
+     }
+
+     //Insert funder education funder asia bases data
+    for(var i = 0; i <formData.funderAsiaBases.length; i++) {
+     var query5 = 'INSERT into funderasiabases VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderAsiaBases[i]) + ')'
+     async.parallel([
+         function(queryDB) {
+             pool.query(query5, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
+
+             })
+         },
+
+     ], function(err) {
+         if (err){
+             console.log(err)
+         }
+
+     })
+     }
+
+     //Insert funder education funder asia operations data
+    for(var i = 0; i < formData.funderAsiaOperations.length; i++) {
+     var query6 = 'INSERT into funderasiaoperations VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderAsiaOperations[i])+')'
+     async.parallel([
+         function(queryDB) {
+             pool.query(query6, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
+
+             })
+         },
+
+     ], function(err) {
+         if (err){
+             console.log(err)
+         }
+
+     })
+     }
+
+     //Insert initative data
+     test = client.get('tagNumber', function(err, reply){
+         function1(reply)
+     })
+
+    function function1(val){
+         query7 = 'INSERT into initiative VALUES ('+ sql.escape(val) +','+ sql.escape(formData.initiativeName) + ',' + sql.escape(formData.initiativeURL) + ',' + sql.escape(formData.initiativeTargetsWomen) +
+         ',' + sql.escape(formData.initiativeStart) + ',' + sql.escape(formData.initiativeEnd) + ',' + sql.escape(formData.initiativeDescription) +
+         ',(SELECT programArea FROM programarea WHERE programArea =' + sql.escape(formData.initiativeProgramAreas) +
+         ' AND activity = ' + sql.escape(formData.initiativeMainProgramActivity) + '), (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = ' + sql.escape(formData.initiativeMainProgramActivity) + '),' + sql.escape(formData.initiativeFeeAccess) + ')'
+         async.parallel([
+         function(queryDB) {
+             pool.query(query7, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
+
+             })
+         },
+
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+     }
+
+      //Insert initiative region data
+      test = client.get('tagNumber', function(err, reply){
+        function2(reply)
+     })
+
+    function function2(val){
+       const countryRegions = [];
+       for (var i = 0; i < formData.initiativeRegions.length; i++) {
+         for (var j = 0; j < formData.initiativeCountries.length; j++) {
+           //Add each region and just ONE of its associated countries as object into the countryRegions list
+           const regionFound = countryRegions.find(region => region.region == formData.initiativeRegions[i] && region.country == formData.initiativeCountries[j]);
+           if (regionFound === undefined) {
+             countryRegions.push({region: formData.initiativeRegions[i], country: formData.initiativeCountries[j] })
+           }
+         }
+       }
+
+       //Retrieve the region names required to be inserted
+       async.map(countryRegions, function(region, queryDB) {
+           pool.query('SELECT regionName from regions WHERE regionName = ' + sql.escape(region.region) + ' AND includedCountry = ' + sql.escape(region.country), {}, function(err, results) {
              if (err) {
-               console.log(err)
+               return queryDB(err, null)
+             } else {
+               queryDB(null, results)
              }
            })
-         }
+         }, function(err, results) {
+           if (err) {
+             console.log(err);
+           } else {
+             let res = JSON.parse(JSON.stringify(results));
+             const regions = [];
+             res.forEach(regionListing => {
+               if (regionListing.length > 0) {
+                 regions.push(regionListing[0].regionName);
+               }
+             });
+             regionsFiltered = [...new Set(regions)];
+             //Insert filtered out region data
+             async.map(regionsFiltered, function(region, queryDB) {
+               pool.query('INSERT into initiativeregion VALUES ('+ sql.escape(val) + ',' + sql.escape(region) + ')', {}, function(err, results) {
+                 if (err) {
+                   return queryDB(err, null)
+                 } else {
+                   queryDB(null, results)
+                 }
+               })
+             }, function(err, results) {
+               if (err) {
+                 console.log(err)
+               }
+             })
+           }
+       })
+    }
+
+
+
+ //      //Insert initiative country of operation data
+      test = client.get('tagNumber', function(err, reply){
+        function3(reply)
      })
-   }
 
+    function function3(val){
+    for(var i = 0; i < formData.initiativeCountries.length; i++) {
+     var query9 = 'INSERT into initiativecountryofoperation VALUES ( ' + sql.escape(val) + ', (SELECT countryName from country WHERE countryName=' + sql.escape(formData.initiativeCountries[i]) + '))'
+     async.parallel([
+         function(queryDB) {
+             pool.query(query9, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
 
+             })
+         },
 
-    //Insert initiative country of operation data
-     test = client.get('tagNumber', function(err, reply){
-       function3(reply)
-    })
+     ], function(err) {
+         if (err){
+             console.log(err)
+         }
 
-   function function3(val){
-   for(var i = 0; i < formData.initiativeCountries.length; i++) {
-    var query9 = "INSERT into initiativecountryofoperation VALUES ( " + val+", (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query9, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
+     })
+     }
+     }
 
-            })
-        },
+      //Insert initiative programming activity data
+      test = client.get('tagNumber', function(err, reply){
+        function4(reply)
+     })
 
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
+    function function4(val){
+    for(var i = 0; i < formData.initiativeActivities.length; i++) {
+     var query10 = 'INSERT into initiativeprogrammingactivities VALUES (' + sql.escape(val) + ',' + sql.escape(formData.initiativeActivities[i]) + ')'
+     async.parallel([
+         function(queryDB) {
+             pool.query(query10, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
 
-    })
-    }
-    }
+             })
+         },
 
-     //Insert initiative programming activity data
-     test = client.get('tagNumber', function(err, reply){
-       function4(reply)
-    })
+     ], function(err) {
+         if (err){
+             console.log(err)
+         }
 
-   function function4(val){
-   for(var i = 0; i < formData.initiativeActivities.length; i++) {
-    var query10 = "INSERT into initiativeprogrammingactivities VALUES (" + val +",'"+ formData.initiativeActivities[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query10, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
+     })
+     }
+     }
 
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
-    }
-
-//    //Insert initiative source of fees data
-   test = client.get('tagNumber', function(err, reply){
-   function5(reply)
-})
-
-function function5(val){
-   for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
-    var query11= "INSERT into initiativefundingsource VALUES (" + val +",'"+ formData.initiativeSourceOfFees[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query11, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
-    }
-
-//     //Insert initiative launch country data
+    //Insert initiative source of fees data
     test = client.get('tagNumber', function(err, reply){
-       function6(reply)
-    })
+    function5(reply)
+ })
 
-   function function6(val){
-   for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
-    var query12 =  "INSERT into initiativelaunchcountry VALUES (" + val +",(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query12, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
+ function function5(val){
+    for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
+     var query11= 'INSERT into initiativefundingsource VALUES (' + sql.escape(val) + ',' + sql.escape(formData.initiativeSourceOfFees[i]) + ')'
+     async.parallel([
+         function(queryDB) {
+             pool.query(query11, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
 
-            })
-        },
+             })
+         },
 
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
+     ], function(err) {
+         if (err){
+             console.log(err)
+         }
 
-    })
-    }
-    }
+     })
+     }
+     }
 
-//      //Insert initiative target geo data
+ //     //Insert initiative launch country data
      test = client.get('tagNumber', function(err, reply){
-       function7(reply)
-    })
+        function6(reply)
+     })
 
-   function function7(val){
-   for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
-    var query13 = "INSERT into initiativetargetgeography VALUES ( " + val +",'"+ formData.initiativeTargetGeo[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query13, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
+    function function6(val){
+    for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
+     var query12 =  'INSERT into initiativelaunchcountry VALUES (' + sql.escape(val) + ',(SELECT countryName from country WHERE countryName=' + sql.escape(formData.initiativeLaunchCountry[i]) + '))'
+     async.parallel([
+         function(queryDB) {
+             pool.query(query12, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
 
-            })
-        },
+             })
+         },
 
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
+     ], function(err) {
+         if (err){
+             console.log(err)
+         }
 
-    })
-    }
-    }
+     })
+     }
+     }
 
-//      //Insert initiative target population sector data
+      //Insert initiative target geo data
+      test = client.get('tagNumber', function(err, reply){
+        function7(reply)
+     })
+
+    function function7(val){
+    for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
+     var query13 = 'INSERT into initiativetargetgeography VALUES ( ' + sql.escape(val) + ',' + sql.escape(formData.initiativeTargetGeo[i]) + ')'
+     async.parallel([
+         function(queryDB) {
+             pool.query(query13, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
+
+             })
+         },
+
+     ], function(err) {
+         if (err){
+             console.log(err)
+         }
+
+     })
+     }
+     }
+
+ //      //Insert initiative target population sector data
+      test = client.get('tagNumber', function(err, reply){
+        function8(reply)
+     })
+
+    function function8(val){
+    for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
+     var query14 = 'INSERT into initiativetargetpopulationsector VALUES (' + sql.escape(val) + ',' + sql.escape(formData.initiativetargetPopulationSector[i]) + ')'
+     async.parallel([
+         function(queryDB) {
+             pool.query(query14, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
+
+             })
+         },
+
+     ], function(err) {
+         if (err){
+             console.log(err)
+         }
+
+     })
+     }
+     }
+
+     //Insert initiative outcomes monitored data
+      test = client.get('tagNumber', function(err, reply){
+        function9(reply)
+     })
+
+    function function9(val){
+    for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
+     var query15 = 'INSERT into initiativemonitoredoutcomes VALUES (' + sql.escape(val) + ',' + sql.escape(formData.initiativeOutcomesMonitored[i]) + ')'
+     async.parallel([
+         function(queryDB) {
+             pool.query(query15, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
+
+             })
+         },
+
+     ], function(err) {
+         if (err){
+             console.log(err)
+         }
+
+     })
+     }
+     }
+
+
+      //Insert initiative main education subsector data
+      test = client.get('tagNumber', function(err, reply){
+        function10(reply)
+     })
+
+    function function10(val){
+    for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
+     var query16 = 'INSERT into initiativemaineducationsubsector VALUES (' + sql.escape(val) +
+     ',(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector =' + sql.escape(formData.initiativeMEdSubs[i]) + '))'
+     async.parallel([
+         function(queryDB) {
+             pool.query(query16, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
+
+             })
+         },
+
+     ], function(err) {
+         if (err){
+             console.log(err)
+         }
+
+     })
+     }
+     }
+
+       //Insert initiative education subsector data
+      test = client.get('tagNumber', function(err, reply){
+        function11(reply)
+     })
+
+    function function11(val){
+    for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
+     var query17 = 'INSERT into initiativeeducationsubsectors VALUES (' + sql.escape(val) +
+     ',(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector =' + sql.escape(formData.initiativeOEdSubs[i]) + '))'
+     async.parallel([
+         function(queryDB) {
+             pool.query(query17, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
+
+             })
+         },
+
+     ], function(err) {
+         if (err){
+             console.log(err)
+         }
+
+     })
+     }
+     }
+
+      //Insert initiative target management t data
+      test = client.get('tagNumber', function(err, reply){
+        function12(reply)
+     })
+
+    function function12(val){
+    for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
+     var query18 = 'INSERT into initiativetargetschoolmanagement VALUES (' + sql.escape(val) + ',' + sql.escape(formData.initiativeManagementTypes[i]) + ')'
+     async.parallel([
+         function(queryDB) {
+             pool.query(query18, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
+
+             })
+         },
+
+     ], function(err) {
+         if (err){
+             console.log(err)
+         }
+
+     })
+     }
+     }
+
+     //implementor queries
+     var query19 = 'INSERT INTO implementor VALUES (' + sql.escape(formData.implementorName) + ',' + sql.escape(formData.implementorMotive) + ')'
+     async.parallel([
+         function(queryDB) {
+             pool.query(query19, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
+
+             })
+         },
+
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
+
+         })
+
+
      test = client.get('tagNumber', function(err, reply){
-       function8(reply)
-    })
+        function13(reply)
+     })
 
-   function function8(val){
-   for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
-    var query14 = "INSERT into initiativetargetpopulationsector VALUES (" + val +",'"+ formData.initiativetargetPopulationSector[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query14, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
+    function function13(val){
 
-            })
-        },
+   // funder - funds - relationship
+     var query20 = 'INSERT INTO funds VALUES (' + sql.escape(val) + ','
+     + sql.escape(formData.funderName) + ',' + sql.escape(formData.initiativeStart) + ',' + sql.escape(formData.initiativeEnd) + ')'
 
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
+     // //implementor - implements - initiative
+     var query21 = 'INSERT INTO implements VALUES (' + sql.escape(val) + ',' +
+     sql.escape(formData.implementorName) + ',' + sql.escape(formData.initiativeStart) + ',' + sql.escape(formData.initiativeEnd) + ')'
 
-    })
-    }
-    }
+     async.parallel([
+         function(queryDB) {
+             pool.query(query20, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
 
-      //Insert initiative outcomes monitored data
-     test = client.get('tagNumber', function(err, reply){
-       function9(reply)
-    })
+             })
+         },
+         function(queryDB) {
+             pool.query(query21, {}, function(err, results) {
+                 if (err){
+                     return queryDB(err)
+                 }else{
+                     queryDB()
+                 }
 
-   function function9(val){
-   for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
-    var query15 = "INSERT into initiativemonitoredoutcomes VALUES (" + val +",'"+ formData.initiativeOutcomesMonitored[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query15, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
+             })
+         },
 
-            })
-        },
+         ], function(err) {
+             if (err){
+                 console.log(err)
+             }
 
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
-    }
-
-
-//      //Insert initiative main education subsector data
-     test = client.get('tagNumber', function(err, reply){
-       function10(reply)
-    })
-
-   function function10(val){
-   for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
-    var query16 = "INSERT into initiativemaineducationsubsector VALUES (" + val +
-    ",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query16, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
-    }
-
-     //Insert initiative education subsector data
-     test = client.get('tagNumber', function(err, reply){
-       function11(reply)
-    })
-
-   function function11(val){
-   for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
-    var query17 = "INSERT into initiativeeducationsubsectors VALUES (" + val +
-    ",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query17, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
-    }
-
-     //Insert initiative target management t data
-     test = client.get('tagNumber', function(err, reply){
-       function12(reply)
-    })
-
-   function function12(val){
-   for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
-    var query18 = "INSERT into initiativetargetschoolmanagement VALUES (" + val +",'"+ formData.initiativeManagementTypes[i]+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query18, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-    ], function(err) {
-        if (err){
-            console.log(err)
-        }
-
-    })
-    }
-    }
-
-    //implementor queries
-    var query19 = "INSERT INTO implementor VALUES ('" + formData.implementorName + "','" + formData.implementorMotive+"')"
-    async.parallel([
-        function(queryDB) {
-            pool.query(query19, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-        ], function(err) {
-            if (err){
-                console.log(err)
-            }
-
-        })
-
-
-    test = client.get('tagNumber', function(err, reply){
-       function13(reply)
-    })
-
-   function function13(val){
-
-
-  // funder - funds - relationship
-    var query20 = "INSERT INTO funds VALUES ("+ val + ",'"
-    + formData.funderName+ "','"+formData.initiativeStart + "','" + formData.initiativeEnd +"')"
-
-    // //implementor - implements - initiative
-    var query21 = "INSERT INTO implements VALUES ("+ val +",'"+
-    formData.implementorName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd +"')"
-
-    async.parallel([
-        function(queryDB) {
-            pool.query(query20, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-        function(queryDB) {
-            pool.query(query21, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-
-            })
-        },
-
-        ], function(err) {
-            if (err){
-                console.log(err)
-            }
-
-        })
-    }
+         })
+     }
 
     client.exists('tagNumber', function(err, reply){
         if(reply != 1){
@@ -2135,11 +2134,10 @@ dashboard.post('/update-form', (req, res) =>{
 
     //Update funder data or insert new funder if funder funds other initiatives - if this is the case, don't want to replace(update) the funder
     var query1;
-
     var numFunderInitiatives;  //Number of initiatives funded by funder
-    var numFunders;  //Number of funders with the current tagNum associated to them
-    var queryNumFunderInitiatives = "SELECT COUNT(funderName) FROM funds WHERE funderName = '" + formData.OfunderName + "'" //Get number of initiatives funded by funder
-    var queryNumFunders = "SELECT COUNT(funderName) FROM funds WHERE tagNum = " + formData.tagNum
+    var numFunders //Number of funders by specified tag number
+    var queryNumFunderInitiatives = 'SELECT COUNT(funderName) FROM funds WHERE funderName = ' + sql.escape(formData.OfunderName)  //Get number of initiatives funded by funder
+    var queryNumFunders = 'SELECT COUNT(funderName) FROM funds WHERE tagNum = ' + sql.escape(formData.tagNum)  //Get number of funders specified by tag number
 
     async.parallel([
      function(queryDB) {
@@ -2149,24 +2147,26 @@ dashboard.post('/update-form', (req, res) =>{
              }else{
                  queryDB(null, results)
              }
+
          })
      },
 
-   ], function(err, results) {
+    ], function(err, results) {
          if (err){
            res.json(err)
          } else {
            numFunderInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(funderName)']));
-           //If funder existed in temp already but hasnt been added to main db yet
+
+           //If funder existed in temp db already but doesn't exist in main db
            if (numFunderInitiatives == 0) {
-             query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
+             query1 = 'INSERT into funder VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderUrl) + ',' + sql.escape(formData.funderMotive) + ',' + sql.escape(formData.funderImpact) + ',' + sql.escape(formData.funderOrganizationForm) + ')'
            } else {
              if (numFunderInitiatives > 1 && formData.funderName !== formData.OfunderName) {
-               query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
+               query1 = 'INSERT into funder VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderUrl) + ',' + sql.escape(formData.funderMotive) + ',' + sql.escape(formData.funderImpact) + ',' + sql.escape(formData.funderOrganizationForm) + ')'
              }
              else {
-               query1 = "UPDATE funder SET funderName = '" + formData.funderName + "', funderWebsite ='"+ formData.funderUrl +"', profitMotive ='"+ formData.funderMotive +"', impactInvesting ='"+ formData.funderImpact
-              +"', organizationalForm ='"+ formData.funderOrganizationForm +"' WHERE funderName = '" + formData.OfunderName + "'"
+               query1 = 'UPDATE funder SET funderName = ' + sql.escape(formData.funderName) + ', funderWebsite ='+ sql.escape(formData.funderUrl) +', profitMotive =' + sql.escape(formData.funderMotive) +', impactInvesting ='+ sql.escape(formData.funderImpact)
+              +', organizationalForm ='+ sql.escape(formData.funderOrganizationForm) +' WHERE funderName = ' + sql.escape(formData.OfunderName)
             }
            }
 
@@ -2189,7 +2189,7 @@ dashboard.post('/update-form', (req, res) =>{
 
             if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
               //delete all funder international base
-              var query2 = "DELETE FROM funderinternationalbases WHERE funderName = '" + formData.OfunderName + "'"
+              var query2 = 'DELETE FROM funderinternationalbases WHERE funderName = ' + sql.escape(formData.OfunderName)
               async.parallel([
                   function(queryDB) {
                       pool.query(query2, {}, function(err, results) {
@@ -2207,7 +2207,7 @@ dashboard.post('/update-form', (req, res) =>{
                       } else {
                         //Insert funder international bases data
                         for(var i = 0; i <formData.funderInternationalBases.length; i++) {
-                           var query3 = "INSERT into funderinternationalbases VALUES ('" + formData.funderName +"','"+ formData.funderInternationalBases[i] +"')"
+                           var query3 = 'INSERT into funderinternationalbases VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderInternationalBases[i]) + ')'
                            //console.log(query2)
                            async.parallel([
                                function(queryDB) {
@@ -2232,7 +2232,7 @@ dashboard.post('/update-form', (req, res) =>{
             } else {
               //Insert funder international bases data
               for(var i = 0; i <formData.funderInternationalBases.length; i++) {
-                 var query3 = "INSERT into funderinternationalbases VALUES ('" + formData.funderName +"','"+ formData.funderInternationalBases[i] +"')"
+                 var query3 = 'INSERT into funderinternationalbases VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderInternationalBases[i]) + ')'
                  //console.log(query2)
                  async.parallel([
                      function(queryDB) {
@@ -2257,7 +2257,7 @@ dashboard.post('/update-form', (req, res) =>{
 
             //delete all funder fundereducationsubsectors
             if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
-              var query4 = "DELETE FROM fundereducationsubsectors WHERE funderName = '"+ formData.OfunderName + "'"
+              var query4 = 'DELETE FROM fundereducationsubsectors WHERE funderName = ' + sql.escape(formData.OfunderName)
               async.parallel([
                   function(queryDB) {
                       pool.query(query4, {}, function(err, results) {
@@ -2275,7 +2275,7 @@ dashboard.post('/update-form', (req, res) =>{
                       } else {
                         //Insert funder education subsector data
                         for(var i = 0; i <formData.funderEducationSubsector.length; i++) {
-                          var query5 = "INSERT into fundereducationsubsectors VALUES ('" + formData.funderName +"','"+ formData.funderEducationSubsector[i]+"')"
+                          var query5 = 'INSERT into fundereducationsubsectors VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderEducationSubsector[i]) + ')'
                           async.parallel([
                               function(queryDB) {
                                   pool.query(query5, {}, function(err, results) {
@@ -2299,7 +2299,7 @@ dashboard.post('/update-form', (req, res) =>{
               } else {
                 //Insert funder education subsector data
                 for(var i = 0; i <formData.funderEducationSubsector.length; i++) {
-                  var query5 = "INSERT into fundereducationsubsectors VALUES ('" + formData.funderName +"','"+ formData.funderEducationSubsector[i]+"')"
+                  var query5 = 'INSERT into fundereducationsubsectors VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderEducationSubsector[i]) + ')'
                   async.parallel([
                       function(queryDB) {
                           pool.query(query5, {}, function(err, results) {
@@ -2323,7 +2323,7 @@ dashboard.post('/update-form', (req, res) =>{
 
             if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
               //delete all funder funderorganizationtraits
-              var query6 = "DELETE FROM funderorganizationtraits WHERE funderName = '"+ formData.OfunderName + "'"
+              var query6 = 'DELETE FROM funderorganizationtraits WHERE funderName = ' + sql.escape(formData.OfunderName)
               async.parallel([
                   function(queryDB) {
                       pool.query(query6, {}, function(err, results) {
@@ -2342,7 +2342,7 @@ dashboard.post('/update-form', (req, res) =>{
                       } else {
                         //Insert funder education organizational traits data
                         for(var i = 0; i <formData.funderOrgTraits.length; i++) {
-                          var query7 = "INSERT into funderorganizationtraits VALUES ('" + formData.funderName +"','"+ formData.funderOrgTraits[i]+"')"
+                          var query7 = 'INSERT into funderorganizationtraits VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderOrgTraits[i]) + ')'
                           async.parallel([
                               function(queryDB) {
                                   pool.query(query7, {}, function(err, results) {
@@ -2366,7 +2366,7 @@ dashboard.post('/update-form', (req, res) =>{
             } else {
               //Insert funder education organizational traits data
               for(var i = 0; i <formData.funderOrgTraits.length; i++) {
-                var query7 = "INSERT into funderorganizationtraits VALUES ('" + formData.funderName +"','"+ formData.funderOrgTraits[i]+"')"
+                var query7 = 'INSERT into funderorganizationtraits VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderOrgTraits[i]) + ')'
                 async.parallel([
                     function(queryDB) {
                         pool.query(query7, {}, function(err, results) {
@@ -2392,7 +2392,7 @@ dashboard.post('/update-form', (req, res) =>{
 
             if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
               //delete all funder asiabases
-              var query8 = "DELETE FROM funderasiabases WHERE funderName = '"+ formData.OfunderName + "'"
+              var query8 = 'DELETE FROM funderasiabases WHERE funderName = ' + sql.escape(formData.OfunderName)
               async.parallel([
                   function(queryDB) {
                       pool.query(query8, {}, function(err, results) {
@@ -2411,7 +2411,7 @@ dashboard.post('/update-form', (req, res) =>{
                       } else {
                         //Insert funder asia bases data
                         for(var i = 0; i <formData.funderAsiaBases.length; i++) {
-                          var query9 = "INSERT into funderasiabases VALUES ('" + formData.funderName +"','"+ formData.funderAsiaBases[i]+"')"
+                          var query9 = 'INSERT into funderasiabases VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderAsiaBases[i])+ ')'
                           async.parallel([
                               function(queryDB) {
                                   pool.query(query9, {}, function(err, results) {
@@ -2421,6 +2421,7 @@ dashboard.post('/update-form', (req, res) =>{
                                           //formData.table1 = results;
                                           queryDB()
                                       }
+
                                   })
                               },
 
@@ -2428,6 +2429,7 @@ dashboard.post('/update-form', (req, res) =>{
                               if (err){
                                   console.log(err)
                               }
+
                           })
                         }
                       }
@@ -2435,7 +2437,7 @@ dashboard.post('/update-form', (req, res) =>{
             } else {
               //Insert funder asia bases data
               for(var i = 0; i <formData.funderAsiaBases.length; i++) {
-                var query9 = "INSERT into funderasiabases VALUES ('" + formData.funderName +"','"+ formData.funderAsiaBases[i]+"')"
+                var query9 = 'INSERT into funderasiabases VALUES ('  + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderAsiaBases[i])+ ')'
                 async.parallel([
                     function(queryDB) {
                         pool.query(query9, {}, function(err, results) {
@@ -2445,7 +2447,6 @@ dashboard.post('/update-form', (req, res) =>{
                                 //formData.table1 = results;
                                 queryDB()
                             }
-
                         })
                     },
 
@@ -2460,7 +2461,7 @@ dashboard.post('/update-form', (req, res) =>{
 
             if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
               //delete all funder asia operations
-              var query10= "DELETE FROM funderasiaoperations WHERE funderName = '"+ formData.OfunderName + "'"
+              var query10= 'DELETE FROM funderasiaoperations WHERE funderName = ' + sql.escape(formData.OfunderName)
               async.parallel([
                   function(queryDB) {
                       pool.query(query10, {}, function(err, results) {
@@ -2480,16 +2481,17 @@ dashboard.post('/update-form', (req, res) =>{
                       } else {
                         //Insert funder education funder asia operations data
                         for(var i = 0; i < formData.funderAsiaOperations.length; i++) {
-                          var query11 = "INSERT into funderasiaoperations VALUES ('" + formData.funderName +"','"+ formData.funderAsiaOperations[i]+"')"
+                          var query11 = 'INSERT into funderasiaoperations VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderAsiaOperations[i])+ ')'
                           async.parallel([
                               function(queryDB) {
                                   pool.query(query11, {}, function(err, results) {
                                       if (err){
                                           return queryDB(err)
                                       }else{
-                                          //formData.table1 = results;
+                                          //sql.escape(formData.table1 = results;
                                           queryDB()
                                       }
+
                                   })
                               },
 
@@ -2497,6 +2499,7 @@ dashboard.post('/update-form', (req, res) =>{
                               if (err){
                                   console.log(err)
                               }
+
                           })
                         }
                       }
@@ -2504,7 +2507,7 @@ dashboard.post('/update-form', (req, res) =>{
             } else {
               //Insert funder education funder asia operations data
               for(var i = 0; i < formData.funderAsiaOperations.length; i++) {
-                var query11 = "INSERT into funderasiaoperations VALUES ('" + formData.funderName +"','"+ formData.funderAsiaOperations[i]+"')"
+                var query11 = 'INSERT into funderasiaoperations VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderAsiaOperations[i])+ ')'
                 async.parallel([
                     function(queryDB) {
                         pool.query(query11, {}, function(err, results) {
@@ -2526,227 +2529,39 @@ dashboard.post('/update-form', (req, res) =>{
             }
 
 
-    var query12;
-    var queryNumInitiatives = "SELECT COUNT(tagNumber) FROM initiative WHERE tagNumber = " + formData.tagNum;  //Check if initiative exists in main db
-    async.parallel([
-      function(queryDB) {
-          pool.query(queryNumInitiatives, {}, function(err, results) {
-              if (err){
-                  return queryDB(err, null)
-              }else{
-                  queryDB(null, results)
-              }
-          })
-      }
-    ], function(err, results) {
-        if (err){
-            console.log(err)
-        } else {
-          let numInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(tagNumber)']));
-          //If initiative doesn't exist in main db, insert initiative data. Otherwise, update existing initiative
-          if (numInitiatives > 0) {
-            query12 = "UPDATE initiative SET initiativeName = '" + formData.initiativeName +"', initiativeWebsite ='"+ formData.initiativeURL +"', targetsWomen = '"+ formData.initiativeTargetsWomen +
-            "', startYear ='"+ formData.initiativeStart +"',endYear='"+ formData.initiativeEnd +"', description ='"+ formData.initiativeDescription +
-            "', mainProgrammingArea = (SELECT programArea FROM programarea WHERE programArea ='" + formData.initiativeProgramAreas
-            + "' AND activity = '" + formData.initiativeMainProgramActivity + "') , mainProgrammingActivity = (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '" + formData.initiativeMainProgramActivity + "'), feeToAccess = '"+ formData.initiativeFeeAccess
-            + "' WHERE tagNumber = " + formData.tagNum
-          } else {
-            query12 = "INSERT into initiative VALUES ("+ formData.tagNum +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"','"+ formData.initiativeTargetsWomen +
-            "','"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +
-            "',(SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas +
-            "' AND activity = '" + formData.initiativeMainProgramActivity + "'), (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'),'" + formData.initiativeFeeAccess + "')"
-          }
-        }
-
-        async.parallel([
-            function(queryDB) {
-                pool.query(query12, {}, function(err, results) {
-                    if (err){
-                        return queryDB(err)
-                    }else{
-                        queryDB()
-                    }
-                })
-            },
-          ], function(err) {
-              if (err){
-                  console.log(err)
-              }
-          })
-        })
-
-
-        //delete initiative region data
-        var query13= "DELETE FROM initiativeregion WHERE tagNumber = "+ formData.tagNum
-        async.parallel([
-          function(queryDB) {
-              pool.query(query13, {}, function(err, results) {
-                  if (err){
-                      return queryDB(err)
-                  }else{
-                      queryDB()
-                  }
-              })
-            },
-          ], function(err) {
-              if (err){
-                  console.log(err)
-              } else {
-                const countryRegions = [];
-                for (var i = 0; i < formData.initiativeRegions.length; i++) {
-                  for (var j = 0; j < formData.initiativeCountries.length; j++) {
-                    const regionFound = countryRegions.find(region => region.region == formData.initiativeRegions[i] && region.country == formData.initiativeCountries[j]);
-                    if (regionFound === undefined) {
-                      countryRegions.push({region: formData.initiativeRegions[i], country: formData.initiativeCountries[j] })
-                    }
-                  }
-                }
-
-                async.map(countryRegions, function(region, queryDB) {
-                    pool.query("SELECT regionName from regions WHERE regionName = '" + region.region + "' AND includedCountry = '" + region.country + "'", {}, function(err, results) {
-                      if (err) {
-                        return queryDB(err, null)
-                      } else {
-                        queryDB(null, results)
+            var query12;
+            var queryNumInitiatives = 'SELECT COUNT(tagNumber) FROM initiative WHERE tagNumber = ' + sql.escape(formData.tagNum)  //Check if initiative exists in main db
+            async.parallel([
+              function(queryDB) {
+                  pool.query(queryNumInitiatives, {}, function(err, results) {
+                      if (err){
+                          return queryDB(err, null)
+                      }else{
+                          queryDB(null, results)
                       }
-                    })
-                  }, function(err, results) {
-                    if (err) {
-                      console.log(err);
-                    } else {
-                      let res = JSON.parse(JSON.stringify(results));
-                      const regions = [];
-                      res.forEach(regionListing => {
-                        if (regionListing.length > 0) {
-                          regions.push(regionListing[0].regionName);
-                        }
-                      });
-                      regionsFiltered = [...new Set(regions)];
-                      //Insert region data
-                      async.map(regionsFiltered, function(region, queryDB) {
-                        pool.query("INSERT into initiativeregion VALUES ("+ formData.tagNum +", '" + region + "')", {}, function(err, results) {
-                          if (err) {
-                            return queryDB(err, null)
-                          } else {
-                            queryDB(null, results)
-                          }
-                        })
-                      }, function(err, results) {
-                        if (err) {
-                          console.log(err)
-                        }
-                      })
-                    }
-                })
+                  })
               }
-            })
-
-
-    //delete initiativecountryofoperation data
-    var query15= "DELETE FROM initiativecountryofoperation WHERE tagNumber = "+ formData.tagNum
-    async.parallel([
-        function(queryDB) {
-            pool.query(query15, {}, function(err, results) {
+            ], function(err, results) {
                 if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-            })
-        },
-
-        ], function(err) {
-            if (err){
-                console.log(err)
-            } else {
-              //Insert initiative country of operation data
-              for(var i = 0; i < formData.initiativeCountries.length; i++) {
-                var query16 = "INSERT into initiativecountryofoperation VALUES ("+formData.tagNum +", (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
-                async.parallel([
-                    function(queryDB) {
-                        pool.query(query16, {}, function(err, results) {
-                            if (err){
-                                return queryDB(err)
-                            } else {
-                                queryDB()
-                            }
-                        })
-                    },
-
-                ], function(err) {
-                    if (err){
-                        console.log(err)
-                    }
-                })
-              }
-            }
-        })
-
-
-    //delete initiativeprogrammingactivities data
-    var query17= "DELETE FROM initiativeprogrammingactivities WHERE tagNumber = "+ formData.tagNum
-    async.parallel([
-        function(queryDB) {
-            pool.query(query17, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-            })
-        },
-
-        ], function(err) {
-            if (err){
-                console.log(err)
-            } else {
-              //Insert initiative programming activity data
-              for(var i = 0; i < formData.initiativeActivities.length; i++) {
-                var query18 = "INSERT into initiativeprogrammingactivities VALUES ("+formData.tagNum +",'"+ formData.initiativeActivities[i]+"')"
-                async.parallel([
-                    function(queryDB) {
-                        pool.query(query18, {}, function(err, results) {
-                            if (err){
-                                return queryDB(err)
-                            }else{
-                                queryDB()
-                            }
-                        })
-                    },
-
-                ], function(err) {
-                    if (err){
-                        console.log(err)
-                    }
-                })
-              }
-            }
-
-        })
-
-      //delete initiativefundingsource data
-      var query19= "DELETE FROM initiativefundingsource WHERE tagNumber = "+ formData.tagNum
-      async.parallel([
-          function(queryDB) {
-              pool.query(query19, {}, function(err, results) {
-                  if (err){
-                      return queryDB(err)
-                  }else{
-                      queryDB()
+                    console.log(err)
+                } else {
+                  let numInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(tagNumber)']));
+                  //If initiative doesn't exist in main db, insert initiative data. Otherwise, update existing initiative
+                  if (numInitiatives > 0) {
+                    query12 = 'UPDATE initiative SET initiativeName = ' + sql.escape(formData.initiativeName) + ', initiativeWebsite =' + sql.escape(formData.initiativeURL) + ', targetsWomen = ' + sql.escape(formData.initiativeTargetsWomen) +
+                    ', startYear =' + sql.escape(formData.initiativeStart) + ',endYear=' + sql.escape(formData.initiativeEnd) + ', description =' + sql.escape(formData.initiativeDescription) +
+                    ', mainProgrammingArea = (SELECT programArea FROM programarea WHERE programArea ='  + sql.escape(formData.initiativeProgramAreas) +
+                    ' AND activity = '  + sql.escape(formData.initiativeMainProgramActivity) +  ') , mainProgrammingActivity = (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '  + sql.escape(formData.initiativeMainProgramActivity) +  '), feeToAccess = ' + sql.escape(formData.initiativeFeeAccess) +
+                    ' WHERE tagNumber = '   + sql.escape(formData.tagNum)
+                  } else {
+                    query12 = 'INSERT into initiative VALUES (' + sql.escape(formData.tagNum) +',' + sql.escape(formData.initiativeName) + ',' + sql.escape(formData.initiativeURL) + ',' + sql.escape(formData.initiativeTargetsWomen) +
+                     ',' + sql.escape(formData.initiativeStart) + ',' + sql.escape(formData.initiativeEnd) + ',' + sql.escape(formData.initiativeDescription) +
+                     ',(SELECT programArea FROM programarea WHERE programArea ='  +sql.escape(formData.initiativeProgramAreas) +
+                     ' AND activity = '  + sql.escape(formData.initiativeMainProgramActivity) +  '), (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = ' + sql.escape(formData.initiativeMainProgramActivity) + '),'  + sql.escape(formData.initiativeFeeAccess) +  ')'
                   }
-              })
-          },
-
-          ], function(err) {
-              if (err){
-                  console.log(err)
-              } else {
-                //Insert initiative source of fees data
-                for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
-                  var query20= "INSERT into initiativefundingsource VALUES ("+formData.tagNum +",'"+ formData.initiativeSourceOfFees[i]+"')"
                   async.parallel([
                       function(queryDB) {
-                          pool.query(query20, {}, function(err, results) {
+                          pool.query(query12, {}, function(err, results) {
                               if (err){
                                   return queryDB(err)
                               }else{
@@ -2754,407 +2569,206 @@ dashboard.post('/update-form', (req, res) =>{
                               }
                           })
                       },
-
-                  ], function(err) {
-                      if (err){
-                          console.log(err)
-                      }
-                  })
-                }
-              }
-          })
-
-
-     //delete launchcountry data
-     var query21= "DELETE FROM initiativelaunchcountry WHERE tagNumber = "+ formData.tagNum
-     async.parallel([
-         function(queryDB) {
-             pool.query(query21, {}, function(err, results) {
-                 if (err){
-                     return queryDB(err)
-                 }else{
-                     queryDB()
-                 }
-             })
-         },
-
-         ], function(err) {
-             if (err){
-                 console.log(err)
-             } else {
-               //Insert initiative launch country data
-               for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
-                 var query22 =  "INSERT into initiativelaunchcountry VALUES ("+formData.tagNum +",(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
-                 async.parallel([
-                     function(queryDB) {
-                         pool.query(query22, {}, function(err, results) {
-                             if (err){
-                                 return queryDB(err)
-                             }else{
-                                 queryDB()
-                             }
-                         })
-                     },
-
-                 ], function(err) {
-                     if (err){
-                         console.log(err)
-                     }
-                 })
-               }
-             }
-         })
-
-
-     //delete initiativetargetgeography data
-     var query23= "DELETE FROM initiativetargetgeography WHERE tagNumber = "+ formData.tagNum
-     async.parallel([
-         function(queryDB) {
-             pool.query(query23, {}, function(err, results) {
-                 if (err){
-                     return queryDB(err)
-                 }else{
-                     queryDB()
-                 }
-
-             })
-         },
-
-         ], function(err) {
-             if (err){
-                 console.log(err)
-             } else {
-               //Insert initiative target geo data
-               for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
-                 var query24 = "INSERT into initiativetargetgeography VALUES ("+formData.tagNum +",'"+ formData.initiativeTargetGeo[i]+"')"
-                 async.parallel([
-                     function(queryDB) {
-                         pool.query(query24, {}, function(err, results) {
-                             if (err){
-                                 return queryDB(err)
-                             }else{
-                                 queryDB()
-                             }
-
-                         })
-                     },
-
-                 ], function(err) {
-                     if (err){
-                         console.log(err)
-                     }
-                 })
-               }
-             }
-         })
-
-
-    //delete INSERT into initiativetargetpopulationsector data
-    var query25= "DELETE FROM initiativetargetpopulationsector WHERE tagNumber = "+ formData.tagNum
-    async.parallel([
-        function(queryDB) {
-            pool.query(query25, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-            })
-        },
-
-        ], function(err) {
-            if (err){
-                console.log(err)
-            } else {
-              //Insert initiative target population sector data
-              for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
-                var query26 = "INSERT into initiativetargetpopulationsector VALUES ("+formData.tagNum +",'"+ formData.initiativetargetPopulationSector[i]+"')"
-                async.parallel([
-                    function(queryDB) {
-                        pool.query(query26, {}, function(err, results) {
-                            if (err){
-                                return queryDB(err)
-                            }else{
-                                queryDB()
-                            }
-                        })
-                    },
-
-                ], function(err) {
-                    if (err){
-                        console.log(err)
-                    }
+                    ], function(err) {
+                        if (err){
+                            console.log(err)
+                        }
+                    })
+                  }
                 })
-              }
-            }
-        })
 
-    //delete initiativemonitoredoutcomes data
-    var query27= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ formData.tagNum
-    async.parallel([
-        function(queryDB) {
-            pool.query(query27, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-            })
-        },
-
-        ], function(err) {
-            if (err){
-                console.log(err)
-            } else {
-              //Insert initiative outcomes monitored data
-              for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
-                var query28 = "INSERT into initiativemonitoredoutcomes VALUES ("+formData.tagNum +",'"+ formData.initiativeOutcomesMonitored[i]+"')"
-                async.parallel([
-                    function(queryDB) {
-                        pool.query(query28, {}, function(err, results) {
-                            if (err){
-                                return queryDB(err)
-                            }else{
-                                queryDB()
-                            }
-
-                        })
-                    },
-
-                ], function(err) {
-                    if (err){
-                        console.log(err)
-                    }
-                })
-              }
-            }
-        })
-
-     //delete initiative main education subsector data
-     var query29= "DELETE FROM initiativemaineducationsubsector WHERE tagNumber = "+ formData.tagNum
-     async.parallel([
-       function(queryDB) {
-           pool.query(query29, {}, function(err, results) {
-               if (err){
-                   return queryDB(err)
-               }else{
-                   queryDB()
-               }
-           })
-         },
-       ], function(err) {
-           if (err){
-               console.log(err)
-           } else {
-             //Insert initiative main education subsector data
-             for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
-               var query30 = "INSERT into initiativemaineducationsubsector VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
+               //delete initiative region data
+               var query13= 'DELETE FROM initiativeregion WHERE tagNumber = '+ sql.escape(formData.tagNum)
                async.parallel([
-                   function(queryDB) {
-                       pool.query(query30, {}, function(err, results) {
-                           if (err){
-                               return queryDB(err)
-                           }else{
-                               queryDB()
+                 function(queryDB) {
+                     pool.query(query13, {}, function(err, results) {
+                         if (err){
+                             return queryDB(err)
+                         }else{
+                             queryDB()
+                         }
+                     })
+                   },
+                 ], function(err) {
+                     if (err){
+                         console.log(err)
+                     } else {
+                       const countryRegions = [];
+                       for (var i = 0; i < formData.initiativeRegions.length; i++) {
+                         for (var j = 0; j < formData.initiativeCountries.length; j++) {
+                           const regionFound = countryRegions.find(region => region.region == formData.initiativeRegions[i] && region.country == formData.initiativeCountries[j]);
+                           if (regionFound === undefined) {
+                             countryRegions.push({region: formData.initiativeRegions[i], country: formData.initiativeCountries[j] })
+                           }
+                         }
+                       }
+
+                       async.map(countryRegions, function(region, queryDB) {
+                           pool.query('SELECT regionName from regions WHERE regionName = ' + sql.escape(region.region) + ' AND includedCountry = ' + sql.escape(region.country), {}, function(err, results) {
+                             if (err) {
+                               return queryDB(err, null)
+                             } else {
+                               queryDB(null, results)
+                             }
+                           })
+                         }, function(err, results) {
+                           if (err) {
+                             console.log(err);
+                           } else {
+                             let res = JSON.parse(JSON.stringify(results));
+                             const regions = [];
+                             res.forEach(regionListing => {
+                               if (regionListing.length > 0) {
+                                 regions.push(regionListing[0].regionName);
+                               }
+                             });
+                             regionsFiltered = [...new Set(regions)];
+                             //Insert region data
+                             async.map(regionsFiltered, function(region, queryDB) {
+                               pool.query('INSERT into initiativeregion VALUES ('+ sql.escape(formData.tagNum) +',' + sql.escape(region) + ')', {}, function(err, results) {
+                                 if (err) {
+                                   return queryDB(err, null)
+                                 } else {
+                                   queryDB(null, results)
+                                 }
+                               })
+                             }, function(err, results) {
+                               if (err) {
+                                 console.log(err)
+                               }
+                             })
                            }
                        })
-                   },
+                     }
+                   })
+
+           //delete initiativecountryofoperation data
+           var query15= 'DELETE FROM initiativecountryofoperation WHERE tagNumber = '+ sql.escape(formData.tagNum)
+           async.parallel([
+               function(queryDB) {
+                   pool.query(query15, {}, function(err, results) {
+                       if (err){
+                           return queryDB(err)
+                       }else{
+                           queryDB()
+                       }
+
+                   })
+                 },
                ], function(err) {
                    if (err){
                        console.log(err)
+                   } else {
+                     //Insert initiative country of operation data
+                     for(var i = 0; i < formData.initiativeCountries.length; i++) {
+                       var query16 = 'INSERT into initiativecountryofoperation VALUES ('+sql.escape(formData.tagNum) + ', (SELECT countryName from country WHERE countryName=' + sql.escape(formData.initiativeCountries[i])+ '))'
+                       async.parallel([
+                           function(queryDB) {
+                               pool.query(query16, {}, function(err, results) {
+                                   if (err){
+                                       return queryDB(err)
+                                   }else{
+                                       queryDB()
+                                   }
+                               })
+                           },
+                       ], function(err) {
+                           if (err){
+                               console.log(err)
+                           }
+                       })
+                     }
                    }
                })
-             }
-           }
-     })
 
 
-    //delete initiativeeducationsubsectors data
-    var query31= "DELETE FROM initiativeeducationsubsectors WHERE initiativeTagNumber = "+ formData.tagNum
-    async.parallel([
-        function(queryDB) {
-            pool.query(query31, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-            })
-        },
+           //delete initiativeprogrammingactivities data
+           var query17= 'DELETE FROM initiativeprogrammingactivities WHERE tagNumber = '+ sql.escape(formData.tagNum)
+           async.parallel([
+               function(queryDB) {
+                   pool.query(query17, {}, function(err, results) {
+                       if (err){
+                           return queryDB(err)
+                       }else{
+                           queryDB()
+                       }
+                   })
+                 },
+               ], function(err) {
+                   if (err){
+                       console.log(err)
+                   } else {
+                     //Insert initiative programming activity data
+                     for(var i = 0; i < formData.initiativeActivities.length; i++) {
+                       var query18 = 'INSERT into initiativeprogrammingactivities VALUES ('+sql.escape(formData.tagNum) +','+ sql.escape(formData.initiativeActivities[i])+')'
+                       async.parallel([
+                           function(queryDB) {
+                               pool.query(query18, {}, function(err, results) {
+                                   if (err){
+                                       return queryDB(err)
+                                   }else{
+                                       queryDB()
+                                   }
 
-        ], function(err) {
-            if (err){
-                console.log(err)
-            } else {
-              //Insert initiative education subsector data
-              for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
-                var query32 = "INSERT into initiativeeducationsubsectors VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
-                async.parallel([
-                    function(queryDB) {
-                        pool.query(query32, {}, function(err, results) {
-                            if (err){
-                                return queryDB(err)
-                            }else{
-                                queryDB()
-                            }
+                               })
+                           },
 
-                        })
-                    },
+                       ], function(err) {
+                           if (err){
+                               console.log(err)
+                           }
+                       })
+                     }
+                   }
+               })
 
-                ], function(err) {
-                    if (err){
-                        console.log(err)
-                    }
-                })
-              }
-            }
-        })
 
-    //delete initiativetargetschoolmanagement data
-    var query33= "DELETE FROM initiativetargetschoolmanagement WHERE tagNumber = "+ formData.tagNum
-    async.parallel([
-        function(queryDB) {
-            pool.query(query33, {}, function(err, results) {
-                if (err){
-                    return queryDB(err)
-                }else{
-                    queryDB()
-                }
-            })
-        },
-
-        ], function(err) {
-            if (err){
-                console.log(err)
-            } else {
-              //Insert initiative target management t data
-              for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
-              var query34 = "INSERT into initiativetargetschoolmanagement VALUES ("+formData.tagNum +",'"+ formData.initiativeManagementTypes[i]+"')"
-              async.parallel([
-                  function(queryDB) {
-                      pool.query(query34, {}, function(err, results) {
-                          if (err){
-                              return queryDB(err)
-                          }else{
-                              queryDB()
-                          }
-                      })
-                  },
-
-              ], function(err) {
-                  if (err){
-                      console.log(err)
-                  }
-              })
-            }
-          }
-      })
-
-    async.parallel([
-      function(queryDB) {
-          pool.query(queryNumFunders, {}, function(err, results) {
-              if (err){
-                  return queryDB(err)
-              }else{
-                  queryDB()
-              }
-          })
-      },
-    ], function(err) {
-        if (err){
-            console.log(err)
-        } else {
-          numFunders = JSON.parse(JSON.stringify(results[0][0]['COUNT(funderName)']));
-          // funder - funds - relationship
-          //If funder already existed in temp but not yet in main, insert into funds instead of update
-          var query35;
-          if (numFunderInitiatives == 0) {
-            if (numFunders == 0) {
-              query35 = "INSERT into funds VALUES (" + formData.tagNum + ",'" + formData.funderName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd + "')"
-            } else {
-              query35 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
-              + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ")"
-            }
-          } else {
-            query35 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
-            + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (funderName = '"
-            + formData.OfunderName +"')"
-          }
-
-          async.parallel([
-              function(queryDB) {
-                  pool.query(query35, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
-                  })
-                },
-              ], function(err) {
-                  if (err){
-                      console.log(err)
-                  }
-              })
-            }
-        })
-      }
-    })
-
-    /////////////////////////////Update implements and implementor tables
-    var numImplementerInitiatives;  //Number of initiatives implemented by implementer
-    var numImplementers;  //Number of implementers with the current tagNum associated to them
-    var queryNumImplementerInitiatives = "SELECT COUNT(implementorName) FROM implements WHERE implementorName = '" + formData.OimplementorName + "'" //Get number of initiatives funded by funder
-    var queryNumImplementers = "SELECT COUNT(implementorName) FROM implements WHERE tagNum = " + formData.tagNum
-
-    var query36;
-    async.parallel([
-     function(queryDB) {
-         pool.query(queryNumImplementerInitiatives, {}, function(err, results) {
-             if (err){
-                 return queryDB(err, null)
-             }else{
-                 queryDB(null, results)
-             }
-         })
-     },
-
-   ], function(err, results) {
-         if (err){
-           console.log(err)
-         } else {
-             numImplementerInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(implementorName)']));
-             //If implementer existed in temp already but hasnt been added to main db yet
-             if (numImplementerInitiatives == 0) {
-               query36 = "INSERT into implementor VALUES ('" + formData.implementorName + "','" + formData.implementorMotive + "')"
-             } else {
-               if (numImplementerInitiatives > 1 && formData.implementorName !== formData.OimplementorName) {
-                 query36 = "INSERT into implementor VALUES ('" + formData.implementorName + "','" + formData.implementorMotive + "')"
-               }
-               else {
-                 query36 = "UPDATE implementor SET implementorName ='" + formData.implementorName + "', profitMotive ='" + formData.implementorMotive+"' WHERE implementorName = '"+ formData.OimplementorName +"'"
-               }
-             }
-
+             //delete initiativefundingsource data
+             var query19= 'DELETE FROM initiativefundingsource WHERE tagNumber = '+ sql.escape(formData.tagNum)
              async.parallel([
-              function(queryDB) {
-                  pool.query(query36, {}, function(err, results) {
-                      if (err){
-                          return queryDB(err)
-                      }else{
-                          queryDB()
-                      }
-                  })
-                },
-              ], function(err) {
-                  if (err){
-                      console.log(err)
-                  }
-              })
+                 function(queryDB) {
+                     pool.query(query19, {}, function(err, results) {
+                         if (err){
+                             return queryDB(err)
+                         }else{
+                             queryDB()
+                         }
 
-              async.parallel([
+                     })
+                   },
+                 ], function(err) {
+                     if (err){
+                         console.log(err)
+                     } else {
+                       //Insert initiative source of fees data
+                       for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
+                         var query20= 'INSERT into initiativefundingsource VALUES ('+sql.escape(formData.tagNum) +','+ sql.escape(formData.initiativeSourceOfFees[i])+')'
+                         async.parallel([
+                             function(queryDB) {
+                                 pool.query(query20, {}, function(err, results) {
+                                     if (err){
+                                         return queryDB(err)
+                                     }else{
+                                         queryDB()
+                                     }
+                                 })
+                             },
+
+                         ], function(err) {
+                             if (err){
+                                 console.log(err)
+                             }
+                         })
+                       }
+                     }
+                 })
+
+
+            //delete launchcountry data
+            var query21= 'DELETE FROM initiativelaunchcountry WHERE tagNumber = '+ sql.escape(formData.tagNum)
+            async.parallel([
                 function(queryDB) {
-                    pool.query(queryNumImplementers, {}, function(err, results) {
+                    pool.query(query21, {}, function(err, results) {
                         if (err){
                             return queryDB(err)
                         }else{
@@ -3162,42 +2776,437 @@ dashboard.post('/update-form', (req, res) =>{
                         }
                     })
                 },
-              ], function(err) {
-                  if (err){
-                      console.log(err)
-                  } else {
-                    numImplementers = JSON.parse(JSON.stringify(results[0][0]['COUNT(implementorName)']));
-                    //implementor - implements - initiative
-                    //If implementer already existed in temp but not yet in main
-                    var query37;
-                    if (numImplementerInitiatives == 0) {
-                      if (numImplementers == 0) {
-                        query37 = "INSERT into implements VALUES (" + formData.tagNum + ",'" + formData.implementorName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd + "')"
-                      } else {
-                        query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "') WHERE (tagNum =" + formData.tagNum + ")"
-                      }
-                    } else {
-                      query37 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "') WHERE (tagNum =" + formData.tagNum + ") AND (implementorName = '" + formData.OimplementorName + "')"
-                    }
 
-                    async.parallel([
-                      function(queryDB) {
-                          pool.query(query37, {}, function(err, results) {
-                              if (err){
-                                  return queryDB(err)
-                              }else{
-                                  queryDB()
-                              }
-                          })
-                        },
-                      ], function(err) {
-                          if (err){
-                              console.log(err)
-                          }
-                      })
-                  }
-            })
-        }
+                ], function(err) {
+                    if (err){
+                        console.log(err)
+                    } else {
+                      //Insert initiative launch country data
+                      for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
+                        var query22 =  'INSERT into initiativelaunchcountry VALUES ('+sql.escape(formData.tagNum) + ',(SELECT countryName from country WHERE countryName='+ sql.escape(formData.initiativeLaunchCountry[i])+'))'
+                        async.parallel([
+                            function(queryDB) {
+                                pool.query(query22, {}, function(err, results) {
+                                    if (err){
+                                        return queryDB(err)
+                                    }else{
+                                        queryDB()
+                                    }
+
+                                })
+                            },
+
+                        ], function(err) {
+                            if (err){
+                                console.log(err)
+                            }
+
+                        })
+                      }
+                    }
+                })
+
+
+            //delete initiativetargetgeography data
+            var query23= 'DELETE FROM initiativetargetgeography WHERE tagNumber = '+ sql.escape(formData.tagNum)
+            async.parallel([
+                function(queryDB) {
+                    pool.query(query23, {}, function(err, results) {
+                        if (err){
+                            return queryDB(err)
+                        }else{
+                            queryDB()
+                        }
+                    })
+                },
+
+                ], function(err) {
+                    if (err){
+                        console.log(err)
+                    } else {
+                      //Insert initiative target geo data
+                      for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
+                        var query24 = 'INSERT into initiativetargetgeography VALUES ('+sql.escape(formData.tagNum) +','+ sql.escape(formData.initiativeTargetGeo[i])+')'
+                        async.parallel([
+                            function(queryDB) {
+                                pool.query(query24, {}, function(err, results) {
+                                    if (err){
+                                        return queryDB(err)
+                                    }else{
+                                        queryDB()
+                                    }
+
+                                })
+                            },
+
+                        ], function(err) {
+                            if (err){
+                                console.log(err)
+                            }
+                        })
+                      }
+                    }
+                })
+
+           //delete INSERT into initiativetargetpopulationsector data
+           var query25= 'DELETE FROM initiativetargetpopulationsector WHERE tagNumber = '+ sql.escape(formData.tagNum)
+           async.parallel([
+               function(queryDB) {
+                   pool.query(query25, {}, function(err, results) {
+                       if (err){
+                           return queryDB(err)
+                       }else{
+
+                           queryDB()
+                       }
+
+                   })
+                 },
+
+               ], function(err) {
+                   if (err){
+                       console.log(err)
+                   } else {
+                     //Insert initiative target population sector data
+                     for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
+                       var query26 = 'INSERT into initiativetargetpopulationsector VALUES ('+sql.escape(formData.tagNum) +','+ sql.escape(formData.initiativetargetPopulationSector[i])+')'
+                       async.parallel([
+                           function(queryDB) {
+                               pool.query(query26, {}, function(err, results) {
+                                   if (err){
+                                       return queryDB(err)
+                                   }else{
+                                       queryDB()
+                                   }
+
+                               })
+                           },
+
+                       ], function(err) {
+                           if (err){
+                               console.log(err)
+                           }
+                         })
+                     }
+                   }
+               })
+
+
+           //delete initiativemonitoredoutcomes data
+           var query27= 'DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = '+ sql.escape(formData.tagNum)
+           async.parallel([
+               function(queryDB) {
+                   pool.query(query27, {}, function(err, results) {
+                       if (err){
+                           return queryDB(err)
+                       }else{
+
+                           queryDB()
+                       }
+
+                   })
+               },
+
+               ], function(err) {
+                   if (err){
+                       console.log(err)
+                   } else {
+                     //Insert initiative outcomes monitored data
+                     for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
+                       var query28 = 'INSERT into initiativemonitoredoutcomes VALUES ('+sql.escape(formData.tagNum) +','+ sql.escape(formData.initiativeOutcomesMonitored[i])+')'
+                       async.parallel([
+                           function(queryDB) {
+                               pool.query(query28, {}, function(err, results) {
+                                   if (err){
+                                       return queryDB(err)
+                                   }else{
+                                       queryDB()
+                                   }
+                               })
+                           },
+                       ], function(err) {
+                           if (err){
+                               console.log(err)
+                           }
+                       })
+                     }
+                 }
+           })
+
+
+           //delete initiative main education subsector data
+           var query29= 'DELETE FROM initiativemaineducationsubsector WHERE tagNumber = '+ sql.escape(formData.tagNum)
+           async.parallel([
+             function(queryDB) {
+                 pool.query(query29, {}, function(err, results) {
+                     if (err){
+                         return queryDB(err)
+                     }else{
+                         queryDB()
+                     }
+                 })
+               },
+             ], function(err) {
+                 if (err){
+                     console.log(err)
+                 } else {
+                   //Insert initiative main education subsector data
+                   for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
+                     var query30 = 'INSERT into initiativemaineducationsubsector VALUES ('+sql.escape(formData.tagNum) + ',(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector =' + sql.escape(formData.initiativeMEdSubs[i])+'))'
+                     async.parallel([
+                         function(queryDB) {
+                             pool.query(query30, {}, function(err, results) {
+                                 if (err){
+                                     return queryDB(err)
+                                 }else{
+                                     queryDB()
+                                 }
+                             })
+                         },
+
+                     ], function(err) {
+                         if (err){
+                             console.log(err)
+                         }
+
+                     })
+                   }
+                 }
+           })
+
+
+           //delete initiativeeducationsubsectors data
+           var query31= 'DELETE FROM initiativeeducationsubsectors WHERE initiativeTagNumber = '+ sql.escape(formData.tagNum)
+           async.parallel([
+               function(queryDB) {
+                   pool.query(query31, {}, function(err, results) {
+                       if (err){
+                           return queryDB(err)
+                       }else{
+
+                           queryDB()
+                       }
+
+                   })
+                 },
+               ], function(err) {
+                   if (err){
+                       console.log(err)
+                   } else {
+                     //Insert initiative education subsector data
+                     for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
+                       var query32 = 'INSERT into initiativeeducationsubsectors VALUES ('+sql.escape(formData.tagNum) + ',(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector =' + sql.escape(formData.initiativeOEdSubs[i])+ '))'
+                       async.parallel([
+                           function(queryDB) {
+                               pool.query(query32, {}, function(err, results) {
+                                   if (err){
+                                       return queryDB(err)
+                                   }else{
+                                       queryDB()
+                                   }
+                               })
+                           },
+
+                       ], function(err) {
+                           if (err){
+                               console.log(err)
+                           }
+                       })
+                     }
+                 }
+           })
+
+
+           //delete initiativetargetschoolmanagement data
+           var query33= 'DELETE FROM initiativetargetschoolmanagement WHERE tagNumber = '+ sql.escape(formData.tagNum)
+           async.parallel([
+               function(queryDB) {
+                   pool.query(query33, {}, function(err, results) {
+                       if (err){
+                           return queryDB(err)
+                       }else{
+                           queryDB()
+                       }
+                   })
+                 },
+               ], function(err) {
+                   if (err){
+                       console.log(err)
+                   } else {
+                     //Insert initiative target management data
+                     for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
+                       var query34 = 'INSERT into initiativetargetschoolmanagement VALUES ('+sql.escape(formData.tagNum) +','+ sql.escape(formData.initiativeManagementTypes[i])+')'
+                       async.parallel([
+                           function(queryDB) {
+                               pool.query(query34, {}, function(err, results) {
+                                   if (err){
+                                       return queryDB(err)
+                                   }else{
+                                       queryDB()
+                                   }
+                               })
+                           },
+
+                       ], function(err) {
+                           if (err){
+                               console.log(err)
+                           }
+                       })
+                     }
+                   }
+
+               })
+
+           //Count number of initiatives this funder funds
+           async.parallel([
+             function(queryDB) {
+                 pool.query(queryNumFunders, {}, function(err, results) {
+                     if (err){
+                         return queryDB(err)
+                     }else{
+                         queryDB()
+                     }
+                 })
+             },
+           ], function(err) {
+               if (err){
+                   console.log(err)
+               } else {
+                 numFunders = JSON.parse(JSON.stringify(results[0][0]['COUNT(funderName)']));
+                 // funder - funds - relationship
+                 //If funder already existed in temp but not yet in main
+                 var query36;
+                 if (numFunderInitiatives == 0) {
+                   if (numFunders == 0) {
+                     query36 = 'INSERT into funds VALUES (' + sql.escape(formData.tagNum) + ',' + sql.escape(formData.funderName) +  ','  + sql.escape(formData.initiativeStart) +  ','  + sql.escape(formData.initiativeEnd) +  ')'
+                   } else {
+                     query36 = 'UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='
+                     + sql.escape(formData.funderName) +  '), startYear = ' + sql.escape(formData.initiativeStart) +  ', endYear ='  + sql.escape(formData.initiativeEnd) + ' WHERE (tagNum ='  + sql.escape(formData.tagNum) + ')'
+                   }
+                 } else {
+                   query36 = 'UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='
+                   + sql.escape(formData.funderName)+ '), startYear = '+sql.escape(formData.initiativeStart) + ', endYear =' + sql.escape(formData.initiativeEnd) +' WHERE (tagNum =' + sql.escape(formData.tagNum) + ') AND (funderName = '
+                   + sql.escape(formData.OfunderName) +')'
+                 }
+
+                 async.parallel([
+                     function(queryDB) {
+                         pool.query(query36, {}, function(err, results) {
+                             if (err){
+                                 return queryDB(err)
+                             }else{
+                                 queryDB()
+                             }
+
+                         })
+                       },
+                     ], function(err) {
+                         if (err){
+                             console.log(err)
+                         }
+                     })
+                   }
+               })
+         }
+     })
+
+     ///////////////////////////////Update implements and implementor tables
+     var numImplementerInitiatives;  //Number of initiatives implemented by implementer
+     var numImplementers;  //Number of implementers with the current tagNum associated to them
+     var queryNumImplementerInitiatives = 'SELECT COUNT(implementorName) FROM implements WHERE implementorName = ' + sql.escape(formData.OimplementorName) //Get number of initiatives funded by funder
+     var queryNumImplementers = 'SELECT COUNT(implementorName) FROM implements WHERE tagNum = ' + sql.escape(formData.tagNum)
+
+     var query41;
+     async.parallel([
+      function(queryDB) {
+          pool.query(queryNumImplementerInitiatives, {}, function(err, results) {
+              if (err){
+                  return queryDB(err, null)
+              }else{
+                  queryDB(null, results)
+              }
+          })
+      },
+
+    ], function(err, results) {
+          if (err){
+            console.log(err)
+          } else {
+              numImplementerInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(implementorName)']));
+              //If implementer existed in main already but hasnt been added to temp db yet
+              if (numImplementerInitiatives == 0) {
+                query41 = 'INSERT into implementor VALUES (' + sql.escape(formData.implementorName) + ',' + sql.escape(formData.implementorMotive) + ')'
+              } else {
+                if (numImplementerInitiatives > 1 && formData.implementorName !== formData.OimplementorName) {
+                  query41 = 'INSERT into implementor VALUES (' + sql.escape(formData.implementorName) + ',' + sql.escape(formData.implementorMotive) + ')'
+                }
+                else {
+                  query41 = 'UPDATE implementor SET implementorName =' + sql.escape(formData.implementorName) + ', profitMotive =' + sql.escape(formData.implementorMotive)+' WHERE implementorName = '+ sql.escape(formData.OimplementorName)
+                }
+              }
+
+              async.parallel([
+               function(queryDB) {
+                   pool.query(query41, {}, function(err, results) {
+                       if (err){
+                           return queryDB(err)
+                       }else{
+                           queryDB()
+                       }
+                   })
+                 },
+               ], function(err) {
+                   if (err){
+                       console.log(err)
+                   }
+               })
+
+               async.parallel([
+                 function(queryDB) {
+                     pool.query(queryNumImplementers, {}, function(err, results) {
+                         if (err){
+                             return queryDB(err)
+                         }else{
+                             queryDB()
+                         }
+                     })
+                 },
+               ], function(err) {
+                   if (err){
+                       console.log(err)
+                   } else {
+                     numImplementers = JSON.parse(JSON.stringify(results[0][0]['COUNT(implementorName)']));
+                     //implementor - implements - initiative
+                     //If implementer already existed in main but not yet in temp
+                     var query42;
+                     if (numImplementerInitiatives == 0) {
+                       if (numImplementers == 0) {
+                         query42 = 'INSERT into implements VALUES (' + sql.escape(formData.tagNum) + ',' + sql.escape(formData.implementorName) + ',' + sql.escape(formData.initiativeStart) + ',' + sql.escape(formData.initiativeEnd) + ')'
+                       } else {
+                         query42 = 'UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='+ sql.escape(formData.implementorName) + ') WHERE (tagNum =' + sql.escape(formData.tagNum) + ')'
+                       }
+                     } else {
+                       query42 = 'UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName =' + sql.escape(formData.implementorName) + ') WHERE (tagNum =' + sql.escape(formData.tagNum) + ') AND (implementorName = ' + sql.escape(formData.OimplementorName) + ')'
+                     }
+
+                     async.parallel([
+                       function(queryDB) {
+                           pool.query(query42, {}, function(err, results) {
+                               if (err){
+                                   return queryDB(err)
+                               }else{
+                                   queryDB()
+                               }
+                           })
+                         },
+                       ], function(err) {
+                           if (err){
+                               console.log(err)
+                           }
+                       })
+                   }
+             })
+         }
     })
 
     res.send("Inves431_girlsEd updated successfully!")
@@ -3295,8 +3304,8 @@ dashboard.post('/update-form-temp', (req, res) =>{
    var query1;
    var numFunderInitiatives;  //Number of initiatives funded by funder
    var numFunders //Number of funders by specified tag number
-   var queryNumFunderInitiatives = "SELECT COUNT(funderName) FROM funds WHERE funderName = '" + formData.OfunderName + "'" //Get number of initiatives funded by funder
-   var queryNumFunders = "SELECT COUNT(funderName) FROM funds WHERE tagNum = " + formData.tagNum  //Get number of funders specified by tag number
+   var queryNumFunderInitiatives = 'SELECT COUNT(funderName) FROM funds WHERE funderName = ' + sql.escape(formData.OfunderName)  //Get number of initiatives funded by funder
+   var queryNumFunders = 'SELECT COUNT(funderName) FROM funds WHERE tagNum = ' + sql.escape(formData.tagNum)  //Get number of funders specified by tag number
 
    async.parallel([
     function(queryDB) {
@@ -3318,14 +3327,14 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
           //If funder existed in main already when previously added by an RA, and doesn't exist in temp db
           if (numFunderInitiatives == 0) {
-            query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
+            query1 = 'INSERT into funder VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderUrl) + ',' + sql.escape(formData.funderMotive) + ',' + sql.escape(formData.funderImpact) + ',' + sql.escape(formData.funderOrganizationForm) + ')'
           } else {
             if (numFunderInitiatives > 1 && formData.funderName !== formData.OfunderName) {
-              query1 = "INSERT into funder VALUES ('" + formData.funderName +"','"+ formData.funderUrl +"','"+ formData.funderMotive +"','"+ formData.funderImpact +"','"+ formData.funderOrganizationForm +"')"
+              query1 = 'INSERT into funder VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderUrl) + ',' + sql.escape(formData.funderMotive) + ',' + sql.escape(formData.funderImpact) + ',' + sql.escape(formData.funderOrganizationForm) + ')'
             }
             else {
-              query1 = "UPDATE funder SET funderName = '" + formData.funderName + "', funderWebsite ='"+ formData.funderUrl +"', profitMotive ='"+ formData.funderMotive +"', impactInvesting ='"+ formData.funderImpact
-             +"', organizationalForm ='"+ formData.funderOrganizationForm +"' WHERE funderName = '" + formData.OfunderName + "'"
+              query1 = 'UPDATE funder SET funderName = ' + sql.escape(formData.funderName) + ', funderWebsite ='+ sql.escape(formData.funderUrl) +', profitMotive =' + sql.escape(formData.funderMotive) +', impactInvesting ='+ sql.escape(formData.funderImpact)
+             +', organizationalForm ='+ sql.escape(formData.funderOrganizationForm) +' WHERE funderName = ' + sql.escape(formData.OfunderName)
            }
           }
 
@@ -3348,7 +3357,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
            if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
              //delete all funder international base
-             var query2 = "DELETE FROM funderinternationalbases WHERE funderName = '" + formData.OfunderName + "'"
+             var query2 = 'DELETE FROM funderinternationalbases WHERE funderName = ' + sql.escape(formData.OfunderName)
              async.parallel([
                  function(queryDB) {
                      poolTemp.query(query2, {}, function(err, results) {
@@ -3366,7 +3375,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                      } else {
                        //Insert funder international bases data
                        for(var i = 0; i <formData.funderInternationalBases.length; i++) {
-                          var query3 = "INSERT into funderinternationalbases VALUES ('" + formData.funderName +"','"+ formData.funderInternationalBases[i] +"')"
+                          var query3 = 'INSERT into funderinternationalbases VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderInternationalBases[i]) + ')'
                           //console.log(query2)
                           async.parallel([
                               function(queryDB) {
@@ -3391,7 +3400,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
            } else {
              //Insert funder international bases data
              for(var i = 0; i <formData.funderInternationalBases.length; i++) {
-                var query3 = "INSERT into funderinternationalbases VALUES ('" + formData.funderName +"','"+ formData.funderInternationalBases[i] +"')"
+                var query3 = 'INSERT into funderinternationalbases VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderInternationalBases[i]) + ')'
                 //console.log(query2)
                 async.parallel([
                     function(queryDB) {
@@ -3416,7 +3425,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
            //delete all funder fundereducationsubsectors
            if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
-             var query4 = "DELETE FROM fundereducationsubsectors WHERE funderName = '"+ formData.OfunderName + "'"
+             var query4 = 'DELETE FROM fundereducationsubsectors WHERE funderName = ' + sql.escape(formData.OfunderName)
              async.parallel([
                  function(queryDB) {
                      poolTemp.query(query4, {}, function(err, results) {
@@ -3434,7 +3443,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                      } else {
                        //Insert funder education subsector data
                        for(var i = 0; i <formData.funderEducationSubsector.length; i++) {
-                         var query5 = "INSERT into fundereducationsubsectors VALUES ('" + formData.funderName +"','"+ formData.funderEducationSubsector[i]+"')"
+                         var query5 = 'INSERT into fundereducationsubsectors VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderEducationSubsector[i]) + ')'
                          async.parallel([
                              function(queryDB) {
                                  poolTemp.query(query5, {}, function(err, results) {
@@ -3458,7 +3467,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
              } else {
                //Insert funder education subsector data
                for(var i = 0; i <formData.funderEducationSubsector.length; i++) {
-                 var query5 = "INSERT into fundereducationsubsectors VALUES ('" + formData.funderName +"','"+ formData.funderEducationSubsector[i]+"')"
+                 var query5 = 'INSERT into fundereducationsubsectors VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderEducationSubsector[i]) + ')'
                  async.parallel([
                      function(queryDB) {
                          poolTemp.query(query5, {}, function(err, results) {
@@ -3482,7 +3491,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
            if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
              //delete all funder funderorganizationtraits
-             var query6 = "DELETE FROM funderorganizationtraits WHERE funderName = '"+ formData.OfunderName + "'"
+             var query6 = 'DELETE FROM funderorganizationtraits WHERE funderName = ' + sql.escape(formData.OfunderName)
              async.parallel([
                  function(queryDB) {
                      poolTemp.query(query6, {}, function(err, results) {
@@ -3501,7 +3510,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                      } else {
                        //Insert funder education organizational traits data
                        for(var i = 0; i <formData.funderOrgTraits.length; i++) {
-                         var query7 = "INSERT into funderorganizationtraits VALUES ('" + formData.funderName +"','"+ formData.funderOrgTraits[i]+"')"
+                         var query7 = 'INSERT into funderorganizationtraits VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderOrgTraits[i]) + ')'
                          async.parallel([
                              function(queryDB) {
                                  poolTemp.query(query7, {}, function(err, results) {
@@ -3525,7 +3534,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
            } else {
              //Insert funder education organizational traits data
              for(var i = 0; i <formData.funderOrgTraits.length; i++) {
-               var query7 = "INSERT into funderorganizationtraits VALUES ('" + formData.funderName +"','"+ formData.funderOrgTraits[i]+"')"
+               var query7 = 'INSERT into funderorganizationtraits VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderOrgTraits[i]) + ')'
                async.parallel([
                    function(queryDB) {
                        poolTemp.query(query7, {}, function(err, results) {
@@ -3551,7 +3560,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
            if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
              //delete all funder asiabases
-             var query8 = "DELETE FROM funderasiabases WHERE funderName = '"+ formData.OfunderName + "'"
+             var query8 = 'DELETE FROM funderasiabases WHERE funderName = ' + sql.escape(formData.OfunderName)
              async.parallel([
                  function(queryDB) {
                      poolTemp.query(query8, {}, function(err, results) {
@@ -3570,7 +3579,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                      } else {
                        //Insert funder asia bases data
                        for(var i = 0; i <formData.funderAsiaBases.length; i++) {
-                         var query9 = "INSERT into funderasiabases VALUES ('" + formData.funderName +"','"+ formData.funderAsiaBases[i]+"')"
+                         var query9 = 'INSERT into funderasiabases VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderAsiaBases[i])+ ')'
                          async.parallel([
                              function(queryDB) {
                                  poolTemp.query(query9, {}, function(err, results) {
@@ -3596,7 +3605,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
            } else {
              //Insert funder asia bases data
              for(var i = 0; i <formData.funderAsiaBases.length; i++) {
-               var query9 = "INSERT into funderasiabases VALUES ('" + formData.funderName +"','"+ formData.funderAsiaBases[i]+"')"
+               var query9 = 'INSERT into funderasiabases VALUES ('  + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderAsiaBases[i])+ ')'
                async.parallel([
                    function(queryDB) {
                        poolTemp.query(query9, {}, function(err, results) {
@@ -3620,7 +3629,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
            if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
              //delete all funder asia operations
-             var query10= "DELETE FROM funderasiaoperations WHERE funderName = '"+ formData.OfunderName + "'"
+             var query10= 'DELETE FROM funderasiaoperations WHERE funderName = ' + sql.escape(formData.OfunderName)
              async.parallel([
                  function(queryDB) {
                      poolTemp.query(query10, {}, function(err, results) {
@@ -3640,14 +3649,14 @@ dashboard.post('/update-form-temp', (req, res) =>{
                      } else {
                        //Insert funder education funder asia operations data
                        for(var i = 0; i < formData.funderAsiaOperations.length; i++) {
-                         var query11 = "INSERT into funderasiaoperations VALUES ('" + formData.funderName +"','"+ formData.funderAsiaOperations[i]+"')"
+                         var query11 = 'INSERT into funderasiaoperations VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderAsiaOperations[i])+ ')'
                          async.parallel([
                              function(queryDB) {
                                  poolTemp.query(query11, {}, function(err, results) {
                                      if (err){
                                          return queryDB(err)
                                      }else{
-                                         //formData.table1 = results;
+                                         //sql.escape(formData.table1 = results;
                                          queryDB()
                                      }
 
@@ -3666,7 +3675,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
            } else {
              //Insert funder education funder asia operations data
              for(var i = 0; i < formData.funderAsiaOperations.length; i++) {
-               var query11 = "INSERT into funderasiaoperations VALUES ('" + formData.funderName +"','"+ formData.funderAsiaOperations[i]+"')"
+               var query11 = 'INSERT into funderasiaoperations VALUES (' + sql.escape(formData.funderName) + ',' + sql.escape(formData.funderAsiaOperations[i])+ ')'
                async.parallel([
                    function(queryDB) {
                        poolTemp.query(query11, {}, function(err, results) {
@@ -3689,7 +3698,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
 
            var query12;
-           var queryNumInitiatives = "SELECT COUNT(tagNumber) FROM initiative WHERE tagNumber = " + formData.tagNum;  //Check if initiative exists in main db
+           var queryNumInitiatives = 'SELECT COUNT(tagNumber) FROM initiative WHERE tagNumber = ' + sql.escape(formData.tagNum)  //Check if initiative exists in main db
            async.parallel([
              function(queryDB) {
                  poolTemp.query(queryNumInitiatives, {}, function(err, results) {
@@ -3707,16 +3716,16 @@ dashboard.post('/update-form-temp', (req, res) =>{
                  let numInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(tagNumber)']));
                  //If initiative doesn't exist in main db, insert initiative data. Otherwise, update existing initiative
                  if (numInitiatives > 0) {
-                   query12 = "UPDATE initiative SET initiativeName = '" + formData.initiativeName +"', initiativeWebsite ='"+ formData.initiativeURL +"', targetsWomen = '"+ formData.initiativeTargetsWomen +
-                   "', startYear ='"+ formData.initiativeStart +"',endYear='"+ formData.initiativeEnd +"', description ='"+ formData.initiativeDescription +
-                   "', mainProgrammingArea = (SELECT programArea FROM programarea WHERE programArea ='" + formData.initiativeProgramAreas
-                   + "' AND activity = '" + formData.initiativeMainProgramActivity + "') , mainProgrammingActivity = (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '" + formData.initiativeMainProgramActivity + "'), feeToAccess = '"+ formData.initiativeFeeAccess
-                   + "' WHERE tagNumber = " + formData.tagNum
+                   query12 = 'UPDATE initiative SET initiativeName = '  + sql.escape(formData.initiativeName) + ', initiativeWebsite =' + sql.escape(formData.initiativeURL) + ', targetsWomen = ' + sql.escape(formData.initiativeTargetsWomen) +
+                    ', startYear =' + sql.escape(formData.initiativeStart) + ',endYear=' + sql.escape(formData.initiativeEnd) + ', description =' + sql.escape(formData.initiativeDescription) +
+                    ', mainProgrammingArea = (SELECT programArea FROM programarea WHERE programArea ='  + sql.escape(formData.initiativeProgramAreas)
+                   +  ' AND activity = '  + sql.escape(formData.initiativeMainProgramActivity) +  ') , mainProgrammingActivity = (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '  + sql.escape(formData.initiativeMainProgramActivity) +  '), feeToAccess = ' + sql.escape(formData.initiativeFeeAccess)
+                   +  ' WHERE tagNumber = '   + sql.escape(formData.tagNum)
                  } else {
-                   query12 = "INSERT into initiative VALUES ("+ formData.tagNum +",'"+ formData.initiativeName +"','"+ formData.initiativeURL +"','"+ formData.initiativeTargetsWomen +
-                   "','"+ formData.initiativeStart +"','"+ formData.initiativeEnd +"','"+ formData.initiativeDescription +
-                   "',(SELECT programArea FROM programarea WHERE programArea ='" +formData.initiativeProgramAreas +
-                   "' AND activity = '" + formData.initiativeMainProgramActivity + "'), (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = '"+ formData.initiativeMainProgramActivity +"'),'" + formData.initiativeFeeAccess + "')"
+                   query12 = 'INSERT into initiative VALUES (' + sql.escape(formData.tagNum) +',' + sql.escape(formData.initiativeName) + ',' + sql.escape(formData.initiativeURL) + ',' + sql.escape(formData.initiativeTargetsWomen) +
+                    ',' + sql.escape(formData.initiativeStart) + ',' + sql.escape(formData.initiativeEnd) + ',' + sql.escape(formData.initiativeDescription) +
+                    ',(SELECT programArea FROM programarea WHERE programArea ='  +sql.escape(formData.initiativeProgramAreas) +
+                    ' AND activity = '  + sql.escape(formData.initiativeMainProgramActivity) +  '), (SELECT programmingActivity FROM programmingactivity WHERE programmingActivity = ' + sql.escape(formData.initiativeMainProgramActivity) + '),'  + sql.escape(formData.initiativeFeeAccess) +  ')'
                  }
                  async.parallel([
                      function(queryDB) {
@@ -3737,7 +3746,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                })
 
               //delete initiative region data
-              var query13= "DELETE FROM initiativeregion WHERE tagNumber = "+ formData.tagNum
+              var query13= 'DELETE FROM initiativeregion WHERE tagNumber = '+ sql.escape(formData.tagNum)
               async.parallel([
                 function(queryDB) {
                     poolTemp.query(query13, {}, function(err, results) {
@@ -3763,7 +3772,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                       }
 
                       async.map(countryRegions, function(region, queryDB) {
-                          poolTemp.query("SELECT regionName from regions WHERE regionName = '" + region.region + "' AND includedCountry = '" + region.country + "'", {}, function(err, results) {
+                          poolTemp.query('SELECT regionName from regions WHERE regionName = ' + sql.escape(region.region) + ' AND includedCountry = ' + sql.escape(region.country), {}, function(err, results) {
                             if (err) {
                               return queryDB(err, null)
                             } else {
@@ -3784,7 +3793,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                             regionsFiltered = [...new Set(regions)];
                             //Insert region data
                             async.map(regionsFiltered, function(region, queryDB) {
-                              poolTemp.query("INSERT into initiativeregion VALUES ("+ formData.tagNum +", '" + region + "')", {}, function(err, results) {
+                              poolTemp.query('INSERT into initiativeregion VALUES ('+ sql.escape(formData.tagNum) +',' + sql.escape(region) + ')', {}, function(err, results) {
                                 if (err) {
                                   return queryDB(err, null)
                                 } else {
@@ -3802,7 +3811,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                   })
 
           //delete initiativecountryofoperation data
-          var query15= "DELETE FROM initiativecountryofoperation WHERE tagNumber = "+ formData.tagNum
+          var query15= 'DELETE FROM initiativecountryofoperation WHERE tagNumber = '+ sql.escape(formData.tagNum)
           async.parallel([
               function(queryDB) {
                   poolTemp.query(query15, {}, function(err, results) {
@@ -3820,7 +3829,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                   } else {
                     //Insert initiative country of operation data
                     for(var i = 0; i < formData.initiativeCountries.length; i++) {
-                      var query16 = "INSERT into initiativecountryofoperation VALUES ("+formData.tagNum +", (SELECT countryName from country WHERE countryName='"+ formData.initiativeCountries[i]+"'))"
+                      var query16 = 'INSERT into initiativecountryofoperation VALUES ('+sql.escape(formData.tagNum) + ', (SELECT countryName from country WHERE countryName=' + sql.escape(formData.initiativeCountries[i])+ '))'
                       async.parallel([
                           function(queryDB) {
                               poolTemp.query(query16, {}, function(err, results) {
@@ -3842,7 +3851,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
 
           //delete initiativeprogrammingactivities data
-          var query17= "DELETE FROM initiativeprogrammingactivities WHERE tagNumber = "+ formData.tagNum
+          var query17= 'DELETE FROM initiativeprogrammingactivities WHERE tagNumber = '+ sql.escape(formData.tagNum)
           async.parallel([
               function(queryDB) {
                   poolTemp.query(query17, {}, function(err, results) {
@@ -3859,7 +3868,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                   } else {
                     //Insert initiative programming activity data
                     for(var i = 0; i < formData.initiativeActivities.length; i++) {
-                      var query18 = "INSERT into initiativeprogrammingactivities VALUES ("+formData.tagNum +",'"+ formData.initiativeActivities[i]+"')"
+                      var query18 = 'INSERT into initiativeprogrammingactivities VALUES ('+sql.escape(formData.tagNum) +','+ sql.escape(formData.initiativeActivities[i])+')'
                       async.parallel([
                           function(queryDB) {
                               poolTemp.query(query18, {}, function(err, results) {
@@ -3883,7 +3892,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
 
             //delete initiativefundingsource data
-            var query19= "DELETE FROM initiativefundingsource WHERE tagNumber = "+ formData.tagNum
+            var query19= 'DELETE FROM initiativefundingsource WHERE tagNumber = '+ sql.escape(formData.tagNum)
             async.parallel([
                 function(queryDB) {
                     poolTemp.query(query19, {}, function(err, results) {
@@ -3901,7 +3910,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                     } else {
                       //Insert initiative source of fees data
                       for(var i = 0; i < formData.initiativeSourceOfFees.length; i++) {
-                        var query20= "INSERT into initiativefundingsource VALUES ("+formData.tagNum +",'"+ formData.initiativeSourceOfFees[i]+"')"
+                        var query20= 'INSERT into initiativefundingsource VALUES ('+sql.escape(formData.tagNum) +','+ sql.escape(formData.initiativeSourceOfFees[i])+')'
                         async.parallel([
                             function(queryDB) {
                                 poolTemp.query(query20, {}, function(err, results) {
@@ -3924,7 +3933,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
 
            //delete launchcountry data
-           var query21= "DELETE FROM initiativelaunchcountry WHERE tagNumber = "+ formData.tagNum
+           var query21= 'DELETE FROM initiativelaunchcountry WHERE tagNumber = '+ sql.escape(formData.tagNum)
            async.parallel([
                function(queryDB) {
                    poolTemp.query(query21, {}, function(err, results) {
@@ -3942,7 +3951,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                    } else {
                      //Insert initiative launch country data
                      for(var i = 0; i < formData.initiativeLaunchCountry.length; i++) {
-                       var query22 =  "INSERT into initiativelaunchcountry VALUES ("+formData.tagNum +",(SELECT countryName from country WHERE countryName='"+ formData.initiativeLaunchCountry[i]+"'))"
+                       var query22 =  'INSERT into initiativelaunchcountry VALUES ('+sql.escape(formData.tagNum) + ',(SELECT countryName from country WHERE countryName='+ sql.escape(formData.initiativeLaunchCountry[i])+'))'
                        async.parallel([
                            function(queryDB) {
                                poolTemp.query(query22, {}, function(err, results) {
@@ -3967,7 +3976,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
 
            //delete initiativetargetgeography data
-           var query23= "DELETE FROM initiativetargetgeography WHERE tagNumber = "+ formData.tagNum
+           var query23= 'DELETE FROM initiativetargetgeography WHERE tagNumber = '+ sql.escape(formData.tagNum)
            async.parallel([
                function(queryDB) {
                    poolTemp.query(query23, {}, function(err, results) {
@@ -3985,7 +3994,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                    } else {
                      //Insert initiative target geo data
                      for(var i = 0; i < formData.initiativeTargetGeo.length; i++) {
-                       var query24 = "INSERT into initiativetargetgeography VALUES ("+formData.tagNum +",'"+ formData.initiativeTargetGeo[i]+"')"
+                       var query24 = 'INSERT into initiativetargetgeography VALUES ('+sql.escape(formData.tagNum) +','+ sql.escape(formData.initiativeTargetGeo[i])+')'
                        async.parallel([
                            function(queryDB) {
                                poolTemp.query(query24, {}, function(err, results) {
@@ -4008,7 +4017,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                })
 
           //delete INSERT into initiativetargetpopulationsector data
-          var query25= "DELETE FROM initiativetargetpopulationsector WHERE tagNumber = "+ formData.tagNum
+          var query25= 'DELETE FROM initiativetargetpopulationsector WHERE tagNumber = '+ sql.escape(formData.tagNum)
           async.parallel([
               function(queryDB) {
                   poolTemp.query(query25, {}, function(err, results) {
@@ -4028,7 +4037,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                   } else {
                     //Insert initiative target population sector data
                     for(var i = 0; i < formData.initiativetargetPopulationSector.length; i++) {
-                      var query26 = "INSERT into initiativetargetpopulationsector VALUES ("+formData.tagNum +",'"+ formData.initiativetargetPopulationSector[i]+"')"
+                      var query26 = 'INSERT into initiativetargetpopulationsector VALUES ('+sql.escape(formData.tagNum) +','+ sql.escape(formData.initiativetargetPopulationSector[i])+')'
                       async.parallel([
                           function(queryDB) {
                               poolTemp.query(query26, {}, function(err, results) {
@@ -4052,7 +4061,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
 
           //delete initiativemonitoredoutcomes data
-          var query27= "DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = "+ formData.tagNum
+          var query27= 'DELETE FROM initiativemonitoredoutcomes WHERE tagNumber = '+ sql.escape(formData.tagNum)
           async.parallel([
               function(queryDB) {
                   poolTemp.query(query27, {}, function(err, results) {
@@ -4072,7 +4081,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                   } else {
                     //Insert initiative outcomes monitored data
                     for(var i = 0; i < formData.initiativeOutcomesMonitored.length; i++) {
-                      var query28 = "INSERT into initiativemonitoredoutcomes VALUES ("+formData.tagNum +",'"+ formData.initiativeOutcomesMonitored[i]+"')"
+                      var query28 = 'INSERT into initiativemonitoredoutcomes VALUES ('+sql.escape(formData.tagNum) +','+ sql.escape(formData.initiativeOutcomesMonitored[i])+')'
                       async.parallel([
                           function(queryDB) {
                               poolTemp.query(query28, {}, function(err, results) {
@@ -4094,7 +4103,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
 
           //delete initiative main education subsector data
-          var query29= "DELETE FROM initiativemaineducationsubsector WHERE tagNumber = "+ formData.tagNum
+          var query29= 'DELETE FROM initiativemaineducationsubsector WHERE tagNumber = '+ sql.escape(formData.tagNum)
           async.parallel([
             function(queryDB) {
                 poolTemp.query(query29, {}, function(err, results) {
@@ -4111,7 +4120,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                 } else {
                   //Insert initiative main education subsector data
                   for(var i = 0; i < formData.initiativeMEdSubs.length; i++) {
-                    var query30 = "INSERT into initiativemaineducationsubsector VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeMEdSubs[i]+"'))"
+                    var query30 = 'INSERT into initiativemaineducationsubsector VALUES ('+sql.escape(formData.tagNum) + ',(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector =' + sql.escape(formData.initiativeMEdSubs[i])+'))'
                     async.parallel([
                         function(queryDB) {
                             poolTemp.query(query30, {}, function(err, results) {
@@ -4135,7 +4144,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
 
           //delete initiativeeducationsubsectors data
-          var query31= "DELETE FROM initiativeeducationsubsectors WHERE initiativeTagNumber = "+ formData.tagNum
+          var query31= 'DELETE FROM initiativeeducationsubsectors WHERE initiativeTagNumber = '+ sql.escape(formData.tagNum)
           async.parallel([
               function(queryDB) {
                   poolTemp.query(query31, {}, function(err, results) {
@@ -4154,7 +4163,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                   } else {
                     //Insert initiative education subsector data
                     for(var i = 0; i < formData.initiativeOEdSubs.length; i++) {
-                      var query32 = "INSERT into initiativeeducationsubsectors VALUES ("+formData.tagNum +",(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector ='"+ formData.initiativeOEdSubs[i]+"'))"
+                      var query32 = 'INSERT into initiativeeducationsubsectors VALUES ('+sql.escape(formData.tagNum) + ',(SELECT educationSubsector FROM educationsubsector WHERE educationSubsector =' + sql.escape(formData.initiativeOEdSubs[i])+ '))'
                       async.parallel([
                           function(queryDB) {
                               poolTemp.query(query32, {}, function(err, results) {
@@ -4177,7 +4186,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
 
           //delete initiativetargetschoolmanagement data
-          var query33= "DELETE FROM initiativetargetschoolmanagement WHERE tagNumber = "+ formData.tagNum
+          var query33= 'DELETE FROM initiativetargetschoolmanagement WHERE tagNumber = '+ sql.escape(formData.tagNum)
           async.parallel([
               function(queryDB) {
                   poolTemp.query(query33, {}, function(err, results) {
@@ -4194,7 +4203,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                   } else {
                     //Insert initiative target management data
                     for(var i = 0; i < formData.initiativeManagementTypes.length; i++) {
-                      var query34 = "INSERT into initiativetargetschoolmanagement VALUES ("+formData.tagNum +",'"+ formData.initiativeManagementTypes[i]+"')"
+                      var query34 = 'INSERT into initiativetargetschoolmanagement VALUES ('+sql.escape(formData.tagNum) +','+ sql.escape(formData.initiativeManagementTypes[i])+')'
                       async.parallel([
                           function(queryDB) {
                               poolTemp.query(query34, {}, function(err, results) {
@@ -4233,19 +4242,19 @@ dashboard.post('/update-form-temp', (req, res) =>{
               } else {
                 numFunders = JSON.parse(JSON.stringify(results[0][0]['COUNT(funderName)']));
                 // funder - funds - relationship
-                //If funder already existed in temp but not yet in main
+                //If funder already existed in main but not yet in temp
                 var query36;
                 if (numFunderInitiatives == 0) {
                   if (numFunders == 0) {
-                    query36 = "INSERT into funds VALUES (" + formData.tagNum + ",'" + formData.funderName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd + "')"
+                    query36 = 'INSERT into funds VALUES (' + sql.escape(formData.tagNum) + ',' + sql.escape(formData.funderName) +  ','  + sql.escape(formData.initiativeStart) +  ','  + sql.escape(formData.initiativeEnd) +  ')'
                   } else {
-                    query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
-                    + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ")"
+                    query36 = 'UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='
+                    + sql.escape(formData.funderName) +  '), startYear = ' + sql.escape(formData.initiativeStart) +  ', endYear ='  + sql.escape(formData.initiativeEnd) + ' WHERE (tagNum ='  + sql.escape(formData.tagNum) + ')'
                   }
                 } else {
-                  query36 = "UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='"
-                  + formData.funderName+ "'), startYear = '"+formData.initiativeStart + "', endYear ='" + formData.initiativeEnd +"' WHERE (tagNum =" + formData.tagNum + ") AND (funderName = '"
-                  + formData.OfunderName +"')"
+                  query36 = 'UPDATE funds SET funderName = (SELECT funderName FROM funder WHERE funderName ='
+                  + sql.escape(formData.funderName)+ '), startYear = '+sql.escape(formData.initiativeStart) + ', endYear =' + sql.escape(formData.initiativeEnd) +' WHERE (tagNum =' + sql.escape(formData.tagNum) + ') AND (funderName = '
+                  + sql.escape(formData.OfunderName) +')'
                 }
 
                 async.parallel([
@@ -4268,7 +4277,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
               })
 
         var query38;
-        var queryNumComments = "SELECT COUNT(tagNumber) FROM comments WHERE tagNumber = " + formData.tagNum; //Check if comments exist in temp db for this form
+        var queryNumComments = 'SELECT COUNT(tagNumber) FROM comments WHERE tagNumber = ' + sql.escape(formData.tagNum) //Check if comments exist in temp db for this form
         async.parallel([
             function(queryDB) {
                 poolTemp.query(queryNumComments, {}, function(err, results) {
@@ -4287,9 +4296,9 @@ dashboard.post('/update-form-temp', (req, res) =>{
                   let numComments = JSON.parse(JSON.stringify(results[0][0]['COUNT(tagNumber)']));
                   //If comments row for this form doesn't exist in temp db, then insert it. Otherwise, update comments
                   if (numComments > 0) {
-                    query38 = "UPDATE comments SET comment = '"+ formData.comments +"' WHERE tagNumber = "+ formData.tagNum
+                    query38 = 'UPDATE comments SET comment = ' + sql.escape(formData.comments) + ' WHERE tagNumber = '+ sql.escape(formData.tagNum)
                   } else {
-                    query38 = "INSERT INTO comments VALUES ("+ formData.tagNum + ",'"+ formData.comments +"')"
+                    query38 = 'INSERT INTO comments VALUES (' + sql.escape(formData.tagNum) + ',' + sql.escape(formData.comments) + ')'
                   }
                   async.parallel([
                       function(queryDB) {
@@ -4311,7 +4320,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
 
             var query39;
-            var queryNumStatus = "SELECT COUNT(tagNumber) FROM status WHERE tagNumber = " + formData.tagNum; //Check if status exist in temp db for this form
+            var queryNumStatus = 'SELECT COUNT(tagNumber) FROM status WHERE tagNumber = ' + sql.escape(formData.tagNum) //Check if status exist in temp db for this form
             async.parallel([
                 function(queryDB) {
                     poolTemp.query(queryNumStatus, {}, function(err, results) {
@@ -4330,9 +4339,9 @@ dashboard.post('/update-form-temp', (req, res) =>{
                       let numStatus = JSON.parse(JSON.stringify(results[0][0]['COUNT(tagNumber)']));
                       //If comments row for this form doesn't exist in temp db, then insert it. Otherwise, update comments
                       if (numStatus > 0) {
-                        query39 = "UPDATE status SET inDB = " +formData.inDB + ", needsReview =" + formData.needsReview +" WHERE tagNumber = "+formData.tagNum
+                        query39 = 'UPDATE status SET inDB = ' +sql.escape(formData.inDB) + ', needsReview =' + sql.escape(formData.needsReview) + ' WHERE tagNumber = '+sql.escape(formData.tagNum)
                       } else {
-                        query39 = "INSERT INTO status VALUES ("+ formData.tagNum + ","+ formData.inDB + "," + formData.needsReview +")"
+                        query39 = 'INSERT INTO status VALUES ('+ sql.escape(formData.tagNum) + ','+ sql.escape(formData.inDB) + ',' + sql.escape(formData.needsReview) + ')'
                       }
                       async.parallel([
                           function(queryDB) {
@@ -4353,7 +4362,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
             })
 
             var query40;
-            var queryNumReviews = "SELECT COUNT(tagNumber) FROM sectionreviews WHERE tagNumber = " + formData.tagNum; //Check if section reviews exist in temp db for this form
+            var queryNumReviews = 'SELECT COUNT(tagNumber) FROM sectionreviews WHERE tagNumber = ' + sql.escape(formData.tagNum) //Check if section reviews exist in temp db for this form
             async.parallel([
                 function(queryDB) {
                     poolTemp.query(queryNumReviews, {}, function(err, results) {
@@ -4372,73 +4381,73 @@ dashboard.post('/update-form-temp', (req, res) =>{
                       let numReviews = JSON.parse(JSON.stringify(results[0][0]['COUNT(tagNumber)']));
                       //If comments row for this form doesn't exist in temp db, then insert it. Otherwise, update comments
                       if (numReviews > 0) {
-                        query40 = "UPDATE sectionreviews SET funderNameApproval = "+
-                        formData.funderNameApproval + ",funderUrlApproval = " +
-                        formData.funderUrlApproval + ",funderMotiveApproval = " +
-                        formData.funderMotiveApproval + ",funderImpactApproval = " +
-                        formData.funderImpactApproval + ",funderOrganizationFormApproval = " +
-                        formData.funderOrganizationFormApproval + ",funderInternationalBaseApproval = " +
-                        formData.funderInternationalBaseApproval + ",funderEdSubsApproval  = " +
-                        formData.funderEdSubsApproval + ",funderOrgTraitsApproval = " +
-                        formData.funderOrgTraitsApproval+ ",funderAsiaBasesApproval= " +
-                        formData.funderAsiaBasesApproval+ ",funderAsiaOperationsApproval= " +
-                        formData.funderAsiaOperationsApproval+ ",initNameApproval = " +
-                        formData.initNameApproval + ",initUrlApproval  = " +
-                        formData.initUrlApproval+ ",initTargetsWomenApproval = " +
-                        formData.initTargetsWomenApproval+ ",initStartApproval = " +
-                        formData.initStartApproval+ ",initEndApproval = " +
-                        formData.initEndApproval+ ",initDescriptionApproval = " +
-                        formData.initDescriptionApproval+ ",initProgramAreasApproval = " +
-                        formData.initProgramAreasApproval+ ",initMainProgramActivityApproval = " +
-                        formData.initMainProgramActivityApproval+ ",initFeeAccessApproval = " +
-                        formData.initFeeAccessApproval+ ",initRegionsApproval = " +
-                        formData.initRegionsApproval+ ",initCountriesApproval = " +
-                        formData.initCountriesApproval+ ",initActivitiesApproval = " +
-                        formData.initActivitiesApproval + ", initSourceOfFeesApproval = " +
-                        formData.initSourceOfFeesApproval+ ",initLaunchCountryApproval = " +
-                        formData.initLaunchCountryApproval+ ",initTargetGeoApproval = " +
-                        formData.initTargetGeoApproval+ ",initTargetPopulationSectorApproval = " +
-                        formData.initTargetPopulationSectorApproval+ ",initOutcomesMonitoredApproval = " +
-                        formData.initOutcomesMonitoredApproval+ ",initMEdSubsApproval = " +
-                        formData.initMEdSubsApproval+ ",initOEdSubsApproval = " +
-                        formData.initOEdSubsApproval + ", initManagementTypesApproval = " +
-                        formData.initManagementTypesApproval+ ",implementorNameApproval = " +
-                        formData.implementorNameApproval+ ",implementorMotiveApproval = " +
-                        formData.implementorMotiveApproval + " WHERE tagNumber = "+formData.tagNum
+                        query40 = 'UPDATE sectionreviews SET funderNameApproval = '+
+                        sql.escape(formData.funderNameApproval) + ',funderUrlApproval = ' +
+                        sql.escape(formData.funderUrlApproval) + ',funderMotiveApproval = ' +
+                        sql.escape(formData.funderMotiveApproval) + ',funderImpactApproval = ' +
+                        sql.escape(formData.funderImpactApproval) + ',funderOrganizationFormApproval = ' +
+                        sql.escape(formData.funderOrganizationFormApproval) + ',funderInternationalBaseApproval = ' +
+                        sql.escape(formData.funderInternationalBaseApproval) + ',funderEdSubsApproval  = ' +
+                        sql.escape(formData.funderEdSubsApproval) + ',funderOrgTraitsApproval = ' +
+                        sql.escape(formData.funderOrgTraitsApproval)+ ',funderAsiaBasesApproval= ' +
+                        sql.escape(formData.funderAsiaBasesApproval)+ ',funderAsiaOperationsApproval= ' +
+                        sql.escape(formData.funderAsiaOperationsApproval)+ ',initNameApproval = ' +
+                        sql.escape(formData.initNameApproval) + ',initUrlApproval  = ' +
+                        sql.escape(formData.initUrlApproval)+ ',initTargetsWomenApproval = ' +
+                        sql.escape(formData.initTargetsWomenApproval)+ ',initStartApproval = ' +
+                        sql.escape(formData.initStartApproval)+ ',initEndApproval = ' +
+                        sql.escape(formData.initEndApproval)+ ',initDescriptionApproval = ' +
+                        sql.escape(formData.initDescriptionApproval)+ ',initProgramAreasApproval = ' +
+                        sql.escape(formData.initProgramAreasApproval)+ ',initMainProgramActivityApproval = ' +
+                        sql.escape(formData.initMainProgramActivityApproval)+ ',initFeeAccessApproval = ' +
+                        sql.escape(formData.initFeeAccessApproval)+ ',initRegionsApproval = ' +
+                        sql.escape(formData.initRegionsApproval)+ ',initCountriesApproval = ' +
+                        sql.escape(formData.initCountriesApproval)+ ',initActivitiesApproval = ' +
+                        sql.escape(formData.initActivitiesApproval) + ', initSourceOfFeesApproval = ' +
+                        sql.escape(formData.initSourceOfFeesApproval)+ ',initLaunchCountryApproval = ' +
+                        sql.escape(formData.initLaunchCountryApproval)+ ',initTargetGeoApproval = ' +
+                        sql.escape(formData.initTargetGeoApproval)+ ',initTargetPopulationSectorApproval = ' +
+                        sql.escape(formData.initTargetPopulationSectorApproval)+ ',initOutcomesMonitoredApproval = ' +
+                        sql.escape(formData.initOutcomesMonitoredApproval)+ ',initMEdSubsApproval = ' +
+                        sql.escape(formData.initMEdSubsApproval)+ ',initOEdSubsApproval = ' +
+                        sql.escape(formData.initOEdSubsApproval) + ', initManagementTypesApproval = ' +
+                        sql.escape(formData.initManagementTypesApproval)+ ',implementorNameApproval = ' +
+                        sql.escape(formData.implementorNameApproval)+ ',implementorMotiveApproval = ' +
+                        sql.escape(formData.implementorMotiveApproval) + ' WHERE tagNumber = '+sql.escape(formData.tagNum)
                       } else {
-                        query40 = "INSERT INTO sectionreviews VALUES ("+ formData.tagNum + "," +
-                        formData.funderNameApproval + "," +
-                        formData.funderUrlApproval + "," +
-                        formData.funderMotiveApproval + "," +
-                        formData.funderImpactApproval + "," +
-                        formData.funderOrganizationFormApproval + "," +
-                        formData.funderInternationalBaseApproval + "," +
-                        formData.funderEdSubsApproval + "," +
-                        formData.funderOrgTraitsApproval+ "," +
-                        formData.funderAsiaBasesApproval+ "," +
-                        formData.funderAsiaOperationsApproval+ "," +
-                        formData.initNameApproval + "," +
-                        formData.initUrlApproval+ "," +
-                        formData.initTargetsWomenApproval+ "," +
-                        formData.initStartApproval+ "," +
-                        formData.initEndApproval+ "," +
-                        formData.initDescriptionApproval+ "," +
-                        formData.initProgramAreasApproval+ "," +
-                        formData.initMainProgramActivityApproval+ "," +
-                        formData.initFeeAccessApproval+ "," +
-                        formData.initRegionsApproval+ "," +
-                        formData.initCountriesApproval+ "," +
-                        formData.initActivitiesApproval + "," +
-                        formData.initSourceOfFeesApproval+ "," +
-                        formData.initLaunchCountryApproval+ "," +
-                        formData.initTargetGeoApproval+ "," +
-                        formData.initTargetPopulationSectorApproval+ "," +
-                        formData.initOutcomesMonitoredApproval+ "," +
-                        formData.initMEdSubsApproval+ "," +
-                        formData.initOEdSubsApproval + "," +
-                        formData.initManagementTypesApproval+ "," +
-                        formData.implementorNameApproval+ "," +
-                        formData.implementorMotiveApproval +")"
+                        query40 = 'INSERT INTO sectionreviews VALUES ('+ sql.escape(formData.tagNum) + ',' +
+                        sql.escape(formData.funderNameApproval) + ',' +
+                        sql.escape(formData.funderUrlApproval) + ',' +
+                        sql.escape(formData.funderMotiveApproval) + ',' +
+                        sql.escape(formData.funderImpactApproval) + ',' +
+                        sql.escape(formData.funderOrganizationFormApproval) + ',' +
+                        sql.escape(formData.funderInternationalBaseApproval) + ',' +
+                        sql.escape(formData.funderEdSubsApproval) + ',' +
+                        sql.escape(formData.funderOrgTraitsApproval)+ ',' +
+                        sql.escape(formData.funderAsiaBasesApproval)+ ',' +
+                        sql.escape(formData.funderAsiaOperationsApproval)+ ',' +
+                        sql.escape(formData.initNameApproval) + ',' +
+                        sql.escape(formData.initUrlApproval)+ ',' +
+                        sql.escape(formData.initTargetsWomenApproval)+ ',' +
+                        sql.escape(formData.initStartApproval)+ ',' +
+                        sql.escape(formData.initEndApproval)+ ',' +
+                        sql.escape(formData.initDescriptionApproval)+ ',' +
+                        sql.escape(formData.initProgramAreasApproval)+ ',' +
+                        sql.escape(formData.initMainProgramActivityApproval)+ ',' +
+                        sql.escape(formData.initFeeAccessApproval)+ ',' +
+                        sql.escape(formData.initRegionsApproval)+ ',' +
+                        sql.escape(formData.initCountriesApproval)+ ',' +
+                        sql.escape(formData.initActivitiesApproval) + ',' +
+                        sql.escape(formData.initSourceOfFeesApproval)+ ',' +
+                        sql.escape(formData.initLaunchCountryApproval)+ ',' +
+                        sql.escape(formData.initTargetGeoApproval)+ ',' +
+                        sql.escape(formData.initTargetPopulationSectorApproval)+ ',' +
+                        sql.escape(formData.initOutcomesMonitoredApproval)+ ',' +
+                        sql.escape(formData.initMEdSubsApproval)+ ',' +
+                        sql.escape(formData.initOEdSubsApproval) + ',' +
+                        sql.escape(formData.initManagementTypesApproval)+ ',' +
+                        sql.escape(formData.implementorNameApproval)+ ',' +
+                        sql.escape(formData.implementorMotiveApproval) +')'
                       }
                       async.parallel([
                           function(queryDB) {
@@ -4463,8 +4472,8 @@ dashboard.post('/update-form-temp', (req, res) =>{
     ///////////////////////////////Update implements and implementor tables
     var numImplementerInitiatives;  //Number of initiatives implemented by implementer
     var numImplementers;  //Number of implementers with the current tagNum associated to them
-    var queryNumImplementerInitiatives = "SELECT COUNT(implementorName) FROM implements WHERE implementorName = '" + formData.OimplementorName + "'" //Get number of initiatives funded by funder
-    var queryNumImplementers = "SELECT COUNT(implementorName) FROM implements WHERE tagNum = " + formData.tagNum
+    var queryNumImplementerInitiatives = 'SELECT COUNT(implementorName) FROM implements WHERE implementorName = ' + sql.escape(formData.OimplementorName) //Get number of initiatives funded by funder
+    var queryNumImplementers = 'SELECT COUNT(implementorName) FROM implements WHERE tagNum = ' + sql.escape(formData.tagNum)
 
     var query41;
     async.parallel([
@@ -4485,13 +4494,13 @@ dashboard.post('/update-form-temp', (req, res) =>{
              numImplementerInitiatives = JSON.parse(JSON.stringify(results[0][0]['COUNT(implementorName)']));
              //If implementer existed in main already but hasnt been added to temp db yet
              if (numImplementerInitiatives == 0) {
-               query41 = "INSERT into implementor VALUES ('" + formData.implementorName + "','" + formData.implementorMotive + "')"
+               query41 = 'INSERT into implementor VALUES (' + sql.escape(formData.implementorName) + ',' + sql.escape(formData.implementorMotive) + ')'
              } else {
                if (numImplementerInitiatives > 1 && formData.implementorName !== formData.OimplementorName) {
-                 query41 = "INSERT into implementor VALUES ('" + formData.implementorName + "','" + formData.implementorMotive + "')"
+                 query41 = 'INSERT into implementor VALUES (' + sql.escape(formData.implementorName) + ',' + sql.escape(formData.implementorMotive) + ')'
                }
                else {
-                 query41 = "UPDATE implementor SET implementorName ='" + formData.implementorName + "', profitMotive ='" + formData.implementorMotive+"' WHERE implementorName = '"+ formData.OimplementorName +"'"
+                 query41 = 'UPDATE implementor SET implementorName =' + sql.escape(formData.implementorName) + ', profitMotive =' + sql.escape(formData.implementorMotive)+' WHERE implementorName = '+ sql.escape(formData.OimplementorName)
                }
              }
 
@@ -4526,18 +4535,17 @@ dashboard.post('/update-form-temp', (req, res) =>{
                       console.log(err)
                   } else {
                     numImplementers = JSON.parse(JSON.stringify(results[0][0]['COUNT(implementorName)']));
-                    console.log(numImplementers);
                     //implementor - implements - initiative
                     //If implementer already existed in main but not yet in temp
                     var query42;
                     if (numImplementerInitiatives == 0) {
                       if (numImplementers == 0) {
-                        query42 = "INSERT into implements VALUES (" + formData.tagNum + ",'" + formData.implementorName + "','" + formData.initiativeStart + "','" + formData.initiativeEnd + "')"
+                        query42 = 'INSERT into implements VALUES (' + sql.escape(formData.tagNum) + ',' + sql.escape(formData.implementorName) + ',' + sql.escape(formData.initiativeStart) + ',' + sql.escape(formData.initiativeEnd) + ')'
                       } else {
-                        query42 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "') WHERE (tagNum =" + formData.tagNum + ")"
+                        query42 = 'UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='+ sql.escape(formData.implementorName) + ') WHERE (tagNum =' + sql.escape(formData.tagNum) + ')'
                       }
                     } else {
-                      query42 = "UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName ='"+ formData.implementorName + "') WHERE (tagNum =" + formData.tagNum + ") AND (implementorName = '" + formData.OimplementorName + "')"
+                      query42 = 'UPDATE implements SET implementorName = (SELECT implementorName from implementor WHERE implementorName =' + sql.escape(formData.implementorName) + ') WHERE (tagNum =' + sql.escape(formData.tagNum) + ') AND (implementorName = ' + sql.escape(formData.OimplementorName) + ')'
                     }
 
                     async.parallel([

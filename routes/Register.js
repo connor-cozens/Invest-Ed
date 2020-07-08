@@ -51,9 +51,6 @@ register.post('/', validateRequest, (req, res) =>{
     }else{
         res.json({"error" : true , "messages" : [{message: "Error: Not authorized to access this page"}]})
     }
-
-
-
 })
 
 module.exports = register

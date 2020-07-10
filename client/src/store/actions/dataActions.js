@@ -5,7 +5,11 @@ import {
   REGISTER_CLEAR,
   REGISTER_CLEAR_ERROR,
   CLEAR_REGISTER_ERROR,
+
   SET_USER,
+  SET_USER_ERROR,
+  CLEAR_SET_USER_ERROR,
+
   SET_REVIEW_FORM,
   SET_REVIEW_APPROVED_FORM,
   SET_MODIFY_FORM,
@@ -14,6 +18,8 @@ import {
   PULLED_APPROVED_FORM,
   NOT_PULLED_APPROVED_FORM,
   CLEAR_FORM_STATUS,
+  SET_FORM_ERROR,
+  CLEAR_SET_FORM_ERROR,
   FORM_SUBMIT_SUCCESS,
   FORM_SUBMIT_ERROR,
   FORM_SUBMIT_CLEAR,
@@ -30,14 +36,13 @@ import {
   SET_IMPLEMENTERTYPE_INITIATIVE,
   SET_FUNDER_INITIATIVE,
   SET_IMPLEMENTER_INITIATIVE,
-  UNSET_VISUALIZED_DATA,
-  ACCESS_ERROR,
-  CLEAR_ACCESS_ERROR
+  UNSET_VISUALIZED_DATA
 } from '../reducers/dataReducer';
 
 import {LOGIN_SUCCESS} from '../reducers/authReducer';
 import {forceLogout} from './authActions';
 
+//USER REGISTRATION ACTIONS
 export const registerUser = (user) => (dispatch) => {
   axios.post(`/register`, {
     firstName: user.firstname,
@@ -83,6 +88,7 @@ export const clearRegisterError = () => (dispatch) => {
   dispatch({type: CLEAR_REGISTER_ERROR});
 }
 
+//USER RETRIEVAL ACTIONS
 export const getUser = () => (dispatch) => {
   axios.get(`/`,
     {withCredentials: true, accepts: "application/json"})
@@ -96,23 +102,33 @@ export const getUser = () => (dispatch) => {
           dispatch(forceLogout())
         }
         else {
-          dispatch({type: ACCESS_ERROR, payload: response.data.message})
+          dispatch({type: SET_USER_ERROR, payload: response.data.message})
         }
       }
     })
     .catch(err => {
-      dispatch({type: ACCESS_ERROR, payload: err})
+      dispatch({type: SET_USER_ERROR, payload: err})
     })
 }
 
+export const clearUserRetrievalError = () => (dispatch) => {
+  dispatch({type: CLEAR_SET_USER_ERROR});
+}
+
+//FORM ACTIONS
 export const clearFormStatus = () => (dispatch) => {
   dispatch({type: CLEAR_FORM_STATUS});
 }
 
 export const setNewFormStatus = () => (dispatch) => {
   dispatch({type: SET_ADD_FORM});
-  dispatch({type: CLEAR_ACCESS_ERROR})
+  dispatch({type: CLEAR_SET_FORM_ERROR})
 }
+
+export const clearFormRetrievalError = () => (dispatch) => {
+  dispatch({type: CLEAR_SET_FORM_ERROR})
+}
+
 
 const readForm = (response => {
   let initiativeRegions = [];
@@ -241,7 +257,7 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
   axios.get(url, {withCredentials: true, accepts: "application/json"}, {tagNum})
     .then(response => {
       if (response.data.error !== undefined) {
-        dispatch({type: ACCESS_ERROR, payload: response.data.error});
+        dispatch({type: SET_FORM_ERROR, payload: response.data.error});
       }
       else {
         const initiative = readForm(response);
@@ -252,12 +268,12 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
         else if (getType == 'review') {
           dispatch({type: SET_REVIEW_APPROVED_FORM, payload: initiative});
         }
-        dispatch({type: CLEAR_ACCESS_ERROR});
+        dispatch({type: CLEAR_SET_FORM_ERROR});
       }
     })
     .catch(err =>  {
       console.log(err)
-      dispatch({type: ACCESS_ERROR, payload: "Error retrieving form"});
+      dispatch({type: SET_FORM_ERROR, payload: "Error retrieving form"});
     })
 }
 
@@ -281,7 +297,7 @@ export const getNonApprovedForm = (tag, getType) => (dispatch) => {
         else if (getType == 'review') {
           dispatch({type: SET_REVIEW_FORM, payload: initiative});
         }
-        dispatch({type: CLEAR_ACCESS_ERROR});
+        dispatch({type: CLEAR_SET_FORM_ERROR});
       }
     })
     .catch(err => {

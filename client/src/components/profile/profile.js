@@ -6,13 +6,13 @@ import Image from '../../images/profile.png'
 
 class Profile extends Component {
   render(){
-    const {authorized, accessError, userData} = this.props;
+    const {authorized, userAccessError, userData} = this.props;
 
     if (authorized !== true) {
       return <Redirect to='/' />
     }
 
-    if (accessError) {
+    if (userAccessError) {
       return (
         <h3>There was an error retrieving your information</h3>
       );
@@ -51,7 +51,7 @@ const mapStateToProps = (state) => {
   return {
     authorized: state.authenticate.auth,
     userData: state.data.userInformation,
-    accessError: state.data.accessError
+    userAccessError: state.data.userRetrievalError
   };
 }
 

@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import './dashboard.css';
-import {getApprovedForm, getNonApprovedForm, clearFormStatus, setNewFormStatus} from '../../store/actions/dataActions'
+import {getApprovedForm, getNonApprovedForm, clearFormStatus, setNewFormStatus, clearFormRetrievalError} from '../../store/actions/dataActions'
 
 class dashboard extends Component {
   constructor(props){
@@ -82,12 +82,12 @@ class dashboard extends Component {
   }
 
   render() {
-    const {authorized, accessError, formStatus, clearForm, userData} = this.props;
+    const {authorized, formAccessError, formStatus, clearForm, userData} = this.props;
     if (authorized === false){
       return <Redirect to='/' />
     }
 
-    if (accessError == null) {
+    if (formAccessError === null) {
       if (this.state.modifyClicked || this.state.reviewClicked || this.state.addClicked) {
         //If user selects option to modify form
         if (this.state.modifyClicked) {
@@ -115,11 +115,13 @@ class dashboard extends Component {
         clearForm();
       }
     }
-    //If could not access form from either db, then return error message
-    const error = accessError ?
-    <div className="alert alert-danger alert-dismissible fade show" style = {{width: "25%", margin: "0 auto", marginTop: "50px"}}>
-      <p style = {{textAlign: "center"}}> {accessError}</p>
-    </div> : null
+
+    //If there was an issue accessing form from either db, then return form access error message
+    const error = formAccessError ? (
+      <div className="alert alert-danger alert-dismissible fade show" style = {{width: "25%", margin: "0 auto", marginTop: "50px"}}>
+        <p style = {{textAlign: "center"}}> {formAccessError}</p>
+      </div>
+    ) : null
 
     //Handle click
     const click = (num) => (e) => {
@@ -172,12 +174,17 @@ class dashboard extends Component {
       </div>
     )
   }
+
+  //When leaving component, clear form retrieval errors
+  componentWillUnmount = () => {
+    this.props.clearFormRetrievalError();
+  }
 }
 
 const mapStateToProps = (state) => {
   return {
     authorized: state.authenticate.auth,
-    accessError: state.data.accessError,
+    formAccessError: state.data.formRetrievalError,
     formStatus: state.data.formStatus,
     userData: state.data.userInformation
   };
@@ -187,6 +194,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getForm: (tag, getType) => dispatch(getNonApprovedForm(tag, getType)),
     clearForm: () => dispatch(clearFormStatus()),
+    clearFormRetrievalError: () => dispatch(clearFormRetrievalError()),
     newForm: () => dispatch(setNewFormStatus())
   }
 }

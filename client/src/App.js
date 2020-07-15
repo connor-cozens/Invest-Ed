@@ -55,7 +55,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    //State property that changes to rerender app component
+    //State property that when changed, will rerender app component
     authorized: state.authenticate.auth
   };
 }

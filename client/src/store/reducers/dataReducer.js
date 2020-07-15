@@ -148,6 +148,17 @@ const dataReducer = (state = initState, action) => {
         ImplementerInitiative: null,
         visDataRetrievalError: null
       };
+      case SET_USER_ERROR:
+        return {
+          ...state,
+          userRetrievalError: action.payload
+        };
+      //If error shouldnt appear anymore, then clear error from session state
+      case CLEAR_SET_USER_ERROR:
+        return {
+          ...state,
+          userRetrievalError: null
+        };
 
 
     //FORM DISPATCH HANDLERS
@@ -322,20 +333,6 @@ const dataReducer = (state = initState, action) => {
       return {
         ...state,
         visDataRetrievalError: null
-      };
-
-
-    //GENERAL ACCESS DISPATCH HANDLERS
-    case SET_USER_ERROR:
-      return {
-        ...state,
-        userRetrievalError: action.payload
-      };
-    //If error shouldnt appear anymore, then clear error from session state
-    case CLEAR_SET_USER_ERROR:
-      return {
-        ...state,
-        userRetrievalError: null
       };
 
     default:

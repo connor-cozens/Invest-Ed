@@ -95,7 +95,8 @@ export const getUser = () => (dispatch) => {
     .then(response => {
       if (response.data.error == false) {
         dispatch({type: SET_USER, payload: response.data.message[0]});
-        dispatch({type: LOGIN_SUCCESS})
+        dispatch({type: LOGIN_SUCCESS});
+        dispatch(clearUserRetrievalError());
       } else {
         //If user not authorized to access content but they are set to authorized, need to log them out immediately
         if (response.data.message == "Not authorized to view this content") {
@@ -257,7 +258,13 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
   axios.get(url, {withCredentials: true, accepts: "application/json"}, {tagNum})
     .then(response => {
       if (response.data.error !== undefined) {
-        dispatch({type: SET_FORM_ERROR, payload: response.data.error});
+        //If error was from attempted sql query
+        if (response.data.error.message.sqlMessage !== undefined) {
+          dispatch({type: SET_FORM_ERROR, payload: response.data.error.message.sqlMessage});
+        } else {
+          dispatch({type: SET_FORM_ERROR, payload: response.data.error.message});
+        }
+
       }
       else {
         const initiative = readForm(response);
@@ -272,8 +279,12 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
       }
     })
     .catch(err =>  {
-      console.log(err)
-      dispatch({type: SET_FORM_ERROR, payload: "Error retrieving form"});
+      //If network error
+      if (err.message !== undefined) {
+        dispatch({type: SET_FORM_ERROR, payload: err.message});
+      } else {
+        dispatch({type: SET_FORM_ERROR, payload: err});
+      }
     })
 }
 
@@ -301,7 +312,6 @@ export const getNonApprovedForm = (tag, getType) => (dispatch) => {
       }
     })
     .catch(err => {
-      console.log(err)
       dispatch({type: NOT_PULLED_APPROVED_FORM});
       //If couldn't find form in temp db, then check for form in main db
       dispatch(getApprovedForm(tag, getType));
@@ -454,14 +464,26 @@ export const modifyForm = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequest(form, inDB, isModified, false);
   axios.post(`/dashboard/update-form-temp`, req, {withCredentials: true})
     .then(response => {
+      //If error occured on server
       if (response.data.error !== undefined) {
-        dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error});
+        //If error was from attempted sql query
+        if (response.data.error.message.sqlMessage !== undefined) {
+          dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message.sqlMessage});
+        } else {
+          dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message});
+        }
+
       } else {
         dispatch({type: FORM_SUBMIT_SUCCESS});
       }
     })
     .catch(err => {
-      dispatch({type: FORM_SUBMIT_ERROR, payload: err});
+      //If network error
+      if (err.message !== undefined) {
+        dispatch({type: FORM_SUBMIT_ERROR, payload: err.message});
+      } else {
+        dispatch({type: FORM_SUBMIT_ERROR, payload: err});
+      }
     })
 }
 
@@ -471,13 +493,24 @@ export const modifyFormRA = (form, isModified) => (dispatch) => {
   axios.post(`/dashboard/update-form`, req, {withCredentials: true})
     .then(response => {
       if (response.data.error !== undefined) {
-        dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error});
+        //If error was from attempted sql query
+        if (response.data.error.message.sqlMessage !== undefined) {
+          dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message.sqlMessage});
+        } else {
+          dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message});
+        }
+
       } else {
         dispatch(modifyForm(form, true, true));
       }
     })
     .catch(err => {
-      dispatch({type: FORM_SUBMIT_ERROR, payload: err});
+      //If network error
+      if (err.message !== undefined) {
+        dispatch({type: FORM_SUBMIT_ERROR, payload: err.message});
+      } else {
+        dispatch({type: FORM_SUBMIT_ERROR, payload: err});
+      }
     })
 }
 
@@ -486,14 +519,26 @@ const approveForm = (form, isModified) => (dispatch) => {
   const req = changeRequestRA(form, isModified);
   axios.post(`/dashboard/update-form`, req, {withCredentials: true})
     .then(response => {
+      //If error occured on server
       if (response.data.error !== undefined) {
-        dispatch({type: FORM_REVIEW_ERROR, payload: response.data.error});
+        //If error was from attempted sql query
+        if (response.data.error.message.sqlMessage !== undefined) {
+          dispatch({type: FORM_REVIEW_ERROR, payload: response.data.error.message.sqlMessage});
+        } else {
+          dispatch({type: FORM_REVIEW_ERROR, payload: response.data.error.message});
+        }
+
       } else {
         dispatch({type: FORM_REVIEW_SUCCESS});
       }
     })
     .catch(err => {
-      dispatch({type: FORM_REVIEW_ERROR, payload: err});
+      //If network error
+      if (err.message !== undefined) {
+        dispatch({type: FORM_REVIEW_ERROR, payload: err.message});
+      } else {
+        dispatch({type: FORM_REVIEW_ERROR, payload: err});
+      }
     })
 }
 
@@ -502,8 +547,15 @@ export const reviewForm = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequest(form, inDB, isModified, true);
   axios.post(`/dashboard/update-form-temp`, req, {withCredentials: true})
     .then(response => {
+      //If error occured on server
       if (response.data.error !== undefined) {
-        dispatch({type: FORM_REVIEW_ERROR, payload: response.data.error});
+        //If error was from attempted sql query
+        if (response.data.error.message.sqlMessage !== undefined) {
+          dispatch({type: FORM_REVIEW_ERROR, payload: response.data.error.message.sqlMessage});
+        } else {
+          dispatch({type: FORM_REVIEW_ERROR, payload: response.data.error.message});
+        }
+
       } else {
         //If form is approved, then submit approval
         if (form.needsReview === 0) {
@@ -514,7 +566,12 @@ export const reviewForm = (form, inDB, isModified) => (dispatch) => {
       }
     })
     .catch(err => {
-      dispatch({type: FORM_REVIEW_ERROR, payload: err});
+      //If network error
+      if (err.message !== undefined) {
+        dispatch({type: FORM_REVIEW_ERROR, payload: err.message});
+      } else {
+        dispatch({type: FORM_REVIEW_ERROR, payload: err});
+      }
     })
 }
 
@@ -525,13 +582,24 @@ export const addForm = (form, inDB, isModified) => (dispatch) => {
   axios.post(`/dashboard/submit-form-temp`, req, {withCredentials: true})
     .then(response => {
       if (response.data.error !== undefined) {
-        dispatch({type: FORM_SUBMIT_SUCCESS, payload: response.data.error});
+        //If error was from attempted sql query
+        if (response.data.error.message.sqlMessage !== undefined) {
+          dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message.sqlMessage});
+        } else {
+          dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message});
+        }
+
       } else {
         dispatch({type: FORM_SUBMIT_SUCCESS});
       }
     })
     .catch(err => {
-      dispatch({type: FORM_SUBMIT_ERROR, payload: err});
+      //If network error
+      if (err.message !== undefined) {
+        dispatch({type: FORM_SUBMIT_ERROR, payload: err.message});
+      } else {
+        dispatch({type: FORM_SUBMIT_ERROR, payload: err});
+      }
     })
 }
 
@@ -540,14 +608,26 @@ export const addFormRA = (form, isModified) => (dispatch) => {
     const req = changeRequestRA(form, isModified);
     axios.post(`/dashboard/submitform`, req, {withCredentials: true})
       .then(response => {
+        //If error occured on server
         if (response.data.error !== undefined) {
-          dispatch({type: FORM_SUBMIT_SUCCESS, payload: response.data.error});
+          //If error was from attempted sql query
+          if (response.data.error.message.sqlMessage !== undefined) {
+            dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message.sqlMessage});
+          } else {
+            dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message});
+          }
+
         } else {
           dispatch({type: FORM_SUBMIT_SUCCESS});
         }
       })
       .catch(err => {
-        dispatch({type: FORM_SUBMIT_ERROR, payload: err});
+        //If network error
+        if (err.message !== undefined) {
+          dispatch({type: FORM_SUBMIT_ERROR, payload: err.message});
+        } else {
+          dispatch({type: FORM_SUBMIT_ERROR, payload: err});
+        }
       })
 }
 

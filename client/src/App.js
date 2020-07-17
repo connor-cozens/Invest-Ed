@@ -15,10 +15,13 @@ import FormSubmissionSuccess from './components/formSubmission/formSubmissionSuc
 import FormReviewSuccess from './components/formSubmission/formReviewSuccess';
 import contactUs from './components/contactUs/contactUs';
 import formReview from './components/formSubmission/formReview';
-import {getUser} from './store/actions/dataActions';
+import {getUser, clearUserRetrievalError, clearFormRetrievalError} from './store/actions/dataActions';
 
 class App extends Component {
   componentDidMount() {
+    //Clear user retrieval errors on reload
+    this.props.clearUserRetrievalError();
+    //Attempt to re-retreive user data
     this.props.getUser();
   }
 
@@ -61,7 +64,9 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    getUser: () => dispatch(getUser())
+    getUser: () => dispatch(getUser()),
+    clearUserRetrievalError: () => dispatch(clearUserRetrievalError()),
+    clearFormRetrievalError: () => dispatch(clearFormRetrievalError())
   }
 }
 

@@ -23,6 +23,10 @@ class dashboard extends Component {
     this.handleAddClick = this.handleAddClick.bind(this);
   }
 
+  componentDidMount = () => {
+    this.props.clearFormRetrievalError();
+  }
+
   componentDidUpdate = () => {
     window.onpopstate = (e) => {
       this.props.history.push('/')

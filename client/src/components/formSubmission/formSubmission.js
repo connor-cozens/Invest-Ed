@@ -171,7 +171,8 @@ class formSubmission extends React.Component{
         impMotiveA: 0
       },
       isUpdated: null,
-      isUnsaved: false
+      isUnsaved: false,  //When leaving submission page without submitting changes
+      isInfoMissing: false   //When submitting, whether all fields have been inputted
     };
 
     this.addIBase = this.addIBase.bind(this);
@@ -213,6 +214,7 @@ class formSubmission extends React.Component{
     if (props.formStatus === 'modify') {
       if (props.location.state !== undefined) {
         if (props.location.state.savedState !== undefined) {
+          //If attempted to leave submission without saving information, then repopulate state with the saved information
           const {savedState, isUnsaved} = props.location.state;
           this.setState({
             //Original value Setters
@@ -1290,98 +1292,141 @@ class formSubmission extends React.Component{
 
   handleFormSubmit(e) {
     e.preventDefault();
-    const {formStatus, userData} = this.props;
-    //If submitting a new form
-    if (formStatus === 'add') {
-      if (userData) {
-        //If an organization user, then submit to temp db for review
-        if (userData.accessLevel === 0) {
-          this.props.submitNonRA(this.state, this.props.inDB, false);
-        }
-        //Otherwise, if an RA or root user, submit directly to main db
-        else {
-          this.props.submitRA(this.state, false);
-        }
-      }
-    }
-    else {
-      if (formStatus == 'modify') {
-        if (userData) {
-          //Check if at least one of the form fields has been updated
-          if (this.state.fname !== this.state.originalFunderName ||
-            this.state.furl !== this.state.ofurl ||
-            this.state.motive !==  this.state.omotive ||
-            this.state.impact !==  this.state.oimpact ||
-            this.state.organizationForm !==  this.state.oOrganizationForm ||
-            JSON.stringify(this.state.internationalBases) !== JSON.stringify(this.state.ointernationalBases) ||
-            JSON.stringify(this.state.edSubs) !== JSON.stringify(this.state.oedSubs) ||
-            JSON.stringify(this.state.orgTraits) !== JSON.stringify(this.state.oOrgTraits) ||
-            JSON.stringify(this.state.asiaIBases) !== JSON.stringify(this.state.oasiaIBases) ||
-            JSON.stringify(this.state.asiaOperations) !== JSON.stringify(this.state.oasiaOperations) ||
-            this.state.initName !==  this.state.oinitName ||
-            this.state.initURL !==  this.state.oinitURL ||
-            this.state.tWomen !==  this.state.otWomen ||
-            this.state.initStart !==  this.state.oinitStart ||
-            this.state.initEnd !==  this.state.oinitEnd ||
-            this.state.idescription !==  this.state.oidescription ||
-            this.state.mainProgramActivity !==  this.state.omainProgramActivity ||
-            this.state.feeAccess !==  this.state.ofeeAccess ||
-            JSON.stringify(this.state.regions) !== JSON.stringify(this.state.oregions) ||
-            JSON.stringify(this.state.countries) !== JSON.stringify(this.state.ocountries) ||
-            JSON.stringify(this.state.activities) !== JSON.stringify(this.state.oactivities) ||
-            JSON.stringify(this.state.launchCountries) !== JSON.stringify(this.state.olaunchCountries) ||
-            JSON.stringify(this.state.targetGeos) !== JSON.stringify(this.state.otargetGeos) ||
-            JSON.stringify(this.state.targetPopulationSectors) !== JSON.stringify(this.state.otargetPopulationSectors) ||
-            JSON.stringify(this.state.outcomesMonitored) !== JSON.stringify(this.state.oOutcomesMonitored) ||
-            JSON.stringify(this.state.mEdSubs) !== JSON.stringify(this.state.omEdSubs) ||
-            JSON.stringify(this.state.oEdSubs) !== JSON.stringify(this.state.oOEdSubs) ||
-            JSON.stringify(this.state.managementTypes) !== JSON.stringify(this.state.omanagementTypes) ||
-            this.state.iname !==  this.state.originalImplementerName ||
-            this.state.impMotive !==  this.state.oimpMotive) {
-              this.state.isUpdated = true
-          }
-          else {
-            this.state.isUpdated = false
-          }
-          this.setState({
-            isUpdated: this.state.isUpdated
-          });
-          //If an organization user, then submit modified form to temp db for review
-          if (userData.accessLevel == 0) {
-            //Only allow submission if form fields have been updated
-            if (this.state.isUpdated === true) {
-              for (const [key, value] of Object.entries(this.state.reviews)) {
-                //If any field is found to be rejected, then form still requires further review
-                if (value == 0) {
-                  this.state.needsReview = 1;
-                }
-                this.setState({
-                  needsReview: this.state.needsReview
-                })
-              }
-              this.props.submitModifiedNonRA(this.state, this.props.inDB, true);
-            }
-          }
-          //Otherwise, if an RA or root user, submit modified form directly to main db
-          else {
-            //Only allow submission if form fields have been updated
-            if (this.state.isUpdated === true) {
-              //Set all fields to approved if RA is updating the form.
-              for (const [key, value] of Object.entries(this.state.reviews)) {
-                this.state.reviews[key] = 1
-              }
-              this.state.needsReview = 0;
-              this.setState({
-                reviews: this.state.reviews,
-                needsReview: this.state.needsReview
-              })
 
-              this.props.submitModifiedRA(this.state, true);
+    //If any fields are empty, then prevent submission of new form or updated form
+    if (this.state.fname !== null &&
+      this.state.furl !== null &&
+      this.state.motive !== null &&
+      this.state.impact !== null &&
+      this.state.organizationForm !== null &&
+      this.state.internationalBases.length > 0 &&
+      this.state.edSubs.length > 0 &&
+      this.state.orgTraits.length > 0 &&
+      this.state.asiaIBases.length > 0 &&
+      this.state.asiaOperations.length > 0 &&
+      this.state.initName !== null &&
+      this.state.initURL !== null &&
+      this.state.tWomen !== null &&
+      this.state.initStart !== null &&
+      this.state.initEnd !== null &&
+      this.state.idescription !== null &&
+      this.state.mainProgramActivity !== '' &&
+      this.state.feeAccess !== null &&
+      this.state.regions.length > 0 &&
+      this.state.countries.length > 0 &&
+      this.state.activities.length > 0 &&
+      this.state.launchCountries.length > 0 &&
+      this.state.targetGeos.length > 0 &&
+      this.state.targetPopulationSectors.length > 0 &&
+      this.state.outcomesMonitored.length > 0 &&
+      this.state.mEdSubs.length > 0 &&
+      this.state.oEdSubs.length > 0 &&
+      this.state.managementTypes.length > 0 &&
+      this.state.iname !== null &&
+      this.state.impMotive !== null) {
+        //No fields missing
+        this.state.isInfoMissing = false;
+
+        const {formStatus, userData} = this.props;
+        //If submitting a new form
+        if (formStatus === 'add') {
+          if (userData) {
+            //If an organization user, then submit to temp db for review
+            if (userData.accessLevel === 0) {
+              this.props.submitNonRA(this.state, this.props.inDB, false);
+            }
+            //Otherwise, if an RA or root user, submit directly to main db
+            else {
+              this.props.submitRA(this.state, false);
             }
           }
         }
+        else {
+          if (formStatus == 'modify') {
+            if (userData) {
+              //Check if at least one of the form fields has been updated
+              if (this.state.fname !== this.state.originalFunderName ||
+                this.state.furl !== this.state.ofurl ||
+                this.state.motive !==  this.state.omotive ||
+                this.state.impact !==  this.state.oimpact ||
+                this.state.organizationForm !==  this.state.oOrganizationForm ||
+                JSON.stringify(this.state.internationalBases) !== JSON.stringify(this.state.ointernationalBases) ||
+                JSON.stringify(this.state.edSubs) !== JSON.stringify(this.state.oedSubs) ||
+                JSON.stringify(this.state.orgTraits) !== JSON.stringify(this.state.oOrgTraits) ||
+                JSON.stringify(this.state.asiaIBases) !== JSON.stringify(this.state.oasiaIBases) ||
+                JSON.stringify(this.state.asiaOperations) !== JSON.stringify(this.state.oasiaOperations) ||
+                this.state.initName !==  this.state.oinitName ||
+                this.state.initURL !==  this.state.oinitURL ||
+                this.state.tWomen !==  this.state.otWomen ||
+                this.state.initStart !==  this.state.oinitStart ||
+                this.state.initEnd !==  this.state.oinitEnd ||
+                this.state.idescription !==  this.state.oidescription ||
+                this.state.mainProgramActivity !==  this.state.omainProgramActivity ||
+                this.state.feeAccess !==  this.state.ofeeAccess ||
+                JSON.stringify(this.state.regions) !== JSON.stringify(this.state.oregions) ||
+                JSON.stringify(this.state.countries) !== JSON.stringify(this.state.ocountries) ||
+                JSON.stringify(this.state.activities) !== JSON.stringify(this.state.oactivities) ||
+                JSON.stringify(this.state.launchCountries) !== JSON.stringify(this.state.olaunchCountries) ||
+                JSON.stringify(this.state.targetGeos) !== JSON.stringify(this.state.otargetGeos) ||
+                JSON.stringify(this.state.targetPopulationSectors) !== JSON.stringify(this.state.otargetPopulationSectors) ||
+                JSON.stringify(this.state.outcomesMonitored) !== JSON.stringify(this.state.oOutcomesMonitored) ||
+                JSON.stringify(this.state.mEdSubs) !== JSON.stringify(this.state.omEdSubs) ||
+                JSON.stringify(this.state.oEdSubs) !== JSON.stringify(this.state.oOEdSubs) ||
+                JSON.stringify(this.state.managementTypes) !== JSON.stringify(this.state.omanagementTypes) ||
+                this.state.iname !==  this.state.originalImplementerName ||
+                this.state.impMotive !==  this.state.oimpMotive) {
+                  this.state.isUpdated = true
+              }
+              else {
+                this.state.isUpdated = false
+              }
+              this.setState({
+                isUpdated: this.state.isUpdated
+              });
+              //If an organization user, then submit modified form to temp db for review
+              if (userData.accessLevel == 0) {
+                //Only allow submission if form fields have been updated
+                if (this.state.isUpdated === true) {
+                  for (const [key, value] of Object.entries(this.state.reviews)) {
+                    //If any field is found to be rejected, then form still requires further review
+                    if (value == 0) {
+                      this.state.needsReview = 1;
+                    }
+                    this.setState({
+                      needsReview: this.state.needsReview
+                    })
+                  }
+                  this.props.submitModifiedNonRA(this.state, this.props.inDB, true);
+                }
+              }
+              //Otherwise, if an RA or root user, submit modified form directly to main db
+              else {
+                //Only allow submission if form fields have been updated
+                if (this.state.isUpdated === true) {
+                  //Set all fields to approved if RA is updating the form.
+                  for (const [key, value] of Object.entries(this.state.reviews)) {
+                    this.state.reviews[key] = 1
+                  }
+                  this.state.needsReview = 0;
+                  this.setState({
+                    reviews: this.state.reviews,
+                    needsReview: this.state.needsReview
+                  })
+
+                  this.props.submitModifiedRA(this.state, true);
+                }
+              }
+            }
+          }
+        }
+      } else {
+        //Missing fields
+        this.state.isInfoMissing = true;
       }
-    }
+
+      this.setState({
+        isInfoMissing: this.state.isInfoMissing
+      });
   }
 
   render(){
@@ -1402,6 +1447,11 @@ class formSubmission extends React.Component{
     <div className="alert alert-dismissible alert-danger" style = {{width: "75%"}}>
       <strong> {formSubmitError} </strong>
     </div> : (
+      this.state.isInfoMissing === true ? (
+        <div className="alert alert-dismissible alert-warning" style = {{width: "75%"}}>
+          <strong>Missing fields.</strong> Please make sure all fields have been inputted.
+        </div>
+      ) :
       this.state.isUpdated !== null ? (
         this.state.isUpdated === false ? (
           <div className="alert alert-dismissible alert-warning" style = {{width: "75%"}}>

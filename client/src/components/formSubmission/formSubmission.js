@@ -170,8 +170,8 @@ class formSubmission extends React.Component{
         inameA: 0,
         impMotiveA: 0
       },
-      isUpdated: null,
-      isUnsaved: false,  //When leaving submission page without submitting changes
+      isUpdated: null, //Whether any changes have been made to retrieved form
+      isUnsaved: false,  //Whether leaving submission page without submitting changes
       isInfoMissing: false   //When submitting, whether all fields have been inputted
     };
 
@@ -630,8 +630,10 @@ class formSubmission extends React.Component{
 
   static getDerivedStateFromProps = (props, state) => {
     if (props.formStatus === 'modify') {
-      //Section Reviews
       return {
+        tagNum: props.form.tagNumber,
+        originalFunderName: state.originalFunderName === null ? state.fname : state.originalFunderName,
+        originalImplementerName: state.originalImplementerName === null ? state.iname : state.originalImplementerName,
         //If changes are made to form, only set changed fields to not accepted (i.e. to 0)
         reviews: {
           fnameA: state.fname !== state.originalFunderName ? 0 : state.originalReviews.fnameA,
@@ -1275,7 +1277,7 @@ class formSubmission extends React.Component{
     this.props.history.replace('/dashboard')
   }
 
-  //Stay with unsaved changes
+  //Stay and keep changes
   handleStay(e) {
     this.state.isUnsaved = false;
     this.setState({
@@ -1284,7 +1286,6 @@ class formSubmission extends React.Component{
   }
 
   handleChange(e){
-    console.log(e)
     this.setState({
       [e.target.id]: e.target.value
     })
@@ -1424,6 +1425,7 @@ class formSubmission extends React.Component{
         this.state.isInfoMissing = true;
       }
 
+      //Set the status of missing fields
       this.setState({
         isInfoMissing: this.state.isInfoMissing
       });

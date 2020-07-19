@@ -589,6 +589,11 @@ export const addForm = (form, inDB, isModified) => (dispatch) => {
           dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message});
         }
 
+        //Retrieve tagNumber of attempted submission, in order to send updated form after error on initial new form submission
+        if (response.data.error.tagNum !== undefined) {
+          dispatch({type: SET_MODIFY_FORM, payload: {tagNumber: parseInt(response.data.error.tagNum)}});
+        }
+
       } else {
         dispatch({type: FORM_SUBMIT_SUCCESS});
       }
@@ -615,6 +620,11 @@ export const addFormRA = (form, isModified) => (dispatch) => {
             dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message.sqlMessage});
           } else {
             dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message});
+          }
+
+          //Retrieve tagNumber of attempted submission, in order to send updated form after error on initial new form submission
+          if (response.data.error.tagNum !== undefined) {
+            dispatch({type: SET_MODIFY_FORM, payload: {tagNumber: parseInt(response.data.error.tagNum)}});
           }
 
         } else {

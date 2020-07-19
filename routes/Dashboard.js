@@ -1331,24 +1331,29 @@ dashboard.post('/submit-form-temp', (req, res) =>{
       })
    }
 ], function(err, results) {
-      //If error, return as json
-      if (err){
-        console.log(err);
-        res.json({"error": {"message": err}});
-      } else {
-        //Increment tag number after insertion is completed successfully
-        client.exists('tagNumber', function(err, reply){
-            if(reply != 1){
-               client.set('tagNumber', 1521)
-            }else{
+      //Increment tag number on insertion
+      client.exists('tagNumber', function(error, reply){
+          if (error) {
+            res.json({"error": {"message": error}});
+          } else {
+              client.get('tagNumber', function(getError, val){
+                //Increment tag Number
                 client.incr('tagNumber')
-                client.get('tagNumber', function(err, reply){
-                  console.log(reply)
-                })
-            }
-        })
-        res.json("Form successfully added to the DB")
-      }
+                if (getError) {
+                  res.json({"error": {"message": getError}});
+                } else {
+                  console.log(val)
+                  //If error, return as json with tag number to be processed by front-end
+                  if (err){
+                    console.log(err);
+                    res.json({"error": {"message": err, "tagNum": val}});
+                  } else {
+                    res.json("Form successfully added to the DB")
+                  }
+                }
+              })
+          }
+      })
    })
   } else {  //If not authorized
     res.json({"error": {"message": "Error: Action not authorized"}})
@@ -1923,24 +1928,29 @@ dashboard.post('/submitform', (req, res) =>{
       })
     },
    ], function(err, results) {
-         //If error, return as json
-         if (err){
-           console.log(err);
-           res.json({"error": {"message": err}});
-         } else {
-           //Increment tag number after insertion is completed successfully
-           client.exists('tagNumber', function(err, reply){
-               if(reply != 1){
-                  client.set('tagNumber', 1521)
-               }else{
+         //Increment tag number on insertion
+         client.exists('tagNumber', function(error, reply){
+             if (error) {
+               res.json({"error": {"message": error}});
+             } else {
+                 client.get('tagNumber', function(getError, val){
+                   //Increment tag Number
                    client.incr('tagNumber')
-                   client.get('tagNumber', function(err, reply){
-                     console.log(reply)
-                   })
-               }
-           })
-           res.json("Form successfully added to the DB")
-         }
+                   if (getError) {
+                     res.json({"error": {"message": getError}});
+                   } else {
+                     console.log(val)
+                     //If error, return as json with tag number to be processed by front-end
+                     if (err){
+                       console.log(err);
+                       res.json({"error": {"message": err, "tagNum": val}});
+                     } else {
+                       res.json("Form successfully added to the DB")
+                     }
+                   }
+                 })
+             }
+         })
       })
   } else {  //If not authorized
     res.json({"error": {"message": "Error: Action not authorized"}})
@@ -2033,8 +2043,8 @@ dashboard.post('/update-form', (req, res) =>{
                 },
 
                 function(queryDB) {
-                  //Delete and insert if original funder funds 1 or 0 initiatives, or if original funder name is the same as updated funder name
-                  if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
+                  //Delete and insert if original funder funds only 1 initiative, or if original funder name is the same as updated funder name
+                  if (numFunderInitiatives == 1 || formData.funderName == formData.OfunderName) {
                     //delete all funder international base
                     var query2 = 'DELETE FROM funderinternationalbases WHERE funderName = ' + sql.escape(formData.OfunderName)
                     pool.query(query2, {}, function(err, results) {
@@ -2074,8 +2084,8 @@ dashboard.post('/update-form', (req, res) =>{
                 },
 
                 function(queryDB) {
-                  //Delete and insert if original funder funds 1 or 0 initiatives, or if original funder name is the same as updated funder name
-                  if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
+                  //Delete and insert if original funder funds only 1 initiative, or if original funder name is the same as updated funder name
+                  if (numFunderInitiatives == 1 || formData.funderName == formData.OfunderName) {
                     //delete all funder fundereducationsubsectors
                     var query4 = 'DELETE FROM fundereducationsubsectors WHERE funderName = ' + sql.escape(formData.OfunderName)
                     pool.query(query4, {}, function(err, results) {
@@ -2115,8 +2125,8 @@ dashboard.post('/update-form', (req, res) =>{
                 },
 
                 function(queryDB) {
-                  //Delete and insert if original funder funds 1 or 0 initiatives, or if original funder name is the same as updated funder name
-                  if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
+                  //Delete and insert if original funder funds only 1 initiative, or if original funder name is the same as updated funder name
+                  if (numFunderInitiatives == 1 || formData.funderName == formData.OfunderName) {
                     //delete all funder funderorganizationtraits
                     var query6 = 'DELETE FROM funderorganizationtraits WHERE funderName = ' + sql.escape(formData.OfunderName)
                     pool.query(query6, {}, function(err, results) {
@@ -2156,8 +2166,8 @@ dashboard.post('/update-form', (req, res) =>{
                 },
 
                 function(queryDB) {
-                  //Delete and insert if original funder funds 1 or 0 initiatives, or if original funder name is the same as updated funder name
-                  if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
+                  //Delete and insert if original funder funds only 1 initiative, or if original funder name is the same as updated funder name
+                  if (numFunderInitiatives == 1 || formData.funderName == formData.OfunderName) {
                     //delete all funder asiabases
                     var query8 = 'DELETE FROM funderasiabases WHERE funderName = ' + sql.escape(formData.OfunderName)
                     pool.query(query8, {}, function(err, results) {
@@ -2197,8 +2207,8 @@ dashboard.post('/update-form', (req, res) =>{
                 },
 
                 function(queryDB) {
-                  //Delete and insert if original funder funds 1 or 0 initiatives, or if original funder name is the same as updated funder name
-                  if (numFunderInitiatives <= 1 || formData.funderName == formData.OfunderName) {
+                  //Delete and insert if original funder funds only 1 initiative, or if original funder name is the same as updated funder name
+                  if (numFunderInitiatives == 1 || formData.funderName == formData.OfunderName) {
                     //delete all funder asia operations
                     var query10= 'DELETE FROM funderasiaoperations WHERE funderName = ' + sql.escape(formData.OfunderName)
                     pool.query(query10, {}, function(err, results) {

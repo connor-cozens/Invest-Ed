@@ -1,12 +1,17 @@
+//Registration
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_CLEAR_ERROR = 'REGISTER_CLEAR_ERROR';
 export const REGISTER_CLEAR = 'REGISTER_CLEAR';
 export const REGISTER_ERROR = 'REGISTER_ERROR';
 export const CLEAR_REGISTER_ERROR = 'CLEAR_REGISTER_ERROR';
 
+//User retrieval
 export const SET_USER = 'SET_USER'
 export const UNSET_USER = 'UNSET_USER';
+export const SET_USER_ERROR = 'SET_USER_ERROR';
+export const CLEAR_SET_USER_ERROR = 'CLEAR_SET_USER_ERROR';
 
+//Form retrieval
 export const SET_REVIEW_FORM = 'SET_REVIEW_FORM';
 export const SET_REVIEW_APPROVED_FORM = 'SET_REVIEW_APPROVED_FORM';
 export const SET_ADD_FORM = 'SET_ADD_FORM';
@@ -15,6 +20,10 @@ export const SET_MODIFY_APPROVED_FORM = 'SET_MODIFY_APPROVED_FORM';
 export const PULLED_APPROVED_FORM = 'PULLED_APPROVED_FORM';
 export const NOT_PULLED_APPROVED_FORM = 'NOT_PULLED_APPROVED_FORM';
 export const CLEAR_FORM_STATUS = 'CLEAR_FORM_STATUS';
+export const SET_FORM_ERROR = 'SET_FORM_ERROR';
+export const CLEAR_SET_FORM_ERROR = 'CLEAR_SET_FORM_ERROR';
+
+//Form review and submission
 export const FORM_SUBMIT_SUCCESS = 'FORM_SUBMIT_SUCCESS';
 export const FORM_SUBMIT_ERROR = 'FORM_SUBMIT_ERROR';
 export const FORM_SUBMIT_CLEAR = 'FORM_SUBMIT_CLEAR';
@@ -22,6 +31,7 @@ export const FORM_REVIEW_SUCCESS = 'FORM_REVIEW_SUCCESS';
 export const FORM_REVIEW_ERROR = 'FORM_REVIEW_ERROR';
 export const FORM_REVIEW_CLEAR = 'FORM_REVIEW_CLEAR';
 
+//Data Visualization
 export const SET_FUNDER_DATA = 'SET_FUNDER_DATA';
 export const SET_IMPLEMENTER_DATA = 'SET_IMPLEMENTER_DATA';
 export const SET_INITIATIVE_DATA = 'SET_INITIATIVE_DATA';
@@ -32,18 +42,19 @@ export const SET_IMPLEMENTERTYPE_INITIATIVE = 'SET_IMPLEMENTERTYPE_INITIATIVE';
 export const SET_FUNDER_INITIATIVE = 'SET_FUNDER_INITIATIVE';
 export const SET_IMPLEMENTER_INITIATIVE = 'SET_IMPLEMENTER_INITIATIVE';
 export const UNSET_VISUALIZED_DATA = 'UNSET_VISUALIZED_DATA';
-
-export const CLEAR_ACCESS_ERROR = 'CLEAR_ACCESS_ERROR';
-export const ACCESS_ERROR = 'ACCESS_ERROR';
+export const SET_VISUALIZED_DATA_ERROR = 'SET_VISUALIZED_DATA_ERROR';
+export const CLEAR_SET_VISUALIZED_DATA_ERROR = 'CLEAR_SET_VISUALIZED_DATA_ERROR';
 
 const initState = {
   //General user information
   userInformation: null,
+  userRetrievalError: null,
 
   //On form retrieval
   form: null,
   formStatus: null,
   pulledformApproved: false,
+  formRetrievalError: null,
 
   //On form submit
   formSubmitted: false,
@@ -56,7 +67,6 @@ const initState = {
   //On register
   registered: false,
   registerError: null,
-  accessError: null,
 
   //Visualization data
   FunderData: null,
@@ -68,7 +78,8 @@ const initState = {
   FunderTypeInitiative: null,
   ImplementerTypeInitiative: null,
   FunderInitiative: null,
-  ImplementerInitiative: null
+  ImplementerInitiative: null,
+  visDataRetrievalError: null
 }
 
 const dataReducer = (state = initState, action) => {
@@ -115,16 +126,17 @@ const dataReducer = (state = initState, action) => {
       return {
         ...state,
         userInformation: null,
+        userRetrievalError: null,
         form: null,
         formStatus: null,
         pulledformApproved: false,
+        formRetrievalError: null,
         formSubmitted: false,
         formSubmitError: null,
         formReviewed: false,
         formReviewError: null,
         registered: false,
         registerError: null,
-        accessError: null,
         FunderData: null,
         ImplementerData: null,
         InititativeData: null,
@@ -133,8 +145,20 @@ const dataReducer = (state = initState, action) => {
         FunderTypeInitiative: null,
         ImplementerTypeInitiative: null,
         FunderInitiative: null,
-        ImplementerInitiative: null
+        ImplementerInitiative: null,
+        visDataRetrievalError: null
       };
+      case SET_USER_ERROR:
+        return {
+          ...state,
+          userRetrievalError: action.payload
+        };
+      //If error shouldnt appear anymore, then clear error from session state
+      case CLEAR_SET_USER_ERROR:
+        return {
+          ...state,
+          userRetrievalError: null
+        };
 
 
     //FORM DISPATCH HANDLERS
@@ -184,8 +208,23 @@ const dataReducer = (state = initState, action) => {
         ...state,
         form: null,
         formStatus: null,
-        pulledformApproved: false
+        pulledformApproved: false,
+        formSubmitError: null,
+        formReviewError: null,
+        formRetrievalError: null
       };
+    case SET_FORM_ERROR:
+      return {
+        ...state,
+        formRetrievalError: action.payload
+      };
+    //If error shouldnt appear anymore, then clear error from session state
+    case CLEAR_SET_FORM_ERROR:
+      return {
+        ...state,
+        formRetrievalError: null
+      };
+
     case FORM_SUBMIT_SUCCESS:
       return {
         ...state,
@@ -284,19 +323,16 @@ const dataReducer = (state = initState, action) => {
         FunderInitiative: null,
         ImplementerInitiative: null
       };
-
-
-    //GENERAL ACCESS DISPATCH HANDLERS
-    case ACCESS_ERROR:
+    case SET_VISUALIZED_DATA_ERROR:
       return {
         ...state,
-        accessError: action.payload
+        visDataRetrievalError: action.payload
       };
     //If error shouldnt appear anymore, then clear error from session state
-    case CLEAR_ACCESS_ERROR:
+    case CLEAR_SET_VISUALIZED_DATA_ERROR:
       return {
         ...state,
-        accessError: null
+        visDataRetrievalError: null
       };
 
     default:

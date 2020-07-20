@@ -933,6 +933,29 @@ const initiativesByMainProgActivity = (d, response) => {
     initiatives.forEach(init => {
       //Check if init is in the database first
       var object = response.data.table7.find(obj => {return init.initiative == obj.tagNumber});
+      if (object !== undefined) {
+        const name = object.mainProgrammingArea;
+
+        //Then check if the database value is already in the data array
+        var objectFromData = data.find(obj => {return name == obj.name});
+
+        if (objectFromData !== undefined) {
+          objectFromData.value++;
+        }
+        else {
+          data.push({name: name, value: 1})
+        }
+      }
+    });
+  });
+  return data
+}
+const initiativeEntityByMainProgActivity = (d, response) => {
+  const data = [];
+  d.forEach(init => {
+    //Check if init is in the database first
+    var object = response.data.table7.find(obj => {return init.initiative == obj.tagNumber});
+    if (object !== undefined) {
       const name = object.mainProgrammingArea;
 
       //Then check if the database value is already in the data array
@@ -944,25 +967,6 @@ const initiativesByMainProgActivity = (d, response) => {
       else {
         data.push({name: name, value: 1})
       }
-    });
-  });
-  return data
-}
-const initiativeEntityByMainProgActivity = (d, response) => {
-  const data = [];
-  d.forEach(init => {
-    //Check if init is in the database first
-    var object = response.data.table7.find(obj => {return init.initiative == obj.tagNumber});
-    const name = object.mainProgrammingArea;
-
-    //Then check if the database value is already in the data array
-    var objectFromData = data.find(obj => {return name == obj.name});
-
-    if (objectFromData !== undefined) {
-      objectFromData.value++;
-    }
-    else {
-      data.push({name: name, value: 1})
     }
   });
   return data
@@ -1269,6 +1273,29 @@ const initiativesImpTypeByMainProgActivity = (d, response) => {
     initiatives.forEach(init => {
       //Check if init is in the database first
       var object = response.data.table3.find(obj => {return init.initiative == obj.tagNumber});
+      if (object !== undefined) {
+        const name = object.mainProgrammingArea;
+
+        //Then check if the database value is already in the data array
+        var objectFromData = data.find(obj => {return name == obj.name});
+
+        if (objectFromData !== undefined) {
+          objectFromData.value++;
+        }
+        else {
+          data.push({name: name, value: 1})
+        }
+      }
+    });
+  });
+  return data
+}
+const initiativesImpByMainProgActivity = (d, response) => {
+  const data = [];
+  d.forEach(init => {
+    //Check if init is in the database first
+    var object = response.data.table3.find(obj => {return init.initiative == obj.tagNumber});
+    if (object !== undefined) {
       const name = object.mainProgrammingArea;
 
       //Then check if the database value is already in the data array
@@ -1280,25 +1307,6 @@ const initiativesImpTypeByMainProgActivity = (d, response) => {
       else {
         data.push({name: name, value: 1})
       }
-    });
-  });
-  return data
-}
-const initiativesImpByMainProgActivity = (d, response) => {
-  const data = [];
-  d.forEach(init => {
-    //Check if init is in the database first
-    var object = response.data.table3.find(obj => {return init.initiative == obj.tagNumber});
-    const name = object.mainProgrammingArea;
-
-    //Then check if the database value is already in the data array
-    var objectFromData = data.find(obj => {return name == obj.name});
-
-    if (objectFromData !== undefined) {
-      objectFromData.value++;
-    }
-    else {
-      data.push({name: name, value: 1})
     }
   });
   return data

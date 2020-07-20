@@ -767,30 +767,47 @@ export const getImplementerData = () => (dispatch) => {
 
 //INITIATIVES
 const singleValInitAttr = (response, attribute) => {
-  const initAttribute = [];
+  const initAttributes = [];
+  const initNames = [];
+
   if (response.data.table1) {
     response.data.table1.forEach((init) => {
       const name = attribute == 'mainProgrammingArea' ? init.mainProgrammingActivity : (
       attribute == 'mainProgrammingActivity' ? init.mainProgrammingActivity: null
       );
 
-      var object = initAttribute.find((obj) => { return obj.name == name });
+      //Populate initiative numbers by attribute
+        //Check if object already added to initAttributes array with attribute name (I.E. India as attribute name for countryOfOperation attribute)
+        let objectInitAttributes = initAttributes.find((obj) => { return obj.name == name });
+        //If object already exists
+        if (objectInitAttributes !== undefined){
+          objectInitAttributes.value++;
+        }
+        //Otherwise, add new key and value pair
+        else{
+          initAttributes.push({name: name, value: 1})
+        }
 
-      //If object exists in profitMotives object
-      if (object !== undefined){
-        object.value++;
-      }
-      //Otherwise, add new key and value pair
-      else{
-        initAttribute.push({name: name, value: 1})
-      }
+      //Populate initiative names by attribute
+        //Check if object already added to initNames array with attribute name (I.E. India as attribute name for countryOfOperation attribute)
+        let objectInitNames = initNames.find((obj) => { return obj.name == name });
+
+        //If object already exists
+        if (objectInitNames !== undefined){
+          objectInitNames.value.push(init.initiativeName);
+        }
+        //Otherwise, add new key and value pair
+        else{
+          initNames.push({name: name, value: [init.initiativeName]})
+        }
     });
   }
-  return initAttribute
+  return {initAttributes, initNames}
 }
 
 const multiValInitAttr = (response, attribute) => {
-  const initAttribute = [];
+  const initAttributes = [];
+  const initNames = [];
 
   const arr = attribute == 'region' ? response.data.table2 : (
   attribute == 'country' ? response.data.table3 : (
@@ -828,20 +845,56 @@ const multiValInitAttr = (response, attribute) => {
           )
       ));
 
-      var object = initAttribute.find((obj) => { return obj.name == name });
-
+    //Populate initiative numbers by attribute
+      //Check if object already added to initAttributes array with attribute name (I.E. India as attribute name for countryOfOperation attribute)
+      let objectInitAttributes = initAttributes.find((obj) => { return obj.name == name });
       //If object already exists
-      if (object !== undefined){
-        object.value++;
+      if (objectInitAttributes !== undefined){
+        objectInitAttributes.value++;
       }
       //Otherwise, add new key and value pair
       else{
-        initAttribute.push({name: name, value: 1})
+        initAttributes.push({name: name, value: 1})
+      }
+
+    //Populate initiative names by attribute
+      //Find matching initiative in initiative table
+      let matchingInitObject = response.data.table1.find((obj) => { return obj.tagNumber == init.tagNumber })
+
+      //If match found
+      if (matchingInitObject !== undefined) {
+        //Check if object already added to initNames array with attribute name (I.E. India as attribute name for countryOfOperation attribute)
+        let objectInitNames = initNames.find((obj) => { return obj.name == name });
+
+        //If object already exists
+        if (objectInitNames !== undefined){
+          objectInitNames.value.push(matchingInitObject.initiativeName);
+        }
+        //Otherwise, add new key and value pair
+        else{
+          initNames.push({name: name, value: [matchingInitObject.initiativeName]})
+        }
       }
     });
   }
-  return initAttribute
+  return {initAttributes, initNames}
 }
+
+// const allInitiatives = (response, attribute) => {
+//   const initiativesByName = [];
+//   if (response.data.table1) {
+//     response.data.table1.forEach((init) => {
+//       let object = initiativesByName.find((obj) => { return obj.name == init.initiativeName})
+//
+//       //If object doesn't already exist in initiativesByName, add new initiative name object
+//       if (object === undefined){
+//         if (init.initiativeName !== undefined) {
+//           initiativesByName.push({name: init.initiativeName})
+//         }
+//       }
+//     })
+//   }
+// }
 
 export const getInitiativeData = () => (dispatch) => {
   axios.get(`/visualize/initiative`)

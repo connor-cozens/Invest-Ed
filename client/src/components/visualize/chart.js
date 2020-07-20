@@ -83,6 +83,7 @@ class Chart extends Component {
   onPieEnter = (data, index) => {
     //Set up data for bar chart to appear on hover
     if (data !== null){
+      //Without comparison chart
       if (this.state.setMainPie) {
         if (this.props.toggleCompare && this.props.data.sub2) {
           //If map is toggled
@@ -105,9 +106,9 @@ class Chart extends Component {
               }
             });
           }
-
         }
       }
+      //With comparison chart
       else {
         if (this.props.toggleCompare && this.props.data.sub3) {
           //If map is toggled

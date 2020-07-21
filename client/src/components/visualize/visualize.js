@@ -132,11 +132,11 @@ class Visualize extends Component {
       }
 
       if (this.state.entitySelection == "initiatives" && this.state.attributeSelection == "mainProgramActivity") {
-        return {main: this.state.InititativeData.mainProgrammingActivity.initAttributes, sub: this.state.InititativeData.mainProgrammingActivity.initNames, sub1: '', sub2: '', header1: 'Initiatives - Main Programming Area', header2: '', initiative: true}
+        return {main: this.state.InititativeData.mainProgrammingActivity.initAttributes, sub: '', sub1: '', sub2: this.state.InititativeData.mainProgrammingActivity.initNames, sub3: '', header1: 'Initiatives - Main Programming Area', header2: '', initiative: true}
       }
 
       if (this.state.entitySelection == "initiatives" && this.state.attributeSelection == "countryOfOperation") {
-        return {main: this.state.InititativeData.countryOfOperation.initAttributes, sub: this.state.InititativeData.countryOfOperation.initNames, sub1: '', sub2: '', header1: 'Initiatives - Countries of Operation', header2: '', initiative: true}
+        return {main: this.state.InititativeData.countryOfOperation.initAttributes, sub: '', sub1: '', sub2: this.state.InititativeData.countryOfOperation.initNames, sub3: '', header1: 'Initiatives - Countries of Operation', header2: '', initiative: true}
       }
     }
     else {

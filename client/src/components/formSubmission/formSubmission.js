@@ -594,8 +594,8 @@ class formSubmission extends React.Component{
           this.state.initName !==  this.state.oinitName ||
           this.state.initURL !==  this.state.oinitURL ||
           this.state.tWomen !==  this.state.otWomen ||
-          this.state.initStart !==  this.state.oinitStart ||
-          this.state.initEnd !==  this.state.oinitEnd ||
+          !Object.is(this.state.initStart, this.state.oinitStart) /*NaN checks*/ ||
+          !Object.is(this.state.initEnd, this.state.oinitEnd) /*NaN checks*/ ||
           this.state.idescription !==  this.state.oidescription ||
           this.state.mainProgramActivity !==  this.state.omainProgramActivity ||
           this.state.feeAccess !==  this.state.ofeeAccess ||
@@ -1359,8 +1359,8 @@ class formSubmission extends React.Component{
                 this.state.initName !==  this.state.oinitName ||
                 this.state.initURL !==  this.state.oinitURL ||
                 this.state.tWomen !==  this.state.otWomen ||
-                this.state.initStart !==  this.state.oinitStart ||
-                this.state.initEnd !==  this.state.oinitEnd ||
+                !Object.is(this.state.initStart, this.state.oinitStart) /*NaN checks*/ ||
+                !Object.is(this.state.initEnd, this.state.oinitEnd) /*NaN checks*/ ||
                 this.state.idescription !==  this.state.oidescription ||
                 this.state.mainProgramActivity !==  this.state.omainProgramActivity ||
                 this.state.feeAccess !==  this.state.ofeeAccess ||
@@ -1432,6 +1432,10 @@ class formSubmission extends React.Component{
   }
 
   render(){
+    console.log(this.state.initStart !== this.state.oinitStart)
+    console.log(this.state.initStart)
+    console.log(this.state.oinitStart)
+
     const {authorized, formSubmitted, formSubmitError, formStatus, inDB} = this.props;
     if (authorized === false) {
       return <Redirect to='/' />

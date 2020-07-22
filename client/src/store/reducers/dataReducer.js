@@ -13,10 +13,8 @@ export const CLEAR_SET_USER_ERROR = 'CLEAR_SET_USER_ERROR';
 
 //Form retrieval
 export const SET_REVIEW_FORM = 'SET_REVIEW_FORM';
-export const SET_REVIEW_APPROVED_FORM = 'SET_REVIEW_APPROVED_FORM';
 export const SET_ADD_FORM = 'SET_ADD_FORM';
 export const SET_MODIFY_FORM = 'SET_MODIFY_FORM';
-export const SET_MODIFY_APPROVED_FORM = 'SET_MODIFY_APPROVED_FORM';
 export const PULLED_APPROVED_FORM = 'PULLED_APPROVED_FORM';
 export const NOT_PULLED_APPROVED_FORM = 'NOT_PULLED_APPROVED_FORM';
 export const CLEAR_FORM_STATUS = 'CLEAR_FORM_STATUS';
@@ -167,26 +165,14 @@ const dataReducer = (state = initState, action) => {
         ...state,
         form: action.payload,
         formStatus: 'review',
-      };
-    case SET_REVIEW_APPROVED_FORM:
-      return {
-        ...state,
-        form: action.payload,
-        formStatus: 'review',
-        pulledformApproved: true
+        pulledformApproved: action.payload.status !== undefined ? (action.payload.status.length > 0 ? (action.payload.status[0].length > 0 ? (action.payload.status[0][0].inDB !== undefined ? (action.payload.status[0][0].inDB === 1 ? true : false) : true) : true) : false) : false
       };
     case SET_MODIFY_FORM:
       return {
         ...state,
         form: action.payload,
-        formStatus: 'modify'
-      };
-    case SET_MODIFY_APPROVED_FORM:
-      return {
-        ...state,
-        form: action.payload,
         formStatus: 'modify',
-        pulledformApproved: true
+        pulledformApproved: action.payload.status !== undefined ? (action.payload.status.length > 0 ? (action.payload.status[0].length > 0 ? (action.payload.status[0][0].inDB !== undefined ? (action.payload.status[0][0].inDB === 1 ? true : false) : true) : true) : false) : false
       };
     case SET_ADD_FORM:
       return {

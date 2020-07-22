@@ -594,8 +594,8 @@ class formSubmission extends React.Component{
           this.state.initName !==  this.state.oinitName ||
           this.state.initURL !==  this.state.oinitURL ||
           this.state.tWomen !==  this.state.otWomen ||
-          this.state.initStart !==  this.state.oinitStart ||
-          this.state.initEnd !==  this.state.oinitEnd ||
+          !Object.is(this.state.initStart, this.state.oinitStart) /*NaN checks*/ ||
+          !Object.is(this.state.initEnd, this.state.oinitEnd) /*NaN checks*/ ||
           this.state.idescription !==  this.state.oidescription ||
           this.state.mainProgramActivity !==  this.state.omainProgramActivity ||
           this.state.feeAccess !==  this.state.ofeeAccess ||
@@ -1359,8 +1359,8 @@ class formSubmission extends React.Component{
                 this.state.initName !==  this.state.oinitName ||
                 this.state.initURL !==  this.state.oinitURL ||
                 this.state.tWomen !==  this.state.otWomen ||
-                this.state.initStart !==  this.state.oinitStart ||
-                this.state.initEnd !==  this.state.oinitEnd ||
+                !Object.is(this.state.initStart, this.state.oinitStart) /*NaN checks*/ ||
+                !Object.is(this.state.initEnd, this.state.oinitEnd) /*NaN checks*/ ||
                 this.state.idescription !==  this.state.oidescription ||
                 this.state.mainProgramActivity !==  this.state.omainProgramActivity ||
                 this.state.feeAccess !==  this.state.ofeeAccess ||
@@ -1474,7 +1474,7 @@ class formSubmission extends React.Component{
             <strong>This form has been approved.</strong> The information currently on this form is public.
           </div>
         ) : (
-          <div class="alert alert-dismissible alert-danger">
+          <div class="alert alert-dismissible alert-warning">
             <strong>This form is under review for approval.</strong> Please review the approval status of the below fields.
           </div>
         )
@@ -1482,7 +1482,7 @@ class formSubmission extends React.Component{
     ) : null
 
     const unsavedWarning = this.state.isUnsaved === true ?
-    <div className="alert alert-dismissible alert-warning" style = {{width: "100%"}}>
+    <div className="alert alert-dismissible alert-danger" style = {{width: "100%"}}>
       <strong> You have unsaved changes. </strong>Are you sure you want to leave?
       <button type="button" class="btn btn-warning" style = {{margin: '0 0 0 25px'}} onClick = {this.handleLeave}>Yes</button>
       <button type="button" class="btn btn-warning" style = {{margin: '0 0 0 10px'}} onClick = {this.handleStay}>No</button>

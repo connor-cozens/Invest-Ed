@@ -329,7 +329,6 @@ class formReview extends React.Component{
   }
 
   handleChange(e){
-    console.log(e)
     this.setState({
       [e.target.id]: e.target.value
     })
@@ -387,7 +386,7 @@ class formReview extends React.Component{
   }
 
   render(){
-    const {authorized, formReviewed, formReviewError, userData} = this.props;
+    const {authorized, formReviewed, formReviewError, userData, formStatus, inDB} = this.props;
     if (authorized === false) {
       return <Redirect to='/' />
     }
@@ -419,8 +418,26 @@ class formReview extends React.Component{
       ) : null
     );
 
+    const approvalFeedback = formStatus === 'review' ? (
+      inDB === true ? (
+        <div class="alert alert-dismissible alert-success">
+          <strong>This form has been approved.</strong> The information currently on this form is public.
+        </div>
+      ) : (
+        this.state.needsReview === 0 ? (
+          <div class="alert alert-dismissible alert-success">
+            <strong>This form has been approved.</strong> The information currently on this form is public.
+          </div>
+        ) : (
+          <div class="alert alert-dismissible alert-warning">
+            <strong>This form is under review for approval.</strong> Please make any necessary changes to the approval status of the below fields. <br></br><br></br><strong>Accepting all fields will make this form information public.</strong>
+          </div>
+        )
+      )
+    ) : null
+
     const unsavedWarning = this.state.isUnsaved === true ?
-    <div className="alert alert-dismissible alert-warning" style = {{width: "100%"}}>
+    <div className="alert alert-dismissible alert-danger" style = {{width: "100%"}}>
       <strong> You have unsaved changes. </strong>Are you sure you want to leave?
       <button type="button" class="btn btn-warning" style = {{margin: '0 0 0 25px'}} onClick = {this.handleLeave}>Yes</button>
       <button type="button" class="btn btn-warning" style = {{margin: '0 0 0 10px'}} onClick = {this.handleStay}>No</button>
@@ -432,6 +449,7 @@ class formReview extends React.Component{
           <div>
             <br></br>
             {unsavedWarning}
+            {approvalFeedback}
             <form onSubmit={this.handleFormSubmit}>
 
             <h4>Funder</h4>

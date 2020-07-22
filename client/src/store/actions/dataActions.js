@@ -11,9 +11,7 @@ import {
   CLEAR_SET_USER_ERROR,
 
   SET_REVIEW_FORM,
-  SET_REVIEW_APPROVED_FORM,
   SET_MODIFY_FORM,
-  SET_MODIFY_APPROVED_FORM,
   SET_ADD_FORM,
   PULLED_APPROVED_FORM,
   NOT_PULLED_APPROVED_FORM,
@@ -270,10 +268,10 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
         const initiative = readForm(response);
         //Dispatch action to store form data in store
         if (getType == 'modify') {
-          dispatch({type: SET_MODIFY_APPROVED_FORM, payload: initiative});
+          dispatch({type: SET_MODIFY_FORM, payload: initiative});
         }
         else if (getType == 'review') {
-          dispatch({type: SET_REVIEW_APPROVED_FORM, payload: initiative});
+          dispatch({type: SET_REVIEW_FORM, payload: initiative});
         }
         dispatch({type: CLEAR_SET_FORM_ERROR});
       }

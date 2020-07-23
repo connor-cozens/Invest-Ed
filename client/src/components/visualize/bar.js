@@ -10,7 +10,7 @@ class BarGraph extends Component {
         height={600}
         data={this.props.data}
         layout="vertical"
-        margin={{top: 30, right: 90, left: 90}}
+        margin={{top: 10, right: 90, left: 40}}
         >
         <XAxis type="number"/>
         <YAxis type="category" dataKey="name" tick={{fontSize: 8}}/>

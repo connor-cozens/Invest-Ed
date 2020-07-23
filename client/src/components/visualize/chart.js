@@ -214,7 +214,11 @@ class Chart extends Component {
         <h3 style = {{marginTop: "50px", marginLeft: "30px" }}> {this.props.data.header1} </h3>
         :
         <h3 style = {{marginTop: "50px", marginLeft: "100px" }}> {this.props.data.header1} </h3>
-      ) : <h3 style = {{marginTop: "50px"}}> {this.props.data.header1} </h3>
+      ) : (
+        this.props.toggleMap ? <h3 style = {{marginTop: "50px", marginLeft: "150px"}}> {this.props.data.header1} </h3>
+        :
+        <h3 style = {{marginTop: "50px"}}> {this.props.data.header1} </h3>
+      )
 
     const subTitle = this.state.setMainPie ?
     (
@@ -316,9 +320,11 @@ class Chart extends Component {
           : null
       )
 
-    this.state.list = this.props.data.initiative ?
-      <List heading = {this.state.listHeading} data = {this.state.listData} />
+    this.state.list = this.props.data.initiative ? (
+      !this.props.toggleMap ? <List heading = {this.state.listHeading} data = {this.state.listData} />
       : null
+    ) : null
+
 
     return (
       <div>

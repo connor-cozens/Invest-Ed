@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import Chart from './chart'
 import Switch from "react-switch";
 import Map from './map';
+import './visualize.css';
 
 import {getFunderData, getImplementerData, getInitiativeData, getInitiativeFundersByAttr, getInitiativeImplementersByAttr} from '../../store/actions/dataActions';
 
@@ -500,7 +501,7 @@ class Visualize extends Component {
   render() {
     //Dynamically make attribute text field appear based on entity selection
     const selection = this.state.entitySelection == "funders" ?
-      <select value = {this.state.attributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleAttributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
+      <select value = {this.state.attributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleAttributeSelection} style = {{width:"90%", margin: "50px 0 0 20px"}}>
         <option value="select" selected = "selected">Filter a target funder attribute</option>
         <option value="profitMotive">Profit Motive</option>
         <option value="organizationForm">Organization Form</option>
@@ -509,7 +510,7 @@ class Visualize extends Component {
         <option value="baseLocations">Base Locations</option>
       </select> : (
         this.state.entitySelection == "initiatives" ?
-        <select value = {this.state.attributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleAttributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
+        <select value = {this.state.attributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleAttributeSelection} style = {{width:"90%", margin: "50px 0 0 20px"}}>
           <option value="select" selected = "selected">Filter an initiative attribute</option>
           <option value="countryOfOperation">Countries of Operation</option>
           <option value="launchCountry">Launch Country(ies)</option>
@@ -526,7 +527,7 @@ class Visualize extends Component {
           <option value="targetSchoolManagementType">Target School Management Types</option>
         </select> : (
           this.state.entitySelection == "implementers" ?
-          <select value = {this.state.attributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleAttributeSelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
+          <select value = {this.state.attributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleAttributeSelection} style = {{width:"90%", margin: "50px 0 0 20px"}}>
             <option value="select">Filter an implementer attribute</option>
             <option value="profitMotive">Profit Motive</option>
           </select> :
@@ -536,7 +537,7 @@ class Visualize extends Component {
 
       //Dynamically make secondary comparison field appear if compare toggle is on
       const secondarySelection = this.state.compareChecked ? (this.state.entitySelection == 'funders' || this.state.entitySelection == 'implementers' ?
-        <select value = {this.state.secondaryAttributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleSecondaryAttributeSelection} style = {{width:"80%", margin: "25px 0 0 25px"}}>
+        <select value = {this.state.secondaryAttributeSelection} type="attributes" id="attributes" name="attributes" onChange={this.handleSecondaryAttributeSelection} style = {{width:"90%", margin: "25px 0 0 20px"}}>
           <option value="select" selected = "selected">Filter an initiative attribute</option>
           <option value="countryOfOperation">Countries of Operation</option>
           <option value="launchCountry">Launch Country(ies)</option>
@@ -564,9 +565,12 @@ class Visualize extends Component {
       const toggleCompare = this.state.attributeSelection !== 'select' ?
       (this.state.entitySelection == 'funders' || this.state.entitySelection == 'implementers' ?
         <div>
-          <div style = {{margin: "50px 55px 0 30px"}}>
+          <div style = {{margin: "50px 30px 0 30px"}}>
             <div style = {{float: "left"}}>
               <label style = {{margin: "0 25px 0 0", verticalAlign: "top", fontSize: "17px"}}> Break down {breakDownLabel} </label>
+            </div>
+            <div style = {{float: "left"}}>
+              <label style = {{margin: "0 25px 0 0", verticalAlign: "top", fontSize: "12px", width: "200px"}}><i> Click the pie chart to break down {breakDownLabel} by attribute. Click again to return to the original chart.</i></label>
             </div>
             <div style = {{float: "right"}}>
               <Switch checked={this.state.breakDownChecked} onColor="#86d3ff" onHandleColor="#2693e6"
@@ -575,7 +579,7 @@ class Visualize extends Component {
                />
              </div>
            </div>
-           <div style = {{margin: "130px 55px 0 30px"}}>
+           <div style = {{margin: "170px 30px 0 30px"}}>
               <div style = {{float: "left"}}>
                 <label style = {{margin: "0 25px 0 0", verticalAlign: "top", fontSize: "17px"}}> Compare with {compareLabel} </label>
               </div>
@@ -590,7 +594,7 @@ class Visualize extends Component {
        : null ) : null
 
      const toggleMap = (this.state.attributeSelection == 'countryOfOperation' || this.state.attributeSelection == 'launchCountry') || (this.state.secondaryAttributeSelection == 'countryOfOperation' || this.state.secondaryAttributeSelection == 'launchCountry') ?
-       <div style = {{margin: "50px 55px 0 30px"}}>
+       <div style = {{margin: "50px 30px 0 30px"}}>
           <div style = {{float: "left"}}>
             <label style = {{margin: "0 25px 0 0", verticalAlign: "top", fontSize: "17px"}}> Map View </label>
           </div>
@@ -615,26 +619,24 @@ class Visualize extends Component {
 
       return (
         <div style = {{height: "100%"}}>
-          <div className = "settings" style = {{width: "25%", height: "100%", float: "left"}}>
-            <nav className = "nav flex-column navbar-dark bg-white" style = {{height: "100%"}}>
-              <select value = {this.state.entitySelection} type="entity" id="entity" name="entity" onChange={this.handleEntitySelection} style = {{width:"80%", margin: "50px 0 0 25px"}}>
-                <option value="select">Filter Entity Type</option>
-                <option value="funders">Funders</option>
-                <option value="initiatives">Initiatives</option>
-                <option value="implementers">Implementers</option>
-              </select>
-              {selection}
-              {toggleCompare}
-              {secondarySelection}
-              {toggleMap}
-              <hr style={{
-                    color: "black",
-                    backgroundColor: "black",
-                    height: 2
-                }}
-            />
-            </nav>
-          </div>
+          <nav className = "nav flex-column sidebar settings " style = {{height: "100%"}}>
+            <select value = {this.state.entitySelection} type="entity" id="entity" name="entity" onChange={this.handleEntitySelection} style = {{width:"90%", margin: "50px 0 0 20px"}}>
+              <option value="select">Filter Entity Type</option>
+              <option value="funders">Funders</option>
+              <option value="initiatives">Initiatives</option>
+              <option value="implementers">Implementers</option>
+            </select>
+            {selection}
+            {toggleCompare}
+            {secondarySelection}
+            {toggleMap}
+            <hr style={{
+                  color: "black",
+                  backgroundColor: "black",
+                  height: 2
+              }}
+          />
+          </nav>
           {visual}
         </div>
       );

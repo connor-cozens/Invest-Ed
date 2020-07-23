@@ -3,6 +3,7 @@ import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recha
 
 class BarGraph extends Component {
   render() {
+    let xAxisLabel = this.props.isFunder ? "Number of initiatives funded by the highlighted funder or funder category" : "Number of initiatives implemented by the highlighted implementer or implementer category";
     return (
       <BarChart
         width={400}
@@ -16,7 +17,7 @@ class BarGraph extends Component {
         <CartesianGrid strokeDasharray="4 3"/>
         <Tooltip/>
         <Legend />
-        <Bar dataKey="value" fill={this.props.fill} />
+        <Bar dataKey= "value" name = {xAxisLabel} fill={this.props.fill} />
       </BarChart>
     )
   }

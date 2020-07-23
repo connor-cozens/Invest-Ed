@@ -93,38 +93,44 @@ class Chart extends Component {
         if (this.props.toggleCompare && this.props.data.sub2) {
           //If map is toggled
           if (this.props.toggleMap) {
-            this.props.data.sub2.forEach((item) => {
-              if (item.id == data.name) {
-                this.setState({
-                  subMapData: item.data
-                });
-              }
-            });
+            if (this.props.data.sub2 !== undefined) {
+              this.props.data.sub2.forEach((item) => {
+                if (item.id == data.name) {
+                  this.setState({
+                    subMapData: item.data
+                  });
+                }
+              });
+            }
           }
           //If map is not toggled
           else {
-            this.props.data.sub2.forEach((item) => {
-              if (item.id == data.name) {
-                this.setState({
-                  barData: item.data,
-                  barFill: data.fill
-                });
-              }
-            });
+            if (this.props.data.sub2 !== undefined) {
+              this.props.data.sub2.forEach((item) => {
+                if (item.id == data.name) {
+                  this.setState({
+                    barData: item.data,
+                    barFill: data.fill
+                  });
+                }
+              });
+            }
           }
         //If not set to comparing with initiatives and sub2 data passed in
         } else {
           if (!this.props.toggleCompare && this.props.data.sub2) {
             //If initiative data pushed in, set list data to view all initiative names
             if (this.props.data.initiative) {
-              this.props.data.sub2.forEach((item) => {
-                if (item.name == data.name) {
-                  this.setState({
-                    listHeading: item.name,
-                    listData: item.value
-                  });
-                }
-              });
+              if (this.props.data.sub2 !== undefined) {
+                this.props.data.sub2.forEach((item) => {
+                  if (item.name == data.name) {
+                    this.setState({
+                      listHeading: item.name,
+                      listData: item.value
+                    });
+                  }
+                });
+              }
             }
           }
         }
@@ -133,24 +139,28 @@ class Chart extends Component {
         if (this.props.toggleCompare && this.props.data.sub3) {
           //If map is toggled
           if (this.props.toggleMap) {
-            this.props.data.sub3.forEach((item) => {
-              if (item.id == data.name) {
-                this.setState({
-                  subMapData: item.data
-                });
-              }
-            });
+            if (this.props.data.sub3 !== undefined) {
+              this.props.data.sub3.forEach((item) => {
+                if (item.id == data.name) {
+                  this.setState({
+                    subMapData: item.data
+                  });
+                }
+              });
+            }
           }
           //If map is not toggled
           else {
-            this.props.data.sub3.forEach((item) => {
-              if (item.id == data.name) {
-                this.setState({
-                  barData: item.data,
-                  barFill: data.fill
-                });
-              }
-            });
+            if (this.props.data.sub3 !== undefined) {
+              this.props.data.sub3.forEach((item) => {
+                if (item.id == data.name) {
+                  this.setState({
+                    barData: item.data,
+                    barFill: data.fill
+                  });
+                }
+              });
+            }
           }
         }
       }
@@ -170,14 +180,16 @@ class Chart extends Component {
         subPieFill: data.fill
       });
 
-      this.props.data.sub.forEach((item) => {
-        if (item.id == data.name) {
-          this.setState({
-            subPieData: item.data
-          });
-        }
-      })
-      this.props.toggleBreakDown(true)
+      if (this.props.data.sub !== undefined) {
+        this.props.data.sub.forEach((item) => {
+          if (item.id == data.name) {
+            this.setState({
+              subPieData: item.data
+            });
+          }
+        })
+        this.props.toggleBreakDown(true)
+      }
     }
   };
 
@@ -216,14 +228,22 @@ class Chart extends Component {
           <h4 style = {{marginTop: "20px", marginLeft: "440px" }}> {this.props.data.subHeader} </h4>
         )
       ) :
-      this.props.toggleMap ?
-         <h5 style = {{float: 'left', width: "500px", marginTop: "20px", marginLeft: "100px" }}> Number of Initiatives Funded/Implemented by each Funder/Implementer</h5>
+      this.props.toggleMap ? (
+          this.props.data.funder ? <h5 style = {{float: 'left', width: "500px", marginTop: "20px", marginLeft: "140px" }}> Number of Initiatives Funded by each Funder</h5>
+          : <h5 style = {{float: 'left', width: "500px", marginTop: "20px", marginLeft: "70px" }}> Number of Initiatives Implemented by each Implementer</h5>
+         )
          :
          (
            (this.props.toggleCompare && this.props.data.sub2 !== '' && this.props.data.sub3 !== '') ?
-           <h5 style = {{float: 'left', width: "500px", marginTop: "20px", marginLeft: "210px" }}> Number of Initiatives Funded/Implemented by each Funder/Implementer</h5>
+              (
+               this.props.data.funder ? <h5 style = {{float: 'left', width: "500px", marginTop: "20px", marginLeft: "240px" }}> Number of Initiatives Funded by each Funder</h5>
+               : <h5 style = {{float: 'left', width: "500px", marginTop: "20px", marginLeft: "190px" }}> Number of Initiatives Implemented by each Implementer</h5>
+              )
            :
-           <h5 style = {{float: 'left', width: "500px", marginTop: "20px", marginLeft: "320px" }}> Number of Initiatives Funded/Implemented by each Funder/Implementer </h5>
+              (
+               this.props.data.funder ? <h5 style = {{float: 'left', width: "500px", marginTop: "20px", marginLeft: "360px" }}> Number of Initiatives Funded by each Funder</h5>
+               : <h5 style = {{float: 'left', width: "500px", marginTop: "20px", marginLeft: "310px" }}> Number of Initiatives Implemented by each Implementer</h5>
+              )
          )
 
     const secondaryTitle = <h4 style = {{marginTop: "100px"}}> {this.props.data.header2} </h4>
@@ -284,7 +304,7 @@ class Chart extends Component {
 
     //Choose whether to display bar chart depending on toggle state
     this.state.bar = !this.props.toggleMap && this.props.toggleCompare ?
-      <BarGraph data = {this.state.barData} fill = {this.state.barFill}/>
+      <BarGraph data = {this.state.barData} fill = {this.state.barFill} isFunder = {this.props.data.funder}/>
       : null
 
     //Choose whether to display map depending on toggle state

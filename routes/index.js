@@ -18,14 +18,15 @@ index.get('/', (req,res) => {
           //If found user using user id deserialized from the session id, send user info
           if(user){
             res.json({"error": false, "message":
-                [{"username": user.username,
-                  "email": user.email,
-                  "firstname": user.firstName,
-                  "lastname": user.lastName,
-                  "accessLevel": user.accessLevel,
-                  "organization": user.organization
-                }]
-              })
+              [{"username": user.username,
+                "email": user.email,
+                "firstname": user.firstName,
+                "lastname": user.lastName,
+                "accessLevel": user.accessLevel,
+                "organization": user.organization,
+                "editedForms": user.editedForms
+              }]
+            })
           } else {
             res.json({"error": true, "message": "Error retrieving user"})
           }

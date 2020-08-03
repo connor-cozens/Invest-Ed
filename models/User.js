@@ -38,6 +38,9 @@ module.exports = db.sequelize.define(
             type: Sequelize.INTEGER,
             allowNull: false,
         },
+        editedForms: {
+            type: Sequelize.JSON,
+        },
         created: {
             type: Sequelize.DATE
         }

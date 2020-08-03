@@ -43,6 +43,8 @@ const poolTemp = sql.createPool({
     queueLimit: 0
 })
 
+const User = require("../models/User")
+
 //GET from from DB
 dashboard.get('/form/:tagNum', (req, res) =>{
   if(req.user){
@@ -314,13 +316,13 @@ dashboard.get('/form/:tagNum', (req, res) =>{
               if (err){
                 res.json({"error": {"message": err}})
               }else{
-                  final++;
-                  //push results here to avoid duplicated parallel writes to funderIndividual array
-                  funderIndividual.push(results);
-                  formData.funderIndividual = funderIndividual;
+                final++;
+                //push results here to avoid duplicated parallel writes to funderIndividual array
+                funderIndividual.push(results);
+                formData.funderIndividual = funderIndividual;
 
-                  if(final == funderData.length)
-                      res.json(formData);
+                if(final == funderData.length)
+                    res.json(formData);
               }
           })
         })
@@ -625,13 +627,13 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
               if (err){
                 res.json({"error": {"message": err}});
               }else{
-                  final++;
-                  //push results here to avoid duplicated parallel writes to funderIndividual array
-                  funderIndividual.push(results);
-                  formData.funderIndividual = funderIndividual;
+                final++;
+                //push results here to avoid duplicated parallel writes to funderIndividual array
+                funderIndividual.push(results);
+                formData.funderIndividual = funderIndividual;
 
-                  if(final == funderData.length)
-                      res.json(formData);
+                if(final == funderData.length)
+                    res.json(formData);
               }
           })
         })
@@ -1348,7 +1350,62 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                     console.log(err);
                     res.json({"error": {"message": err, "tagNum": val}});
                   } else {
-                    res.json("Form successfully added to the DB")
+                    //Find user to update their list of edited forms
+                    User.findOne({
+                        where: {
+                            id: req.user
+                        }
+                    }).then(user => {
+                      if (!user) {
+                        res.json({"error": {"message": "Could not match user to this form"}})
+                      }
+                     //If user found
+                      //If organization user, then deal with form list, since only organization users need to view their list edited forms pending approval
+                      if (user.accessLevel === 0) {
+                        if (user.editedForms !== undefined) {
+                          let listValues;
+                          //If forms have been added already to listing
+                          if (user.editedForms) {
+                            //Add form tag number to form list and filter duplicates out of list
+                            userFormList = JSON.parse(JSON.stringify(user.editedForms.forms))
+                            userFormList.push(parseInt(val))
+                            nonDuplicateList = userFormList.filter((elem, currIndex) => {return currIndex === userFormList.indexOf(elem)})
+                            if (nonDuplicateList !== undefined) {
+                              listValues = {
+                                ...user,
+                                editedForms: {forms: nonDuplicateList}
+                              }
+                            }
+                            //If no forms have been added to listing yet
+                          } else {
+                            listValues = {
+                              ...user,
+                              editedForms: {forms: [parseInt(val)]}
+                            }
+                          }
+
+                          console.log(listValues)
+                          if (listValues !== undefined) {
+                            //Update user record with updated form list
+                            user.update(listValues)
+                            .then(updatedRecord => {
+                              console.log(updatedRecord)
+                              res.json("Inves431_girlsEd updated successfully!")
+                            })
+                            .catch(err => {
+                              console.log(err)
+                              res.json({"error": err});
+                            })
+                          }
+                        }
+                      } else {
+                        res.json("Inves431_girlsEd updated successfully!")
+                      }
+                    })
+                    .catch(err => {
+                      console.log(err)
+                      res.json({"error": err});
+                    })
                   }
                 }
               })
@@ -2770,7 +2827,7 @@ dashboard.post('/update-form', (req, res) =>{
                    console.log(err)
                    res.json({"error": {"message": err}})
                  } else {
-                   res.send("Inves431_girlsEd updated successfully!")
+                   res.json("Inves431_girlsEd updated successfully!")
                  }
              })
          }
@@ -3776,7 +3833,62 @@ dashboard.post('/update-form-temp', (req, res) =>{
                   console.log(err)
                   res.json({"error": {"message": err}})
                 } else {
-                  res.send("Inves431_girlsEd updated successfully!")
+                  //Find user to update their list of edited forms
+                  User.findOne({
+                      where: {
+                          id: req.user
+                      }
+                  }).then(user => {
+                    if (!user) {
+                      res.json({"error": {"message": "Could not match user to this form"}})
+                    }
+                   //If user found
+                    //If organization user, then deal with form list, since only organization users need to view their list edited forms pending approval
+                    if (user.accessLevel === 0) {
+                      if (user.editedForms !== undefined) {
+                        let listValues;
+                        //If forms have been added already to listing
+                        if (user.editedForms) {
+                          //Add form tag number to form list and filter duplicates out of list
+                          userFormList = JSON.parse(JSON.stringify(user.editedForms.forms))
+                          userFormList.push(formData.tagNum)
+                          nonDuplicateList = userFormList.filter((elem, currIndex) => {return currIndex === userFormList.indexOf(elem)})
+                          if (nonDuplicateList !== undefined) {
+                            listValues = {
+                              ...user,
+                              editedForms: {forms: nonDuplicateList}
+                            }
+                          }
+                          //If no forms have been added to listing yet
+                        } else {
+                          listValues = {
+                            ...user,
+                            editedForms: {forms: [formData.tagNum]}
+                          }
+                        }
+
+                        console.log(listValues)
+                        if (listValues !== undefined) {
+                          //Update user record with updated form list
+                          user.update(listValues)
+                          .then(updatedRecord => {
+                            console.log(updatedRecord)
+                            res.json("Inves431_girlsEd updated successfully!")
+                          })
+                          .catch(err => {
+                            console.log(err)
+                            res.json({"error": err});
+                          })
+                        }
+                      }
+                    } else {
+                      res.json("Inves431_girlsEd updated successfully!")
+                    }
+                  })
+                  .catch(err => {
+                    console.log(err)
+                    res.json({"error": err});
+                  })
                 }
             })
         }

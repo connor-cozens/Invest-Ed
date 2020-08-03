@@ -3,10 +3,11 @@ import {useHistory} from 'react-router';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {Link} from 'react-router-dom';
+import './formSubmission.css';
 import {setFormSubmissionComplete} from '../../store/actions/dataActions';
 
 const FormSubmissionSuccess = (props) => {
-  const {authorized, userData} = props;
+  const {authorized, userData, form} = props;
   const history = useHistory();
 
   useEffect(() => {
@@ -31,18 +32,30 @@ const FormSubmissionSuccess = (props) => {
   if (authorized === true && fromForm === true) {
     props.formSubmissionComplete();
 
-    //If an organization user, change request submitted message displays, otherwise changes made message displays for RA/root users
-    const message = userData ? (userData.accessLevel == 0 ?
-      <h4>Your change request was submitted successfully</h4> :
-      <h4>Your changes were made successfully</h4>
+    const message = userData ? (
+      form ? (
+        //If an organization user, change request submitted message displays, otherwise changes made message displays for RA/root users
+        userData.accessLevel == 0 ? (
+          <div class="alert alert-dismissible alert-success" style = {{textAlign: "left"}}>
+            <h5><strong>Your change request was submitted successfully</strong></h5> Form submission tag number: <strong>{form.tagNumber}</strong>.
+          </div>
+        ) : (
+        <div class="alert alert-dismissible alert-success" style = {{textAlign: "left"}}>
+          <h5><strong>Your changes were made successfully</strong></h5> Your changes have been saved and are publicly visible for data visualization.<br></br><br></br> Form submission tag number: <strong>{form.tagNumber}</strong>.
+        </div>
+        )
+      ) : null
     ) : null
+
     return (
-      <div className = "container">
-        <div className = "row mt-5">
-          <div className = "col-md-8 m-auto">
-            <div className = "card card-body text-center">
-              {message}
-              <Link to = '/dashboard'><h5>Back to dashboard</h5></Link>
+      <div id = "dashboard">
+        <div className = "container">
+          <div className = "row mt-5">
+            <div className = "col-md-8 m-auto">
+              <div className = "card card-body text-center">
+                {message}
+                <Link to = '/dashboard'><h5>Back to dashboard</h5></Link>
+              </div>
             </div>
           </div>
         </div>
@@ -55,7 +68,8 @@ const FormSubmissionSuccess = (props) => {
 const mapStateToProps = (state) => {
   return {
     authorized: state.authenticate.auth,
-    userData: state.data.userInformation
+    userData: state.data.userInformation,
+    form: state.data.form
   };
 }
 

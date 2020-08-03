@@ -58,8 +58,9 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    //State property that when changed, will rerender app component
-    authorized: state.authenticate.auth
+    //State properties that when changed, will rerender app component
+    authorized: state.authenticate.auth,    //If auth state changes
+    formSubmitted: state.data.formSubmitted   //If form submitted successfully
   };
 }
 const mapDispatchToProps = (dispatch) => {

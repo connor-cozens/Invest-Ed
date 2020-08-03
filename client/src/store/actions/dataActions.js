@@ -472,7 +472,11 @@ export const modifyForm = (form, inDB, isModified) => (dispatch) => {
         }
 
       } else {
-        dispatch({type: FORM_SUBMIT_SUCCESS});
+        if (response.data.tagNum !== undefined) {
+          dispatch({type: FORM_SUBMIT_SUCCESS, payload: {tagNumber: response.data.tagNum}});
+        } else {
+          dispatch({type: FORM_SUBMIT_SUCCESS, payload: {tagNumber: "Tag number could not be retrieved successfully"}});
+        }
       }
     })
     .catch(err => {
@@ -593,7 +597,11 @@ export const addForm = (form, inDB, isModified) => (dispatch) => {
         }
 
       } else {
-        dispatch({type: FORM_SUBMIT_SUCCESS});
+        if (response.data.tagNum !== undefined) {
+          dispatch({type: FORM_SUBMIT_SUCCESS, payload: {tagNumber: response.data.tagNum}});
+        } else {
+          dispatch({type: FORM_SUBMIT_SUCCESS, payload: {tagNumber: "Tag number could not be retrieved successfully"}});
+        }
       }
     })
     .catch(err => {
@@ -626,7 +634,11 @@ export const addFormRA = (form, isModified) => (dispatch) => {
           }
 
         } else {
-          dispatch({type: FORM_SUBMIT_SUCCESS});
+          if (response.data.tagNum !== undefined) {
+            dispatch({type: FORM_SUBMIT_SUCCESS, payload: {tagNumber: response.data.tagNum}});
+          } else {
+            dispatch({type: FORM_SUBMIT_SUCCESS, payload: {tagNumber: "Tag number could not be retrieved successfully"}});
+          }
         }
       })
       .catch(err => {

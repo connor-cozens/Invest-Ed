@@ -1390,7 +1390,8 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                             user.update(listValues)
                             .then(updatedRecord => {
                               console.log(updatedRecord)
-                              res.json("Inves431_girlsEd updated successfully!")
+                              //Form successfully added to DB
+                              res.json({"tagNum": val})
                             })
                             .catch(err => {
                               console.log(err)
@@ -1399,7 +1400,8 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                           }
                         }
                       } else {
-                        res.json("Inves431_girlsEd updated successfully!")
+                        //Form successfully added to DB
+                        res.json({"tagNum": val})
                       }
                     })
                     .catch(err => {
@@ -2002,7 +2004,8 @@ dashboard.post('/submitform', (req, res) =>{
                        console.log(err);
                        res.json({"error": {"message": err, "tagNum": val}});
                      } else {
-                       res.json("Form successfully added to the DB")
+                       //Form successfully added to DB
+                       res.json({"tagNum": val})
                      }
                    }
                  })
@@ -2827,7 +2830,8 @@ dashboard.post('/update-form', (req, res) =>{
                    console.log(err)
                    res.json({"error": {"message": err}})
                  } else {
-                   res.json("Inves431_girlsEd updated successfully!")
+                   //Inves431_girlsEd updated successfully
+                   res.json({"tagNum": formData.tagNum})
                  }
              })
          }
@@ -3873,7 +3877,8 @@ dashboard.post('/update-form-temp', (req, res) =>{
                           user.update(listValues)
                           .then(updatedRecord => {
                             console.log(updatedRecord)
-                            res.json("Inves431_girlsEd updated successfully!")
+                            //Inves431_girlsEd updated successfully
+                            res.json({"tagNum": formData.tagNum})
                           })
                           .catch(err => {
                             console.log(err)
@@ -3882,7 +3887,8 @@ dashboard.post('/update-form-temp', (req, res) =>{
                         }
                       }
                     } else {
-                      res.json("Inves431_girlsEd updated successfully!")
+                      //Inves431_girlsEd updated successfully
+                      res.json({"tagNum": formData.tagNum})
                     }
                   })
                   .catch(err => {

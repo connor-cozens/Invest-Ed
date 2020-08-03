@@ -214,6 +214,7 @@ const dataReducer = (state = initState, action) => {
     case FORM_SUBMIT_SUCCESS:
       return {
         ...state,
+        form: action.payload,
         formSubmitted: true,
         formSubmitError: null
       }

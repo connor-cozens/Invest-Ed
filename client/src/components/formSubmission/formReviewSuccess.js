@@ -3,12 +3,13 @@ import {useHistory} from 'react-router';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {Link} from 'react-router-dom';
+import './formSubmission.css';
 import {setFormReviewComplete} from '../../store/actions/dataActions';
 
 const FormReviewSuccess = (props) => {
   const {authorized, userData} = props;
   const history = useHistory();
-  
+
   useEffect(() => {
     window.onpopstate = (e) => {
       history.push('/dashboard')
@@ -26,16 +27,20 @@ const FormReviewSuccess = (props) => {
   if (authorized === true && fromForm === true) {
     props.formReviewComplete();
 
-    //If an organization user
-    const message = userData ?
-      <h4>Your review was submitted successfully</h4> : null
+    const message =
+      <div class="alert alert-dismissible alert-success" style = {{textAlign: "left"}}>
+        <h5><strong>Your review was submitted successfully</strong></h5> Your review will be visible to organization and research users who view this form.
+      </div>
+
     return (
-      <div className = "container">
-        <div className = "row mt-5">
-          <div className = "col-md-8 m-auto">
-            <div className = "card card-body text-center">
-              {message}
-              <Link to = '/dashboard'><h5>Back to dashboard</h5></Link>
+      <div id = "dashboard">
+        <div className = "container">
+          <div className = "row mt-5">
+            <div className = "col-md-8 m-auto">
+              <div className = "card card-body text-center">
+                {message}
+                <Link to = '/dashboard'><h5>Back to dashboard</h5></Link>
+              </div>
             </div>
           </div>
         </div>

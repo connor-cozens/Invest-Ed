@@ -183,23 +183,23 @@ class dashboard extends Component {
 
     //Render organization user's edited forms listing
     const editedFormsList = userData ? (
-      userData.editedForms ? (
-        <div style = {{margin: "0 0 0 10px"}}>
-          <hr/>
-          <br></br>
-          <Collapsible style = {{fontSize: "15px"}} title="Your Edited Forms Pending Approval">
-          {
+      <div>
+        <hr/>
+        <br></br>
+        <Collapsible title="Your Edited Forms Pending Approval">
+        {
+          userData.editedForms ? (
             userData.editedForms.forms.length > 0 ? (
               userData.editedForms.forms.map(tagNum => {
                 return (
                   <button id = "modifyTagNum" type = "button" onClick = {this.handleEditedFormSelect} value = {tagNum}>Form {tagNum}</button>
                 );
               })
-            ) : <p>You have not edited any forms yet</p>
-          }
-          </Collapsible>
-        </div>
-      ) : null
+            ) : <p>You have no forms currently pending approval</p>
+          ) : <p>You have not modified or added any forms yet</p>
+        }
+        </Collapsible>
+      </div>
     ) : null
 
     //Render review option only if RA or root user

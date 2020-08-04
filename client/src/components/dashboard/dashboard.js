@@ -6,6 +6,39 @@ import ReactDOM from 'react-dom';
 import './dashboard.css';
 import {getApprovedForm, getNonApprovedForm, clearFormStatus, setNewFormStatus, clearFormRetrievalError} from '../../store/actions/dataActions'
 
+
+class Collapsible extends React.Component {
+  constructor(props){
+      super(props);
+      this.state = {
+          open: false
+      }
+      this.toggle = this.toggle.bind(this);
+  }
+
+  toggle(e){
+      this.setState({open: !this.state.open})
+  }
+
+  render() {
+    return (<div>
+      <div onClick={(e)=>this.toggle(e)} className='header'>
+      {
+        this.state.open ?
+        <i class="arrow up"></i>
+        : <i class="arrow down"></i>
+      }
+      {this.props.title}</div>
+      {this.state.open ? (
+          <div className='content'>
+              {this.props.children}
+          </div>
+          ) : null}
+      </div>
+    );
+  }
+}
+
 class dashboard extends Component {
   constructor(props){
     super(props);
@@ -14,13 +47,14 @@ class dashboard extends Component {
       reviewTagNum: null,
       addClicked: false,
       modifyClicked: false,
-      reviewClicked: false
+      reviewClicked: false,
     }
 
     this.tagNumChange = this.tagNumChange.bind(this);
     this.handleModifyClick = this.handleModifyClick.bind(this);
     this.handleReviewClick = this.handleReviewClick.bind(this);
     this.handleAddClick = this.handleAddClick.bind(this);
+    this.handleEditedFormSelect = this.handleEditedFormSelect.bind(this);
   }
 
   componentDidMount = () => {
@@ -60,6 +94,9 @@ class dashboard extends Component {
   tagNumChange(e){
     if (e.target.id == 'modifyTagNum') {
       this.state.modifyTagNum = e.target.value;
+      this.setState({
+        modifyTagNum: this.state.modifyTagNum
+      });
 
       if (this.state.modifyTagNum !== null && this.state.modifyTagNum !== ""){
         ReactDOM.render(<h5>Modify an Existing Submission Form</h5>, document.getElementById("modifyFormActive"))
@@ -72,7 +109,10 @@ class dashboard extends Component {
     }
     else if (e.target.id == 'reviewTagNum') {
       this.state.reviewTagNum = e.target.value;
-      console.log(this.state.reviewTagNum)
+      this.setState({
+        reviewTagNum: this.state.reviewTagNum
+      });
+
       if (this.state.reviewTagNum !== null && this.state.reviewTagNum !== ""){
         ReactDOM.render(<h5>Review a Submission Form</h5>, document.getElementById("reviewFormActive"))
         ReactDOM.render(<div></div>, document.getElementById("reviewFormInactive"))
@@ -82,7 +122,14 @@ class dashboard extends Component {
         ReactDOM.render(<div></div>, document.getElementById("reviewFormActive"))
       }
     }
+  }
 
+  handleEditedFormSelect(e){
+    e.preventDefault();
+    this.setState({
+      modifyTagNum: e.target.value
+    });
+    this.tagNumChange(e)
   }
 
   render() {
@@ -120,6 +167,13 @@ class dashboard extends Component {
       }
     }
 
+    //Handle click
+    const click = (num) => (e) => {
+      this.handleClick(e, num);
+    }
+
+
+    //RENDER PAGE ELEMENTS
     //If there was an issue accessing form from either db, then return form access error message
     const error = formAccessError ? (
       <div className="alert alert-danger alert-dismissible fade show" style = {{width: "25%", margin: "0 auto", marginTop: "50px"}}>
@@ -127,10 +181,26 @@ class dashboard extends Component {
       </div>
     ) : null
 
-    //Handle click
-    const click = (num) => (e) => {
-      this.handleClick(e, num);
-    }
+    //Render organization user's edited forms listing
+    const editedFormsList = userData ? (
+      userData.editedForms ? (
+        <div style = {{margin: "0 0 0 10px"}}>
+          <hr/>
+          <br></br>
+          <Collapsible style = {{fontSize: "15px"}} title="Your Edited Forms Pending Approval">
+          {
+            userData.editedForms.forms.length > 0 ? (
+              userData.editedForms.forms.map(tagNum => {
+                return (
+                  <button id = "modifyTagNum" type = "button" onClick = {this.handleEditedFormSelect} value = {tagNum}>Form {tagNum}</button>
+                );
+              })
+            ) : <p>You have not edited any forms yet</p>
+          }
+          </Collapsible>
+        </div>
+      ) : null
+    ) : null
 
     //Render review option only if RA or root user
     const review = userData ? (userData.accessLevel !== 0 ?
@@ -167,9 +237,10 @@ class dashboard extends Component {
             <div className = "col-md-8 m-auto text-center">
               <div className = "card card-body">
                 <h3>Modify Form</h3>
-                <input type="number" id="modifyTagNum" name="modifyTagNum" placeholder="Tag Number of Form to Modify" onChange={this.tagNumChange}/><br></br>
+                <input type="number" id="modifyTagNum" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Tag Number of Form to Modify" onChange={this.tagNumChange}/><br></br>
                 <Link onClick={this.handleModifyClick}><div id="modifyFormActive"></div></Link>
                 <div id="modifyFormInactive"><font color="grey"><h5>Modify an Existing Submission Form</h5></font></div>
+                {editedFormsList}
               </div>
             </div>
           </div>

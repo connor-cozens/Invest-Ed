@@ -187,7 +187,7 @@ class dashboard extends Component {
         <div>
           <hr/>
           <br></br>
-          <Collapsible title="Your Edited Forms Pending Approval">
+          <Collapsible title="Your Submitted Forms Pending Approval">
           {
             userData.editedForms.pendingForms.length > 0 ? (
               userData.editedForms.pendingForms.map(tagNum => {

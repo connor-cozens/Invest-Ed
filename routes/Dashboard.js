@@ -337,7 +337,6 @@ dashboard.get('/form/:tagNum', (req, res) =>{
 dashboard.get('/form-temp/:tagNum', (req, res) =>{
   if(req.user){
     var tagNum = req.params.tagNum
-
     //initiative queries
     var query1 = 'SELECT * FROM initiative WHERE tagNumber = ' + sql.escape(tagNum)
     var query2 = 'SELECT * FROM initiativeregion WHERE tagNumber =' + sql.escape(tagNum)
@@ -531,12 +530,55 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
             poolTemp.query(query15, {}, function(err, results) {
                 if (err){
                     return queryDB(err)
-                }else{
-                    formData.table15 = results;
-                    queryDB()
-
+                } else {
+                    User.findOne({
+                      where: {
+                        id: req.user
+                      }
+                    }).then(user => {
+                      //If current user exists
+                      if (user) {
+                        //If current user trying to access form is an organization user, prevent edit access unless user made the latest edit to form
+                        if (user.accessLevel === 0) {
+                          const formEdited = JSON.parse(JSON.stringify(results[0].needsReview))
+                          //If form retrieved is currently in pending (non-approved) state
+                          if (formEdited === 1) {
+                            //If current user has edited any forms
+                            if (user.editedForms) {
+                              //If current user has any forms currently pending
+                              if (user.editedForms.pendingForms.length > 0) {
+                                //Search for form in current user's pending list - if not there, then pending form belongs to a different user, so don't allow edit access
+                                const myEditedForm = user.editedForms.pendingForms.find(tag => { return tag == tagNum})
+                                if (myEditedForm === undefined) {
+                                  return queryDB({"unauthorizedEdit": 'This form has been edited by another user and is pending approval.'})
+                                }
+                                //Form belongs to current user, so allow user to edit
+                                else {
+                                  formData.table15 = results;
+                                  queryDB()
+                                }
+                              } else {
+                                return queryDB({"unauthorizedEdit": 'This form has been edited by another user and is pending approval.'})
+                              }
+                            } else {
+                              return queryDB({"unauthorizedEdit": 'This form has been edited by another user and is pending approval.'})
+                            }
+                            //Form is in approved state, so allow any user to have edit access
+                          } else {
+                            formData.table15 = results;
+                            queryDB()
+                          }
+                        //If current user trying to access form is an RA/root user, allow edit access
+                        } else {
+                          formData.table15 = results;
+                          queryDB()
+                        }
+                      }
+                    })
+                    .catch(err => {
+                      return queryDB(err)
+                    })
                 }
-
             })
         },
         function(queryDB) {

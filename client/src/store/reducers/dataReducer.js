@@ -15,6 +15,8 @@ export const CLEAR_SET_USER_ERROR = 'CLEAR_SET_USER_ERROR';
 export const SET_REVIEW_FORM = 'SET_REVIEW_FORM';
 export const SET_ADD_FORM = 'SET_ADD_FORM';
 export const SET_MODIFY_FORM = 'SET_MODIFY_FORM';
+export const SET_VIEW_FORM = 'SET_VIEW_FORM';  //For readOnly access to form
+
 export const PULLED_APPROVED_FORM = 'PULLED_APPROVED_FORM';
 export const NOT_PULLED_APPROVED_FORM = 'NOT_PULLED_APPROVED_FORM';
 export const CLEAR_FORM_STATUS = 'CLEAR_FORM_STATUS';
@@ -52,6 +54,7 @@ const initState = {
   form: null,
   formStatus: null,
   pulledformApproved: false,
+  formUnauthorizedEditError: null,
   formRetrievalError: null,
 
   //On form submit
@@ -129,6 +132,7 @@ const dataReducer = (state = initState, action) => {
         formStatus: null,
         pulledformApproved: false,
         formRetrievalError: null,
+        formUnauthorizedEditError: null,
         formSubmitted: false,
         formSubmitError: null,
         formReviewed: false,
@@ -179,6 +183,14 @@ const dataReducer = (state = initState, action) => {
         ...state,
         formStatus: 'add'
       };
+    //If form is readOnly
+    case SET_VIEW_FORM:
+      return {
+        ...state,
+        formUnauthorizedEditError: action.payload
+      };
+
+
     case PULLED_APPROVED_FORM:
       return {
         ...state,
@@ -197,7 +209,8 @@ const dataReducer = (state = initState, action) => {
         pulledformApproved: false,
         formSubmitError: null,
         formReviewError: null,
-        formRetrievalError: null
+        formRetrievalError: null,
+        formUnauthorizedEditError: null
       };
     case SET_FORM_ERROR:
       return {

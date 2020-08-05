@@ -1363,7 +1363,7 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                       //If organization user, then deal with form list, since only organization users need to view their list edited forms pending approval
                       if (user.accessLevel === 0) {
                         if (user.editedForms !== undefined) {
-                          let listValues;
+                          let values;
                           //If forms have been added already to listing
                           if (user.editedForms) {
                             //Add form tag number to form list and filter duplicates out of list
@@ -1371,27 +1371,28 @@ dashboard.post('/submit-form-temp', (req, res) =>{
                             userFormList.push(parseInt(val))
                             nonDuplicateList = userFormList.filter((elem, currIndex) => {return currIndex === userFormList.indexOf(elem)})
                             if (nonDuplicateList !== undefined) {
-                              listValues = {
+                              values = {
                                 ...user,
                                 editedForms: {
+                                  ...user.editedForms,
                                   pendingForms: nonDuplicateList
                                 }
                               }
                             }
                             //If no forms have been added to listing yet
                           } else {
-                            listValues = {
+                            values = {
                               ...user,
                               editedForms: {
+                                ...user.editedForms,
                                 pendingForms: [parseInt(val)]
                               }
                             }
                           }
 
-                          console.log(listValues)
-                          if (listValues !== undefined) {
+                          if (values !== undefined) {
                             //Update user record with updated form list
-                            user.update(listValues)
+                            user.update(values)
                             .then(updatedRecord => {
                               //Form successfully added to DB
                               res.json({"tagNum": val})
@@ -3840,6 +3841,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                   console.log(err)
                   res.json({"error": {"message": err}})
                 } else {
+                  let jsonResponse = {};
                   //Find user to update their list of edited forms
                   User.findOne({
                       where: {
@@ -3847,47 +3849,64 @@ dashboard.post('/update-form-temp', (req, res) =>{
                       }
                   }).then(user => {
                     if (!user) {
-                      res.json({"error": {"message": "Could not match user to this form"}})
+                      jsonResponse = {"error": {"message": "Could not match user to this form"}}
                     }
                    //If user found
                     //If organization user, then deal with form list, since only organization users need to view their list edited forms pending approval
                     if (user.accessLevel === 0) {
                       if (user.editedForms !== undefined) {
-                        let listValues;
+
+                        let values;
                         //If forms have been added already to pending form listing
                         if (user.editedForms) {
                           //Add form tag number to form list and filter duplicates out of list
                           const pendingFormList = JSON.parse(JSON.stringify(user.editedForms.pendingForms))
                           pendingFormList.push(formData.tagNum)
                           const nonDuplicateList = pendingFormList.filter((elem, currIndex) => {return currIndex === pendingFormList.indexOf(elem)})
+
                           if (nonDuplicateList !== undefined) {
-                            listValues = {
-                              ...user,
-                              editedForms: {
-                                pendingForms: nonDuplicateList
+                            if (user.dataValues.editedForms.approvedForms !== undefined) {
+                              //Create new approved list with removed form
+                              const removedTagNumList = user.dataValues.editedForms.approvedForms.filter(tag => {return tag !== formData.tagNum})
+                              values = {
+                                ...user,
+                                editedForms: {
+                                  approvedForms: removedTagNumList,
+                                  pendingForms: nonDuplicateList
+                                }
+                              }
+                            } else {
+                              values = {
+                                ...user,
+                                editedForms: {
+                                  ...user.editedForms,
+                                  pendingForms: nonDuplicateList
+                                }
                               }
                             }
                           }
-                          //If no forms have been added to pending form listing yet
+                        //If no forms have been added to pending form listing yet
                         } else {
-                          listValues = {
+                          values = {
                             ...user,
                             editedForms: {
+                              ...user.editedForms,
                               pendingForms: [formData.tagNum]
                             }
                           }
                         }
 
-                        if (listValues !== undefined) {
+                        if (values !== undefined) {
                           //Update user record with updated form list
-                          user.update(listValues)
+                          user.update(values)
                           .then(updatedRecord => {
                             //Inves431_girlsEd updated successfully
-                            res.json({"tagNum": formData.tagNum})
+                            jsonResponse = {"tagNum": formData.tagNum}
+
                           })
                           .catch(err => {
                             console.log(err)
-                            res.json({"error": err});
+                            jsonResponse = {"error": err}
                           })
                         }
                       }
@@ -3934,11 +3953,11 @@ dashboard.post('/update-form-temp', (req, res) =>{
                                   user.update(userObj)
                                   .then(updatedRecord => {
                                     //Inves431_girlsEd updated successfully
-                                    res.json({"tagNum": formData.tagNum})
+                                    jsonResponse = {"tagNum": formData.tagNum}
                                   })
                                   .catch(err => {
                                     console.log(err)
-                                    res.json({"error": err});
+                                    jsonResponse = {"error": err};
                                   })
                                 }
                               }
@@ -3947,11 +3966,11 @@ dashboard.post('/update-form-temp', (req, res) =>{
                         })
                         .catch(err => {
                           console.log(err)
-                          res.json({"error": err});
+                          jsonResponse = {"error": err};
                         })
                         .finally(() => {
                           //Inves431_girlsEd updated successfully
-                          res.json({"tagNum": formData.tagNum})
+                          jsonResponse = {"tagNum": formData.tagNum}
                         })
                       }
 
@@ -3983,11 +4002,11 @@ dashboard.post('/update-form-temp', (req, res) =>{
                                     user.update(userObj)
                                     .then(updatedRecord => {
                                       //Inves431_girlsEd updated successfully
-                                      res.json({"tagNum": formData.tagNum})
+                                      jsonResponse = {"tagNum": formData.tagNum}
                                     })
                                     .catch(err => {
                                       console.log(err)
-                                      res.json({"error": err});
+                                      jsonResponse = {"error": err};
                                     })
                                   }
                                 }
@@ -3997,21 +4016,23 @@ dashboard.post('/update-form-temp', (req, res) =>{
                         })
                         .catch(err => {
                           console.log(err)
-                          res.json({"error": err});
+                          jsonResponse = {"error": err};
                         })
                         .finally(() => {
                           //Inves431_girlsEd updated successfully
-                          res.json({"tagNum": formData.tagNum})
+                          jsonResponse = {"tagNum": formData.tagNum}
                         })
 
-                        // //Inves431_girlsEd updated successfully
-                        // res.json({"tagNum": formData.tagNum})
                       }
                     }
                   })
                   .catch(err => {
                     console.log(err)
                     res.json({"error": err});
+                  })
+                  .finally(() => {
+                    //Inves431_girlsEd updated successfully
+                    res.json({"tagNum": formData.tagNum})
                   })
                 }
             })

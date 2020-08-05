@@ -181,25 +181,47 @@ class dashboard extends Component {
       </div>
     ) : null
 
-    //Render organization user's edited forms listing
-    const editedFormsList = userData ? (
-      <div>
-        <hr/>
-        <br></br>
-        <Collapsible title="Your Edited Forms Pending Approval">
-        {
-          userData.editedForms ? (
-            userData.editedForms.forms.length > 0 ? (
-              userData.editedForms.forms.map(tagNum => {
+    //Render organization user's edited pending forms listing
+    const pendingFormsList = userData ? (
+      userData.editedForms ? (
+        <div>
+          <hr/>
+          <br></br>
+          <Collapsible title="Your Edited Forms Pending Approval">
+          {
+            userData.editedForms.pendingForms.length > 0 ? (
+              userData.editedForms.pendingForms.map(tagNum => {
                 return (
                   <button id = "modifyTagNum" type = "button" onClick = {this.handleEditedFormSelect} value = {tagNum}>Form {tagNum}</button>
                 );
               })
             ) : <p>You have no forms currently pending approval</p>
-          ) : <p>You have not modified or added any forms yet</p>
-        }
-        </Collapsible>
-      </div>
+          }
+          </Collapsible>
+        </div>
+      ) : null
+    ) : null
+
+    //Render organization user's edited approved forms listing
+    const approvedFormsList = userData ? (
+      userData.editedForms ? (
+        userData.editedForms.approvedForms !== undefined ? (
+          <div>
+            <br></br>
+            <Collapsible title="Your Approved Forms">
+            {
+              userData.editedForms.approvedForms.length > 0 ? (
+                userData.editedForms.approvedForms.map(tagNum => {
+                  return (
+                    <button id = "modifyTagNum" type = "button" onClick = {this.handleEditedFormSelect} value = {tagNum}>Form {tagNum}</button>
+                  );
+                })
+              ) : <p>You have no edited forms currently approved</p>
+            }
+            </Collapsible>
+          </div>
+        ) : null
+      ) : null
     ) : null
 
     //Render review option only if RA or root user
@@ -240,7 +262,8 @@ class dashboard extends Component {
                 <input type="number" id="modifyTagNum" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Tag Number of Form to Modify" onChange={this.tagNumChange}/><br></br>
                 <Link onClick={this.handleModifyClick}><div id="modifyFormActive"></div></Link>
                 <div id="modifyFormInactive"><font color="grey"><h5>Modify an Existing Submission Form</h5></font></div>
-                {editedFormsList}
+                {pendingFormsList}
+                {approvedFormsList}
               </div>
             </div>
           </div>

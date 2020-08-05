@@ -490,7 +490,7 @@ export const modifyForm = (form, inDB, isModified) => (dispatch) => {
 }
 
 //RA user to modify existing form in main DB
-export const modifyFormRA = (form, isModified) => (dispatch) => {
+export const modifyFormRA = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequestRA(form, isModified);
   axios.post(`/dashboard/update-form`, req, {withCredentials: true})
     .then(response => {
@@ -503,7 +503,7 @@ export const modifyFormRA = (form, isModified) => (dispatch) => {
         }
 
       } else {
-        dispatch(modifyForm(form, true, true));
+        dispatch(modifyForm(form, inDB, true));
       }
     })
     .catch(err => {

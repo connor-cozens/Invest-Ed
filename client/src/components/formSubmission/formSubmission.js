@@ -1414,7 +1414,7 @@ class formSubmission extends React.Component{
                     needsReview: this.state.needsReview
                   })
 
-                  this.props.submitModifiedRA(this.state, true);
+                  this.props.submitModifiedRA(this.state, this.props.inDB, true);
                 }
               }
             }
@@ -4506,7 +4506,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     submitRA: (form, isModified) => {dispatch(addFormRA(form, isModified))},
     submitNonRA: (form, inDB, isModified) => {dispatch(addForm(form, inDB, isModified))},
-    submitModifiedRA: (form, isModified) => {dispatch(modifyFormRA(form, isModified))},
+    submitModifiedRA: (form, inDB, isModified) => {dispatch(modifyFormRA(form, inDB, isModified))},
     submitModifiedNonRA: (form, inDB, isModified) => {dispatch(modifyForm(form, inDB, isModified))},
   };
 }

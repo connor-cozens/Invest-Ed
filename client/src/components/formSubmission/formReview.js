@@ -453,7 +453,7 @@ class formReview extends React.Component{
             <form onSubmit={this.handleFormSubmit}>
 
             <h4>Funder</h4>
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Name: <strong>{this.state.fname}</strong></p>
                 <input type="radio" id="needsReview1" name="fnameA" value={1} checked = {this.state.reviews.fnameA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview1">Accept</label>
@@ -461,7 +461,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Website: <strong>{this.state.furl}</strong></p>
                 <input type="radio" id="needsReview3" name="furlA" value={1} checked = {this.state.reviews.furlA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview3">Accept</label>
@@ -469,7 +469,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Profit Motive: <strong>{this.state.motive}</strong></p>
                 <input type="radio" id="needsReview3_5" name="motiveA" value={1} checked = {this.state.reviews.motiveA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview3_5">Accept</label>
@@ -477,7 +477,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Impact Investing: <strong>{this.state.impact}</strong></p>
                 <input type="radio" id="needsReview5" name="impactA" value={1} checked = {this.state.reviews.impactA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview5">Accept</label>
@@ -485,7 +485,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Organizational Form: <strong>{this.state.organizationForm}</strong></p>
                 <input type="radio" id="needsReview9" name="organizationFormA" value={1} checked = {this.state.reviews.organizationFormA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview9">Accept</label>
@@ -493,7 +493,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>International Base(s):</p>
                 <div id="iBases">
@@ -513,7 +513,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Education Subsector(s):</p>
                 <div id="edSubs">
@@ -533,7 +533,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Organizational Trait(s):</p>
                 <div id="orgTraits">
@@ -553,7 +553,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Asia International Base(s):</p>
                 <div id="aIBases">
@@ -573,7 +573,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Asia Operation(s):</p>
                 <div id="asiaOperationLocations">
@@ -595,7 +595,7 @@ class formReview extends React.Component{
 
             <br></br>
             <h4>Initiative</h4>
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Name: <strong>{this.state.initName}</strong></p>
                 <input type="radio" id="needsReview23" name="initNameA" value={1} checked = {this.state.reviews.initNameA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview23">Accept</label>
@@ -603,7 +603,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Website: <strong>{this.state.initURL}</strong></p>
                 <input type="radio" id="needsReview25" name="initURLA" value={1} checked = {this.state.reviews.initURLA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview25">Accept</label>
@@ -611,7 +611,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Targets Women: <strong>{this.state.tWomen}</strong></p>
                 <input type="radio" id="needsReview27" name="tWomenA" value={1} checked = {this.state.reviews.tWomenA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview27">Accept</label>
@@ -619,7 +619,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Start Year: <strong>{this.state.initStart}</strong></p>
                 <input type="radio" id="needsReview29" name="initStartA" value={1} checked = {this.state.reviews.initStartA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview29">Accept</label>
@@ -627,7 +627,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>End Year: <strong>{this.state.initEnd}</strong></p>
                 <input type="radio" id="needsReview31" name="initEndA" value={1} checked = {this.state.reviews.initEndA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview31">Accept</label>
@@ -635,7 +635,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Launch Country:</p>
                 <div id="launchCountries">
@@ -655,7 +655,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Description: <strong>{this.state.idescription}</strong></p>
                 <input type="radio" id="needsReview35" name="idescriptionA" value={1} checked = {this.state.reviews.idescriptionA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview35">Accept</label>
@@ -663,7 +663,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Region(s):</p>
                 <div id="initRegions">
@@ -683,7 +683,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Countries:</p>
                 <div id="initCountries">
@@ -703,7 +703,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Target Geography:</p>
                 <div id="targetGeos">
@@ -723,7 +723,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Main Education Subsector:</p>
                 <div id="mEdSubs">
@@ -743,7 +743,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Other Education Subsector(s):</p>
                 <div id="oEdSubs">
@@ -763,7 +763,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Main Program Activity: <strong>{this.state.mainProgramActivity}</strong></p>
                 <input type="radio" id="needsReview47" name="initiativeMainProgramActivityA" value={1} checked = {this.state.reviews.initiativeMainProgramActivityA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview47">Accept</label>
@@ -779,7 +779,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Other Programming Activities:</p>
                 <div id="initActivities">
@@ -799,7 +799,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Fee to Access: <strong>{this.state.feeAccess}</strong></p>
                 <input type="radio" id="needsReview51" name="feeAccessA" value={1} checked = {this.state.reviews.feeAccessA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview51">Accept</label>
@@ -807,7 +807,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Target School Management Type:</p>
                 <div id="managementTypes">
@@ -827,7 +827,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Target Population Sector(s):</p>
                 <div id="targetPopSector">
@@ -847,7 +847,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Outcomes Monitored:</p>
                 <div id="outcomesMonitored">
@@ -869,7 +869,7 @@ class formReview extends React.Component{
 
             <br></br>
             <h4>Implementer</h4>
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card  mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Name: <strong>{this.state.iname}</strong></p>
                 <input type="radio" id="needsReview61" name="inameA" value={1} checked = {this.state.reviews.inameA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview61">Accept</label>
@@ -877,7 +877,7 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card border-secondary mb-3" style={{maxWidth: "20rem;"}}>
+            <div className="card  mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Profit Motive: <strong>{this.state.impMotive}</strong></p>
                 <input type="radio" id="needsReview63" name="impMotiveA" value={1} checked = {this.state.reviews.impMotiveA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview63">Accept</label>

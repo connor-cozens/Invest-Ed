@@ -176,7 +176,7 @@ const dataReducer = (state = initState, action) => {
         ...state,
         form: action.payload,
         formStatus: 'modify',
-        pulledformApproved: action.payload.status !== undefined ? (action.payload.status.length > 0 ? (action.payload.status[0].length > 0 ? (action.payload.status[0][0].inDB !== undefined ? (action.payload.status[0][0].inDB === 1 ? true : false) : true) : true) : false) : false
+        pulledformApproved: action.payload.status !== undefined ? (action.payload.status.length > 0 ? (action.payload.status[0].length > 0 ? (action.payload.status[0][0].inDB !== undefined ? (action.payload.status[0][0].inDB === 1 ? true : false) : true) : true) : true) : false
       };
     case SET_ADD_FORM:
       return {

@@ -60,7 +60,8 @@ const mapStateToProps = (state) => {
   return {
     //State properties that when changed, will rerender app component
     authorized: state.authenticate.auth,    //If auth state changes
-    formSubmitted: state.data.formSubmitted   //If form submitted successfully
+    formSubmitted: state.data.formSubmitted,   //If form submitted successfully
+    formReviewed: state.data.formReviewed   //If form review submitted successfully
   };
 }
 const mapDispatchToProps = (dispatch) => {

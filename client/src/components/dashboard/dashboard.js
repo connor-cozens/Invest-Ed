@@ -4,14 +4,13 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import './dashboard.css';
-import {getApprovedForm, getNonApprovedForm, clearFormStatus, setNewFormStatus, clearFormRetrievalError} from '../../store/actions/dataActions'
-
+import {getApprovedForm, getNonApprovedForm, clearFormStatus, setNewFormStatus, clearFormRetrievalError} from '../../store/actions/dataActions';
 
 class Collapsible extends React.Component {
   constructor(props){
       super(props);
       this.state = {
-          open: false
+        open: false
       }
       this.toggle = this.toggle.bind(this);
   }
@@ -55,6 +54,7 @@ class dashboard extends Component {
     this.handleReviewClick = this.handleReviewClick.bind(this);
     this.handleAddClick = this.handleAddClick.bind(this);
     this.handleEditedFormSelect = this.handleEditedFormSelect.bind(this);
+    this.handleReviewFormSelect = this.handleReviewFormSelect.bind(this);
   }
 
   componentDidMount = () => {
@@ -128,6 +128,14 @@ class dashboard extends Component {
     e.preventDefault();
     this.setState({
       modifyTagNum: e.target.value
+    });
+    this.tagNumChange(e)
+  }
+
+  handleReviewFormSelect(e){
+    e.preventDefault();
+    this.setState({
+      reviewTagNum: e.target.value
     });
     this.tagNumChange(e)
   }
@@ -224,6 +232,29 @@ class dashboard extends Component {
       ) : null
     ) : null
 
+    //RENDER FOR RA/ROOT USERS
+    //Render list of forms to be reviewed only if RA or root user
+    const reviewFormsList = userData ? (
+      userData.accessLevel !== 0 ? (
+        userData.reviewForms ? (
+          <div>
+            <br></br>
+            <Collapsible title="Forms to Review">
+            {
+              userData.reviewForms.length > 0 ? (
+                userData.reviewForms.map(tagNum => {
+                  return (
+                    <button id = "reviewTagNum" type = "button" onClick = {this.handleReviewFormSelect} value = {tagNum}>Form {tagNum}</button>
+                  );
+                })
+              ) : <p>There are no forms currently that require review</p>
+            }
+            </Collapsible>
+          </div>
+        ) : null
+      ) : null
+    ) : null
+
     //Render review option only if RA or root user
     const review = userData ? (userData.accessLevel !== 0 ?
       <div className = "container">
@@ -231,9 +262,10 @@ class dashboard extends Component {
           <div className = "col-md-8 m-auto text-center">
             <div className = "card card-body">
               <h3>Review Form</h3>
-              <input type="number" id="reviewTagNum" name="reviewTagNum" placeholder="Tag Number of Form to Review" onChange={this.tagNumChange}/><br></br>
+              <input type="number" id="reviewTagNum" name="reviewTagNum" value={this.state.reviewTagNum} placeholder="Tag Number of Form to Review" onChange={this.tagNumChange}/><br></br>
               <Link onClick={this.handleReviewClick}><div id="reviewFormActive"></div></Link>
               <div id="reviewFormInactive"><font color="grey"><h5>Review a Submission Form</h5></font></div>
+              {reviewFormsList}
             </div>
           </div>
         </div>

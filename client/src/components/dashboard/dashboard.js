@@ -198,9 +198,13 @@ class dashboard extends Component {
           <Collapsible title="Your Submitted Forms Pending Approval">
           {
             userData.editedForms.pendingForms.length > 0 ? (
-              userData.editedForms.pendingForms.map(tagNum => {
+              userData.editedForms.pendingForms.map(form => {
+                let formStateStyle = {color: 'orange'}
+                if (form.state === 'Rejected') {
+                  formStateStyle.color = 'red'
+                }
                 return (
-                  <button id = "modifyTagNum" type = "button" onClick = {this.handleEditedFormSelect} value = {tagNum}>Form {tagNum}</button>
+                  <button id = "modifyTagNum" type = "button" onClick = {this.handleEditedFormSelect} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
                 );
               })
             ) : <p>You have no forms currently pending approval</p>
@@ -219,9 +223,10 @@ class dashboard extends Component {
             <Collapsible title="Your Approved Forms">
             {
               userData.editedForms.approvedForms.length > 0 ? (
-                userData.editedForms.approvedForms.map(tagNum => {
+                userData.editedForms.approvedForms.map(form => {
+                  let formStateStyle = {color: 'green'}
                   return (
-                    <button id = "modifyTagNum" type = "button" onClick = {this.handleEditedFormSelect} value = {tagNum}>Form {tagNum}</button>
+                    <button id = "modifyTagNum" type = "button" onClick = {this.handleEditedFormSelect} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
                   );
                 })
               ) : <p>You have no edited forms currently approved</p>
@@ -242,9 +247,13 @@ class dashboard extends Component {
             <Collapsible title="Forms to Review">
             {
               userData.reviewForms.length > 0 ? (
-                userData.reviewForms.map(tagNum => {
+                userData.reviewForms.map(form => {
+                  let formStateStyle = {color: 'orange'}
+                  if (form.state === 'Rejected') {
+                    formStateStyle.color = 'red'
+                  }
                   return (
-                    <button id = "reviewTagNum" type = "button" onClick = {this.handleReviewFormSelect} value = {tagNum}>Form {tagNum}</button>
+                    <button id = "reviewTagNum" type = "button" onClick = {this.handleReviewFormSelect} value = {form.tag}>Form {form.tag} <br></br><text style = {formStateStyle}>{form.state}</text></button>
                   );
                 })
               ) : <p>There are no forms currently that require review</p>

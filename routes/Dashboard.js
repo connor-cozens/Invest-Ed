@@ -3957,11 +3957,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                           .then(updatedRecord => {
                             //Inves431_girlsEd updated successfully
                             jsonResponse = {"tagNum": formData.tagNum}
-
-                          })
-                          .catch(err => {
-                            console.log(err)
-                            jsonResponse = {"error": err}
                           })
                         }
                       }
@@ -4010,10 +4005,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                                     //Inves431_girlsEd updated successfully
                                     jsonResponse = {"tagNum": formData.tagNum}
                                   })
-                                  .catch(err => {
-                                    console.log(err)
-                                    jsonResponse = {"error": err};
-                                  })
                                 }
                               }
                             }
@@ -4032,77 +4023,73 @@ dashboard.post('/update-form-temp', (req, res) =>{
                       //If form is not being approved on review by RA/root user
                       else {
                         User.findAll().then(result => {
-                          //Search for user with that approved form
+                          let formFoundPending; //Flag to determine if form is found in pending list and not reviewed yet
+
+                          //First search for user with that form pending approval and not reviewed yet
                           result.forEach(user => {
                             if (user.dataValues.editedForms) {
-                              let userObj;
-                              //If user has had form(s) previously approved
-                              if (user.dataValues.editedForms.approvedForms !== undefined) {
-                                const foundTagNum = user.dataValues.editedForms.approvedForms.find(form => {return form.tag == formData.tagNum});
-                                //If form was previously approved
-                                if (foundTagNum !== undefined) {
-                                  //Create new approved list with removed form
-                                  const removedTagNumList = user.dataValues.editedForms.approvedForms.filter(form => {return form.tag !== formData.tagNum})
+                              //Find form and set state to rejected
+                              const pendingFormList = JSON.parse(JSON.stringify(user.dataValues.editedForms.pendingForms));
+                              const foundTagNum = pendingFormList.find(form => {return form.tag == formData.tagNum});
+                              if (foundTagNum !== undefined) {
+                                foundTagNum.state = 'Rejected'
+                                const userObj = {
+                                  ...user,
+                                  editedForms: {
+                                    ...user.editedForms,
+                                    pendingForms: pendingFormList
+                                  }
+                                }
 
-                                  //Take form removed from approved list and add to pending form list
-                                  const pendingFormList = JSON.parse(JSON.stringify(user.dataValues.editedForms.pendingForms));
-                                  pendingFormList.push({tag: formData.tagNum, state: 'Rejected'});
-                                  userObj = {
-                                    ...user,
-                                    editedForms: {
-                                      pendingForms: pendingFormList,
-                                      approvedForms: removedTagNumList
-                                    }
-                                  }
+                                //Update user record with updated pending and approved form lists
+                                if (userObj !== undefined) {
+                                  user.update(userObj)
+                                  .then(updatedRecord => {
+                                    //Inves431_girlsEd updated successfully
+                                    formFoundPending = true
+                                    jsonResponse = {"tagNum": formData.tagNum}
+                                  })
                                 }
-                                //If form has not been approved yet
-                                else {
-                                  //Find form and set state to rejected
-                                  const pendingFormList = JSON.parse(JSON.stringify(user.dataValues.editedForms.pendingForms));
-                                  const foundTagNum = pendingFormList.find(form => {return form.tag == formData.tagNum});
-                                  if (foundTagNum !== undefined) {
-                                    foundTagNum.state = 'Rejected'
-                                    userObj = {
-                                      ...user,
-                                      editedForms: {
-                                        ...user.editedForms,
-                                        pendingForms: pendingFormList
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                              //If user has not had any forms previously approved
-                              else {
-                                //Find form
-                                const pendingFormList = JSON.parse(JSON.stringify(user.dataValues.editedForms.pendingForms));
-                                const foundTagNum = pendingFormList.find(form => {return form.tag == formData.tagNum});
-                                if (foundTagNum !== undefined) {
-                                  foundTagNum.state = 'Rejected'
-                                  userObj = {
-                                    ...user,
-                                    editedForms: {
-                                      ...user.editedForms,
-                                      pendingForms: pendingFormList
-                                    }
-                                  }
-                                }
-                              }
-
-                              //Update user record with updated pending and approved form lists
-                              if (userObj !== undefined) {
-                                user.update(userObj)
-                                .then(updatedRecord => {
-                                  //Inves431_girlsEd updated successfully
-                                  jsonResponse = {"tagNum": formData.tagNum}
-                                })
-                                .catch(err => {
-                                  console.log(err)
-                                  jsonResponse = {"error": err};
-                                })
                               }
                             }
-                          });
+                          })
+
+                          //If no users have that form pending and not reviewed yet, then search for user with that approved form
+                          if (formFoundPending !== undefined) {
+                            result.forEach(user => {
+                              if (user.dataValues.editedForms) {
+                                //If user has had form(s) previously approved
+                                if (user.dataValues.editedForms.approvedForms !== undefined) {
+                                  const foundTagNum = user.dataValues.editedForms.approvedForms.find(form => {return form.tag == formData.tagNum});
+                                  //If form was previously approved
+                                  if (foundTagNum !== undefined) {
+                                    //Create new approved list with removed form
+                                    const removedTagNumList = user.dataValues.editedForms.approvedForms.filter(form => {return form.tag !== formData.tagNum})
+
+                                    //Take form removed from approved list and add to pending form list
+                                    const pendingFormList = JSON.parse(JSON.stringify(user.dataValues.editedForms.pendingForms));
+                                    pendingFormList.push({tag: formData.tagNum, state: 'Rejected'});
+                                    const userObj = {
+                                      ...user,
+                                      editedForms: {
+                                        pendingForms: pendingFormList,
+                                        approvedForms: removedTagNumList
+                                      }
+                                    }
+
+                                    //Update user record with updated pending and approved form lists
+                                    if (userObj !== undefined) {
+                                      user.update(userObj)
+                                      .then(updatedRecord => {
+                                        //Inves431_girlsEd updated successfully
+                                        jsonResponse = {"tagNum": formData.tagNum}
+                                      })
+                                    }
+                                  }
+                                }
+                              }
+                            });
+                          }
                         })
                         .catch(err => {
                           console.log(err)
@@ -4112,7 +4099,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                           //Inves431_girlsEd updated successfully
                           jsonResponse = {"tagNum": formData.tagNum}
                         })
-
                       }
                     }
                   })

@@ -4023,7 +4023,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                       //If form is not being approved on review by RA/root user
                       else {
                         User.findAll().then(result => {
-                          let formFoundPending; //Flag to determine if form is found in pending list and not reviewed yet
+                          const formPending = []; //Store promise if returned - only if form is found in pending list and not reviewed yet
 
                           //First search for user with that form pending approval and not reviewed yet
                           result.forEach(user => {
@@ -4046,7 +4046,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                                   user.update(userObj)
                                   .then(updatedRecord => {
                                     //Inves431_girlsEd updated successfully
-                                    formFoundPending = true
+                                    formFoundPending.push(updatedRecord)
                                     jsonResponse = {"tagNum": formData.tagNum}
                                   })
                                 }
@@ -4054,42 +4054,46 @@ dashboard.post('/update-form-temp', (req, res) =>{
                             }
                           })
 
-                          //If no users have that form pending and not reviewed yet, then search for user with that approved form
-                          if (formFoundPending !== undefined) {
-                            result.forEach(user => {
-                              if (user.dataValues.editedForms) {
-                                //If user has had form(s) previously approved
-                                if (user.dataValues.editedForms.approvedForms !== undefined) {
-                                  const foundTagNum = user.dataValues.editedForms.approvedForms.find(form => {return form.tag == formData.tagNum});
-                                  //If form was previously approved
-                                  if (foundTagNum !== undefined) {
-                                    //Create new approved list with removed form
-                                    const removedTagNumList = user.dataValues.editedForms.approvedForms.filter(form => {return form.tag !== formData.tagNum})
+                          Promise.all(formPending).then(output => {
+                            if (!output) {
+                              //If no users have that form pending and not reviewed yet, then search for user with that approved form
+                              if (output.length > 0) {
+                                result.forEach(user => {
+                                  if (user.dataValues.editedForms) {
+                                    //If user has had form(s) previously approved
+                                    if (user.dataValues.editedForms.approvedForms !== undefined) {
+                                      const foundTagNum = user.dataValues.editedForms.approvedForms.find(form => {return form.tag == formData.tagNum});
+                                      //If form was previously approved
+                                      if (foundTagNum !== undefined) {
+                                        //Create new approved list with removed form
+                                        const removedTagNumList = user.dataValues.editedForms.approvedForms.filter(form => {return form.tag !== formData.tagNum})
 
-                                    //Take form removed from approved list and add to pending form list
-                                    const pendingFormList = JSON.parse(JSON.stringify(user.dataValues.editedForms.pendingForms));
-                                    pendingFormList.push({tag: formData.tagNum, state: 'Rejected'});
-                                    const userObj = {
-                                      ...user,
-                                      editedForms: {
-                                        pendingForms: pendingFormList,
-                                        approvedForms: removedTagNumList
+                                        //Take form removed from approved list and add to pending form list
+                                        const pendingFormList = JSON.parse(JSON.stringify(user.dataValues.editedForms.pendingForms));
+                                        pendingFormList.push({tag: formData.tagNum, state: 'Rejected'});
+                                        const userObj = {
+                                          ...user,
+                                          editedForms: {
+                                            pendingForms: pendingFormList,
+                                            approvedForms: removedTagNumList
+                                          }
+                                        }
+
+                                        //Update user record with updated pending and approved form lists
+                                        if (userObj !== undefined) {
+                                          user.update(userObj)
+                                          .then(updatedRecord => {
+                                            //Inves431_girlsEd updated successfully
+                                            jsonResponse = {"tagNum": formData.tagNum}
+                                          })
+                                        }
                                       }
                                     }
-
-                                    //Update user record with updated pending and approved form lists
-                                    if (userObj !== undefined) {
-                                      user.update(userObj)
-                                      .then(updatedRecord => {
-                                        //Inves431_girlsEd updated successfully
-                                        jsonResponse = {"tagNum": formData.tagNum}
-                                      })
-                                    }
                                   }
-                                }
+                                });
                               }
-                            });
-                          }
+                            }
+                          })
                         })
                         .catch(err => {
                           console.log(err)

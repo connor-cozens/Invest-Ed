@@ -90,7 +90,7 @@ class dashboard extends Component {
   }
 
   tagNumChange(e){
-    if (e.target.id == 'modifyTagNum') {
+    if (e.target.name == 'modifyTagNum') {
       this.state.modifyTagNum = e.target.value;
       this.setState({
         modifyTagNum: this.state.modifyTagNum
@@ -105,7 +105,7 @@ class dashboard extends Component {
         ReactDOM.render(<div></div>, document.getElementById("modifyFormActive"))
       }
     }
-    else if (e.target.id == 'reviewTagNum') {
+    else if (e.target.name == 'reviewTagNum') {
       this.state.reviewTagNum = e.target.value;
       this.setState({
         reviewTagNum: this.state.reviewTagNum
@@ -175,7 +175,6 @@ class dashboard extends Component {
     const pendingFormsList = userData ? (
       userData.editedForms ? (
         <div>
-          <hr/>
           <br></br>
           <Collapsible title="Your Submitted Forms Pending Approval">
           {
@@ -186,7 +185,7 @@ class dashboard extends Component {
                   formStateStyle.color = 'red'
                 }
                 return (
-                  <button id = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
+                  <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
                 );
               })
             ) : <p>You have no forms currently pending approval</p>
@@ -208,7 +207,7 @@ class dashboard extends Component {
                 userData.editedForms.approvedForms.map(form => {
                   let formStateStyle = {color: 'green'}
                   return (
-                    <button id = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
+                    <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
                   );
                 })
               ) : <p>You have no edited forms currently approved</p>
@@ -235,7 +234,7 @@ class dashboard extends Component {
                     formStateStyle.color = 'red'
                   }
                   return (
-                    <button id = "reviewTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag} <br></br><text style = {formStateStyle}>{form.state}</text></button>
+                    <button name = "reviewTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag} <br></br><text style = {formStateStyle}>{form.state}</text></button>
                   );
                 })
               ) : <p>There are no forms currently that require review</p>
@@ -250,13 +249,14 @@ class dashboard extends Component {
     const review = userData ? (userData.accessLevel !== 0 ?
       <div className = "container">
         <div className = "row mt-4">
-          <div className = "col-md-8 m-auto text-center">
+          <div className = "col-md-8 m-auto">
             <div className = "card card-body">
-              <h3>Review Form</h3>
-              <input type="number" id="reviewTagNum" name="reviewTagNum" value={this.state.reviewTagNum} placeholder="Tag Number of Form to Review" onChange={this.tagNumChange}/><br></br>
+              <h3>Review</h3>
+              {reviewFormsList}
+              <br></br>
+              <input type="number" name="reviewTagNum" value={this.state.reviewTagNum} placeholder="Enter Form Tag Number" onChange={this.tagNumChange}/><br></br>
               <Link onClick={this.handleReviewClick}><div id="reviewFormActive"></div></Link>
               <div id="reviewFormInactive"><font color="grey"><h5>Review a Submission Form</h5></font></div>
-              {reviewFormsList}
             </div>
           </div>
         </div>
@@ -270,7 +270,7 @@ class dashboard extends Component {
         <div className = "container">
           <div className = "row mt-4">
             <div className = "col-md-8 m-auto">
-              <div className = "card card-body text-center">
+              <div className = "card card-body">
                 <h3>Add a New Form</h3>
                 <Link onClick={this.handleAddClick}><h5>Create an Information Submission Form</h5></Link>
               </div>
@@ -279,14 +279,15 @@ class dashboard extends Component {
         </div>
         <div className = "container">
           <div className = "row mt-4">
-            <div className = "col-md-8 m-auto text-center">
+            <div className = "col-md-8 m-auto">
               <div className = "card card-body">
-                <h3>Modify Form</h3>
-                <input type="number" id="modifyTagNum" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Tag Number of Form to Modify" onChange={this.tagNumChange}/><br></br>
-                <Link onClick={this.handleModifyClick}><div id="modifyFormActive"></div></Link>
-                <div id="modifyFormInactive"><font color="grey"><h5>Modify an Existing Submission Form</h5></font></div>
+                <h3>Modify</h3>
                 {pendingFormsList}
                 {approvedFormsList}
+                <br></br>
+                <input type="number" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Enter Form Tag Number" onChange={this.tagNumChange}/><br></br>
+                <Link onClick={this.handleModifyClick}><div id="modifyFormActive"></div></Link>
+                <div id="modifyFormInactive"><font color="grey"><h5>Modify an Existing Submission Form</h5></font></div>
               </div>
             </div>
           </div>

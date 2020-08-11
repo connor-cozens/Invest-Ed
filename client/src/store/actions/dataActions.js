@@ -1,23 +1,30 @@
 import axios from '../../axios/axiosConfig';
 import {
+  //REGISTER
   REGISTER_SUCCESS,
   REGISTER_ERROR,
   REGISTER_CLEAR,
   REGISTER_CLEAR_ERROR,
   CLEAR_REGISTER_ERROR,
 
+  //USER
   SET_USER,
   SET_USER_ERROR,
   CLEAR_SET_USER_ERROR,
 
+  //FORMS
   SET_REVIEW_FORM,
   SET_MODIFY_FORM,
   SET_ADD_FORM,
+  SET_VIEW_FORM,
+
   PULLED_APPROVED_FORM,
   NOT_PULLED_APPROVED_FORM,
+
   CLEAR_FORM_STATUS,
   SET_FORM_ERROR,
   CLEAR_SET_FORM_ERROR,
+
   FORM_SUBMIT_SUCCESS,
   FORM_SUBMIT_ERROR,
   FORM_SUBMIT_CLEAR,
@@ -25,6 +32,7 @@ import {
   FORM_REVIEW_ERROR,
   FORM_REVIEW_CLEAR,
 
+  //DATA VISUALIZATION
   SET_FUNDER_DATA,
   SET_IMPLEMENTER_DATA,
   SET_INITIATIVE_DATA,
@@ -294,7 +302,12 @@ export const getNonApprovedForm = (tag, getType) => (dispatch) => {
     .then(response => {
       if (response.data.error !== undefined) {
         dispatch({type: NOT_PULLED_APPROVED_FORM});
-        //If couldn't find form in temp db, then check for form in main db
+
+        //If user doesn't have edit access rights to the form, set form to view only (readOnly)
+        if (response.data.error.message.unauthorizedEdit !== undefined) {
+          dispatch({type: SET_VIEW_FORM, payload: response.data.error.message.unauthorizedEdit})
+        }
+        //If couldn't find form in temp db or user doesnt have edit access rights to form in temp db, then check for form in main db
         dispatch(getApprovedForm(tag, getType));
       }
       else {
@@ -472,7 +485,11 @@ export const modifyForm = (form, inDB, isModified) => (dispatch) => {
         }
 
       } else {
-        dispatch({type: FORM_SUBMIT_SUCCESS});
+        if (response.data.tagNum !== undefined) {
+          dispatch({type: FORM_SUBMIT_SUCCESS, payload: {tagNumber: response.data.tagNum}});
+        } else {
+          dispatch({type: FORM_SUBMIT_SUCCESS, payload: {tagNumber: "Tag number could not be retrieved successfully"}});
+        }
       }
     })
     .catch(err => {
@@ -486,7 +503,7 @@ export const modifyForm = (form, inDB, isModified) => (dispatch) => {
 }
 
 //RA user to modify existing form in main DB
-export const modifyFormRA = (form, isModified) => (dispatch) => {
+export const modifyFormRA = (form, inDB, isModified) => (dispatch) => {
   const req = changeRequestRA(form, isModified);
   axios.post(`/dashboard/update-form`, req, {withCredentials: true})
     .then(response => {
@@ -499,7 +516,7 @@ export const modifyFormRA = (form, isModified) => (dispatch) => {
         }
 
       } else {
-        dispatch(modifyForm(form, true, true));
+        dispatch(modifyForm(form, inDB, true));
       }
     })
     .catch(err => {
@@ -593,7 +610,11 @@ export const addForm = (form, inDB, isModified) => (dispatch) => {
         }
 
       } else {
-        dispatch({type: FORM_SUBMIT_SUCCESS});
+        if (response.data.tagNum !== undefined) {
+          dispatch({type: FORM_SUBMIT_SUCCESS, payload: {tagNumber: response.data.tagNum}});
+        } else {
+          dispatch({type: FORM_SUBMIT_SUCCESS, payload: {tagNumber: "Tag number could not be retrieved successfully"}});
+        }
       }
     })
     .catch(err => {
@@ -626,7 +647,11 @@ export const addFormRA = (form, isModified) => (dispatch) => {
           }
 
         } else {
-          dispatch({type: FORM_SUBMIT_SUCCESS});
+          if (response.data.tagNum !== undefined) {
+            dispatch({type: FORM_SUBMIT_SUCCESS, payload: {tagNumber: response.data.tagNum}});
+          } else {
+            dispatch({type: FORM_SUBMIT_SUCCESS, payload: {tagNumber: "Tag number could not be retrieved successfully"}});
+          }
         }
       })
       .catch(err => {

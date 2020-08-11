@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {getUser} from '../store/actions/dataActions';
 
 import PieIcon from '../images/visualization.PNG'
 import BarIcon from '../images/barChart.PNG'

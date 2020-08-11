@@ -4,7 +4,39 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import './dashboard.css';
-import {getApprovedForm, getNonApprovedForm, clearFormStatus, setNewFormStatus, clearFormRetrievalError} from '../../store/actions/dataActions'
+import {getApprovedForm, getNonApprovedForm, clearFormStatus, setNewFormStatus, clearFormRetrievalError} from '../../store/actions/dataActions';
+
+class Collapsible extends React.Component {
+  constructor(props){
+      super(props);
+      this.state = {
+        open: false
+      }
+      this.toggle = this.toggle.bind(this);
+  }
+
+  toggle(e){
+      this.setState({open: !this.state.open})
+  }
+
+  render() {
+    return (<div>
+      <div onClick={(e)=>this.toggle(e)} className='header'>
+      {
+        this.state.open ?
+        <i class="arrow up"></i>
+        : <i class="arrow down"></i>
+      }
+      {this.props.title}</div>
+      {this.state.open ? (
+          <div className='content'>
+              {this.props.children}
+          </div>
+          ) : null}
+      </div>
+    );
+  }
+}
 
 class dashboard extends Component {
   constructor(props){
@@ -14,7 +46,7 @@ class dashboard extends Component {
       reviewTagNum: null,
       addClicked: false,
       modifyClicked: false,
-      reviewClicked: false
+      reviewClicked: false,
     }
 
     this.tagNumChange = this.tagNumChange.bind(this);
@@ -58,8 +90,11 @@ class dashboard extends Component {
   }
 
   tagNumChange(e){
-    if (e.target.id == 'modifyTagNum') {
+    if (e.target.name == 'modifyTagNum') {
       this.state.modifyTagNum = e.target.value;
+      this.setState({
+        modifyTagNum: this.state.modifyTagNum
+      });
 
       if (this.state.modifyTagNum !== null && this.state.modifyTagNum !== ""){
         ReactDOM.render(<h5>Modify an Existing Submission Form</h5>, document.getElementById("modifyFormActive"))
@@ -70,9 +105,12 @@ class dashboard extends Component {
         ReactDOM.render(<div></div>, document.getElementById("modifyFormActive"))
       }
     }
-    else if (e.target.id == 'reviewTagNum') {
+    else if (e.target.name == 'reviewTagNum') {
       this.state.reviewTagNum = e.target.value;
-      console.log(this.state.reviewTagNum)
+      this.setState({
+        reviewTagNum: this.state.reviewTagNum
+      });
+
       if (this.state.reviewTagNum !== null && this.state.reviewTagNum !== ""){
         ReactDOM.render(<h5>Review a Submission Form</h5>, document.getElementById("reviewFormActive"))
         ReactDOM.render(<div></div>, document.getElementById("reviewFormInactive"))
@@ -82,7 +120,6 @@ class dashboard extends Component {
         ReactDOM.render(<div></div>, document.getElementById("reviewFormActive"))
       }
     }
-
   }
 
   render() {
@@ -120,6 +157,13 @@ class dashboard extends Component {
       }
     }
 
+    //Handle click
+    const click = (num) => (e) => {
+      this.handleClick(e, num);
+    }
+
+
+    //RENDER PAGE ELEMENTS
     //If there was an issue accessing form from either db, then return form access error message
     const error = formAccessError ? (
       <div className="alert alert-danger alert-dismissible fade show" style = {{width: "25%", margin: "0 auto", marginTop: "50px"}}>
@@ -127,19 +171,90 @@ class dashboard extends Component {
       </div>
     ) : null
 
-    //Handle click
-    const click = (num) => (e) => {
-      this.handleClick(e, num);
-    }
+    //Render organization user's edited pending forms listing
+    const pendingFormsList = userData ? (
+      userData.editedForms ? (
+        <div>
+          <br></br>
+          <Collapsible title="Your Submitted Forms Pending Approval">
+          {
+            userData.editedForms.pendingForms.length > 0 ? (
+              userData.editedForms.pendingForms.map(form => {
+                let formStateStyle = {color: 'orange'}
+                if (form.state === 'Rejected') {
+                  formStateStyle.color = 'red'
+                }
+                return (
+                  <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
+                );
+              })
+            ) : <p>You have no forms currently pending approval</p>
+          }
+          </Collapsible>
+        </div>
+      ) : null
+    ) : null
+
+    //Render organization user's edited approved forms listing
+    const approvedFormsList = userData ? (
+      userData.editedForms ? (
+        userData.editedForms.approvedForms !== undefined ? (
+          <div>
+            <br></br>
+            <Collapsible title="Your Approved Forms">
+            {
+              userData.editedForms.approvedForms.length > 0 ? (
+                userData.editedForms.approvedForms.map(form => {
+                  let formStateStyle = {color: 'green'}
+                  return (
+                    <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
+                  );
+                })
+              ) : <p>You have no edited forms currently approved</p>
+            }
+            </Collapsible>
+          </div>
+        ) : null
+      ) : null
+    ) : null
+
+    //RENDER FOR RA/ROOT USERS
+    //Render list of forms to be reviewed only if RA or root user
+    const reviewFormsList = userData ? (
+      userData.accessLevel !== 0 ? (
+        userData.reviewForms ? (
+          <div>
+            <br></br>
+            <Collapsible title="Forms to Review">
+            {
+              userData.reviewForms.length > 0 ? (
+                userData.reviewForms.map(form => {
+                  let formStateStyle = {color: 'orange'}
+                  if (form.state === 'Rejected') {
+                    formStateStyle.color = 'red'
+                  }
+                  return (
+                    <button name = "reviewTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag} <br></br><text style = {formStateStyle}>{form.state}</text></button>
+                  );
+                })
+              ) : <p>There are no forms currently that require review</p>
+            }
+            </Collapsible>
+          </div>
+        ) : null
+      ) : null
+    ) : null
 
     //Render review option only if RA or root user
     const review = userData ? (userData.accessLevel !== 0 ?
       <div className = "container">
         <div className = "row mt-4">
-          <div className = "col-md-8 m-auto text-center">
+          <div className = "col-md-8 m-auto">
             <div className = "card card-body">
-              <h3>Review Form</h3>
-              <input type="number" id="reviewTagNum" name="reviewTagNum" placeholder="Tag Number of Form to Review" onChange={this.tagNumChange}/><br></br>
+              <h3>Review</h3>
+              {reviewFormsList}
+              <br></br>
+              <input type="number" name="reviewTagNum" value={this.state.reviewTagNum} placeholder="Enter Form Tag Number" onChange={this.tagNumChange}/><br></br>
               <Link onClick={this.handleReviewClick}><div id="reviewFormActive"></div></Link>
               <div id="reviewFormInactive"><font color="grey"><h5>Review a Submission Form</h5></font></div>
             </div>
@@ -155,7 +270,7 @@ class dashboard extends Component {
         <div className = "container">
           <div className = "row mt-4">
             <div className = "col-md-8 m-auto">
-              <div className = "card card-body text-center">
+              <div className = "card card-body">
                 <h3>Add a New Form</h3>
                 <Link onClick={this.handleAddClick}><h5>Create an Information Submission Form</h5></Link>
               </div>
@@ -164,10 +279,13 @@ class dashboard extends Component {
         </div>
         <div className = "container">
           <div className = "row mt-4">
-            <div className = "col-md-8 m-auto text-center">
+            <div className = "col-md-8 m-auto">
               <div className = "card card-body">
-                <h3>Modify Form</h3>
-                <input type="number" id="modifyTagNum" name="modifyTagNum" placeholder="Tag Number of Form to Modify" onChange={this.tagNumChange}/><br></br>
+                <h3>Modify</h3>
+                {pendingFormsList}
+                {approvedFormsList}
+                <br></br>
+                <input type="number" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Enter Form Tag Number" onChange={this.tagNumChange}/><br></br>
                 <Link onClick={this.handleModifyClick}><div id="modifyFormActive"></div></Link>
                 <div id="modifyFormInactive"><font color="grey"><h5>Modify an Existing Submission Form</h5></font></div>
               </div>

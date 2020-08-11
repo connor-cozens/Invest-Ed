@@ -53,8 +53,6 @@ class dashboard extends Component {
     this.handleModifyClick = this.handleModifyClick.bind(this);
     this.handleReviewClick = this.handleReviewClick.bind(this);
     this.handleAddClick = this.handleAddClick.bind(this);
-    this.handleEditedFormSelect = this.handleEditedFormSelect.bind(this);
-    this.handleReviewFormSelect = this.handleReviewFormSelect.bind(this);
   }
 
   componentDidMount = () => {
@@ -124,22 +122,6 @@ class dashboard extends Component {
     }
   }
 
-  handleEditedFormSelect(e){
-    e.preventDefault();
-    this.setState({
-      modifyTagNum: e.target.value
-    });
-    this.tagNumChange(e)
-  }
-
-  handleReviewFormSelect(e){
-    e.preventDefault();
-    this.setState({
-      reviewTagNum: e.target.value
-    });
-    this.tagNumChange(e)
-  }
-
   render() {
     const {authorized, formAccessError, formStatus, clearForm, userData} = this.props;
     if (authorized === false){
@@ -204,7 +186,7 @@ class dashboard extends Component {
                   formStateStyle.color = 'red'
                 }
                 return (
-                  <button id = "modifyTagNum" type = "button" onClick = {this.handleEditedFormSelect} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
+                  <button id = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
                 );
               })
             ) : <p>You have no forms currently pending approval</p>
@@ -226,7 +208,7 @@ class dashboard extends Component {
                 userData.editedForms.approvedForms.map(form => {
                   let formStateStyle = {color: 'green'}
                   return (
-                    <button id = "modifyTagNum" type = "button" onClick = {this.handleEditedFormSelect} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
+                    <button id = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
                   );
                 })
               ) : <p>You have no edited forms currently approved</p>
@@ -253,7 +235,7 @@ class dashboard extends Component {
                     formStateStyle.color = 'red'
                   }
                   return (
-                    <button id = "reviewTagNum" type = "button" onClick = {this.handleReviewFormSelect} value = {form.tag}>Form {form.tag} <br></br><text style = {formStateStyle}>{form.state}</text></button>
+                    <button id = "reviewTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag} <br></br><text style = {formStateStyle}>{form.state}</text></button>
                   );
                 })
               ) : <p>There are no forms currently that require review</p>

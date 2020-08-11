@@ -4046,7 +4046,7 @@ dashboard.post('/update-form-temp', (req, res) =>{
                                   user.update(userObj)
                                   .then(updatedRecord => {
                                     //Inves431_girlsEd updated successfully
-                                    formFoundPending.push(updatedRecord)
+                                    formPending.push(updatedRecord)
                                     jsonResponse = {"tagNum": formData.tagNum}
                                   })
                                 }

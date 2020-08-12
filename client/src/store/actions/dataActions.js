@@ -266,7 +266,7 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
       if (response.data.error !== undefined) {
         //If error was from attempted sql query
         if (response.data.error.message.sqlMessage !== undefined) {
-          dispatch({type: SET_FORM_ERROR, payload: response.data.error.message.sqlMessage});
+          dispatch({type: SET_FORM_ERROR, payload: {errorMessage: "There was an issue retrieving this form.", errorSpecs: "Error specifications: " + response.data.error.message.sqlMessage}});
         } else {
           dispatch({type: SET_FORM_ERROR, payload: response.data.error.message});
         }
@@ -479,7 +479,7 @@ export const modifyForm = (form, inDB, isModified) => (dispatch) => {
       if (response.data.error !== undefined) {
         //If error was from attempted sql query
         if (response.data.error.message.sqlMessage !== undefined) {
-          dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message.sqlMessage});
+          dispatch({type: FORM_SUBMIT_ERROR, payload: {errorMessage: "There was an issue submitting this form. Please review all fields and make sure they are accurate.", errorSpecs: "Error specifications: " + response.data.error.message.sqlMessage}});
         } else {
           dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message});
         }
@@ -510,7 +510,7 @@ export const modifyFormRA = (form, inDB, isModified) => (dispatch) => {
       if (response.data.error !== undefined) {
         //If error was from attempted sql query
         if (response.data.error.message.sqlMessage !== undefined) {
-          dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message.sqlMessage});
+          dispatch({type: FORM_SUBMIT_ERROR, payload: {errorMessage: "There was an issue submitting this form. Please review all fields and make sure they are accurate.", errorSpecs: "Error specifications: " + response.data.error.message.sqlMessage}});
         } else {
           dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message});
         }
@@ -538,7 +538,7 @@ const approveForm = (form, isModified) => (dispatch) => {
       if (response.data.error !== undefined) {
         //If error was from attempted sql query
         if (response.data.error.message.sqlMessage !== undefined) {
-          dispatch({type: FORM_REVIEW_ERROR, payload: response.data.error.message.sqlMessage});
+          dispatch({type: FORM_REVIEW_ERROR, payload: {errorMessage: "There was an issue submitting this form review.", errorSpecs: "Error specifications: " + response.data.error.message.sqlMessage}});
         } else {
           dispatch({type: FORM_REVIEW_ERROR, payload: response.data.error.message});
         }
@@ -566,7 +566,7 @@ export const reviewForm = (form, inDB, isModified) => (dispatch) => {
       if (response.data.error !== undefined) {
         //If error was from attempted sql query
         if (response.data.error.message.sqlMessage !== undefined) {
-          dispatch({type: FORM_REVIEW_ERROR, payload: response.data.error.message.sqlMessage});
+          dispatch({type: FORM_REVIEW_ERROR, payload: {errorMessage: "There was an issue submitting this form review.", errorSpecs: "Error specifications: " + response.data.error.message.sqlMessage}});
         } else {
           dispatch({type: FORM_REVIEW_ERROR, payload: response.data.error.message});
         }
@@ -599,7 +599,7 @@ export const addForm = (form, inDB, isModified) => (dispatch) => {
       if (response.data.error !== undefined) {
         //If error was from attempted sql query
         if (response.data.error.message.sqlMessage !== undefined) {
-          dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message.sqlMessage});
+          dispatch({type: FORM_SUBMIT_ERROR, payload: {errorMessage: "There was an issue submitting this form. Please review all fields and make sure they are accurate.", errorSpecs: "Error specifications: " + response.data.error.message.sqlMessage}});
         } else {
           dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message});
         }
@@ -636,7 +636,7 @@ export const addFormRA = (form, isModified) => (dispatch) => {
         if (response.data.error !== undefined) {
           //If error was from attempted sql query
           if (response.data.error.message.sqlMessage !== undefined) {
-            dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message.sqlMessage});
+            dispatch({type: FORM_SUBMIT_ERROR, payload: {errorMessage: "There was an issue submitting this form. Please review all fields and make sure they are accurate.", errorSpecs: "Error specifications: " + response.data.error.message.sqlMessage}});
           } else {
             dispatch({type: FORM_SUBMIT_ERROR, payload: response.data.error.message});
           }

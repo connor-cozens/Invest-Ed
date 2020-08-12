@@ -1447,7 +1447,16 @@ class formSubmission extends React.Component{
 
     const submitError = formSubmitError ?
     <div className="alert alert-dismissible alert-danger" style = {{width: "75%"}}>
-      <strong> {formSubmitError} </strong>
+      {
+        formSubmitError.errorMessage !== undefined ? <strong> {formSubmitError.errorMessage} </strong> : <strong> {formSubmitError} </strong>
+      }
+      {
+        formSubmitError.errorSpecs !== undefined ?
+        <div>
+          <br></br>
+          {formSubmitError.errorSpecs}
+        </div> : null
+      }
     </div> : (
       this.state.isInfoMissing === true ? (
         <div className="alert alert-dismissible alert-warning" style = {{width: "75%"}}>

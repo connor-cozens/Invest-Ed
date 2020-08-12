@@ -83,7 +83,7 @@ dashboard.get('/form/:tagNum', (req, res) =>{
                 }else{
                     //If no results back for initiative, then form doesn't exist for corresponding tag number
                     if (results.length === 0) {
-                      return queryDB("Could not find requested form")
+                      return queryDB("Could not find requested form.")
                     }
                     formData.table1 = results;
                     queryDB()
@@ -239,6 +239,7 @@ dashboard.get('/form/:tagNum', (req, res) =>{
 
      ], function(err) {
           if (err){
+            console.log(err)
             res.json({"error": {"message": err}})
           }else{
             funderQueries(formData.table14)
@@ -314,6 +315,7 @@ dashboard.get('/form/:tagNum', (req, res) =>{
 
           function(err, results) {
               if (err){
+                console.log(err)
                 res.json({"error": {"message": err}})
               }else{
                 final++;
@@ -596,6 +598,7 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
 
      ], function(err) {
           if (err){
+            console.log(err)
             res.json({"error": {"message": err}})
           }else{
             funderQueries(formData.table14)
@@ -667,6 +670,7 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
 
           function(err, results) {
               if (err){
+                console.log(err)
                 res.json({"error": {"message": err}});
               }else{
                 final++;
@@ -1378,12 +1382,14 @@ dashboard.post('/submit-form-temp', (req, res) =>{
       //Increment tag number on insertion
       client.exists('tagNumber', function(error, reply){
           if (error) {
+            console.log(error)
             res.json({"error": {"message": error}});
           } else {
               client.get('tagNumber', function(getError, val){
                 //Increment tag Number
                 client.incr('tagNumber')
                 if (getError) {
+                  console.log(getError)
                   res.json({"error": {"message": getError}});
                 } else {
                   console.log(val)
@@ -2043,12 +2049,14 @@ dashboard.post('/submitform', (req, res) =>{
          //Increment tag number on insertion
          client.exists('tagNumber', function(error, reply){
              if (error) {
+               console.log(error)
                res.json({"error": {"message": error}});
              } else {
                  client.get('tagNumber', function(getError, val){
                    //Increment tag Number
                    client.incr('tagNumber')
                    if (getError) {
+                     console.log(getError)
                      res.json({"error": {"message": getError}});
                    } else {
                      console.log(val)
@@ -2127,7 +2135,8 @@ dashboard.post('/update-form', (req, res) =>{
 
      pool.query(queryNumFunderInitiatives, {}, function(err, results) {
          if (err){
-             res.json({"error": {"message": err}})
+           console.log(err)
+           res.json({"error": {"message": err}})
          } else {
              numFunderInitiatives = JSON.parse(JSON.stringify(results[0]['COUNT(funderName)']));
 
@@ -2990,7 +2999,8 @@ dashboard.post('/update-form-temp', (req, res) =>{
 
     poolTemp.query(queryNumFunderInitiatives, {}, function(err, results) {
         if (err){
-            res.json({"error": {"message": err}})
+          console.log(err)
+          res.json({"error": {"message": err}})
         } else {
             numFunderInitiatives = JSON.parse(JSON.stringify(results[0]['COUNT(funderName)']));
 

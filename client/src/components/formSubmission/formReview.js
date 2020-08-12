@@ -413,7 +413,16 @@ class formReview extends React.Component{
 
     const reviewError = formReviewError ?
     <div className="alert alert-dismissible alert-danger" style = {{width: "75%"}}>
-      <strong> {formReviewError} </strong>
+    {
+      formReviewError.errorMessage !== undefined ? <strong> {formReviewError.errorMessage} </strong> : <strong> {formReviewError} </strong>
+    }
+    {
+      formReviewError.errorSpecs !== undefined ?
+        <div>
+          <br></br>
+          {formReviewError.errorSpecs}
+        </div> : null
+    }
     </div> : (
       this.state.isUpdated !== null ? (
         this.state.isUpdated === false ? (

@@ -445,7 +445,7 @@ class formReview extends React.Component{
           </div>
         ) : (
           <div class="alert alert-dismissible alert-warning">
-            <strong>This form is under review for approval.</strong> Please make any necessary changes to the approval status of the below fields. <br></br><br></br><strong>Accepting all fields will make this form information public.</strong>
+            <strong>This form is under review for approval.</strong> Please make any necessary changes to the approval status of the below fields. <i>By default, fields updated on change request are set to rejected.</i><br></br><br></br><strong>Accepting all fields will make this form information public.</strong>
           </div>
         )
       )

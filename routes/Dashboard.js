@@ -3989,11 +3989,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                                   //Update user record with updated pending and approved form lists
                                   if (userObj !== undefined) {
                                     formApproved.push(user.update(userObj))
-                                    // .then(updatedRecord => {
-                                    //   //Inves431_girlsEd updated successfully
-                                    //   formApproved.push(updatedRecord)
-                                    //   // resolve({"tagNum": formData.tagNum})
-                                    // })
                                   }
                                 }
                               }
@@ -4011,10 +4006,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                               }
                             })
                           })
-                          // .finally(() => {
-                          //   //Inves431_girlsEd updated successfully
-                          //   jsonResponse = {"tagNum": formData.tagNum}
-                          // })
                         }
 
                         //If form is not being approved on review by RA/root user
@@ -4041,11 +4032,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                                   //Update user record with updated pending and approved form lists
                                   if (userObj !== undefined) {
                                     formPending.push(user.update(userObj))
-                                    // .then(updatedRecord => {
-                                      //Inves431_girlsEd updated successfully
-                                      // formPending.push(updatedRecord)
-                                      // resolve({"tagNum": formData.tagNum})
-                                    // })
                                   }
                                 }
                               }
@@ -4095,10 +4081,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                               }
                             })
                           })
-                          // .finally(() => {
-                          //   //Inves431_girlsEd updated successfully
-                          //   jsonResponse = {"tagNum": formData.tagNum}
-                          // })
                         }
                       }
                     })
@@ -4106,10 +4088,6 @@ dashboard.post('/update-form-temp', (req, res) =>{
                       console.log(err)
                       resolve({"error": err});
                     })
-                    // .finally(() => {
-                    //   //Inves431_girlsEd updated successfully
-                    //   res.json({"tagNum": formData.tagNum})
-                    // })
                   })
 
                   promise.then(response => {

@@ -186,7 +186,12 @@ class dashboard extends Component {
                   formStateStyle.color = 'red'
                 }
                 return (
-                  <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
+                  <div className = 'formlist'>
+                    <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}</button>
+                    <div>
+                      <text style = {formStateStyle}>{form.state}</text>
+                    </div>
+                  </div>
                 );
               })
             ) : <p>You have no forms currently pending approval</p>
@@ -208,7 +213,12 @@ class dashboard extends Component {
                 userData.editedForms.approvedForms.map(form => {
                   let formStateStyle = {color: 'green'}
                   return (
-                    <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
+                    <div className = 'formlist'>
+                      <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}</button>
+                      <div>
+                        <text style = {formStateStyle}>{form.state}</text>
+                      </div>
+                    </div>
                   );
                 })
               ) : <p>You have no edited forms currently approved</p>
@@ -235,7 +245,12 @@ class dashboard extends Component {
                     formStateStyle.color = 'red'
                   }
                   return (
-                    <button name = "reviewTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag} <br></br><text style = {formStateStyle}>{form.state}</text></button>
+                    <div className = 'formlist'>
+                      <button name = "reviewTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}</button>
+                      <div>
+                        <text style = {formStateStyle}>{form.state}</text>
+                      </div>
+                    </div>
                   );
                 })
               ) : <p>There are no forms currently that require review</p>

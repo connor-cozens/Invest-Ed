@@ -42,6 +42,15 @@
   margin: 0 auto;
 }
 
+#dashboard .formlist {
+  float: left;
+  text-align: center;
+  border-radius: 10px;
+  border: solid 1px #BEBEBE;
+  margin: 8px 8px 8px 8px;
+  padding: 0 0 5px 0;
+}
+
 
 #dashboard h2{
   margin: 40px 0 40px 0;
@@ -54,10 +63,10 @@
 
 #dashboard button {
   border-radius: 10px;
-  border: 1px solid;
+  border: 1px solid #D3D3D3;
   background-color: white;
   width: 125px;
-  margin: 15px 15px 15px 15px;
+  margin: 10px 10px 10px 10px;
   padding: 15px 5px 15px 5px;
 }
 

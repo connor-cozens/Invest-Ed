@@ -54,6 +54,7 @@ class formReview extends React.Component{
       impMotive: null,
 
       //Other
+      originalComments: null,
       comments: null,
 
       //Reviews
@@ -201,6 +202,7 @@ class formReview extends React.Component{
           const {savedState, isUnsaved} = props.location.state;
           this.setState({
             //Other Setters
+            originalComments: savedState.originalComments,
             comments: savedState.comments,
             //Review Setters
             needsReview: savedState.needsReview,
@@ -212,7 +214,9 @@ class formReview extends React.Component{
       } else {
         this.setState({
           //Other Setters
+          originalComments: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].comment !== undefined ? props.form.status[0][0].comment : null) : null) : null) : null,
           comments: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].comment !== undefined ? props.form.status[0][0].comment : null) : null) : null) : null,
+
           //Review Setters
           needsReview: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].needsReview !== undefined ? props.form.status[0][0].needsReview : null) : null) : null) : null,
           originalReviews: {
@@ -353,29 +357,31 @@ class formReview extends React.Component{
     //If submitting a new form
     if (formStatus === 'review') {
       if (userData) {
-        //Check if form fields have been updated in terms of approval status
-        if (JSON.stringify(this.state.reviews) !== JSON.stringify(this.state.originalReviews)) {
-          this.state.isUpdated = true
-        } else {
-          this.state.isUpdated = false
-        }
-        this.setState({
-          isUpdated: this.state.isUpdated
-        });
         //If an RA or root user, then submit review to temp db
         if (userData.accessLevel !== 0) {
+          this.state.needsReview = 0;  //Form is ready for approval is the initial assumption
+          for (const [key, value] of Object.entries(this.state.reviews)) {
+            //If any field is found to be rejected, then form still requires further review
+            if (value == 0) {
+              this.state.needsReview = 1;
+            }
+            this.setState({
+              needsReview: this.state.needsReview
+            })
+          }
+
+          //Only allow review submission if form is accepted, or only if new comments made if form is rejected.
+          if ((this.state.needsReview === 0) || (this.state.needsReview === 1 && this.state.originalComments !== this.state.comments)) {
+            this.state.isUpdated = true
+          } else {
+            this.state.isUpdated = false
+          }
+          this.setState({
+            isUpdated: this.state.isUpdated
+          });
+
           //Only allow submission if at least one of the form fields' approval status has been updated
           if (this.state.isUpdated === true) {
-            this.state.needsReview = 0;  //Form is ready for approval is the initial assumption
-            for (const [key, value] of Object.entries(this.state.reviews)) {
-              //If any field is found to be rejected, then form still requires further review
-              if (value == 0) {
-                this.state.needsReview = 1;
-              }
-              this.setState({
-                needsReview: this.state.needsReview
-              })
-            }
             //If all fields in the form have been approved, then submit form to main and update temp form.
             //otherwise, if some fields are rejected, then submit form only to temp
             this.props.reviewForm(this.state, this.props.inDB, true);
@@ -407,12 +413,21 @@ class formReview extends React.Component{
 
     const reviewError = formReviewError ?
     <div className="alert alert-dismissible alert-danger" style = {{width: "75%"}}>
-      <strong> {formReviewError} </strong>
+    {
+      formReviewError.errorMessage !== undefined ? <strong> {formReviewError.errorMessage} </strong> : <strong> {formReviewError} </strong>
+    }
+    {
+      formReviewError.errorSpecs !== undefined ?
+        <div>
+          <br></br>
+          {formReviewError.errorSpecs}
+        </div> : null
+    }
     </div> : (
       this.state.isUpdated !== null ? (
         this.state.isUpdated === false ? (
           <div className="alert alert-dismissible alert-warning" style = {{width: "75%"}}>
-            <strong>No new reviews have been made to this form.</strong> Please make an approval change to one or more fields before submitting your review.
+            <strong>No new comments have been added to this form.</strong> Please leave a comment explaining your rejection before submitting your review.
           </div>
         ) : null
       ) : null
@@ -430,7 +445,7 @@ class formReview extends React.Component{
           </div>
         ) : (
           <div class="alert alert-dismissible alert-warning">
-            <strong>This form is under review for approval.</strong> Please make any necessary changes to the approval status of the below fields. <br></br><br></br><strong>Accepting all fields will make this form information public.</strong>
+            <strong>This form is under review for approval.</strong> Please make any necessary changes to the approval status of the below fields. <i>By default, fields updated on change request are set to rejected.</i><br></br><br></br><strong>Accepting all fields will make this form information public.</strong>
           </div>
         )
       )

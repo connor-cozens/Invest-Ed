@@ -166,8 +166,9 @@ class dashboard extends Component {
     //RENDER PAGE ELEMENTS
     //If there was an issue accessing form from either db, then return form access error message
     const error = formAccessError ? (
-      <div className="alert alert-danger alert-dismissible fade show" style = {{width: "25%", margin: "0 auto", marginTop: "50px"}}>
-        <p style = {{textAlign: "center"}}> {formAccessError}</p>
+      <div className="alert alert-dismissible alert-danger" style = {{width: "35%", margin: "0 auto", marginTop: "50px"}}>
+        <strong>{formAccessError}</strong>
+        <br></br>No form with that tag number was found.
       </div>
     ) : null
 
@@ -185,7 +186,12 @@ class dashboard extends Component {
                   formStateStyle.color = 'red'
                 }
                 return (
-                  <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
+                  <div className = 'formlist'>
+                    <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}</button>
+                    <div>
+                      <text style = {formStateStyle}>{form.state}</text>
+                    </div>
+                  </div>
                 );
               })
             ) : <p>You have no forms currently pending approval</p>
@@ -207,7 +213,12 @@ class dashboard extends Component {
                 userData.editedForms.approvedForms.map(form => {
                   let formStateStyle = {color: 'green'}
                   return (
-                    <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}<br></br><text style = {formStateStyle}>{form.state}</text></button>
+                    <div className = 'formlist'>
+                      <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}</button>
+                      <div>
+                        <text style = {formStateStyle}>{form.state}</text>
+                      </div>
+                    </div>
                   );
                 })
               ) : <p>You have no edited forms currently approved</p>
@@ -234,7 +245,12 @@ class dashboard extends Component {
                     formStateStyle.color = 'red'
                   }
                   return (
-                    <button name = "reviewTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag} <br></br><text style = {formStateStyle}>{form.state}</text></button>
+                    <div className = 'formlist'>
+                      <button name = "reviewTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}</button>
+                      <div>
+                        <text style = {formStateStyle}>{form.state}</text>
+                      </div>
+                    </div>
                   );
                 })
               ) : <p>There are no forms currently that require review</p>

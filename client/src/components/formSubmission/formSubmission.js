@@ -1485,7 +1485,7 @@ class formSubmission extends React.Component{
             </div>
           ) : (
             <div class="alert alert-dismissible alert-warning">
-              <strong>This form is under review for approval.</strong> Please review the approval status of the below fields.
+              <strong>This form is under review for approval.</strong> Please review the approval status of the fields below.
             </div>
           )
         )
@@ -1957,7 +1957,7 @@ class formSubmission extends React.Component{
                   <input type="radio" id="organization4" name="organizationalForm" value="Charity / NGO" checked = {this.state.organizationForm === 'Charity / NGO'} onChange={this.organizationChange}/> <label htmlFor="organization4">Charity / NGO</label>
                   <input type="radio" id="organization5" name="organizationalForm" value="State / Government" checked = {this.state.organizationForm === 'State / Government'} onChange={this.organizationChange}/> <label htmlFor="organization5">State / Government</label>
                   <input type="radio" id="organization6" name="organizationalForm" value="Network or Platform" checked = {this.state.organizationForm === 'Network or Platform'} onChange={this.organizationChange}/> <label htmlFor="organization6">Network or Platform</label>
-                  <input type="radio" id="organization7" name="organizationalForm" value="CSR Initiative / unit" checked = {this.state.organizationForm === 'CSR initiative / unit'} onChange={this.organizationChange}/> <label htmlFor="organization7">CSR Initiative / Unit</label>
+                  <input type="radio" id="organization7" name="organizationalForm" value="CSR Initiative / unit" checked = {this.state.organizationForm === 'CSR Initiative / unit'} onChange={this.organizationChange}/> <label htmlFor="organization7">CSR Initiative / Unit</label>
                   <input type="radio" id="organization8" name="organizationalForm" value="Multilateral" checked = {this.state.organizationForm === 'Multilateral'} onChange={this.organizationChange}/> <label htmlFor="organization8">Multilateral</label>
                   <input type="radio" id="organization9" name="organizationalForm" value="Other" checked = {this.state.organizationForm === 'Other'} onChange={this.organizationChange}/> <label htmlFor="organization9">Other</label>
                 <br></br>

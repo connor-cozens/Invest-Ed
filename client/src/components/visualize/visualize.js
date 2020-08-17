@@ -33,11 +33,15 @@ class Visualize extends Component {
 
   //Trigger get request to retrieve data for visualization
   componentDidMount = () => {
+    document.body.style.height = "100%"
     this.props.getFunderData();
     this.props.getImplementerData();
     this.props.getInitiativeData();
     this.props.getInitiativeFundersByAttr();
     this.props.getInitiativeImplementersByAttr();
+  }
+  componentWillUnmount = () => {
+    document.body.style.height = "auto"
   }
 
   //Set retrieved visualized data passed into component via next props to the state
@@ -618,8 +622,8 @@ class Visualize extends Component {
 
 
       return (
-        <div style = {{height: "100%"}}>
-          <nav className = "nav flex-column sidebar settings " style = {{height: "100%"}}>
+        <div className = "wrapper">
+          <nav className = "nav flex-column sidebar settings">
             <select value = {this.state.entitySelection} type="entity" id="entity" name="entity" onChange={this.handleEntitySelection} style = {{width:"90%", margin: "50px 0 0 20px"}}>
               <option value="select">Filter Entity Type</option>
               <option value="funders">Funders</option>

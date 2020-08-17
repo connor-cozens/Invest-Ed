@@ -5,6 +5,11 @@
     /*max-width: 820px;*/
     margin: 0% 10% auto;
     margin-bottom: 100px;
+    padding: 50px 300px 0 300px;
+}
+
+.formReview .alert {
+    width: 100%;
 }
 
 h3 {

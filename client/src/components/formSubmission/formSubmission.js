@@ -1500,14 +1500,14 @@ class formSubmission extends React.Component{
 
 
     const unsavedWarning = this.state.isUnsaved === true ?
-    <div className="alert alert-dismissible alert-danger" style = {{width: "100%"}}>
+    <div className="alert alert-dismissible alert-danger">
       <strong> You have unsaved changes. </strong>Are you sure you want to leave?
-      <button type="button" class="btn btn-warning" style = {{margin: '0 0 0 25px'}} onClick = {this.handleLeave}>Yes</button>
-      <button type="button" class="btn btn-warning" style = {{margin: '0 0 0 10px'}} onClick = {this.handleStay}>No</button>
+      <button type="button" class="btn btn-warning" onClick = {this.handleLeave}>Yes</button>
+      <button type="button" class="btn btn-warning" onClick = {this.handleStay}>No</button>
     </div> : null
 
     return (
-        <div className = "formSubmission" style = {{padding: '50px 200px 0 200px'}}>
+        <div className = "formSubmission">
           <h3>Form Submission</h3>
           <div>
             <br></br>

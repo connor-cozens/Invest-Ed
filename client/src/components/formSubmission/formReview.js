@@ -452,14 +452,14 @@ class formReview extends React.Component{
     ) : null
 
     const unsavedWarning = this.state.isUnsaved === true ?
-    <div className="alert alert-dismissible alert-danger" style = {{width: "100%"}}>
+    <div className="alert alert-dismissible alert-danger">
       <strong> You have unsaved changes. </strong>Are you sure you want to leave?
-      <button type="button" class="btn btn-warning" style = {{margin: '0 0 0 25px'}} onClick = {this.handleLeave}>Yes</button>
-      <button type="button" class="btn btn-warning" style = {{margin: '0 0 0 10px'}} onClick = {this.handleStay}>No</button>
+      <button type="button" class="btn btn-warning" onClick = {this.handleLeave}>Yes</button>
+      <button type="button" class="btn btn-warning" onClick = {this.handleStay}>No</button>
     </div> : null
 
     return (
-        <div className = "formReview" style = {{padding: '50px 300px 0 300px'}}>
+        <div className = "formReview">
           <h3>Form Review</h3>
           <div>
             <br></br>

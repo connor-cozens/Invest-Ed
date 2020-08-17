@@ -41,6 +41,21 @@ html,  #root, .App {
           transform: scaleX(1);
 }
 
+.alert button {
+  border-radius: 10px;
+  border: 1px solid #D3D3D3;
+  background-color: #e74c3c;
+  color: white;
+  width: 15%;
+  padding: 10px 5px 10px 5px;
+  margin: 0 0 0 30px;
+}
+
+.alert button:hover {
+  background-color: #db4030;
+  border: 1px solid #D3D3D3;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

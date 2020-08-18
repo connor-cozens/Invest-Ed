@@ -34,8 +34,11 @@ import {
 
   //DATA VISUALIZATION
   SET_FUNDER_DATA,
+  SET_FUNDER_NUMBERS,
   SET_IMPLEMENTER_DATA,
+  SET_IMPLEMENTER_NUMBERS,
   SET_INITIATIVE_DATA,
+  SET_INITIATIVE_NUMBERS,
   SET_FUNDER_ATTRIBUTES,
   SET_IMPLEMENTER_ATTRIBUTES,
   SET_FUNDERTYPE_INITIATIVE,
@@ -727,12 +730,20 @@ const multiValFunderAttr = (response, attribute) => {
   return funderAttribute
 }
 
+
+//Get number of funders
+const getNumFunders = (response) => {
+  if (response.data.table1) {
+    return response.data.table1.length
+  }
+}
+
 export const getFunderData = () => (dispatch) => {
   axios.get(`/visualize/target-funder`)
     .then(response => {
       const FunderData = {};
 
-      //Funder Attributes
+      //Set Funder Attributes
       FunderData.profitMotives = singleValFunderAttr(response, 'profitMotive');
       FunderData.organizationForm = singleValFunderAttr(response, 'organizationalForm');
 
@@ -741,10 +752,12 @@ export const getFunderData = () => (dispatch) => {
       FunderData.baseLocation = multiValFunderAttr(response, 'baseLocation');
 
       dispatch({type: SET_FUNDER_DATA, payload: FunderData});
+
+      //Set the number of funders
+      dispatch({type: SET_FUNDER_NUMBERS, payload: getNumFunders(response)})
     })
     .catch(err => {
       console.log(err);
-      //dispatch({type: ACCESS_ERROR, payload: "Error retrieving data"});
     })
 }
 
@@ -772,14 +785,24 @@ const singleValImplementerAttr = (response) => {
   return impAttribute
 }
 
+//Get number of implementers
+const getNumImplementers = (response) => {
+  if (response.data.table1) {
+    return response.data.table1.length
+  }
+}
+
 export const getImplementerData = () => (dispatch) => {
   axios.get(`/visualize/implementor`)
     .then(response => {
       const ImplementerData = {};
 
-      //Implementer Attributes
+      //Set Implementer Attributes
       ImplementerData.profitMotives = singleValImplementerAttr(response);
       dispatch({type: SET_IMPLEMENTER_DATA, payload: ImplementerData});
+
+      //Set the number of implementers
+      dispatch({type: SET_IMPLEMENTER_NUMBERS, payload: getNumImplementers(response)})
     })
     .catch(err => {
       console.log(err);
@@ -916,12 +939,19 @@ const multiValInitAttr = (response, attribute) => {
 }
 
 
+//Get number of implementers
+const getNumInitiatives = (response) => {
+  if (response.data.table1) {
+    return response.data.table1.length
+  }
+}
+
 export const getInitiativeData = () => (dispatch) => {
   axios.get(`/visualize/initiative`)
     .then(response => {
       const InitiativeData = {};
 
-      //Initiative Attributes
+      //Set Initiative Attributes
       InitiativeData.mainProgrammingArea = singleValInitAttr(response, 'mainProgrammingArea');
       InitiativeData.mainProgrammingActivity = singleValInitAttr(response, 'mainProgrammingActivity');
 
@@ -938,6 +968,9 @@ export const getInitiativeData = () => (dispatch) => {
       InitiativeData.targetSchoolManagementType = multiValInitAttr(response, 'targetSchoolManagementType');
 
       dispatch({type: SET_INITIATIVE_DATA, payload: InitiativeData});
+
+      //Set the number of initiatives
+      dispatch({type: SET_INITIATIVE_NUMBERS, payload: getNumInitiatives(response)})
     })
     .catch(err => {
       console.log(err);

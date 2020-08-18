@@ -34,9 +34,6 @@ class Visualize extends Component {
   //Trigger get request to retrieve data for visualization
   componentDidMount = () => {
     document.body.style.height = "100%"
-    this.props.getFunderData();
-    this.props.getImplementerData();
-    this.props.getInitiativeData();
     this.props.getInitiativeFundersByAttr();
     this.props.getInitiativeImplementersByAttr();
   }
@@ -663,9 +660,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getFunderData: () => {dispatch(getFunderData())},
-    getImplementerData: () => {dispatch(getImplementerData())},
-    getInitiativeData: () => {dispatch(getInitiativeData())},
     getInitiativeFundersByAttr: () => {dispatch(getInitiativeFundersByAttr())},
     getInitiativeImplementersByAttr: () => {dispatch(getInitiativeImplementersByAttr())}
   };

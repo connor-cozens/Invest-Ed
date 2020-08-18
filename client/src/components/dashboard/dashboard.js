@@ -265,7 +265,7 @@ class dashboard extends Component {
     const review = userData ? (userData.accessLevel !== 0 ?
       <div className = "container" style = {{marginBottom: "100px"}}>
         <div className = "row mt-4">
-          <div className = "col-md-8 m-auto">
+          <div className = "col-md-16 m-auto">
             <div className = "card card-body">
               <h3>Review</h3>
               {reviewFormsList}

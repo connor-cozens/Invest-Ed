@@ -56,7 +56,12 @@ html,  #root, .App {
   border: 1px solid #D3D3D3;
 }
 
+.card {
+  border: none;
+}
+
 body {
+  background-color: #F5F5F5;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',

@@ -263,7 +263,7 @@ class dashboard extends Component {
 
     //Render review option only if RA or root user
     const review = userData ? (userData.accessLevel !== 0 ?
-      <div className = "container">
+      <div className = "container" style = {{marginBottom: "100px"}}>
         <div className = "row mt-4">
           <div className = "col-md-8 m-auto">
             <div className = "card card-body">

@@ -3,11 +3,6 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Label, PieChart, Pie, Sector, Cell, Legend} from 'recharts'
 
-// import PieIcon from '../images/visualization.PNG'
-// import BarIcon from '../images/barChart.PNG'
-// import FormIcon from '../images/forms.png'
-// import MapIcon from '../images/map.PNG'
-
 import {getFunderData, getImplementerData, getInitiativeData} from '../store/actions/dataActions';
 import './landing.css';
 

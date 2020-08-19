@@ -24,6 +24,7 @@ class Landing extends Component{
 
   static getDerivedStateFromProps = (props, state) => {
     const {funderNumbers, implementerNumbers, initiativeNumbers, funderData, implementerData, initiativeData} = props;
+
     //Set numbers of each actor to be displayed in graph
     if (funderNumbers && implementerNumbers && initiativeNumbers) {
       state.actorInfo = [
@@ -70,7 +71,9 @@ class Landing extends Component{
 
     return {
       actorInfo: state.actorInfo,
-      funderInfo: state.funderInfo
+      funderInfo: state.funderInfo,
+      implementerInfo: state.implementerInfo,
+      initiativeInfo: state.initiativeInfo
     }
   }
 
@@ -243,14 +246,14 @@ class Landing extends Component{
                       }
                       <hr/>
 
-                      <h3 class="card-title"><b>Dashboard Overview</b></h3>
+                      <h3 className ="card-title"><b>Dashboard Overview</b></h3>
                       <br/>
                       <div style = {{display: "flex"}}>
                        {
                          numNonReviewedForms !== null ? (
                            <div className = "card text-white bg-warning mb-3" style={{maxWidth: "20rem"}}>
-                             <div class="card-body">
-                               <h4 class="card-title">Forms Not Reviewed</h4>
+                             <div className ="card-body">
+                               <h4 className ="card-title">Forms Not Reviewed</h4>
                                <h1>{numNonReviewedForms.length}</h1>
                              </div>
                            </div>
@@ -259,8 +262,8 @@ class Landing extends Component{
                        {
                          numRejectedForms !== null ? (
                            <div className = "overview card text-white bg-danger mb-3" style={{maxWidth: "20rem"}}>
-                             <div class="card-body">
-                               <h4 class="card-title">Forms Rejected</h4>
+                             <div className ="card-body">
+                               <h4 className ="card-title">Forms Rejected</h4>
                                <h1>{numRejectedForms.length}</h1>
                              </div>
                            </div>
@@ -269,8 +272,8 @@ class Landing extends Component{
                        {
                          numApprovedForms !== null ? (
                            <div className = "overview card text-white bg-success mb-3" style={{maxWidth: "20rem"}}>
-                             <div class="card-body">
-                               <h4 class="card-title">Forms Approved</h4>
+                             <div className ="card-body">
+                               <h4 className ="card-title">Forms Approved</h4>
                                <h1>{numApprovedForms}</h1>
                              </div>
                            </div>
@@ -284,9 +287,9 @@ class Landing extends Component{
                       <br/>
 
                       <div style = {{display: "flex"}}>
-                        <div class="card bg-light mb-3" style={{display: "flex"}}>
-                          <div class="card-body">
-                            <h4 class="card-title"><b>Data Visualization Overview</b></h4>
+                        <div className ="card bg-light mb-3" style={{display: "flex"}}>
+                          <div className ="card-body">
+                            <h4 className ="card-title"><b>Data Visualization Overview</b></h4>
                             {barGraph}
                             <hr/>
                             <div style = {{display: "flex"}}>
@@ -309,9 +312,9 @@ class Landing extends Component{
                   ) : (
                     <div className = "card card-body">
                       <div style = {{display: "flex"}}>
-                        <div class="card bg-light mb-3" style={{display: "flex"}}>
-                          <div class="card-body">
-                            <h4 class="card-title"><b>Data Visualization Overview</b></h4>
+                        <div className ="card bg-light mb-3" style={{display: "flex"}}>
+                          <div className ="card-body">
+                            <h4 className ="card-title"><b>Data Visualization Overview</b></h4>
                             <p> Visualize data pertaining to actors in girls education in the Global South.</p>
                             <p>Actors include initiatives for girls education, as well as the funding and implementing organizations who finance and support these initiatives.</p>
                             {barGraph}
@@ -332,9 +335,9 @@ class Landing extends Component{
                           </div>
                         </div>
 
-                        <div class="overview card bg-light mb-3" style={{maxWidth: "27rem"}}>
-                          <div class="card-body">
-                            <h4 class="card-title"><b>Organization Access</b></h4>
+                        <div className ="overview card bg-light mb-3" style={{maxWidth: "27rem"}}>
+                          <div className ="card-body">
+                            <h4 className ="card-title"><b>Organization Access</b></h4>
                             <ul>
                               <li>View detailed information about actors.</li>
                               <li>Submit change requests to have new organization-specific information added for analysis and visualization purposes.</li>

@@ -46,7 +46,7 @@ class SignedInLinks extends Component {
               <div aria-labelledby="dropdownMenuButton" className="dropdown-menu">
                 <Link to = '/profile' className = "dropdown-item">My Account</Link>
                 <Link to = '/profile' className = "dropdown-item">Edit Account</Link>
-                <div class="dropdown-divider"></div>
+                <div className ="dropdown-divider"></div>
                 <Link className = "dropdown-item" onClick = {this.handleLogout}>Sign out</Link>
               </div>
             </li>

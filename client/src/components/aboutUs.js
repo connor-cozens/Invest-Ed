@@ -20,8 +20,8 @@ class Collapsible extends React.Component {
       <div onClick={(e)=>this.toggle(e)} className='header'>
       {
         this.state.open ?
-        <i class="arrow up"></i>
-        : <i class="arrow down"></i>
+        <i className ="arrow up"></i>
+        : <i className ="arrow down"></i>
       }
       {this.props.title}</div>
       {this.state.open ? (

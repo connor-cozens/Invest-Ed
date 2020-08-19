@@ -1256,11 +1256,11 @@ class formSubmission extends React.Component{
       if (this.state.needsReview === 1) {
         if (fieldReview === 0) {
           return (
-            <span class="badge badge-warning">Not approved</span>
+            <span className ="badge badge-warning">Not approved</span>
           )
         } else {
           return (
-            <span class="badge badge-success">Approved</span>
+            <span className ="badge badge-success">Approved</span>
           )
         }
       }
@@ -1475,22 +1475,22 @@ class formSubmission extends React.Component{
     const approvalFeedback = formStatus === 'modify' ? (
       formUnauthorizedEditError === null ? (
         inDB === true ? (
-          <div class="alert alert-dismissible alert-success">
+          <div className ="alert alert-dismissible alert-success">
             <strong>This form has been approved.</strong> The information currently on this form is public.
           </div>
         ) : (
           this.state.needsReview === 0 ? (
-            <div class="alert alert-dismissible alert-success">
+            <div className ="alert alert-dismissible alert-success">
               <strong>This form has been approved.</strong> The information currently on this form is public.
             </div>
           ) : (
-            <div class="alert alert-dismissible alert-warning">
+            <div className ="alert alert-dismissible alert-warning">
               <strong>This form is under review for approval.</strong> Please review the approval status of the fields below.
             </div>
           )
         )
       ) : (
-        <div class="alert alert-dismissible alert-warning">
+        <div className ="alert alert-dismissible alert-warning">
           <strong><h5><i>Read Only</i></h5>You cannot edit this form at this time.</strong> {formUnauthorizedEditError}
           <br></br><br></br>
           <strong>The information you are viewing is public.</strong>
@@ -1502,8 +1502,8 @@ class formSubmission extends React.Component{
     const unsavedWarning = this.state.isUnsaved === true ?
     <div className="alert alert-dismissible alert-danger">
       <strong> You have unsaved changes. </strong>Are you sure you want to leave?
-      <button type="button" class="btn btn-warning" onClick = {this.handleLeave}>Yes</button>
-      <button type="button" class="btn btn-warning" onClick = {this.handleStay}>No</button>
+      <button type="button" className ="btn btn-warning" onClick = {this.handleLeave}>Yes</button>
+      <button type="button" className ="btn btn-warning" onClick = {this.handleStay}>No</button>
     </div> : null
 
     return (
@@ -1520,40 +1520,40 @@ class formSubmission extends React.Component{
                   <br></br>
                   <h4><b>Funder</b></h4>
                   <div className="card mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Name: <strong>{this.state.fname}</strong></p>
                     </div>
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Website: <strong>{this.state.furl}</strong></p>
                     </div>
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Profit Motive: <strong>{this.state.motive}</strong></p>
 
                     </div>
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Impact Investing: <strong>{this.state.impact}</strong></p>
 
                     </div>
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Organizational Form: <strong>{this.state.organizationForm}</strong></p>
 
                     </div>
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>International Base(s):</p>
                       <div id="iBases">
                         <ul className="list-group">
@@ -1572,7 +1572,7 @@ class formSubmission extends React.Component{
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Education Subsector(s):</p>
                       <div id="edSubs">
                         <ul className="list-group">
@@ -1591,7 +1591,7 @@ class formSubmission extends React.Component{
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Organizational Trait(s):</p>
                       <div id="orgTraits">
                         <ul className="list-group">
@@ -1610,7 +1610,7 @@ class formSubmission extends React.Component{
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Asia International Base(s):</p>
                       <div id="aIBases">
                         <ul className="list-group">
@@ -1629,7 +1629,7 @@ class formSubmission extends React.Component{
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Asia Operation(s):</p>
                       <div id="asiaOperationLocations">
                         <ul className="list-group">
@@ -1650,42 +1650,42 @@ class formSubmission extends React.Component{
                   <br></br>
                   <h4><b>Initiative</b></h4>
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Name: <strong>{this.state.initName}</strong></p>
 
                     </div>
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Website: <strong>{this.state.initURL}</strong></p>
 
                     </div>
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Targets Women: <strong>{this.state.tWomen}</strong></p>
 
                     </div>
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Start Year: <strong>{this.state.initStart}</strong></p>
 
                     </div>
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>End Year: <strong>{this.state.initEnd}</strong></p>
 
                     </div>
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Launch Country:</p>
                       <div id="launchCountries">
                         <ul className="list-group">
@@ -1704,14 +1704,14 @@ class formSubmission extends React.Component{
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Description: <strong>{this.state.idescription}</strong></p>
 
                     </div>
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Region(s):</p>
                       <div id="initRegions">
                         <ul className="list-group">
@@ -1730,7 +1730,7 @@ class formSubmission extends React.Component{
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Countries:</p>
                       <div id="initCountries">
                         <ul className="list-group">
@@ -1749,7 +1749,7 @@ class formSubmission extends React.Component{
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Target Geography:</p>
                       <div id="targetGeos">
                         <ul className="list-group">
@@ -1768,7 +1768,7 @@ class formSubmission extends React.Component{
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Main Education Subsector:</p>
                       <div id="mEdSubs">
                         <ul className="list-group">
@@ -1787,7 +1787,7 @@ class formSubmission extends React.Component{
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Other Education Subsector(s):</p>
                       <div id="oEdSubs">
                         <ul className="list-group">
@@ -1806,7 +1806,7 @@ class formSubmission extends React.Component{
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Main Program Activity: <strong>{this.state.mainProgramActivity}</strong></p>
                       <br></br><br></br>
 
@@ -1820,7 +1820,7 @@ class formSubmission extends React.Component{
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Other Programming Activities:</p>
                       <div id="initActivities">
                         <ul className="list-group">
@@ -1839,14 +1839,14 @@ class formSubmission extends React.Component{
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Fee to Access: <strong>{this.state.feeAccess}</strong></p>
 
                     </div>
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Target School Management Type:</p>
                       <div id="managementTypes">
                         <ul className="list-group">
@@ -1865,7 +1865,7 @@ class formSubmission extends React.Component{
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Target Population Sector(s):</p>
                       <div id="targetPopSector">
                         <ul className="list-group">
@@ -1884,7 +1884,7 @@ class formSubmission extends React.Component{
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Outcomes Monitored:</p>
                       <div id="outcomesMonitored">
                         <ul className="list-group">
@@ -1905,14 +1905,14 @@ class formSubmission extends React.Component{
                   <br></br>
                   <h4><b>Implementer</b></h4>
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Name: <strong>{this.state.iname}</strong></p>
 
                     </div>
                   </div>
 
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-                    <div class="card-body bg-light">
+                    <div className ="card-body bg-light">
                       <p>Profit Motive: <strong>{this.state.impMotive}</strong></p>
 
                     </div>

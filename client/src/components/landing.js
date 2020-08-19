@@ -344,7 +344,7 @@ class Landing extends Component{
                               <li>Update existing organization information.</li>
                             </ul>
                             <hr/>
-                            <Link to = '/login'><p><b>Log in to your organization account</b></p></Link>
+                            <Link to = '/login'><p style = {{fontSize: "20px"}}><b>Log in to your organization account ></b></p></Link>
                             <p><i> Don't have an account?</i> <Link to = '/contactUs'>
                             <i>Contact us</i></Link><i> with your request to open an organization account.</i></p>
                           </div>

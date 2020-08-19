@@ -435,16 +435,16 @@ class formReview extends React.Component{
 
     const approvalFeedback = formStatus === 'review' ? (
       inDB === true ? (
-        <div class="alert alert-dismissible alert-success">
+        <div className ="alert alert-dismissible alert-success">
           <strong>This form has been approved.</strong> The information currently on this form is public.
         </div>
       ) : (
         this.state.needsReview === 0 ? (
-          <div class="alert alert-dismissible alert-success">
+          <div className ="alert alert-dismissible alert-success">
             <strong>This form has been approved.</strong> The information currently on this form is public.
           </div>
         ) : (
-          <div class="alert alert-dismissible alert-warning">
+          <div className ="alert alert-dismissible alert-warning">
             <strong>This form is under review for approval.</strong> Please make any necessary changes to the approval status of the below fields. <i>By default, fields updated on change request are set to rejected.</i><br></br><br></br><strong>Accepting all fields will make this form information public.</strong>
           </div>
         )
@@ -452,14 +452,14 @@ class formReview extends React.Component{
     ) : null
 
     const unsavedWarning = this.state.isUnsaved === true ?
-    <div className="alert alert-dismissible alert-danger" style = {{width: "100%"}}>
+    <div className="alert alert-dismissible alert-danger">
       <strong> You have unsaved changes. </strong>Are you sure you want to leave?
-      <button type="button" class="btn btn-warning" style = {{margin: '0 0 0 25px'}} onClick = {this.handleLeave}>Yes</button>
-      <button type="button" class="btn btn-warning" style = {{margin: '0 0 0 10px'}} onClick = {this.handleStay}>No</button>
+      <button type="button" className ="btn btn-warning" onClick = {this.handleLeave}>Yes</button>
+      <button type="button" className ="btn btn-warning" onClick = {this.handleStay}>No</button>
     </div> : null
 
     return (
-        <div className = "formReview" style = {{padding: '50px 300px 0 300px'}}>
+        <div className = "formReview">
           <h3>Form Review</h3>
           <div>
             <br></br>
@@ -467,9 +467,9 @@ class formReview extends React.Component{
             {approvalFeedback}
             <form onSubmit={this.handleFormSubmit}>
 
-            <h4>Funder</h4>
+            <h4><b>Funder</b></h4>
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Name: <strong>{this.state.fname}</strong></p>
                 <input type="radio" id="needsReview1" name="fnameA" value={1} checked = {this.state.reviews.fnameA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview1">Accept</label>
                 <input type="radio" id="needsReview2" name="fnameA" value={0} checked = {this.state.reviews.fnameA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview2">Reject</label>
@@ -477,7 +477,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Website: <strong>{this.state.furl}</strong></p>
                 <input type="radio" id="needsReview3" name="furlA" value={1} checked = {this.state.reviews.furlA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview3">Accept</label>
                 <input type="radio" id="needsReview4" name="furlA" value={0} checked = {this.state.reviews.furlA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview4">Reject</label>
@@ -485,7 +485,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Profit Motive: <strong>{this.state.motive}</strong></p>
                 <input type="radio" id="needsReview3_5" name="motiveA" value={1} checked = {this.state.reviews.motiveA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview3_5">Accept</label>
                 <input type="radio" id="needsReview4_5" name="motiveA" value={0} checked = {this.state.reviews.motiveA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview4_5">Reject</label>
@@ -493,7 +493,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Impact Investing: <strong>{this.state.impact}</strong></p>
                 <input type="radio" id="needsReview5" name="impactA" value={1} checked = {this.state.reviews.impactA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview5">Accept</label>
                 <input type="radio" id="needsReview6" name="impactA" value={0} checked = {this.state.reviews.impactA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview6">Reject</label>
@@ -501,7 +501,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Organizational Form: <strong>{this.state.organizationForm}</strong></p>
                 <input type="radio" id="needsReview9" name="organizationFormA" value={1} checked = {this.state.reviews.organizationFormA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview9">Accept</label>
                 <input type="radio" id="needsReview10" name="organizationFormA" value={0} checked = {this.state.reviews.organizationFormA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview10">Reject</label>
@@ -509,7 +509,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>International Base(s):</p>
                 <div id="iBases">
                   <ul className="list-group">
@@ -529,7 +529,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Education Subsector(s):</p>
                 <div id="edSubs">
                   <ul className="list-group">
@@ -549,7 +549,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Organizational Trait(s):</p>
                 <div id="orgTraits">
                   <ul className="list-group">
@@ -569,7 +569,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Asia International Base(s):</p>
                 <div id="aIBases">
                   <ul className="list-group">
@@ -589,7 +589,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Asia Operation(s):</p>
                 <div id="asiaOperationLocations">
                   <ul className="list-group">
@@ -609,9 +609,9 @@ class formReview extends React.Component{
             </div>
 
             <br></br>
-            <h4>Initiative</h4>
+            <h4><b>Initiative</b></h4>
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Name: <strong>{this.state.initName}</strong></p>
                 <input type="radio" id="needsReview23" name="initNameA" value={1} checked = {this.state.reviews.initNameA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview23">Accept</label>
                 <input type="radio" id="needsReview24" name="initNameA" value={0} checked = {this.state.reviews.initNameA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview24">Reject</label>
@@ -619,7 +619,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Website: <strong>{this.state.initURL}</strong></p>
                 <input type="radio" id="needsReview25" name="initURLA" value={1} checked = {this.state.reviews.initURLA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview25">Accept</label>
                 <input type="radio" id="needsReview26" name="initURLA" value={0} checked = {this.state.reviews.initURLA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview26">Reject</label>
@@ -627,7 +627,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Targets Women: <strong>{this.state.tWomen}</strong></p>
                 <input type="radio" id="needsReview27" name="tWomenA" value={1} checked = {this.state.reviews.tWomenA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview27">Accept</label>
                 <input type="radio" id="needsReview28" name="tWomenA" value={0} checked = {this.state.reviews.tWomenA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview28">Reject</label>
@@ -635,7 +635,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Start Year: <strong>{this.state.initStart}</strong></p>
                 <input type="radio" id="needsReview29" name="initStartA" value={1} checked = {this.state.reviews.initStartA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview29">Accept</label>
                 <input type="radio" id="needsReview30" name="initStartA" value={0} checked = {this.state.reviews.initStartA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview30">Reject</label>
@@ -643,7 +643,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>End Year: <strong>{this.state.initEnd}</strong></p>
                 <input type="radio" id="needsReview31" name="initEndA" value={1} checked = {this.state.reviews.initEndA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview31">Accept</label>
                 <input type="radio" id="needsReview32" name="initEndA" value={0} checked = {this.state.reviews.initEndA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview32">Reject</label>
@@ -651,7 +651,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Launch Country:</p>
                 <div id="launchCountries">
                   <ul className="list-group">
@@ -671,7 +671,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Description: <strong>{this.state.idescription}</strong></p>
                 <input type="radio" id="needsReview35" name="idescriptionA" value={1} checked = {this.state.reviews.idescriptionA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview35">Accept</label>
                 <input type="radio" id="needsReview36" name="idescriptionA" value={0} checked = {this.state.reviews.idescriptionA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview36">Reject</label>
@@ -679,7 +679,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Region(s):</p>
                 <div id="initRegions">
                   <ul className="list-group">
@@ -699,7 +699,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Countries:</p>
                 <div id="initCountries">
                   <ul className="list-group">
@@ -719,7 +719,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Target Geography:</p>
                 <div id="targetGeos">
                   <ul className="list-group">
@@ -739,7 +739,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Main Education Subsector:</p>
                 <div id="mEdSubs">
                   <ul className="list-group">
@@ -759,7 +759,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Other Education Subsector(s):</p>
                 <div id="oEdSubs">
                   <ul className="list-group">
@@ -779,7 +779,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Main Program Activity: <strong>{this.state.mainProgramActivity}</strong></p>
                 <input type="radio" id="needsReview47" name="initiativeMainProgramActivityA" value={1} checked = {this.state.reviews.initiativeMainProgramActivityA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview47">Accept</label>
                 <input type="radio" id="needsReview48" name="initiativeMainProgramActivityA" value={0} checked = {this.state.reviews.initiativeMainProgramActivityA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview48">Reject</label>
@@ -795,7 +795,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Other Programming Activities:</p>
                 <div id="initActivities">
                   <ul className="list-group">
@@ -815,7 +815,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Fee to Access: <strong>{this.state.feeAccess}</strong></p>
                 <input type="radio" id="needsReview51" name="feeAccessA" value={1} checked = {this.state.reviews.feeAccessA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview51">Accept</label>
                 <input type="radio" id="needsReview52" name="feeAccessA" value={0} checked = {this.state.reviews.feeAccessA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview52">Reject</label>
@@ -823,7 +823,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Target School Management Type:</p>
                 <div id="managementTypes">
                   <ul className="list-group">
@@ -843,7 +843,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Target Population Sector(s):</p>
                 <div id="targetPopSector">
                   <ul className="list-group">
@@ -863,7 +863,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Outcomes Monitored:</p>
                 <div id="outcomesMonitored">
                   <ul className="list-group">
@@ -883,9 +883,9 @@ class formReview extends React.Component{
             </div>
 
             <br></br>
-            <h4>Implementer</h4>
+            <h4><b>Implementer</b></h4>
             <div className="card  mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Name: <strong>{this.state.iname}</strong></p>
                 <input type="radio" id="needsReview61" name="inameA" value={1} checked = {this.state.reviews.inameA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview61">Accept</label>
                 <input type="radio" id="needsReview62" name="inameA" value={0} checked = {this.state.reviews.inameA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview62">Reject</label>
@@ -893,7 +893,7 @@ class formReview extends React.Component{
             </div>
 
             <div className="card  mb-3" style={{maxWidth: "20rem;"}}>
-              <div class="card-body bg-light">
+              <div className ="card-body bg-light">
                 <p>Profit Motive: <strong>{this.state.impMotive}</strong></p>
                 <input type="radio" id="needsReview63" name="impMotiveA" value={1} checked = {this.state.reviews.impMotiveA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview63">Accept</label>
                 <input type="radio" id="needsReview64" name="impMotiveA" value={0} checked = {this.state.reviews.impMotiveA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview64">Reject</label>

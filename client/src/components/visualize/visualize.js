@@ -7,7 +7,7 @@ import './visualize.css';
 
 import {getFunderData, getImplementerData, getInitiativeData, getInitiativeFundersByAttr, getInitiativeImplementersByAttr} from '../../store/actions/dataActions';
 
-import WorldIcon from '../../images/world.png'
+import InstructionHeader from '../../images/viz-header.png'
 
 class Visualize extends Component {
   state = {
@@ -33,11 +33,12 @@ class Visualize extends Component {
 
   //Trigger get request to retrieve data for visualization
   componentDidMount = () => {
-    this.props.getFunderData();
-    this.props.getImplementerData();
-    this.props.getInitiativeData();
+    document.body.style.height = "100%"
     this.props.getInitiativeFundersByAttr();
     this.props.getInitiativeImplementersByAttr();
+  }
+  componentWillUnmount = () => {
+    document.body.style.height = "auto"
   }
 
   //Set retrieved visualized data passed into component via next props to the state
@@ -614,12 +615,12 @@ class Visualize extends Component {
         this.dataSelection() ?
         <Chart data = {this.dataSelection()} toggleCompare = {this.state.compareChecked} toggleBreakDown = {this.handleBreakDownChange} toggleMap = {this.state.mapViewChecked}/>
         : <h3> Error occured loading data, please refresh page </h3>
-      ) : <img src = {WorldIcon} height = {400} width = {400} style = {{margin: "150px 0 0 450px"}} />
+      ) : <img src = {InstructionHeader} height = {500} width = {500} style = {{margin: "100px 0 0 450px"}} />
 
 
       return (
-        <div style = {{height: "100%"}}>
-          <nav className = "nav flex-column sidebar settings " style = {{height: "100%"}}>
+        <div className = "wrapper">
+          <nav className = "nav flex-column sidebar settings">
             <select value = {this.state.entitySelection} type="entity" id="entity" name="entity" onChange={this.handleEntitySelection} style = {{width:"90%", margin: "50px 0 0 20px"}}>
               <option value="select">Filter Entity Type</option>
               <option value="funders">Funders</option>
@@ -659,9 +660,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getFunderData: () => {dispatch(getFunderData())},
-    getImplementerData: () => {dispatch(getImplementerData())},
-    getInitiativeData: () => {dispatch(getInitiativeData())},
     getInitiativeFundersByAttr: () => {dispatch(getInitiativeFundersByAttr())},
     getInitiativeImplementersByAttr: () => {dispatch(getInitiativeImplementersByAttr())}
   };

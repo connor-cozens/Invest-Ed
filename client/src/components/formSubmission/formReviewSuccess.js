@@ -28,7 +28,7 @@ const FormReviewSuccess = (props) => {
     props.formReviewComplete();
 
     const message =
-      <div class="alert alert-dismissible alert-success" style = {{textAlign: "left"}}>
+      <div className ="alert alert-dismissible alert-success" style = {{textAlign: "left"}}>
         <h5><strong>Your review was submitted successfully</strong></h5> Your review will be visible to organization and research users who view this form.
       </div>
 

@@ -33,8 +33,11 @@ export const FORM_REVIEW_CLEAR = 'FORM_REVIEW_CLEAR';
 
 //Data Visualization
 export const SET_FUNDER_DATA = 'SET_FUNDER_DATA';
+export const SET_FUNDER_NUMBERS = 'SET_FUNDER_NUMBERS';
 export const SET_IMPLEMENTER_DATA = 'SET_IMPLEMENTER_DATA';
+export const SET_IMPLEMENTER_NUMBERS = 'SET_IMPLEMENTER_NUMBERS';
 export const SET_INITIATIVE_DATA = 'SET_INITIATIVE_DATA';
+export const SET_INITIATIVE_NUMBERS = 'SET_INITIATIVE_NUMBERS';
 export const SET_FUNDER_ATTRIBUTES = 'SET_FUNDER_ATTRIBUTES';
 export const SET_IMPLEMENTER_ATTRIBUTES = 'SET_IMPLEMENTER_ATTRIBUTES';
 export const SET_FUNDERTYPE_INITIATIVE = 'SET_FUNDERTYPE_INITIATIVE';
@@ -71,8 +74,12 @@ const initState = {
 
   //Visualization data
   FunderData: null,
+  FunderNumbers: null,
   ImplementerData: null,
+  ImplementerNumbers: null,
   InititativeData: null,
+  InititativeNumbers: null,
+
   FunderAttributes: null,
   ImplementerAttributes: null,
 
@@ -139,15 +146,6 @@ const dataReducer = (state = initState, action) => {
         formReviewError: null,
         registered: false,
         registerError: null,
-        FunderData: null,
-        ImplementerData: null,
-        InititativeData: null,
-        FunderAttributes: null,
-        ImplementerAttributes: null,
-        FunderTypeInitiative: null,
-        ImplementerTypeInitiative: null,
-        FunderInitiative: null,
-        ImplementerInitiative: null,
         visDataRetrievalError: null
       };
       case SET_USER_ERROR:
@@ -264,6 +262,7 @@ const dataReducer = (state = initState, action) => {
 
 
     //VISUALIZE DISPATCH HANDLERS
+    //Set general actor data
     case SET_FUNDER_DATA:
       return {
         ...state,
@@ -279,6 +278,25 @@ const dataReducer = (state = initState, action) => {
         ...state,
         InititativeData: action.payload
       };
+
+    //Set number of each actor
+    case SET_FUNDER_NUMBERS:
+      return {
+        ...state,
+        FunderNumbers: action.payload
+      };
+    case SET_IMPLEMENTER_NUMBERS:
+      return {
+        ...state,
+        ImplementerNumbers: action.payload
+      };
+    case SET_INITIATIVE_NUMBERS:
+      return {
+        ...state,
+        InititativeNumbers: action.payload
+      };
+
+    //Set attributes corresponding to specific actors and actors visualized by category
     case SET_FUNDER_ATTRIBUTES:
       return {
         ...state,

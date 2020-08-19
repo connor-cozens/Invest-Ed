@@ -27,19 +27,16 @@ class Profile extends Component {
           <div className="card" style={{margin: "0 auto", width: "25rem", marginTop: "25px", borderStyle: "none"}}>
             <img className="card-img-top" src={Image} alt="Card image cap" style = {{margin: "0 auto", marginTop: "25px", width:"200px", height:"200px"}}/>
             <div className="card-body" style = {{margin: "auto"}}>
-              <h3 style = {{textAlign: "left"}}class="card-title">{userData ? userData.firstname + ' ' + userData.lastname : null}</h3>
+              <h3 style = {{textAlign: "left"}}className ="card-title"><b>{userData ? userData.firstname + ' ' + userData.lastname : null}</b></h3>
             </div>
           </div>
           <div className="card" style={{margin: "0 auto", width: "25rem"}}>
             <ul className="list-group list-group-flush">
-              <li style = {{paddingBottom: "15px"}} class="list-group-item">Username: <b>{userData ? userData.username : null}</b></li>
-              <li style = {{paddingBottom: "15px"}} class="list-group-item">Email: <b>{userData ? userData.email: null}</b></li>
-              <li style = {{paddingBottom: "15px"}} class="list-group-item">Organization: <b>{userData ? userData.organization: null}</b></li>
-              <li style = {{paddingBottom: "15px"}} class="list-group-item">User Type: <b>{userType}</b></li>
+              <li style = {{paddingBottom: "15px"}} className ="list-group-item">Username: <b>{userData ? userData.username : null}</b></li>
+              <li style = {{paddingBottom: "15px"}} className ="list-group-item">Email: <b>{userData ? userData.email: null}</b></li>
+              <li style = {{paddingBottom: "15px"}} className ="list-group-item">Organization: <b>{userData ? userData.organization: null}</b></li>
+              <li style = {{paddingBottom: "15px"}} className ="list-group-item">User Type: <b>{userType}</b></li>
             </ul>
-            <div className="card-body">
-              <a href="#" class="card-link">Edit Account</a>
-            </div>
           </div>
         </div>
       </div>

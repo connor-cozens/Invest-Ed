@@ -36,11 +36,11 @@ const FormSubmissionSuccess = (props) => {
       form ? (
         //If an organization user, change request submitted message displays, otherwise changes made message displays for RA/root users
         userData.accessLevel == 0 ? (
-          <div class="alert alert-dismissible alert-success" style = {{textAlign: "left"}}>
+          <div className ="alert alert-dismissible alert-success" style = {{textAlign: "left"}}>
             <h5><strong>Your change request was submitted successfully</strong></h5> Form submission tag number: <strong>{form.tagNumber}</strong>.
           </div>
         ) : (
-        <div class="alert alert-dismissible alert-success" style = {{textAlign: "left"}}>
+        <div className ="alert alert-dismissible alert-success" style = {{textAlign: "left"}}>
           <h5><strong>Your changes were made successfully</strong></h5> Your changes have been saved and are publicly visible for data visualization.<br></br><br></br> Form submission tag number: <strong>{form.tagNumber}</strong>.
         </div>
         )

@@ -63,15 +63,14 @@
 
 #dashboard button {
   border-radius: 10px;
-  border: 1px solid #D3D3D3;
   background-color: white;
   width: 125px;
-  margin: 10px 10px 10px 10px;
-  padding: 15px 5px 15px 5px;
+  margin: 15px 10px 0 10px;
+  padding: 5px 5px 5px 5px;
 }
 
 #dashboard button:hover {
-  background-color: #f2f2f2;
+  background-color: #DCDCDC;
   color: black;
 }
 
@@ -90,6 +89,7 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 #dashboard .content{
+  padding: 15px 0 15px 25px;
   cursor: pointer;
   border: solid 1px #e6e6e6;
   float: left;

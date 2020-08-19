@@ -24,8 +24,8 @@ class Collapsible extends React.Component {
       <div onClick={(e)=>this.toggle(e)} className='header'>
       {
         this.state.open ?
-        <i class="arrow up"></i>
-        : <i class="arrow down"></i>
+        <i className ="arrow up"></i>
+        : <i className ="arrow down"></i>
       }
       {this.props.title}</div>
       {this.state.open ? (
@@ -188,13 +188,14 @@ class dashboard extends Component {
                 return (
                   <div className = 'formlist'>
                     <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}</button>
+                    <hr/>
                     <div>
                       <text style = {formStateStyle}>{form.state}</text>
                     </div>
                   </div>
                 );
               })
-            ) : <p>You have no forms currently pending approval</p>
+            ) : <p>You have no forms currently pending approval.</p>
           }
           </Collapsible>
         </div>
@@ -215,13 +216,14 @@ class dashboard extends Component {
                   return (
                     <div className = 'formlist'>
                       <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}</button>
+                      <hr/>
                       <div>
                         <text style = {formStateStyle}>{form.state}</text>
                       </div>
                     </div>
                   );
                 })
-              ) : <p>You have no edited forms currently approved</p>
+              ) : <p>You have no edited forms currently approved.</p>
             }
             </Collapsible>
           </div>
@@ -247,13 +249,14 @@ class dashboard extends Component {
                   return (
                     <div className = 'formlist'>
                       <button name = "reviewTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}</button>
+                      <hr/>
                       <div>
                         <text style = {formStateStyle}>{form.state}</text>
                       </div>
                     </div>
                   );
                 })
-              ) : <p>There are no forms currently that require review</p>
+              ) : <p>There are no forms currently that require review.</p>
             }
             </Collapsible>
           </div>
@@ -263,11 +266,12 @@ class dashboard extends Component {
 
     //Render review option only if RA or root user
     const review = userData ? (userData.accessLevel !== 0 ?
-      <div className = "container">
+      <div className = "container" style = {{marginBottom: "100px"}}>
         <div className = "row mt-4">
           <div className = "col-md-8 m-auto">
             <div className = "card card-body">
-              <h3>Review</h3>
+              <h4><b>Review</b></h4>
+              <hr/>
               {reviewFormsList}
               <br></br>
               <input type="number" name="reviewTagNum" value={this.state.reviewTagNum} placeholder="Enter Form Tag Number" onChange={this.tagNumChange}/><br></br>
@@ -287,7 +291,8 @@ class dashboard extends Component {
           <div className = "row mt-4">
             <div className = "col-md-8 m-auto">
               <div className = "card card-body">
-                <h3>Add a New Form</h3>
+                <h4><b>Add a New Form</b></h4>
+                <hr/>
                 <Link onClick={this.handleAddClick}><h5>Create an Information Submission Form</h5></Link>
               </div>
             </div>
@@ -297,7 +302,8 @@ class dashboard extends Component {
           <div className = "row mt-4">
             <div className = "col-md-8 m-auto">
               <div className = "card card-body">
-                <h3>Modify</h3>
+                <h4><b>Modify</b></h4>
+                <hr/>
                 {pendingFormsList}
                 {approvedFormsList}
                 <br></br>

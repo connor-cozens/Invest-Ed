@@ -1518,7 +1518,7 @@ class formSubmission extends React.Component{
               (
                 <div>
                   <br></br>
-                  <h4>Funder</h4>
+                  <h4><b>Funder</b></h4>
                   <div className="card mb-3" style={{maxWidth: "20rem;"}}>
                     <div class="card-body bg-light">
                       <p>Name: <strong>{this.state.fname}</strong></p>
@@ -1648,7 +1648,7 @@ class formSubmission extends React.Component{
                   </div>
 
                   <br></br>
-                  <h4>Initiative</h4>
+                  <h4><b>Initiative</b></h4>
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
                     <div class="card-body bg-light">
                       <p>Name: <strong>{this.state.initName}</strong></p>
@@ -1903,7 +1903,7 @@ class formSubmission extends React.Component{
                   </div>
 
                   <br></br>
-                  <h4>Implementer</h4>
+                  <h4><b>Implementer</b></h4>
                   <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
                     <div class="card-body bg-light">
                       <p>Name: <strong>{this.state.iname}</strong></p>
@@ -1922,7 +1922,7 @@ class formSubmission extends React.Component{
               ) : (
                 <form onSubmit={this.handleFormSubmit}>
 
-                <h4>Funder</h4>
+                <h4><b>Funder</b></h4>
 
                 <p>Name</p>
                   <input type="text" id="fname" name="funderName" value={this.state.fname} placeholder="Funder Name" onChange={this.handleChange}/>
@@ -2727,7 +2727,7 @@ class formSubmission extends React.Component{
                 {this.fieldStatus(this.state.originalReviews.asiaOperationsA)}
                 <br></br><br></br>
 
-                <h4>Initiative</h4>
+                <h4><b>Initiative</b></h4>
 
                 <p>Name</p>
                   <input type="text" id="initName" name="initiativeName" value = {this.state.initName} placeholder="Initiative Name" onChange={this.handleChange}/>
@@ -4851,7 +4851,7 @@ class formSubmission extends React.Component{
 
                 <div id="sourceOfFeesList"></div>
 
-                <h4>Implementer</h4>
+                <h4><b>Implementer</b></h4>
 
                 <p>Name</p>
                   <input type="text" id="iname" name="implementerName" value = {this.state.iname} placeholder="Implementer Name" onChange={this.handleChange}/>

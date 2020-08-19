@@ -467,7 +467,7 @@ class formReview extends React.Component{
             {approvalFeedback}
             <form onSubmit={this.handleFormSubmit}>
 
-            <h4>Funder</h4>
+            <h4><b>Funder</b></h4>
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Name: <strong>{this.state.fname}</strong></p>
@@ -609,7 +609,7 @@ class formReview extends React.Component{
             </div>
 
             <br></br>
-            <h4>Initiative</h4>
+            <h4><b>Initiative</b></h4>
             <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Name: <strong>{this.state.initName}</strong></p>
@@ -883,7 +883,7 @@ class formReview extends React.Component{
             </div>
 
             <br></br>
-            <h4>Implementer</h4>
+            <h4><b>Implementer</b></h4>
             <div className="card  mb-3" style={{maxWidth: "20rem;"}}>
               <div class="card-body bg-light">
                 <p>Name: <strong>{this.state.iname}</strong></p>

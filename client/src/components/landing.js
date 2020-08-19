@@ -380,23 +380,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 }
 
-// <br></br><br></br>
-// <div>
-//   <div style = {{ display: "flex", justifyContent: "center", alignItems: "center"}}>
-//     <img src = {PieIcon} height = {250} width = {295} style = {{display: "inline-block"}}/>
-//     <img src = {BarIcon} height = {200} width = {235} style = {{display: "inline-block"}}/>
-//   </div>
-//   <br></br>
-//   <h2 style = {{textAlign: "center", paddingLeft: "200px", paddingRight: "200px"}}>Visualize Data Pertaining to Actors in Girls' Education Initiatives</h2>
-// </div>
-// <br></br><br></br><br></br><br></br>
-// <div>
-//   <div style = {{ display: "flex", justifyContent: "center", alignItems: "center"}}>
-//     <img src = {FormIcon} height = {200} width = {200} style = {{display: "inline-block"}}/>
-//   </div>
-//   <br></br>
-//   <h2 style = {{textAlign: "center", paddingLeft: "200px", paddingRight: "200px"}}>Submit New Data and Make Modification to Existing Data</h2>
-// </div>
-// <br></br><br></br><br></br><br></br>
-
 export default connect(mapStateToProps, mapDispatchToProps)(Landing)

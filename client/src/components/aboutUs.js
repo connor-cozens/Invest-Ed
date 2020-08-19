@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import WorldIcon from '../images/world.png'
 import './aboutUs.css';
 
 class Collapsible extends React.Component {

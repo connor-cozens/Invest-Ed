@@ -7,7 +7,7 @@ import './visualize.css';
 
 import {getFunderData, getImplementerData, getInitiativeData, getInitiativeFundersByAttr, getInitiativeImplementersByAttr} from '../../store/actions/dataActions';
 
-import WorldIcon from '../../images/world.png'
+import InstructionHeader from '../../images/viz-header.png'
 
 class Visualize extends Component {
   state = {
@@ -615,7 +615,7 @@ class Visualize extends Component {
         this.dataSelection() ?
         <Chart data = {this.dataSelection()} toggleCompare = {this.state.compareChecked} toggleBreakDown = {this.handleBreakDownChange} toggleMap = {this.state.mapViewChecked}/>
         : <h3> Error occured loading data, please refresh page </h3>
-      ) : <img src = {WorldIcon} height = {400} width = {400} style = {{margin: "150px 0 0 450px"}} />
+      ) : <img src = {InstructionHeader} height = {500} width = {500} style = {{margin: "100px 0 0 450px"}} />
 
 
       return (

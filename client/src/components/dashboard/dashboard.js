@@ -274,7 +274,7 @@ class dashboard extends Component {
               <hr/>
               {reviewFormsList}
               <br></br>
-              <input type="number" name="reviewTagNum" value={this.state.reviewTagNum} placeholder="Find Initiative to Review by Tag Number" onChange={this.tagNumChange}/><br></br>
+              <input type="number" name="reviewTagNum" value={this.state.reviewTagNum} placeholder="Initiative to Review by Tag Number" onChange={this.tagNumChange}/><br></br>
               <Link onClick={this.handleReviewClick}><div id="reviewFormActive"></div></Link>
               <div id="reviewFormInactive"><font color="grey"><h5>Search ></h5></font></div>
             </div>
@@ -307,7 +307,7 @@ class dashboard extends Component {
                 {pendingFormsList}
                 {approvedFormsList}
                 <br></br>
-                <input type="number" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Find Initiative to Modify by Tag Number" onChange={this.tagNumChange}/><br></br>
+                <input type="number" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Initiative to Modify by Tag Number" onChange={this.tagNumChange}/><br></br>
                 <Link onClick={this.handleModifyClick}><div id="modifyFormActive"></div></Link>
                 <div id="modifyFormInactive"><font color="grey"><h5>Search ></h5></font></div>
               </div>

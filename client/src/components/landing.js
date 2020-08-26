@@ -253,7 +253,7 @@ class Landing extends Component{
                          numNonReviewedForms !== null ? (
                            <div className = "card text-white bg-warning mb-3" style={{maxWidth: "20rem"}}>
                              <div className ="card-body">
-                               <h4 className ="card-title">Forms Not Reviewed</h4>
+                               <h5 className ="card-title">Number of Initiative Submissions <b>Not Reviewed</b></h5>
                                <h1>{numNonReviewedForms.length}</h1>
                              </div>
                            </div>
@@ -263,7 +263,7 @@ class Landing extends Component{
                          numRejectedForms !== null ? (
                            <div className = "overview card text-white bg-danger mb-3" style={{maxWidth: "20rem"}}>
                              <div className ="card-body">
-                               <h4 className ="card-title">Forms Rejected</h4>
+                               <h5 className ="card-title">Number of Initiative Submissions <b>Rejected</b></h5>
                                <h1>{numRejectedForms.length}</h1>
                              </div>
                            </div>
@@ -273,7 +273,7 @@ class Landing extends Component{
                          numApprovedForms !== null ? (
                            <div className = "overview card text-white bg-success mb-3" style={{maxWidth: "20rem"}}>
                              <div className ="card-body">
-                               <h4 className ="card-title">Forms Approved</h4>
+                               <h5 className ="card-title">Number of Initiative Submissions <b>Approved</b></h5>
                                <h1>{numApprovedForms}</h1>
                              </div>
                            </div>

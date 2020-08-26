@@ -43,10 +43,14 @@ class dashboard extends Component {
     super(props);
     this.state = {
       modifyTagNum: null,
-      reviewTagNum: null,
-      addClicked: false,
+      modifyEnabled: false,
       modifyClicked: false,
+
+      reviewTagNum: null,
+      reviewEnabled: false,
       reviewClicked: false,
+
+      addClicked: false
     }
 
     this.tagNumChange = this.tagNumChange.bind(this);
@@ -69,7 +73,8 @@ class dashboard extends Component {
     e.preventDefault();
     if (this.state.modifyTagNum !== null && this.state.modifyTagNum !== ""){
       //Get form
-      this.props.getForm(this.state.modifyTagNum, 'modify');
+      this.props.getForm(this.state.modifyTagNum, 'modify')
+      //Set clicked status to modify
       this.state.modifyClicked = true;
     }
   }
@@ -78,14 +83,17 @@ class dashboard extends Component {
     e.preventDefault();
     if (this.state.reviewTagNum !== null && this.state.reviewTagNum !== ""){
       //Get form
-      this.props.getForm(this.state.reviewTagNum, 'review');
+      this.props.getForm(this.state.reviewTagNum, 'review')
+      //Set clicked status to review
       this.state.reviewClicked = true;
     }
   }
 
   handleAddClick(e){
     e.preventDefault();
+    //Set new form status
     this.props.newForm();
+    //Set clicked status to add
     this.state.addClicked = true;
   }
 
@@ -97,13 +105,15 @@ class dashboard extends Component {
       });
 
       if (this.state.modifyTagNum !== null && this.state.modifyTagNum !== ""){
-        ReactDOM.render(<h5>Search ></h5>, document.getElementById("modifyFormActive"))
-        ReactDOM.render(<div></div>, document.getElementById("modifyFormInactive"))
+        this.state.modifyEnabled = true;
       }
       else {
-        ReactDOM.render(<font color="grey"><h5>Search ></h5></font>, document.getElementById("modifyFormInactive"))
-        ReactDOM.render(<div></div>, document.getElementById("modifyFormActive"))
+        this.state.modifyEnabled = false;
       }
+
+      this.setState({
+        modifyEnabled: this.state.modifyEnabled
+      })
     }
     else if (e.target.name == 'reviewTagNum') {
       this.state.reviewTagNum = e.target.value;
@@ -112,13 +122,15 @@ class dashboard extends Component {
       });
 
       if (this.state.reviewTagNum !== null && this.state.reviewTagNum !== ""){
-        ReactDOM.render(<h5>Search ></h5>, document.getElementById("reviewFormActive"))
-        ReactDOM.render(<div></div>, document.getElementById("reviewFormInactive"))
+        this.state.reviewEnabled = true;
       }
       else {
-        ReactDOM.render(<font color="grey"><h5>Search ></h5></font>, document.getElementById("reviewFormInactive"))
-        ReactDOM.render(<div></div>, document.getElementById("reviewFormActive"))
+        this.state.reviewEnabled = false;
       }
+
+      this.setState({
+        reviewEnabled: this.state.reviewEnabled
+      })
     }
   }
 
@@ -155,6 +167,11 @@ class dashboard extends Component {
       else {
         clearForm();
       }
+      //If there is retreival error
+    } else {
+      this.state.modifyClicked = false;
+      this.state.reviewClicked = false;
+      this.state.addClicked = false;
     }
 
     //Handle click
@@ -186,8 +203,8 @@ class dashboard extends Component {
                   formStateStyle.color = 'red'
                 }
                 return (
-                  <div className = 'formlist'>
-                    <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Initiative Tag Number: <b>{form.tag}</b></button>
+                  <div className = 'form-list'>
+                    <button className = "form-button" name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Initiative Tag Number: <b>{form.tag}</b></button>
                     <hr/>
                     <div>
                       <text style = {formStateStyle}>Status: <b>{form.state}</b></text>
@@ -214,8 +231,8 @@ class dashboard extends Component {
                 userData.editedForms.approvedForms.map(form => {
                   let formStateStyle = {color: 'green'}
                   return (
-                    <div className = 'formlist'>
-                      <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Initiative Tag Number: <b>{form.tag}</b></button>
+                    <div className = 'form-list'>
+                      <button className = "form-button" name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Initiative Tag Number: <b>{form.tag}</b></button>
                       <hr/>
                       <div>
                         <text style = {formStateStyle}>Status: <b>{form.state}</b></text>
@@ -247,8 +264,8 @@ class dashboard extends Component {
                     formStateStyle.color = 'red'
                   }
                   return (
-                    <div className = 'formlist'>
-                      <button name = "reviewTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Initiative Tag Number: <b>{form.tag}</b></button>
+                    <div className = 'form-list'>
+                      <button className = "form-button" name = "reviewTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Initiative Tag Number: <b>{form.tag}</b></button>
                       <hr/>
                       <div>
                         <text style = {formStateStyle}>Status: <b>{form.state}</b></text>
@@ -275,8 +292,11 @@ class dashboard extends Component {
               {reviewFormsList}
               <br></br>
               <input type="number" name="reviewTagNum" value={this.state.reviewTagNum} placeholder="Initiative to Review by Tag Number" onChange={this.tagNumChange}/><br></br>
-              <Link onClick={this.handleReviewClick}><div id="reviewFormActive"></div></Link>
-              <div id="reviewFormInactive"><font color="grey"><h5>Search ></h5></font></div>
+              {
+                !this.state.reviewEnabled ?
+                  <button className="search-button btn btn-primary disabled" onClick={this.handleReviewClick} disabled>Search</button> :
+                  <button className="search-button btn btn-primary" onClick={this.handleReviewClick}>Search</button>
+              }
             </div>
           </div>
         </div>
@@ -308,8 +328,11 @@ class dashboard extends Component {
                 {approvedFormsList}
                 <br></br>
                 <input type="number" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Initiative to Modify by Tag Number" onChange={this.tagNumChange}/><br></br>
-                <Link onClick={this.handleModifyClick}><div id="modifyFormActive"></div></Link>
-                <div id="modifyFormInactive"><font color="grey"><h5>Search ></h5></font></div>
+                {
+                  !this.state.modifyEnabled ?
+                    <button className="search-button btn btn-primary disabled" onClick={this.handleModifyClick} disabled>Search</button> :
+                    <button className="search-button btn btn-primary" onClick={this.handleModifyClick}>Search</button>
+                }
               </div>
             </div>
           </div>

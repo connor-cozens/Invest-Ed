@@ -264,6 +264,7 @@ const readForm = (response => {
 export const getApprovedForm = (tag, getType) => (dispatch) => {
   const tagNum = tag
   const url = `/dashboard/form/${tagNum}`;
+
   axios.get(url, {withCredentials: true, accepts: "application/json"}, {tagNum})
     .then(response => {
       if (response.data.error !== undefined) {
@@ -273,26 +274,25 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
         } else {
           dispatch({type: SET_FORM_ERROR, payload: response.data.error.message});
         }
-
       }
       else {
         const initiative = readForm(response);
+        //dispatch({type: CLEAR_SET_FORM_ERROR});
         //Dispatch action to store form data in store
         if (getType == 'modify') {
-          dispatch({type: SET_MODIFY_FORM, payload: initiative});
+          dispatch({type: SET_MODIFY_FORM, payload: initiative})
         }
         else if (getType == 'review') {
-          dispatch({type: SET_REVIEW_FORM, payload: initiative});
+          dispatch({type: SET_REVIEW_FORM, payload: initiative})
         }
-        dispatch({type: CLEAR_SET_FORM_ERROR});
       }
     })
     .catch(err =>  {
       //If network error
       if (err.message !== undefined) {
-        dispatch({type: SET_FORM_ERROR, payload: err.message});
+        dispatch({type: SET_FORM_ERROR, payload: err.message})
       } else {
-        dispatch({type: SET_FORM_ERROR, payload: err});
+        dispatch({type: SET_FORM_ERROR, payload: err})
       }
     })
 }
@@ -301,6 +301,7 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
 export const getNonApprovedForm = (tag, getType) => (dispatch) => {
   const tagNum = tag
   const url = `/dashboard/form-temp/${tagNum}`;
+
   axios.get(url, {withCredentials: true, accepts: "application/json"}, {tagNum})
     .then(response => {
       if (response.data.error !== undefined) {
@@ -311,26 +312,27 @@ export const getNonApprovedForm = (tag, getType) => (dispatch) => {
           dispatch({type: SET_VIEW_FORM, payload: response.data.error.message.unauthorizedEdit})
         }
         //If couldn't find form in temp db or user doesnt have edit access rights to form in temp db, then check for form in main db
-        dispatch(getApprovedForm(tag, getType));
+        dispatch(getApprovedForm(tag, getType))
       }
       else {
         const initiative = readForm(response);
+        // dispatch({type: CLEAR_SET_FORM_ERROR})
         //Dispatch action to store form data in store
         if (getType == 'modify') {
-          dispatch({type: SET_MODIFY_FORM, payload: initiative});
+          dispatch({type: SET_MODIFY_FORM, payload: initiative})
         }
         else if (getType == 'review') {
-          dispatch({type: SET_REVIEW_FORM, payload: initiative});
+          dispatch({type: SET_REVIEW_FORM, payload: initiative})
         }
-        dispatch({type: CLEAR_SET_FORM_ERROR});
       }
     })
     .catch(err => {
       dispatch({type: NOT_PULLED_APPROVED_FORM});
       //If couldn't find form in temp db, then check for form in main db
-      dispatch(getApprovedForm(tag, getType));
+      dispatch(getApprovedForm(tag, getType))
     })
 }
+
 
 const changeRequestRA = (form, isModified) => {
   const reqBody = {

@@ -9,7 +9,7 @@
   resize: vertical;
   font-size: 20px; */
   -webkit-appearance: none;
-  width: 50%;
+  width: 60%;
   border: 0;
   font-family: inherit;
   height: 48px;
@@ -48,7 +48,7 @@
   border-radius: 10px;
   border: solid 1px #BEBEBE;
   margin: 8px 8px 8px 8px;
-  padding: 0 0 5px 0;
+  padding: 0 10px 5px 10px;
 }
 
 
@@ -64,9 +64,9 @@
 #dashboard button {
   border-radius: 10px;
   background-color: white;
-  width: 125px;
+  width: 175px;
   margin: 15px 10px 0 10px;
-  padding: 5px 5px 5px 5px;
+  padding: 5px 25px 5px 25px;
 }
 
 #dashboard button:hover {

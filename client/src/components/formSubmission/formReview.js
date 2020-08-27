@@ -436,16 +436,16 @@ class formReview extends React.Component{
     const approvalFeedback = formStatus === 'review' ? (
       inDB === true ? (
         <div className ="alert alert-dismissible alert-success">
-          <strong>This form has been approved.</strong> The information currently on this form is public.
+          <strong>This initiative has been approved.</strong> The information on this form is currently public.
         </div>
       ) : (
         this.state.needsReview === 0 ? (
           <div className ="alert alert-dismissible alert-success">
-            <strong>This form has been approved.</strong> The information currently on this form is public.
+            <strong>This initiative has been approved.</strong> The information on this form is currently public.
           </div>
         ) : (
           <div className ="alert alert-dismissible alert-warning">
-            <strong>This form is under review for approval.</strong> Please make any necessary changes to the approval status of the below fields. <i>By default, fields updated on change request are set to rejected.</i><br></br><br></br><strong>Accepting all fields will make this form information public.</strong>
+            <strong>This initiative is under review for approval.</strong> Please make any necessary changes to the approval status of the below fields. <i>By default, modified fields are set to rejected.</i><br></br><br></br><strong>Accepting all fields will make this initiative information public.</strong>
           </div>
         )
       )
@@ -460,7 +460,7 @@ class formReview extends React.Component{
 
     return (
         <div className = "formReview">
-          <h3>Form Review</h3>
+          <h3>Review Initiative</h3>
           <div>
             <br></br>
             {unsavedWarning}

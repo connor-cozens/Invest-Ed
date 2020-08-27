@@ -277,7 +277,6 @@ export const getApprovedForm = (tag, getType) => (dispatch) => {
       }
       else {
         const initiative = readForm(response);
-        //dispatch({type: CLEAR_SET_FORM_ERROR});
         //Dispatch action to store form data in store
         if (getType == 'modify') {
           dispatch({type: SET_MODIFY_FORM, payload: initiative})
@@ -316,7 +315,6 @@ export const getNonApprovedForm = (tag, getType) => (dispatch) => {
       }
       else {
         const initiative = readForm(response);
-        // dispatch({type: CLEAR_SET_FORM_ERROR})
         //Dispatch action to store form data in store
         if (getType == 'modify') {
           dispatch({type: SET_MODIFY_FORM, payload: initiative})

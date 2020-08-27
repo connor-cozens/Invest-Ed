@@ -1466,7 +1466,7 @@ class formSubmission extends React.Component{
       this.state.isUpdated !== null ? (
         this.state.isUpdated === false ? (
           <div className="alert alert-dismissible alert-warning" style = {{width: "75%"}}>
-            <strong>No new updates have been made to this form.</strong> Please make a change before submitting.
+            <strong>No new updates have been made.</strong> Please make a change before submitting.
           </div>
         ) : null
       ) : null
@@ -1476,22 +1476,22 @@ class formSubmission extends React.Component{
       formUnauthorizedEditError === null ? (
         inDB === true ? (
           <div className ="alert alert-dismissible alert-success">
-            <strong>This form has been approved.</strong> The information currently on this form is public.
+            <strong>This initiative has been approved.</strong> The information on this form is currently public. <br/><br/>You are able to modify this initiative.
           </div>
         ) : (
           this.state.needsReview === 0 ? (
             <div className ="alert alert-dismissible alert-success">
-              <strong>This form has been approved.</strong> The information currently on this form is public.
+              <strong>This initiative has been approved.</strong> The information on this form is currently public. <br/><br/>You are able to modify this initiative.
             </div>
           ) : (
             <div className ="alert alert-dismissible alert-warning">
-              <strong>This form is under review for approval.</strong> Please review the approval status of the fields below.
+              <strong>This initiative is under review for approval.</strong> Please review the approval status of the fields below and make the necessary changes.
             </div>
           )
         )
       ) : (
         <div className ="alert alert-dismissible alert-warning">
-          <strong><h5><i>Read Only</i></h5>You cannot edit this form at this time.</strong> {formUnauthorizedEditError}
+          <strong><h5><i>Read Only</i></h5>You cannot edit this initiative at this time.</strong> {formUnauthorizedEditError}
           <br></br><br></br>
           <strong>The information you are viewing is public.</strong>
         </div>
@@ -1508,7 +1508,14 @@ class formSubmission extends React.Component{
 
     return (
         <div className = "formSubmission">
-          <h3>Form Submission</h3>
+          {
+            formStatus === "modify" ?
+              <h3>Modify Initiative</h3> : (
+                formStatus === "add" ?
+                <h3>Add New Initiative</h3> : null
+            )
+          }
+
           <div>
             <br></br>
             {unsavedWarning}

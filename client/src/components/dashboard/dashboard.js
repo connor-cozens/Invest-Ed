@@ -183,9 +183,9 @@ class dashboard extends Component {
     //RENDER PAGE ELEMENTS
     //If there was an issue accessing form from either db, then return form access error message
     const error = formAccessError ? (
-      <div className="alert alert-dismissible alert-danger" style = {{width: "35%", margin: "0 auto", marginTop: "50px"}}>
+      <div className="alert alert-dismissible alert-danger" style = {{width: "50%", margin: "0 auto", marginTop: "50px"}}>
         <strong>{formAccessError}</strong>
-        <br></br>No form with that tag number was found.
+        <br></br>No initiative with that tag number was found.
       </div>
     ) : null
 

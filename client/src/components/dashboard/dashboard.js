@@ -71,6 +71,10 @@ class dashboard extends Component {
 
   handleModifyClick(e){
     e.preventDefault();
+    this.state.modifyClicked = false;
+    this.state.reviewClicked = false;
+    this.state.addClicked = false;
+
     if (this.state.modifyTagNum !== null && this.state.modifyTagNum !== ""){
       //Get form
       this.props.getForm(this.state.modifyTagNum, 'modify')
@@ -81,6 +85,10 @@ class dashboard extends Component {
 
   handleReviewClick(e){
     e.preventDefault();
+    this.state.modifyClicked = false;
+    this.state.reviewClicked = false;
+    this.state.addClicked = false;
+
     if (this.state.reviewTagNum !== null && this.state.reviewTagNum !== ""){
       //Get form
       this.props.getForm(this.state.reviewTagNum, 'review')
@@ -91,6 +99,10 @@ class dashboard extends Component {
 
   handleAddClick(e){
     e.preventDefault();
+    this.state.modifyClicked = false;
+    this.state.reviewClicked = false;
+    this.state.addClicked = false;
+
     //Set new form status
     this.props.newForm();
     //Set clicked status to add
@@ -98,6 +110,9 @@ class dashboard extends Component {
   }
 
   tagNumChange(e){
+
+
+    //Set tag number and enabled state
     if (e.target.name == 'modifyTagNum') {
       this.state.modifyTagNum = e.target.value;
       this.setState({
@@ -107,6 +122,7 @@ class dashboard extends Component {
       if (this.state.modifyTagNum !== null && this.state.modifyTagNum !== ""){
         this.state.modifyEnabled = true;
       }
+      //Tag num field has been emptied
       else {
         this.state.modifyEnabled = false;
       }
@@ -124,6 +140,7 @@ class dashboard extends Component {
       if (this.state.reviewTagNum !== null && this.state.reviewTagNum !== ""){
         this.state.reviewEnabled = true;
       }
+      //Tag num field has been emptied
       else {
         this.state.reviewEnabled = false;
       }
@@ -167,23 +184,12 @@ class dashboard extends Component {
       else {
         clearForm();
       }
-      //If there is retreival error
-    } else {
-      this.state.modifyClicked = false;
-      this.state.reviewClicked = false;
-      this.state.addClicked = false;
     }
-
-    //Handle click
-    const click = (num) => (e) => {
-      this.handleClick(e, num);
-    }
-
 
     //RENDER PAGE ELEMENTS
     //If there was an issue accessing form from either db, then return form access error message
     const error = formAccessError ? (
-      <div className="alert alert-dismissible alert-danger" style = {{width: "50%", margin: "0 auto", marginTop: "50px"}}>
+      <div className="alert alert-dismissible alert-danger" style = {{width: "100%", margin: "0 auto", marginTop: "20px"}}>
         <strong>{formAccessError}</strong>
         <br></br>No initiative with that tag number was found.
       </div>
@@ -294,8 +300,11 @@ class dashboard extends Component {
               <input type="number" name="reviewTagNum" value={this.state.reviewTagNum} placeholder="Initiative to Review by Tag Number" onChange={this.tagNumChange}/><br></br>
               {
                 !this.state.reviewEnabled ?
-                  <button className="search-button btn btn-primary disabled" onClick={this.handleReviewClick} disabled>Search</button> :
+                  <button className="search-button btn btn-primary disabled" disabled>Search</button> :
                   <button className="search-button btn btn-primary" onClick={this.handleReviewClick}>Search</button>
+              }
+              {
+                this.state.reviewClicked ? error : null
               }
             </div>
           </div>
@@ -306,7 +315,6 @@ class dashboard extends Component {
     return (
       <div id = "dashboard">
         <h2>My Dashboard</h2>
-        {error}
         <div className = "container">
           <div className = "row mt-4">
             <div className = "col-md-9 m-auto">
@@ -330,8 +338,11 @@ class dashboard extends Component {
                 <input type="number" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Initiative to Modify by Tag Number" onChange={this.tagNumChange}/><br></br>
                 {
                   !this.state.modifyEnabled ?
-                    <button className="search-button btn btn-primary disabled" onClick={this.handleModifyClick} disabled>Search</button> :
+                    <button className="search-button btn btn-primary disabled" disabled>Search</button> :
                     <button className="search-button btn btn-primary" onClick={this.handleModifyClick}>Search</button>
+                }
+                {
+                  this.state.modifyClicked ? error : null
                 }
               </div>
             </div>

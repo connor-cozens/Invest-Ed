@@ -167,14 +167,16 @@ const dataReducer = (state = initState, action) => {
         ...state,
         form: action.payload,
         formStatus: 'review',
-        pulledformApproved: action.payload.status !== undefined ? (action.payload.status.length > 0 ? (action.payload.status[0].length > 0 ? (action.payload.status[0][0].inDB !== undefined ? (action.payload.status[0][0].inDB === 1 ? true : false) : true) : true) : false) : false
+        pulledformApproved: action.payload.status !== undefined ? (action.payload.status.length > 0 ? (action.payload.status[0].length > 0 ? (action.payload.status[0][0].inDB !== undefined ? (action.payload.status[0][0].inDB === 1 ? true : false) : true) : true) : false) : false,
+        formRetrievalError: null
       };
     case SET_MODIFY_FORM:
       return {
         ...state,
         form: action.payload,
         formStatus: 'modify',
-        pulledformApproved: action.payload.status !== undefined ? (action.payload.status.length > 0 ? (action.payload.status[0].length > 0 ? (action.payload.status[0][0].inDB !== undefined ? (action.payload.status[0][0].inDB === 1 ? true : false) : true) : true) : true) : false
+        pulledformApproved: action.payload.status !== undefined ? (action.payload.status.length > 0 ? (action.payload.status[0].length > 0 ? (action.payload.status[0][0].inDB !== undefined ? (action.payload.status[0][0].inDB === 1 ? true : false) : true) : true) : true) : false,
+        formRetrievalError: null
       };
     case SET_ADD_FORM:
       return {

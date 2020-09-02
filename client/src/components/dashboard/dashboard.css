@@ -42,13 +42,13 @@
   margin: 0 auto;
 }
 
-#dashboard .formlist {
+#dashboard .form-list {
   float: left;
   text-align: center;
   border-radius: 10px;
   border: solid 1px #BEBEBE;
   margin: 8px 8px 8px 8px;
-  padding: 0 0 5px 0;
+  padding: 0 10px 5px 10px;
 }
 
 
@@ -60,21 +60,25 @@
   text-align: left;
 }
 
-
-#dashboard button {
-  border-radius: 10px;
-  background-color: white;
-  width: 125px;
-  margin: 15px 10px 0 10px;
-  padding: 5px 5px 5px 5px;
+#dashboard .search-button {
+  width: 50%;
+  padding: 10px 5px 10px 5px;
 }
 
-#dashboard button:hover {
+#dashboard .form-button {
+  border-radius: 10px;
+  background-color: white;
+  width: 175px;
+  margin: 15px 10px 0 10px;
+  padding: 5px 25px 5px 25px;
+}
+
+#dashboard .form-button:hover {
   background-color: #DCDCDC;
   color: black;
 }
 
-#dashboard button:focus {
+#dashboard .form-button:focus {
   background-color: #2C3E50;
   color: white;
 }

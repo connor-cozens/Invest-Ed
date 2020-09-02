@@ -43,10 +43,14 @@ class dashboard extends Component {
     super(props);
     this.state = {
       modifyTagNum: null,
-      reviewTagNum: null,
-      addClicked: false,
+      modifyEnabled: false,
       modifyClicked: false,
+
+      reviewTagNum: null,
+      reviewEnabled: false,
       reviewClicked: false,
+
+      addClicked: false
     }
 
     this.tagNumChange = this.tagNumChange.bind(this);
@@ -67,29 +71,48 @@ class dashboard extends Component {
 
   handleModifyClick(e){
     e.preventDefault();
+    this.state.modifyClicked = false;
+    this.state.reviewClicked = false;
+    this.state.addClicked = false;
+
     if (this.state.modifyTagNum !== null && this.state.modifyTagNum !== ""){
       //Get form
-      this.props.getForm(this.state.modifyTagNum, 'modify');
+      this.props.getForm(this.state.modifyTagNum, 'modify')
+      //Set clicked status to modify
       this.state.modifyClicked = true;
     }
   }
 
   handleReviewClick(e){
     e.preventDefault();
+    this.state.modifyClicked = false;
+    this.state.reviewClicked = false;
+    this.state.addClicked = false;
+
     if (this.state.reviewTagNum !== null && this.state.reviewTagNum !== ""){
       //Get form
-      this.props.getForm(this.state.reviewTagNum, 'review');
+      this.props.getForm(this.state.reviewTagNum, 'review')
+      //Set clicked status to review
       this.state.reviewClicked = true;
     }
   }
 
   handleAddClick(e){
     e.preventDefault();
+    this.state.modifyClicked = false;
+    this.state.reviewClicked = false;
+    this.state.addClicked = false;
+
+    //Set new form status
     this.props.newForm();
+    //Set clicked status to add
     this.state.addClicked = true;
   }
 
   tagNumChange(e){
+
+
+    //Set tag number and enabled state
     if (e.target.name == 'modifyTagNum') {
       this.state.modifyTagNum = e.target.value;
       this.setState({
@@ -97,13 +120,16 @@ class dashboard extends Component {
       });
 
       if (this.state.modifyTagNum !== null && this.state.modifyTagNum !== ""){
-        ReactDOM.render(<h5>Modify an Existing Submission Form</h5>, document.getElementById("modifyFormActive"))
-        ReactDOM.render(<div></div>, document.getElementById("modifyFormInactive"))
+        this.state.modifyEnabled = true;
       }
+      //Tag num field has been emptied
       else {
-        ReactDOM.render(<font color="grey"><h5>Modify an Existing Submission Form</h5></font>, document.getElementById("modifyFormInactive"))
-        ReactDOM.render(<div></div>, document.getElementById("modifyFormActive"))
+        this.state.modifyEnabled = false;
       }
+
+      this.setState({
+        modifyEnabled: this.state.modifyEnabled
+      })
     }
     else if (e.target.name == 'reviewTagNum') {
       this.state.reviewTagNum = e.target.value;
@@ -112,13 +138,16 @@ class dashboard extends Component {
       });
 
       if (this.state.reviewTagNum !== null && this.state.reviewTagNum !== ""){
-        ReactDOM.render(<h5>Review a Submission Form</h5>, document.getElementById("reviewFormActive"))
-        ReactDOM.render(<div></div>, document.getElementById("reviewFormInactive"))
+        this.state.reviewEnabled = true;
       }
+      //Tag num field has been emptied
       else {
-        ReactDOM.render(<font color="grey"><h5>Review a Submission Form</h5></font>, document.getElementById("reviewFormInactive"))
-        ReactDOM.render(<div></div>, document.getElementById("reviewFormActive"))
+        this.state.reviewEnabled = false;
       }
+
+      this.setState({
+        reviewEnabled: this.state.reviewEnabled
+      })
     }
   }
 
@@ -157,18 +186,12 @@ class dashboard extends Component {
       }
     }
 
-    //Handle click
-    const click = (num) => (e) => {
-      this.handleClick(e, num);
-    }
-
-
     //RENDER PAGE ELEMENTS
     //If there was an issue accessing form from either db, then return form access error message
     const error = formAccessError ? (
-      <div className="alert alert-dismissible alert-danger" style = {{width: "35%", margin: "0 auto", marginTop: "50px"}}>
+      <div className="alert alert-dismissible alert-danger" style = {{width: "100%", margin: "0 auto", marginTop: "20px"}}>
         <strong>{formAccessError}</strong>
-        <br></br>No form with that tag number was found.
+        <br></br>No initiative with that tag number was found.
       </div>
     ) : null
 
@@ -177,7 +200,7 @@ class dashboard extends Component {
       userData.editedForms ? (
         <div>
           <br></br>
-          <Collapsible title="Your Submitted Forms Pending Approval">
+          <Collapsible title="Your Initiative Submissions Pending Approval">
           {
             userData.editedForms.pendingForms.length > 0 ? (
               userData.editedForms.pendingForms.map(form => {
@@ -186,16 +209,16 @@ class dashboard extends Component {
                   formStateStyle.color = 'red'
                 }
                 return (
-                  <div className = 'formlist'>
-                    <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}</button>
+                  <div className = 'form-list'>
+                    <button className = "form-button" name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Initiative Tag Number: <b>{form.tag}</b></button>
                     <hr/>
                     <div>
-                      <text style = {formStateStyle}>{form.state}</text>
+                      <text style = {formStateStyle}>Status: <b>{form.state}</b></text>
                     </div>
                   </div>
                 );
               })
-            ) : <p>You have no forms currently pending approval.</p>
+            ) : <p>You have no initiative submissions currently pending approval.</p>
           }
           </Collapsible>
         </div>
@@ -208,22 +231,22 @@ class dashboard extends Component {
         userData.editedForms.approvedForms !== undefined ? (
           <div>
             <br></br>
-            <Collapsible title="Your Approved Forms">
+            <Collapsible title="Your Approved Initiative Submissions">
             {
               userData.editedForms.approvedForms.length > 0 ? (
                 userData.editedForms.approvedForms.map(form => {
                   let formStateStyle = {color: 'green'}
                   return (
-                    <div className = 'formlist'>
-                      <button name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}</button>
+                    <div className = 'form-list'>
+                      <button className = "form-button" name = "modifyTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Initiative Tag Number: <b>{form.tag}</b></button>
                       <hr/>
                       <div>
-                        <text style = {formStateStyle}>{form.state}</text>
+                        <text style = {formStateStyle}>Status: <b>{form.state}</b></text>
                       </div>
                     </div>
                   );
                 })
-              ) : <p>You have no edited forms currently approved.</p>
+              ) : <p>You have no initiative submissions currently approved.</p>
             }
             </Collapsible>
           </div>
@@ -238,7 +261,7 @@ class dashboard extends Component {
         userData.reviewForms ? (
           <div>
             <br></br>
-            <Collapsible title="Forms to Review">
+            <Collapsible title="Initiative Submissions to Review">
             {
               userData.reviewForms.length > 0 ? (
                 userData.reviewForms.map(form => {
@@ -247,16 +270,16 @@ class dashboard extends Component {
                     formStateStyle.color = 'red'
                   }
                   return (
-                    <div className = 'formlist'>
-                      <button name = "reviewTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Form {form.tag}</button>
+                    <div className = 'form-list'>
+                      <button className = "form-button" name = "reviewTagNum" type = "button" onClick = {this.tagNumChange} value = {form.tag}>Initiative Tag Number: <b>{form.tag}</b></button>
                       <hr/>
                       <div>
-                        <text style = {formStateStyle}>{form.state}</text>
+                        <text style = {formStateStyle}>Status: <b>{form.state}</b></text>
                       </div>
                     </div>
                   );
                 })
-              ) : <p>There are no forms currently that require review.</p>
+              ) : <p>There are currently no initiative submissions that require review.</p>
             }
             </Collapsible>
           </div>
@@ -268,15 +291,21 @@ class dashboard extends Component {
     const review = userData ? (userData.accessLevel !== 0 ?
       <div className = "container" style = {{marginBottom: "100px"}}>
         <div className = "row mt-4">
-          <div className = "col-md-8 m-auto">
+          <div className = "col-md-9 m-auto">
             <div className = "card card-body">
-              <h4><b>Review</b></h4>
+              <h4><b>Review Initiative</b></h4>
               <hr/>
               {reviewFormsList}
               <br></br>
-              <input type="number" name="reviewTagNum" value={this.state.reviewTagNum} placeholder="Enter Form Tag Number" onChange={this.tagNumChange}/><br></br>
-              <Link onClick={this.handleReviewClick}><div id="reviewFormActive"></div></Link>
-              <div id="reviewFormInactive"><font color="grey"><h5>Review a Submission Form</h5></font></div>
+              <input type="number" name="reviewTagNum" value={this.state.reviewTagNum} placeholder="Initiative to Review by Tag Number" onChange={this.tagNumChange}/><br></br>
+              {
+                !this.state.reviewEnabled ?
+                  <button className="search-button btn btn-primary disabled" disabled>Search</button> :
+                  <button className="search-button btn btn-primary" onClick={this.handleReviewClick}>Search</button>
+              }
+              {
+                this.state.reviewClicked ? error : null
+              }
             </div>
           </div>
         </div>
@@ -286,30 +315,35 @@ class dashboard extends Component {
     return (
       <div id = "dashboard">
         <h2>My Dashboard</h2>
-        {error}
         <div className = "container">
           <div className = "row mt-4">
-            <div className = "col-md-8 m-auto">
+            <div className = "col-md-9 m-auto">
               <div className = "card card-body">
-                <h4><b>Add a New Form</b></h4>
+                <h4><b>Add Initiative</b></h4>
                 <hr/>
-                <Link onClick={this.handleAddClick}><h5>Create an Information Submission Form</h5></Link>
+                <Link onClick={this.handleAddClick}><h5>Complete Form ></h5></Link>
               </div>
             </div>
           </div>
         </div>
         <div className = "container">
           <div className = "row mt-4">
-            <div className = "col-md-8 m-auto">
+            <div className = "col-md-9 m-auto">
               <div className = "card card-body">
-                <h4><b>Modify</b></h4>
+                <h4><b>Modify Initiative</b></h4>
                 <hr/>
                 {pendingFormsList}
                 {approvedFormsList}
                 <br></br>
-                <input type="number" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Enter Form Tag Number" onChange={this.tagNumChange}/><br></br>
-                <Link onClick={this.handleModifyClick}><div id="modifyFormActive"></div></Link>
-                <div id="modifyFormInactive"><font color="grey"><h5>Modify an Existing Submission Form</h5></font></div>
+                <input type="number" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Initiative to Modify by Tag Number" onChange={this.tagNumChange}/><br></br>
+                {
+                  !this.state.modifyEnabled ?
+                    <button className="search-button btn btn-primary disabled" disabled>Search</button> :
+                    <button className="search-button btn btn-primary" onClick={this.handleModifyClick}>Search</button>
+                }
+                {
+                  this.state.modifyClicked ? error : null
+                }
               </div>
             </div>
           </div>

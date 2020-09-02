@@ -83,7 +83,7 @@ dashboard.get('/form/:tagNum', (req, res) =>{
                 }else{
                     //If no results back for initiative, then form doesn't exist for corresponding tag number
                     if (results.length === 0) {
-                      return queryDB("Could not find requested form.")
+                      return queryDB("Could not find requested initiative.")
                     }
                     formData.table1 = results;
                     queryDB()
@@ -552,7 +552,7 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
                                 //Search for form in current user's pending list - if not there, then pending form belongs to a different user, so don't allow edit access
                                 const myEditedForm = user.editedForms.pendingForms.find(form => { return form.tag == tagNum})
                                 if (myEditedForm === undefined) {
-                                  return queryDB({"unauthorizedEdit": 'This form has been edited by another user and is pending approval.'})
+                                  return queryDB({"unauthorizedEdit": 'This initiative has been edited by another user and is pending approval.'})
                                 }
                                 //Form belongs to current user, so allow user to edit
                                 else {
@@ -560,10 +560,10 @@ dashboard.get('/form-temp/:tagNum', (req, res) =>{
                                   queryDB()
                                 }
                               } else {
-                                return queryDB({"unauthorizedEdit": 'This form has been edited by another user and is pending approval.'})
+                                return queryDB({"unauthorizedEdit": 'This initiative has been edited by another user and is pending approval.'})
                               }
                             } else {
-                              return queryDB({"unauthorizedEdit": 'This form has been edited by another user and is pending approval.'})
+                              return queryDB({"unauthorizedEdit": 'This initiative has been edited by another user and is pending approval.'})
                             }
                             //Form is in approved state, so allow any user to have edit access
                           } else {

@@ -10,8 +10,7 @@ var nodemailer = require('nodemailer')
 var bodyParser = require("body-parser")
 var passport = require('passport')
 
-//const storage = require ('node-persist')
-
+const { port } = require('./config')
 
 var client = redis.createClient()
 client.on('connect', () => {
@@ -19,9 +18,6 @@ client.on('connect', () => {
 })
 
 var app = express()
-
-//var port = process.env.PORT || 4000
-var port = 4000   //run on 4000 so you can run react app on port 3000
 
 var expiryDate = 3600000
 app.use(cookieParser('temporarySecret'))//new
@@ -79,9 +75,5 @@ app.use('/change-password', ChangePassword)
 
 
 app.listen(port, () =>{
-  console.log("Server is running on port: " + port)
+  console.log(`Server is running on port ${port}`)
 })
-
-   
-
-

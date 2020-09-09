@@ -6,11 +6,14 @@ const sql = require("mysql2")
 
 visualize.use(cors())
 
+const { db_username, db_password, db_host, db_girlsed_main } = require('../config')
+
+//Create pool connection to main DB
 const pool = sql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'inves431_girlsEd',
+    host: db_host,
+    user: db_username,
+    password: db_password,
+    database: db_girlsed_main,
     waitForConnections: true,
     connectionLimit: 20,
     queueLimit: 0

@@ -4,6 +4,8 @@ const async     = require('async');
 var storage     = require ('node-persist')
 var redis       = require("redis")
 
+const { db_username, db_password, db_host, db_girlsed_main, db_girlsed_temp} = require('../config')
+
 var client = redis.createClient()
 client.on('connect', function(){
     console.log('Dashboard connected ')
@@ -22,22 +24,23 @@ client.exists('tagNumber', function(err, reply){
 
 const dashboard = express.Router()
 
-//Create pool connection to DB
+//Create pool connection to main DB
 const pool = sql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'inves431_girlsEd',
+    host: db_host,
+    user: db_username,
+    password: db_password,
+    database: db_girlsed_main,
     waitForConnections: true,
     connectionLimit: 20,
     queueLimit: 0
 })
 
+//Create pool connection to temp DB
 const poolTemp = sql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'inves431_girlsEd_temp',
+    host: db_host,
+    user: db_username,
+    password: db_password,
+    database: db_girlsed_temp,
     waitForConnections: true,
     connectionLimit: 20,
     queueLimit: 0

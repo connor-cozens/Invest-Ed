@@ -74,7 +74,7 @@ Redis is an in-memory data store as a database cache used to store user sessions
 			
       
       
-Set the baseURL in axiosConfig.js, setting the address and port to route axios requests to the Express app endpoints.
+Set the baseURL in [axiosConfig.js](https://github.com/condevcx3/Invest-Ed/blob/master/client/src/axios/axiosConfig.js), setting the address and port to route axios requests to the Express app endpoints.
 			
 			
 ## Running the Project Locally

@@ -30,22 +30,26 @@ Redis is an in-memory data store as a database cache used to store user sessions
 ## Local Development Setup
 
 ### Create the MySQL Databases
+
+  1. Download the [SQL files](https://drive.google.com/drive/folders/1F94GavELVW6t3QTi_TZ1-gdbh-6WymjM?usp=sharing).
  
-  1. Log on to the MySQL server via cmd or terminal, with the credentials set up during the installation of MySQL:
+  2. Log on to the MySQL server via cmd or terminal, with the credentials set up during the installation of MySQL:
   
       ```mysql  -u yourUserName -p;```
   
-  2. Enter password on subsequent prompt.
-  3. Create a database and use it:
+  3. Enter password on subsequent prompt.
+  4. Create a database and use it:
   
         ```
         mysql> create database yourDatabaseName;
         mysql> use yourDatabaseName;
         ```
     
-  4. Import the sql file into the database:
+  5. Import the SQL file into the database:
   
       ```mysql> source pathToYourSQLFile;```
+      
+  6. Repeat for each SQL file.
 
 ### Configure Node Packages Locally
 - Node packages are not included in git, so they must be installed locally.

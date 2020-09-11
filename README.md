@@ -49,10 +49,10 @@ Redis is an in-memory data store as a database cache used to store user sessions
 
 ### Configure Node Packages Locally
 - Node packages are not included in git, so they must be installed locally.
-- Node packages for the Express app backend can be found in the root directory package.json file, and can be installed by navigating to the root directory of the project in your terminal or cmd and executing npm install.
+- Node packages for the Express backend app can be found in the root directory [package.json](https://github.com/condevcx3/Invest-Ed/blob/master/package.json) file, and can be installed by navigating to the root directory of the project in your terminal or cmd and executing npm install.
   - This will install all packages listed under ```dependencies``` (packages required for production) and all packages listed under ```devDependencies``` (packages required for local development).
 			
-- Similarly, node packages for the React.js client app can be found in the package.json located within the /client directory and can be installed from that directory the same way.
+- Similarly, node packages for the React.js client app can be found in the [package.json](https://github.com/condevcx3/Invest-Ed/blob/master/client/package.json) located within the /client directory and can be installed from that directory the same way.
 	
 ### Setting Environment Variables
   1. Create an '.env' file in the project root directory

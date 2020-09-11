@@ -133,7 +133,7 @@ class Landing extends Component{
     (
       <div>
         <br/>
-        <h5><b>Number of Actors</b></h5>
+        <p><b>Entities by Number</b></p>
         <BarChart
           width={450}
           height={200}
@@ -315,8 +315,8 @@ class Landing extends Component{
                         <div className ="card bg-light mb-3" style={{display: "flex"}}>
                           <div className ="card-body">
                             <h4 className ="card-title"><b>Data Visualization Overview</b></h4>
-                            <p> Visualize data pertaining to actors in girls education in the Global South.</p>
-                            <p>Actors include initiatives for girls education, as well as the funding and implementing organizations who finance and support these initiatives.</p>
+                            <p> Visualize data pertaining to initiatives and actors in girls education in the Global South.</p>
+                            <p>Actors include funding and implementing organizations who finance and support these initiatives.</p>
                             {barGraph}
                             <hr/>
                             <div style = {{display: "flex"}}>
@@ -339,7 +339,7 @@ class Landing extends Component{
                           <div className ="card-body">
                             <h4 className ="card-title"><b>Organization Access</b></h4>
                             <ul>
-                              <li>View detailed information about actors.</li>
+                              <li>View detailed information about initiatives and actors.</li>
                               <li>Submit change requests to have new organization-specific information added for analysis and visualization purposes.</li>
                               <li>Update existing organization information.</li>
                             </ul>

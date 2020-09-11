@@ -2,10 +2,10 @@
 
 ## Description
 
-Platform to visualize data pertaining to initiatives and actors in girls Education in the Global South. Users can view data pertaining to initiatives, target funders, and implementers in the form of graphs and maps. Organization users can access detailed information about these organizations and submit change requests to add new or updated organization-specific information for analysis and visualization purposes. Research users can approve these change requests and respond to user messages.
+Platform visualizing data pertaining to initiatives and actors in girls Education in the Global South. Users can view data pertaining to initiatives, target funders, and implementers in the form of graphs and maps. Organization users can access detailed information about these organizations and submit change requests to add new or updated organization-specific information for analysis and visualization purposes. Research users can approve these change requests and respond to user messages.
 
 ## Documentation
-See the repository [wiki](https://drive.google.com/drive/folders/15WUivxM-EhF6RJQWcv_rD_IT9StVTMLD?usp=sharing)
+See the repository [wiki](https://drive.google.com/drive/folders/15WUivxM-EhF6RJQWcv_rD_IT9StVTMLD?usp=sharing).
 
 ## Requirements
 - NPM

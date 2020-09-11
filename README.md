@@ -7,6 +7,8 @@ Platform visualizing data pertaining to initiatives and actors in girls educatio
 ## Documentation
 See the repository [wiki](https://drive.google.com/drive/folders/15WUivxM-EhF6RJQWcv_rD_IT9StVTMLD?usp=sharing).
 
+[Reference for visualization data formats](https://github.com/condevcx3/Invest-Ed/blob/master/client/src/components/visualize/visDataFormats.js).
+
 ## Requirements
 - NPM
 - Node.js

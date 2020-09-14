@@ -1,0 +1,12 @@
+.wrapper {
+  height: 100%;
+  position: relative;
+}
+
+.sidebar {
+  float: left;
+  min-width: 20%;
+  max-width: 20%;
+  background-color: white;
+  height: 100%;
+}

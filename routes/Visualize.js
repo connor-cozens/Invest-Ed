@@ -6,11 +6,14 @@ const sql = require("mysql2")
 
 visualize.use(cors())
 
+const { db_username, db_password, db_host, db_girlsed_main } = require('../config')
+
+//Create pool connection to main DB
 const pool = sql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'inves431_girlsEd',
+    host: db_host,
+    user: db_username,
+    password: db_password,
+    database: db_girlsed_main,
     waitForConnections: true,
     connectionLimit: 20,
     queueLimit: 0
@@ -287,7 +290,7 @@ visualize.get('/initiative', (req,res, next) => {
                 if (err){
                     return queryDB(err)
                 }else{
-                    formData.table11 = results;
+                    formData.table12 = results;
                     queryDB()
                 }
 
@@ -552,11 +555,20 @@ visualize.get('/target-funder-attributes', (req,res, next) => {
 
 //ENDPOINT 5 - AN ARRAY OF ATTRIBUTES RELATED TO IMPLEMENTERS
 visualize.get('/implementor-attributes', (req, res, next) => {
-    //funder queries
     var query1 = "SELECT * FROM implementor ORDER by profitMotive"
     var query2 = "SELECT tagNum, implementorName FROM implements ORDER BY implementorName"
     var query3 = "SELECT * FROM initiative"
-    var query4 = "SELECT * FROM initiativecountryofoperation"
+    var query4 = "SELECT * FROM initiativeregion"
+    var query5 = "SELECT * FROM initiativecountryofoperation"
+    var query6 = "SELECT * FROM initiativeprogrammingactivities"
+    var query7 = "SELECT * FROM initiativefundingsource"
+    var query8 = "SELECT * FROM initiativelaunchcountry"
+    var query9 = "SELECT * FROM initiativetargetgeography"
+    var query10 = "SELECT * FROM initiativetargetpopulationsector"
+    var query11 = "SELECT * FROM initiativemonitoredoutcomes"
+    var query12 = "SELECT * FROM initiativemaineducationsubsector"
+    var query13 = "SELECT * FROM initiativeeducationsubsectors"
+    var query14 = "SELECT * FROM initiativetargetschoolmanagement"
 
     var formData = {}
 
@@ -598,6 +610,97 @@ visualize.get('/implementor-attributes', (req, res, next) => {
                     return queryDB(err)
                 }else{
                     formData.table4 = results;
+                    queryDB()
+                }
+            })
+        },
+        function(queryDB) {
+            pool.query(query5, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table5 = results;
+                    queryDB()
+                }
+            })
+        },
+        function(queryDB) {
+            pool.query(query6, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table6 = results;
+                    queryDB()
+                }
+            })
+        },
+        function(queryDB) {
+            pool.query(query7, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table7 = results;
+                    queryDB()
+                }
+            })
+        },
+        function(queryDB) {
+            pool.query(query8, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table8 = results;
+                    queryDB()
+                }
+            })
+        },
+        function(queryDB) {
+            pool.query(query9, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table9 = results;
+                    queryDB()
+                }
+            })
+        },
+
+        function(queryDB) {
+            pool.query(query10, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table10 = results;
+                    queryDB()
+                }
+            })
+        },
+        function(queryDB) {
+            pool.query(query11, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table11 = results;
+                    queryDB()
+                }
+            })
+        },
+        function(queryDB) {
+            pool.query(query12, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table12 = results;
+                    queryDB()
+                }
+            })
+        },
+        function(queryDB) {
+            pool.query(query13, {}, function(err, results) {
+                if (err){
+                    return queryDB(err)
+                }else{
+                    formData.table13 = results;
                     queryDB()
                 }
             })

@@ -9,9 +9,8 @@ const validateRequest = SchemaValidator(true);
 const User = require("../models/User")
 
 register.post('/', validateRequest, (req, res) =>{
-    
-    if(req.user){
 
+    if(req.user){
         const today = new Date()
         const userData = {
         firstName: req.body.firstName,
@@ -52,9 +51,6 @@ register.post('/', validateRequest, (req, res) =>{
     }else{
         res.json({"error" : true , "messages" : [{message: "Error: Not authorized to access this page"}]})
     }
-
-    
-
 })
 
 module.exports = register

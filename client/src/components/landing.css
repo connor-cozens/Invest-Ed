@@ -1,0 +1,11 @@
+#landing .card {
+  display: flex;
+}
+
+#landing .overview {
+  margin: 0 0 0 20px;
+}
+
+#landing h3 {
+  text-align: left;
+}

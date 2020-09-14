@@ -3,14 +3,18 @@ import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import './contactUs.css';
 import {Redirect} from 'react-router-dom'
+import {userSendEmail} from '../../store/actions/dataActions';
 
 class contactUs extends React.Component{
     constructor(props){
       super(props);
       this.state = {
-        sender: null,
+        senderEmail: null,
         emailSubject: null,
-        emailBody: null
+        emailBody: null,
+        firstName: null,
+        lastName: null,
+        organization: null,
       }
 
       this.senderChange = this.senderChange.bind(this);
@@ -20,23 +24,34 @@ class contactUs extends React.Component{
     }
 
     senderChange(e){
-        this.state.sender = e.currentTarget.value;
+        this.state.senderEmail = e.currentTarget.value;
     }
     subjectChange(e){
         this.state.emailSubject = e.currentTarget.value;
     }
     bodyChange(e){
-        this.state.bodyChange = e.currentTarget.value;
+        this.state.emailBody = e.currentTarget.value;
+    }
+
+    fillUserInfo(){
+      if (this.props.userData != null){
+        this.state.firstName = this.props.userData.firstname;
+        this.state.lastName = this.props.userData.lastname;
+        this.state.organization = this.props.userData.organization;
+        this.state.senderEmail = this.props.userData.email;
+      }
     }
 
     handleFormSubmit(e) {
         e.preventDefault();
-        console.log(this.state);
+        this.fillUserInfo();
+        console.log(this.props.userData);
+        this.props.sendEmail(this.state);
+        this.props.history.push('/');
     }
 
 
     render(){
-        console.log("test");
         const {authorized} = this.props;
         if (authorized === false) {
           //return <Redirect to='/' />
@@ -44,6 +59,7 @@ class contactUs extends React.Component{
           //Organization users have email auto-set
 
           return(
+            <form onSubmit={this.handleFormSubmit}>
               <div className="col-md-8 m-auto">
                 <br></br>
                 <h4>Message Sender</h4>
@@ -54,14 +70,18 @@ class contactUs extends React.Component{
 
                 <h4>Message Body</h4>
                 <textarea id="body" name="emailBody" required rows="10" placeholder="Write your message here!" onChange={this.bodyChange}></textarea>
-                
+
+                {/* <Link to = '/'> */}
                 <input type="submit"value="Send"/>
+                {/* </Link> */}
               </div>
+            </form>
           )
         }
         else{
             //Autofill organization's email address as Sender
             return(
+              <form onSubmit={this.handleFormSubmit}>
                 <div className="col-md-8 m-auto">
                 <br></br>
                 <h4>Message Subject</h4>
@@ -70,8 +90,11 @@ class contactUs extends React.Component{
                 <h4>Message Body</h4>
                 <textarea id="body" name="emailBody" required rows="10" placeholder="Write your message here!" onChange={this.bodyChange}></textarea>
 
+                {/* <Link to = '/'> */}
                 <input type="submit"value="Send"/>
+                {/* </Link> */}
               </div>
+            </form>
             )
         }
     }
@@ -79,8 +102,15 @@ class contactUs extends React.Component{
 
 const mapStateToProps = (state) => {
     return {
-      authorized: state.authenticate.auth
+      authorized: state.authenticate.auth,
+      userData: state.data.userInformation
     };
   }
-  
-  export default connect(mapStateToProps)(contactUs)
+
+const mapDispatchToProps = (dispatch) => {
+  return{
+    sendEmail: (contents) => dispatch(userSendEmail(contents)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(contactUs)

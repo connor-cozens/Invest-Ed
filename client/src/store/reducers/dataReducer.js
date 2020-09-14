@@ -1,25 +1,43 @@
+//Registration
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_CLEAR_ERROR = 'REGISTER_CLEAR_ERROR';
 export const REGISTER_CLEAR = 'REGISTER_CLEAR';
 export const REGISTER_ERROR = 'REGISTER_ERROR';
 export const CLEAR_REGISTER_ERROR = 'CLEAR_REGISTER_ERROR';
 
+//User retrieval
 export const SET_USER = 'SET_USER'
 export const UNSET_USER = 'UNSET_USER';
+export const SET_USER_ERROR = 'SET_USER_ERROR';
+export const CLEAR_SET_USER_ERROR = 'CLEAR_SET_USER_ERROR';
 
-export const SET_REVIEW_FORM = 'SET_REVIEW_FORMS';
+//Form retrieval
+export const SET_REVIEW_FORM = 'SET_REVIEW_FORM';
 export const SET_ADD_FORM = 'SET_ADD_FORM';
 export const SET_MODIFY_FORM = 'SET_MODIFY_FORM';
+export const SET_VIEW_FORM = 'SET_VIEW_FORM';  //For readOnly access to form
+
 export const PULLED_APPROVED_FORM = 'PULLED_APPROVED_FORM';
 export const NOT_PULLED_APPROVED_FORM = 'NOT_PULLED_APPROVED_FORM';
 export const CLEAR_FORM_STATUS = 'CLEAR_FORM_STATUS';
+export const SET_FORM_ERROR = 'SET_FORM_ERROR';
+export const CLEAR_SET_FORM_ERROR = 'CLEAR_SET_FORM_ERROR';
+
+//Form review and submission
 export const FORM_SUBMIT_SUCCESS = 'FORM_SUBMIT_SUCCESS';
 export const FORM_SUBMIT_ERROR = 'FORM_SUBMIT_ERROR';
 export const FORM_SUBMIT_CLEAR = 'FORM_SUBMIT_CLEAR';
+export const FORM_REVIEW_SUCCESS = 'FORM_REVIEW_SUCCESS';
+export const FORM_REVIEW_ERROR = 'FORM_REVIEW_ERROR';
+export const FORM_REVIEW_CLEAR = 'FORM_REVIEW_CLEAR';
 
+//Data Visualization
 export const SET_FUNDER_DATA = 'SET_FUNDER_DATA';
+export const SET_FUNDER_NUMBERS = 'SET_FUNDER_NUMBERS';
 export const SET_IMPLEMENTER_DATA = 'SET_IMPLEMENTER_DATA';
+export const SET_IMPLEMENTER_NUMBERS = 'SET_IMPLEMENTER_NUMBERS';
 export const SET_INITIATIVE_DATA = 'SET_INITIATIVE_DATA';
+export const SET_INITIATIVE_NUMBERS = 'SET_INITIATIVE_NUMBERS';
 export const SET_FUNDER_ATTRIBUTES = 'SET_FUNDER_ATTRIBUTES';
 export const SET_IMPLEMENTER_ATTRIBUTES = 'SET_IMPLEMENTER_ATTRIBUTES';
 export const SET_FUNDERTYPE_INITIATIVE = 'SET_FUNDERTYPE_INITIATIVE';
@@ -27,18 +45,20 @@ export const SET_IMPLEMENTERTYPE_INITIATIVE = 'SET_IMPLEMENTERTYPE_INITIATIVE';
 export const SET_FUNDER_INITIATIVE = 'SET_FUNDER_INITIATIVE';
 export const SET_IMPLEMENTER_INITIATIVE = 'SET_IMPLEMENTER_INITIATIVE';
 export const UNSET_VISUALIZED_DATA = 'UNSET_VISUALIZED_DATA';
-
-export const CLEAR_ACCESS_ERROR = 'CLEAR_ACCESS_ERROR';
-export const ACCESS_ERROR = 'ACCESS_ERROR';
+export const SET_VISUALIZED_DATA_ERROR = 'SET_VISUALIZED_DATA_ERROR';
+export const CLEAR_SET_VISUALIZED_DATA_ERROR = 'CLEAR_SET_VISUALIZED_DATA_ERROR';
 
 const initState = {
   //General user information
   userInformation: null,
+  userRetrievalError: null,
 
   //On form retrieval
   form: null,
   formStatus: null,
   pulledformApproved: false,
+  formUnauthorizedEditError: null,
+  formRetrievalError: null,
 
   //On form submit
   formSubmitted: false,
@@ -51,19 +71,23 @@ const initState = {
   //On register
   registered: false,
   registerError: null,
-  accessError: null,
 
   //Visualization data
   FunderData: null,
+  FunderNumbers: null,
   ImplementerData: null,
+  ImplementerNumbers: null,
   InititativeData: null,
+  InititativeNumbers: null,
+
   FunderAttributes: null,
   ImplementerAttributes: null,
 
   FunderTypeInitiative: null,
   ImplementerTypeInitiative: null,
   FunderInitiative: null,
-  ImplementerInitiative: null
+  ImplementerInitiative: null,
+  visDataRetrievalError: null
 }
 
 const dataReducer = (state = initState, action) => {
@@ -110,26 +134,31 @@ const dataReducer = (state = initState, action) => {
       return {
         ...state,
         userInformation: null,
+        userRetrievalError: null,
         form: null,
         formStatus: null,
         pulledformApproved: false,
+        formRetrievalError: null,
+        formUnauthorizedEditError: null,
         formSubmitted: false,
         formSubmitError: null,
         formReviewed: false,
         formReviewError: null,
         registered: false,
         registerError: null,
-        accessError: null,
-        FunderData: null,
-        ImplementerData: null,
-        InititativeData: null,
-        FunderAttributes: null,
-        ImplementerAttributes: null,
-        FunderTypeInitiative: null,
-        ImplementerTypeInitiative: null,
-        FunderInitiative: null,
-        ImplementerInitiative: null
+        visDataRetrievalError: null
       };
+      case SET_USER_ERROR:
+        return {
+          ...state,
+          userRetrievalError: action.payload
+        };
+      //If error shouldnt appear anymore, then clear error from session state
+      case CLEAR_SET_USER_ERROR:
+        return {
+          ...state,
+          userRetrievalError: null
+        };
 
 
     //FORM DISPATCH HANDLERS
@@ -138,18 +167,30 @@ const dataReducer = (state = initState, action) => {
         ...state,
         form: action.payload,
         formStatus: 'review',
+        pulledformApproved: action.payload.status !== undefined ? (action.payload.status.length > 0 ? (action.payload.status[0].length > 0 ? (action.payload.status[0][0].inDB !== undefined ? (action.payload.status[0][0].inDB === 1 ? true : false) : true) : true) : false) : false,
+        formRetrievalError: null
       };
     case SET_MODIFY_FORM:
       return {
         ...state,
         form: action.payload,
-        formStatus: 'modify'
+        formStatus: 'modify',
+        pulledformApproved: action.payload.status !== undefined ? (action.payload.status.length > 0 ? (action.payload.status[0].length > 0 ? (action.payload.status[0][0].inDB !== undefined ? (action.payload.status[0][0].inDB === 1 ? true : false) : true) : true) : true) : false,
+        formRetrievalError: null
       };
     case SET_ADD_FORM:
       return {
         ...state,
         formStatus: 'add'
       };
+    //If form is readOnly
+    case SET_VIEW_FORM:
+      return {
+        ...state,
+        formUnauthorizedEditError: action.payload
+      };
+
+
     case PULLED_APPROVED_FORM:
       return {
         ...state,
@@ -165,11 +206,28 @@ const dataReducer = (state = initState, action) => {
         ...state,
         form: null,
         formStatus: null,
-        pulledformApproved: false
+        pulledformApproved: false,
+        formSubmitError: null,
+        formReviewError: null,
+        formRetrievalError: null,
+        formUnauthorizedEditError: null
       };
+    case SET_FORM_ERROR:
+      return {
+        ...state,
+        formRetrievalError: action.payload
+      };
+    //If error shouldnt appear anymore, then clear error from session state
+    case CLEAR_SET_FORM_ERROR:
+      return {
+        ...state,
+        formRetrievalError: null
+      };
+
     case FORM_SUBMIT_SUCCESS:
       return {
         ...state,
+        form: action.payload,
         formSubmitted: true,
         formSubmitError: null
       }
@@ -185,9 +243,28 @@ const dataReducer = (state = initState, action) => {
         formSubmitted: false,
         formSubmitError: action.payload
       }
+    case FORM_REVIEW_SUCCESS:
+      return {
+        ...state,
+        formReviewed: true,
+        formReviewError: null
+      }
+    case FORM_REVIEW_CLEAR:
+      return {
+        ...state,
+        formReviewed: false,
+        formReviewError: null
+      }
+    case FORM_REVIEW_ERROR:
+      return {
+        ...state,
+        formReviewed: false,
+        formReviewError: action.payload
+      }
 
 
     //VISUALIZE DISPATCH HANDLERS
+    //Set general actor data
     case SET_FUNDER_DATA:
       return {
         ...state,
@@ -203,6 +280,25 @@ const dataReducer = (state = initState, action) => {
         ...state,
         InititativeData: action.payload
       };
+
+    //Set number of each actor
+    case SET_FUNDER_NUMBERS:
+      return {
+        ...state,
+        FunderNumbers: action.payload
+      };
+    case SET_IMPLEMENTER_NUMBERS:
+      return {
+        ...state,
+        ImplementerNumbers: action.payload
+      };
+    case SET_INITIATIVE_NUMBERS:
+      return {
+        ...state,
+        InititativeNumbers: action.payload
+      };
+
+    //Set attributes corresponding to specific actors and actors visualized by category
     case SET_FUNDER_ATTRIBUTES:
       return {
         ...state,
@@ -247,19 +343,16 @@ const dataReducer = (state = initState, action) => {
         FunderInitiative: null,
         ImplementerInitiative: null
       };
-
-
-    //GENERAL ACCESS DISPATCH HANDLERS
-    case ACCESS_ERROR:
+    case SET_VISUALIZED_DATA_ERROR:
       return {
         ...state,
-        accessError: action.payload
+        visDataRetrievalError: action.payload
       };
     //If error shouldnt appear anymore, then clear error from session state
-    case CLEAR_ACCESS_ERROR:
+    case CLEAR_SET_VISUALIZED_DATA_ERROR:
       return {
         ...state,
-        accessError: null
+        visDataRetrievalError: null
       };
 
     default:

@@ -17,15 +17,55 @@ index.get('/', (req,res) => {
       .then(user => {
           //If found user using user id deserialized from the session id, send user info
           if(user){
-            res.json({"error": false, "message":
+            //If organization user
+            if (user.accessLevel === 0) {
+              res.json({"error": false, "message":
                 [{"username": user.username,
                   "email": user.email,
                   "firstname": user.firstName,
                   "lastname": user.lastName,
                   "accessLevel": user.accessLevel,
-                  "organization": user.organization
+                  "organization": user.organization,
+                  "editedForms": user.editedForms
                 }]
               })
+            //If RA/root user
+            } else {
+              //Query db for all organization users
+              User.findAll({
+                where: {
+                  accessLevel: 0
+                }
+              }).then(results => {
+                const reviewForms = []
+                if (results) {
+                  //Iterate over all organization users returned from query and accumulate all pending forms from their edited forms list
+                  results.forEach(orgUserRecord => {
+                    if (orgUserRecord.dataValues.editedForms) {
+                      if (orgUserRecord.dataValues.editedForms.pendingForms.length > 0) {
+                        orgUserRecord.dataValues.editedForms.pendingForms.forEach(pendingForm => {
+                          reviewForms.push(pendingForm)
+                        })
+                      }
+                    }
+                  })
+                }
+                res.json({"error": false, "message":
+                  [{"username": user.username,
+                    "email": user.email,
+                    "firstname": user.firstName,
+                    "lastname": user.lastName,
+                    "accessLevel": user.accessLevel,
+                    "organization": user.organization,
+                    "editedForms": user.editedForms,
+                    "reviewForms": reviewForms
+                  }]
+                })
+              })
+              .catch(error => {
+                res.json({"error": true, "message": error})
+              })
+            }
           } else {
             res.json({"error": true, "message": "Error retrieving user"})
           }

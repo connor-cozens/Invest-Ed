@@ -38,12 +38,15 @@ module.exports = db.sequelize.define(
             type: Sequelize.INTEGER,
             allowNull: false,
         },
+        editedForms: {
+            type: Sequelize.JSON,
+        },
         created: {
             type: Sequelize.DATE
         }
     },
     {
-        tableName: 'credentials',  //Specify table name to connect to in db, or just remove if not needed
+        tableName: 'users',  //Specify table name to connect to in db
         timestamps: false
     }
 

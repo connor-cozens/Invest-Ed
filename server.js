@@ -10,15 +10,14 @@ var nodemailer = require('nodemailer')
 var bodyParser = require("body-parser")
 var passport = require('passport')
 
+const { port } = require('./config')
+
 var client = redis.createClient()
 client.on('connect', () => {
   console.log('Connected to Redis')
 })
 
 var app = express()
-
-//var port = process.env.PORT || 4000
-var port = 4000   //run on 4000 so you can run react app on port 3000
 
 var expiryDate = 3600000
 app.use(cookieParser('temporarySecret'))//new
@@ -54,6 +53,7 @@ app.use(function(req, res, next) {
   next();
 });
 
+
 var Register = require('./routes/Register')
 var Login = require('./routes/Login')
 var Index = require('./routes/Index')
@@ -61,6 +61,7 @@ var Visualize = require('./routes/Visualize')
 var Contact = require('./routes/Contact')
 var Logout = require('./routes/Logout')
 var Dashboard = require('./routes/Dashboard')
+var ChangePassword = require('./routes/ChangePassword')
 
 
 app.use('/', Index)
@@ -70,9 +71,9 @@ app.use('/visualize', Visualize)
 app.use('/contact', Contact)
 app.use('/logout', Logout)
 app.use('/dashboard',Dashboard)
-
+app.use('/change-password', ChangePassword)
 
 
 app.listen(port, () =>{
-    console.log("Server is running on port: " + port)
+  console.log(`Server is running on port ${port}`)
 })

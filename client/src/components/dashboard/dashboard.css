@@ -42,10 +42,78 @@
   margin: 0 auto;
 }
 
+#dashboard .form-list {
+  float: left;
+  text-align: center;
+  border-radius: 10px;
+  border: solid 1px #BEBEBE;
+  margin: 8px 8px 8px 8px;
+  padding: 0 10px 5px 10px;
+}
+
+
 #dashboard h2{
   margin: 40px 0 40px 0;
 }
 
 #dashboard h3, #dashboard h5{
   text-align: left;
+}
+
+#dashboard .search-button {
+  width: 50%;
+  padding: 10px 5px 10px 5px;
+}
+
+#dashboard .form-button {
+  border-radius: 10px;
+  background-color: white;
+  width: 175px;
+  margin: 15px 10px 0 10px;
+  padding: 5px 25px 5px 25px;
+}
+
+#dashboard .form-button:hover {
+  background-color: #DCDCDC;
+  color: black;
+}
+
+#dashboard .form-button:focus {
+  background-color: #2C3E50;
+  color: white;
+}
+
+#dashboard .header{
+  cursor: pointer;
+  border: solid 1px #e6e6e6;
+  padding: 15px;
+  background-color: white;
+  color: black;
+  font-size: 18px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+#dashboard .content{
+  padding: 15px 0 15px 25px;
+  cursor: pointer;
+  border: solid 1px #e6e6e6;
+  float: left;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  width: 100%;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 5px;
+  margin: 5px 15px;
+}
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
 }

@@ -41,14 +41,34 @@ html,  #root, .App {
           transform: scaleX(1);
 }
 
+.alert button {
+  border-radius: 10px;
+  border: 1px solid #D3D3D3;
+  background-color: #e74c3c;
+  color: white;
+  width: 15%;
+  padding: 10px 5px 10px 5px;
+  margin: 0 0 0 30px;
+}
+
+.alert button:hover {
+  background-color: #db4030;
+  border: 1px solid #D3D3D3;
+}
+
+.card {
+  border: none;
+}
+
 body {
+  background-color: #F5F5F5;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height: 100%;
+  height: auto;
 }
 
 code {

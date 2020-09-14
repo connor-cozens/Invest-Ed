@@ -9,6 +9,8 @@ from openpyxl import load_workbook  # For .xlsx conversion
 import pyreadstat  # For .sav and .xpt conversion
 from docx import Document  # For .docx conversion
 
+import config
+
 def exportToCsv(name, df, attributes):
     # Open the csv file to write to
     file_name = name + '.csv'
@@ -83,7 +85,7 @@ def exportToHTML(name, df):
     # Set up formatting to create a basic HTML page containing all of Funder, Implementor, Initiative as tables
     pageStart = "<!DOCTYPE html>\n<html lang='en'>\n\t<head>\n\t\t<title>\n\t\tgirlseducation to HTML\n\t\t</title>\n\t</head>\n\n\t<body>\n"
     pageEnd = "\n\t</body>\n</html>"
-    
+
     page = pageStart + df.to_html() + pageEnd
 
     fileName = name + ".html"
@@ -115,15 +117,16 @@ def exportToTXT(name, df):
 
 # Main method - accepts command line arguments
 # Argument at index 0 is the program name,
-# Argument at index 1 is the entity type,
+# Argument at index 1 is the entity type (initiative, funder, implementor),
 # Argument at index 2 is the file format to export to,
 # Command format: python exports.py <entity> <file format>
+# For example, python exports.py initiative excel
 def main():
     # Open connection with database
     connection = None
     try:
-        # Set up database connection - change username, password and db name as needed
-        connection = mysql.connect(user='root', passwd='password', db='inves431_girlsEd')
+        # Set up database connection - manually change username, password and db name as needed
+        connection = mysql.connect(user=config.db_username, passwd=config.db_password, db=config.database)
         print("Connection to MySQL DB successful")
     except Error as e:
         print("The error {!r} occurred".format(e, e.args[0]))

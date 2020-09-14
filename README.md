@@ -77,7 +77,18 @@ Redis is an in-memory data store as a database cache used to store user sessions
       - Replace `DB_GIRLSED_MAIN` with the name of the database holding data for visualization.
 			 
       - Replace `DB_GIRLSED_TEMP` with the name of the database holding change request data.
-			
+	
+### Setting Configuration Variables for Export Scripts
+
+  1. Create an 'config.py' file in the /scripts directory
+  2. Follow the template outlined in the [config_example.py](https://github.com/condevcx3/Invest-Ed/blob/export-scripts/scripts/config_example.py) file, and replace the placeholder values with the following:
+		
+      - Replace ```db_username``` with the username used to connect to your MySQL server configuration.
+       
+      - Replace `db_password` with the password used to connect to your MySQL server configuration.
+      
+      - Replace `database` with the name of the database holding data for visualization.
+   
       
       
 Set the baseURL in [axiosConfig.js](https://github.com/condevcx3/Invest-Ed/blob/master/client/src/axios/axiosConfig.js), by setting the address and port to route axios requests to the Express app endpoints.

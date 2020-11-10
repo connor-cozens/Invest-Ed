@@ -80,6 +80,8 @@ Redis is an in-memory data store as a database cache used to store user sessions
 	
 ### Setting Configuration Variables for Export Scripts
 
+Details on the exported extensions and their completion status can be found [here](https://docs.google.com/document/d/1SXOzwDf5ChshkCknToSA-1nWuUGQecdnXK4UQUnazx4/edit?usp=sharing).
+
   1. Create an 'config.py' file in the /scripts directory
   2. Follow the template outlined in the [config_example.py](https://github.com/condevcx3/Invest-Ed/blob/export-scripts/scripts/config_example.py) file, and replace the placeholder values with the following:
 		

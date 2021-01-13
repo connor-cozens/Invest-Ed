@@ -155,31 +155,31 @@ def main():
                             exportToHTML(sys.argv[1], df)
                             exportToRTF(sys.argv[1], df)
                             exportToTXT(sys.argv[1], df)
-                            print('Successfully exported all file types for table: '+ sys.argv[1)
+                            print('Successfully exported all file types for table: '+ sys.argv[1])
                         elif sys.argv[2] == 'csv':
                             exportToCsv(sys.argv[1], df, attributes)
-                            print('Successfully exported csv for table: '+ sys.argv[1)
+                            print('Successfully exported csv for table: '+ sys.argv[1])
                         elif sys.argv[2] == 'sav':
                             exportToSav(sys.argv[1], df, attributes)
-                            print('Successfully exported sav for table: '+ sys.argv[1)
+                            print('Successfully exported sav for table: '+ sys.argv[1])
                         elif sys.argv[2] == 'excel':
                             exportToExcel(sys.argv[1], df)
-                            print('Successfully exported excel for table: '+ sys.argv[1)
+                            print('Successfully exported excel for table: '+ sys.argv[1])
                         elif sys.argv[2] == 'word':
                             exportToDocument(sys.argv[1], df)
-                            print('Successfully exported word for table: '+ sys.argv[1)
+                            print('Successfully exported word for table: '+ sys.argv[1])
                         elif sys.argv[2] == 'sas':
                             exportToXpt(sys.argv[1], df, attributes)
-                            print('Successfully exported sas for table: '+ sys.argv[1)
+                            print('Successfully exported sas for table: '+ sys.argv[1])
                         elif sys.argv[2] == 'html':
                             exportToHTML(sys.argv[1], df)
-                            print('Successfully exported html for table: '+ sys.argv[1)
+                            print('Successfully exported html for table: '+ sys.argv[1])
                         elif sys.argv[2] == 'rtf':
                             exportToRTF(sys.argv[1], df)
-                            print('Successfully exported rtf for table: '+ sys.argv[1)
+                            print('Successfully exported rtf for table: '+ sys.argv[1])
                         elif sys.argv[2] == 'txt':
                             exportToTXT(sys.argv[1], df)
-                            print('Successfully exported txt for table: '+ sys.argv[1)
+                            print('Successfully exported txt for table: '+ sys.argv[1])
                         else:
                             print('Invalid file format')
                     else:

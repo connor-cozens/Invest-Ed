@@ -1,4 +1,4 @@
-#about .header{
+#about .header {
     cursor: pointer;
     border: solid 1px #f2f2f2;
     padding: 15px;
@@ -6,9 +6,9 @@
     color: black;
     font-size: 18px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  }
+}
 
-#about .content{
+#about .content {
     cursor: pointer;
     border-left: solid 1px #f2f2f2;
     border-right: solid 1px #f2f2f2;
@@ -17,20 +17,33 @@
     padding: 15px;
     font-size: 16px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  }
+    background-color: #ecf0f1;
+    /*margin-bottom: 5vh;*/
+}
 
-  .arrow {
+.title {
+    text-align: center;
+    margin: auto;
+    padding: 4vh 4vw 4vh 4vw;
+}
+
+.container {
+    width: 85vw;
+    margin: auto;
+}
+
+.arrow {
     border: solid black;
     border-width: 0 2px 2px 0;
     display: inline-block;
     padding: 5px;
     margin: 5px 15px;
-  }
-  .down {
+}
+.down {
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
-  }
-  .up {
+}
+.up {
     transform: rotate(-135deg);
     -webkit-transform: rotate(-135deg);
-  }
+}

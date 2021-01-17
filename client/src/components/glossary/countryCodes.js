@@ -5,8 +5,8 @@ export const countryCodes = [
         "Code": "AFG",
         "Region": "South Asia",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 2,
@@ -14,8 +14,8 @@ export const countryCodes = [
         "Code": "ALB",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 3,
@@ -23,8 +23,8 @@ export const countryCodes = [
         "Code": "DZA",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 4,
@@ -32,8 +32,8 @@ export const countryCodes = [
         "Code": "ASM",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 5,
@@ -41,8 +41,8 @@ export const countryCodes = [
         "Code": "AND",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 6,
@@ -50,8 +50,8 @@ export const countryCodes = [
         "Code": "AGO*",
         "Region": "Sub-Saharan Africa*",
         "IncomeGroup": "Lower middle income*",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 7,
@@ -59,8 +59,8 @@ export const countryCodes = [
         "Code": "ATG",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 8,
@@ -68,8 +68,8 @@ export const countryCodes = [
         "Code": "ARG",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 9,
@@ -77,8 +77,8 @@ export const countryCodes = [
         "Code": "ARM",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 10,
@@ -86,8 +86,8 @@ export const countryCodes = [
         "Code": "ABW",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 11,
@@ -95,8 +95,8 @@ export const countryCodes = [
         "Code": "AUS",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 12,
@@ -104,8 +104,8 @@ export const countryCodes = [
         "Code": "AUT",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 13,
@@ -113,8 +113,8 @@ export const countryCodes = [
         "Code": "AZE",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 14,
@@ -122,8 +122,8 @@ export const countryCodes = [
         "Code": "BHS",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 15,
@@ -131,8 +131,8 @@ export const countryCodes = [
         "Code": "BHR",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 16,
@@ -140,8 +140,8 @@ export const countryCodes = [
         "Code": "BGD",
         "Region": "South Asia",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 17,
@@ -149,8 +149,8 @@ export const countryCodes = [
         "Code": "BRB",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 18,
@@ -158,8 +158,8 @@ export const countryCodes = [
         "Code": "BLR",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 19,
@@ -167,8 +167,8 @@ export const countryCodes = [
         "Code": "BEL",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 20,
@@ -176,8 +176,8 @@ export const countryCodes = [
         "Code": "BLZ",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 21,
@@ -185,8 +185,8 @@ export const countryCodes = [
         "Code": "BEN",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 22,
@@ -194,8 +194,8 @@ export const countryCodes = [
         "Code": "BMU",
         "Region": "North America",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 23,
@@ -203,8 +203,8 @@ export const countryCodes = [
         "Code": "BTN",
         "Region": "South Asia",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 24,
@@ -212,8 +212,8 @@ export const countryCodes = [
         "Code": "BOL",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IBRD",
-        "Other": "HIPC"
+        //"LendingCategory": "IBRD",
+        //"Other": "HIPC"
     },
     {
         "Number": 25,
@@ -221,8 +221,8 @@ export const countryCodes = [
         "Code": "BIH",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 26,
@@ -230,8 +230,8 @@ export const countryCodes = [
         "Code": "BWA",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 27,
@@ -239,8 +239,8 @@ export const countryCodes = [
         "Code": "BRA",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 28,
@@ -248,8 +248,8 @@ export const countryCodes = [
         "Code": "VGB",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 29,
@@ -257,8 +257,8 @@ export const countryCodes = [
         "Code": "BRN",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 30,
@@ -266,8 +266,8 @@ export const countryCodes = [
         "Code": "BGR",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 31,
@@ -275,8 +275,8 @@ export const countryCodes = [
         "Code": "BFA",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 32,
@@ -284,8 +284,8 @@ export const countryCodes = [
         "Code": "BDI",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 33,
@@ -293,8 +293,8 @@ export const countryCodes = [
         "Code": "CPV",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "Blend",
-        "Other": ""
+        //"LendingCategory": "Blend",
+        //"Other": ""
     },
     {
         "Number": 34,
@@ -302,8 +302,8 @@ export const countryCodes = [
         "Code": "KHM",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 35,
@@ -311,8 +311,8 @@ export const countryCodes = [
         "Code": "CMR",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "Blend",
-        "Other": "HIPC"
+        //"LendingCategory": "Blend",
+        //"Other": "HIPC"
     },
     {
         "Number": 36,
@@ -320,8 +320,8 @@ export const countryCodes = [
         "Code": "CAN",
         "Region": "North America",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 37,
@@ -329,8 +329,8 @@ export const countryCodes = [
         "Code": "CYM",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 38,
@@ -338,8 +338,8 @@ export const countryCodes = [
         "Code": "CAF",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 39,
@@ -347,8 +347,8 @@ export const countryCodes = [
         "Code": "TCD",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 40,
@@ -356,8 +356,8 @@ export const countryCodes = [
         "Code": "CHI",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 41,
@@ -365,8 +365,8 @@ export const countryCodes = [
         "Code": "CHL",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 42,
@@ -374,8 +374,8 @@ export const countryCodes = [
         "Code": "CHN",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 43,
@@ -383,8 +383,8 @@ export const countryCodes = [
         "Code": "COL",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 44,
@@ -392,8 +392,8 @@ export const countryCodes = [
         "Code": "COM",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 45,
@@ -401,8 +401,8 @@ export const countryCodes = [
         "Code": "COD",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 46,
@@ -410,8 +410,8 @@ export const countryCodes = [
         "Code": "COG",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "Blend",
-        "Other": "HIPC"
+        //"LendingCategory": "Blend",
+        //"Other": "HIPC"
     },
     {
         "Number": 47,
@@ -419,8 +419,8 @@ export const countryCodes = [
         "Code": "CRI",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 48,
@@ -428,8 +428,8 @@ export const countryCodes = [
         "Code": "CIV",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 49,
@@ -437,8 +437,8 @@ export const countryCodes = [
         "Code": "HRV*",
         "Region": "Europe & Central Asia*",
         "IncomeGroup": "Upper middle income*",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 50,
@@ -446,8 +446,8 @@ export const countryCodes = [
         "Code": "CUB",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 51,
@@ -455,8 +455,8 @@ export const countryCodes = [
         "Code": "CUW",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 52,
@@ -464,8 +464,8 @@ export const countryCodes = [
         "Code": "CYP",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 53,
@@ -473,8 +473,8 @@ export const countryCodes = [
         "Code": "CZE",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 54,
@@ -482,8 +482,8 @@ export const countryCodes = [
         "Code": "DNK",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 55,
@@ -491,8 +491,8 @@ export const countryCodes = [
         "Code": "DJI",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 56,
@@ -500,8 +500,8 @@ export const countryCodes = [
         "Code": "DMA",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "Blend",
-        "Other": ""
+        //"LendingCategory": "Blend",
+        //"Other": ""
     },
     {
         "Number": 57,
@@ -509,8 +509,8 @@ export const countryCodes = [
         "Code": "DOM",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 58,
@@ -518,8 +518,8 @@ export const countryCodes = [
         "Code": "ECU",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 59,
@@ -527,8 +527,8 @@ export const countryCodes = [
         "Code": "EGY",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 60,
@@ -536,8 +536,8 @@ export const countryCodes = [
         "Code": "SLV",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 61,
@@ -545,8 +545,8 @@ export const countryCodes = [
         "Code": "GNQ",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 62,
@@ -554,8 +554,8 @@ export const countryCodes = [
         "Code": "ERI",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 63,
@@ -563,8 +563,8 @@ export const countryCodes = [
         "Code": "EST",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 64,
@@ -572,8 +572,8 @@ export const countryCodes = [
         "Code": "ETH",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 65,
@@ -581,8 +581,8 @@ export const countryCodes = [
         "Code": "FRO",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 66,
@@ -590,8 +590,8 @@ export const countryCodes = [
         "Code": "FJI",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 67,
@@ -599,8 +599,8 @@ export const countryCodes = [
         "Code": "FIN",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 68,
@@ -608,8 +608,8 @@ export const countryCodes = [
         "Code": "FRA",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 69,
@@ -617,8 +617,8 @@ export const countryCodes = [
         "Code": "PYF",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 70,
@@ -626,8 +626,8 @@ export const countryCodes = [
         "Code": "GAB",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 71,
@@ -635,8 +635,8 @@ export const countryCodes = [
         "Code": "GMB",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 72,
@@ -644,8 +644,8 @@ export const countryCodes = [
         "Code": "GEO",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 73,
@@ -653,8 +653,8 @@ export const countryCodes = [
         "Code": "DEU",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 74,
@@ -662,8 +662,8 @@ export const countryCodes = [
         "Code": "GHA",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 75,
@@ -671,8 +671,8 @@ export const countryCodes = [
         "Code": "GIB",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 76,
@@ -680,8 +680,8 @@ export const countryCodes = [
         "Code": "GRC",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 77,
@@ -689,8 +689,8 @@ export const countryCodes = [
         "Code": "GRL",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 78,
@@ -698,8 +698,8 @@ export const countryCodes = [
         "Code": "GRD",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "Blend",
-        "Other": ""
+        //"LendingCategory": "Blend",
+        //"Other": ""
     },
     {
         "Number": 79,
@@ -707,8 +707,8 @@ export const countryCodes = [
         "Code": "GUM",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 80,
@@ -716,8 +716,8 @@ export const countryCodes = [
         "Code": "GTM",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 81,
@@ -725,8 +725,8 @@ export const countryCodes = [
         "Code": "GIN",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 82,
@@ -734,8 +734,8 @@ export const countryCodes = [
         "Code": "GNB",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 83,
@@ -743,8 +743,8 @@ export const countryCodes = [
         "Code": "GUY",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 84,
@@ -752,8 +752,8 @@ export const countryCodes = [
         "Code": "HTI",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 85,
@@ -761,8 +761,8 @@ export const countryCodes = [
         "Code": "HND",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 86,
@@ -770,8 +770,8 @@ export const countryCodes = [
         "Code": "HKG",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 87,
@@ -779,8 +779,8 @@ export const countryCodes = [
         "Code": "HUN",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 88,
@@ -788,8 +788,8 @@ export const countryCodes = [
         "Code": "ISL",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 89,
@@ -797,8 +797,8 @@ export const countryCodes = [
         "Code": "IND",
         "Region": "South Asia",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 90,
@@ -806,8 +806,8 @@ export const countryCodes = [
         "Code": "IDN",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 91,
@@ -815,8 +815,8 @@ export const countryCodes = [
         "Code": "IRN",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 92,
@@ -824,8 +824,8 @@ export const countryCodes = [
         "Code": "IRQ",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 93,
@@ -833,8 +833,8 @@ export const countryCodes = [
         "Code": "IRL",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 94,
@@ -842,8 +842,8 @@ export const countryCodes = [
         "Code": "IMN",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 95,
@@ -851,8 +851,8 @@ export const countryCodes = [
         "Code": "ISR",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 96,
@@ -860,8 +860,8 @@ export const countryCodes = [
         "Code": "ITA",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 97,
@@ -869,8 +869,8 @@ export const countryCodes = [
         "Code": "JAM",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 98,
@@ -878,8 +878,8 @@ export const countryCodes = [
         "Code": "JPN",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 99,
@@ -887,8 +887,8 @@ export const countryCodes = [
         "Code": "JOR*",
         "Region": "Middle East & North Africa*",
         "IncomeGroup": "Lower middle income*",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 100,
@@ -896,8 +896,8 @@ export const countryCodes = [
         "Code": "KAZ",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 101,
@@ -905,8 +905,8 @@ export const countryCodes = [
         "Code": "KEN",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "Blend*",
-        "Other": ""
+        //"LendingCategory": "Blend*",
+        //"Other": ""
     },
     {
         "Number": 102,
@@ -914,8 +914,8 @@ export const countryCodes = [
         "Code": "KIR",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 103,
@@ -923,8 +923,8 @@ export const countryCodes = [
         "Code": "PRK",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Low income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 104,
@@ -932,8 +932,8 @@ export const countryCodes = [
         "Code": "KOR",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 105,
@@ -941,8 +941,8 @@ export const countryCodes = [
         "Code": "XKX",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 106,
@@ -950,8 +950,8 @@ export const countryCodes = [
         "Code": "KWT",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 107,
@@ -959,8 +959,8 @@ export const countryCodes = [
         "Code": "KGZ",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 108,
@@ -968,8 +968,8 @@ export const countryCodes = [
         "Code": "LAO",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 109,
@@ -977,8 +977,8 @@ export const countryCodes = [
         "Code": "LVA",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 110,
@@ -986,8 +986,8 @@ export const countryCodes = [
         "Code": "LBN",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 111,
@@ -995,8 +995,8 @@ export const countryCodes = [
         "Code": "LSO",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 112,
@@ -1004,8 +1004,8 @@ export const countryCodes = [
         "Code": "LBR",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 113,
@@ -1013,8 +1013,8 @@ export const countryCodes = [
         "Code": "LBY",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 114,
@@ -1022,8 +1022,8 @@ export const countryCodes = [
         "Code": "LIE",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 115,
@@ -1031,8 +1031,8 @@ export const countryCodes = [
         "Code": "LTU",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 116,
@@ -1040,8 +1040,8 @@ export const countryCodes = [
         "Code": "LUX",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 117,
@@ -1049,8 +1049,8 @@ export const countryCodes = [
         "Code": "MAC",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 118,
@@ -1058,8 +1058,8 @@ export const countryCodes = [
         "Code": "MKD",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 119,
@@ -1067,8 +1067,8 @@ export const countryCodes = [
         "Code": "MDG",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 120,
@@ -1076,8 +1076,8 @@ export const countryCodes = [
         "Code": "MWI",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 121,
@@ -1085,8 +1085,8 @@ export const countryCodes = [
         "Code": "MYS",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 122,
@@ -1094,8 +1094,8 @@ export const countryCodes = [
         "Code": "MDV",
         "Region": "South Asia",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 123,
@@ -1103,8 +1103,8 @@ export const countryCodes = [
         "Code": "MLI",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 124,
@@ -1112,8 +1112,8 @@ export const countryCodes = [
         "Code": "MLT",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 125,
@@ -1121,8 +1121,8 @@ export const countryCodes = [
         "Code": "MHL",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 126,
@@ -1130,8 +1130,8 @@ export const countryCodes = [
         "Code": "MRT",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 127,
@@ -1139,8 +1139,8 @@ export const countryCodes = [
         "Code": "MUS",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 128,
@@ -1148,8 +1148,8 @@ export const countryCodes = [
         "Code": "MEX",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 129,
@@ -1157,8 +1157,8 @@ export const countryCodes = [
         "Code": "FSM",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 130,
@@ -1166,8 +1166,8 @@ export const countryCodes = [
         "Code": "MDA",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "Blend",
-        "Other": ""
+        //"LendingCategory": "Blend",
+        //"Other": ""
     },
     {
         "Number": 131,
@@ -1175,8 +1175,8 @@ export const countryCodes = [
         "Code": "MCO",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 132,
@@ -1184,8 +1184,8 @@ export const countryCodes = [
         "Code": "MNG",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "Blend",
-        "Other": ""
+        //"LendingCategory": "Blend",
+        //"Other": ""
     },
     {
         "Number": 133,
@@ -1193,8 +1193,8 @@ export const countryCodes = [
         "Code": "MNE",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 134,
@@ -1202,8 +1202,8 @@ export const countryCodes = [
         "Code": "MAR",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 135,
@@ -1211,8 +1211,8 @@ export const countryCodes = [
         "Code": "MOZ",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 136,
@@ -1220,8 +1220,8 @@ export const countryCodes = [
         "Code": "MMR",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 137,
@@ -1229,8 +1229,8 @@ export const countryCodes = [
         "Code": "NAM",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        ////"Other": ""
     },
     {
         "Number": 138,
@@ -1238,8 +1238,8 @@ export const countryCodes = [
         "Code": "NRU",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //////"Other": ""
     },
     {
         "Number": 139,
@@ -1247,8 +1247,8 @@ export const countryCodes = [
         "Code": "NPL",
         "Region": "South Asia",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 140,
@@ -1256,8 +1256,8 @@ export const countryCodes = [
         "Code": "NLD",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 141,
@@ -1265,8 +1265,8 @@ export const countryCodes = [
         "Code": "NCL",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 142,
@@ -1274,8 +1274,8 @@ export const countryCodes = [
         "Code": "NZL",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 143,
@@ -1283,8 +1283,8 @@ export const countryCodes = [
         "Code": "NIC",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 144,
@@ -1292,8 +1292,8 @@ export const countryCodes = [
         "Code": "NER",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 145,
@@ -1301,8 +1301,8 @@ export const countryCodes = [
         "Code": "NGA",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "Blend",
-        "Other": ""
+        //"LendingCategory": "Blend",
+        //"Other": ""
     },
     {
         "Number": 146,
@@ -1310,8 +1310,8 @@ export const countryCodes = [
         "Code": "MNP",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 147,
@@ -1319,8 +1319,8 @@ export const countryCodes = [
         "Code": "NOR",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 148,
@@ -1328,8 +1328,8 @@ export const countryCodes = [
         "Code": "OMN",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 149,
@@ -1337,8 +1337,8 @@ export const countryCodes = [
         "Code": "PAK",
         "Region": "South Asia",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "Blend",
-        "Other": ""
+        //"LendingCategory": "Blend",
+        //"Other": ""
     },
     {
         "Number": 150,
@@ -1346,8 +1346,8 @@ export const countryCodes = [
         "Code": "PLW*",
         "Region": "East Asia & Pacific*",
         "IncomeGroup": "High income*",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 151,
@@ -1355,8 +1355,8 @@ export const countryCodes = [
         "Code": "PAN",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 152,
@@ -1364,8 +1364,8 @@ export const countryCodes = [
         "Code": "PNG",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "Blend",
-        "Other": ""
+        //"LendingCategory": "Blend",
+        //"Other": ""
     },
     {
         "Number": 153,
@@ -1373,8 +1373,8 @@ export const countryCodes = [
         "Code": "PRY",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 154,
@@ -1382,8 +1382,8 @@ export const countryCodes = [
         "Code": "PER",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 155,
@@ -1391,8 +1391,8 @@ export const countryCodes = [
         "Code": "PHL",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 156,
@@ -1400,8 +1400,8 @@ export const countryCodes = [
         "Code": "POL",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 157,
@@ -1409,8 +1409,8 @@ export const countryCodes = [
         "Code": "PRT",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 158,
@@ -1418,8 +1418,8 @@ export const countryCodes = [
         "Code": "PRI",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 159,
@@ -1427,8 +1427,8 @@ export const countryCodes = [
         "Code": "QAT",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 160,
@@ -1436,8 +1436,8 @@ export const countryCodes = [
         "Code": "ROU",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 161,
@@ -1445,8 +1445,8 @@ export const countryCodes = [
         "Code": "RUS",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 162,
@@ -1454,8 +1454,8 @@ export const countryCodes = [
         "Code": "RWA",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 163,
@@ -1463,8 +1463,8 @@ export const countryCodes = [
         "Code": "WSM*",
         "Region": "East Asia & Pacific*",
         "IncomeGroup": "Upper middle income*",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 164,
@@ -1472,8 +1472,8 @@ export const countryCodes = [
         "Code": "SMR",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 165,
@@ -1481,8 +1481,8 @@ export const countryCodes = [
         "Code": "STP",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 166,
@@ -1490,8 +1490,8 @@ export const countryCodes = [
         "Code": "SAU",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 167,
@@ -1499,8 +1499,8 @@ export const countryCodes = [
         "Code": "SEN",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 168,
@@ -1508,8 +1508,8 @@ export const countryCodes = [
         "Code": "SRB",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 169,
@@ -1517,8 +1517,8 @@ export const countryCodes = [
         "Code": "SYC",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "High income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 170,
@@ -1526,8 +1526,8 @@ export const countryCodes = [
         "Code": "SLE",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 171,
@@ -1535,8 +1535,8 @@ export const countryCodes = [
         "Code": "SGP",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 172,
@@ -1544,8 +1544,8 @@ export const countryCodes = [
         "Code": "SXM",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 173,
@@ -1553,8 +1553,8 @@ export const countryCodes = [
         "Code": "SVK",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 174,
@@ -1562,8 +1562,8 @@ export const countryCodes = [
         "Code": "SVN",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 175,
@@ -1571,8 +1571,8 @@ export const countryCodes = [
         "Code": "SLB",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 176,
@@ -1580,8 +1580,8 @@ export const countryCodes = [
         "Code": "SOM",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 177,
@@ -1589,8 +1589,8 @@ export const countryCodes = [
         "Code": "ZAF",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 178,
@@ -1598,8 +1598,8 @@ export const countryCodes = [
         "Code": "SSD",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 179,
@@ -1607,8 +1607,8 @@ export const countryCodes = [
         "Code": "ESP",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": "EMU"
+        //"LendingCategory": "..",
+        //"Other": "EMU"
     },
     {
         "Number": 180,
@@ -1616,8 +1616,8 @@ export const countryCodes = [
         "Code": "LKA",
         "Region": "South Asia",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IBRD*",
-        "Other": ""
+        //"LendingCategory": "IBRD*",
+        //"Other": ""
     },
     {
         "Number": 181,
@@ -1625,8 +1625,8 @@ export const countryCodes = [
         "Code": "KNA",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 182,
@@ -1634,8 +1634,8 @@ export const countryCodes = [
         "Code": "LCA",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "Blend",
-        "Other": ""
+        //"LendingCategory": "Blend",
+        //"Other": ""
     },
     {
         "Number": 183,
@@ -1643,8 +1643,8 @@ export const countryCodes = [
         "Code": "MAF",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 184,
@@ -1652,8 +1652,8 @@ export const countryCodes = [
         "Code": "VCT",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "Blend",
-        "Other": ""
+        //"LendingCategory": "Blend",
+        //"Other": ""
     },
     {
         "Number": 185,
@@ -1661,8 +1661,8 @@ export const countryCodes = [
         "Code": "SDN",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 186,
@@ -1670,8 +1670,8 @@ export const countryCodes = [
         "Code": "SUR",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 187,
@@ -1679,8 +1679,8 @@ export const countryCodes = [
         "Code": "SWZ",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 188,
@@ -1688,8 +1688,8 @@ export const countryCodes = [
         "Code": "SWE",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 189,
@@ -1697,8 +1697,8 @@ export const countryCodes = [
         "Code": "CHE",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 190,
@@ -1706,8 +1706,8 @@ export const countryCodes = [
         "Code": "SYR",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 191,
@@ -1715,8 +1715,8 @@ export const countryCodes = [
         "Code": "TWN",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 192,
@@ -1724,8 +1724,8 @@ export const countryCodes = [
         "Code": "TJK",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 193,
@@ -1733,8 +1733,8 @@ export const countryCodes = [
         "Code": "TZA",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 194,
@@ -1742,8 +1742,8 @@ export const countryCodes = [
         "Code": "THA",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 195,
@@ -1751,8 +1751,8 @@ export const countryCodes = [
         "Code": "TLS",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "Blend",
-        "Other": ""
+        //"LendingCategory": "Blend",
+        //"Other": ""
     },
     {
         "Number": 196,
@@ -1760,8 +1760,8 @@ export const countryCodes = [
         "Code": "TGO",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 197,
@@ -1769,8 +1769,8 @@ export const countryCodes = [
         "Code": "TON*",
         "Region": "East Asia & Pacific*",
         "IncomeGroup": "Upper middle income*",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 198,
@@ -1778,8 +1778,8 @@ export const countryCodes = [
         "Code": "TTO",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 199,
@@ -1787,8 +1787,8 @@ export const countryCodes = [
         "Code": "TUN",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 200,
@@ -1796,8 +1796,8 @@ export const countryCodes = [
         "Code": "TUR",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 201,
@@ -1805,8 +1805,8 @@ export const countryCodes = [
         "Code": "TKM",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 202,
@@ -1814,8 +1814,8 @@ export const countryCodes = [
         "Code": "TCA",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 203,
@@ -1823,8 +1823,8 @@ export const countryCodes = [
         "Code": "TUV",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 204,
@@ -1832,8 +1832,8 @@ export const countryCodes = [
         "Code": "UGA",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 205,
@@ -1841,8 +1841,8 @@ export const countryCodes = [
         "Code": "UKR",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 206,
@@ -1850,8 +1850,8 @@ export const countryCodes = [
         "Code": "ARE",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 207,
@@ -1859,8 +1859,8 @@ export const countryCodes = [
         "Code": "GBR",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 208,
@@ -1868,8 +1868,8 @@ export const countryCodes = [
         "Code": "USA",
         "Region": "North America",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 209,
@@ -1877,8 +1877,8 @@ export const countryCodes = [
         "Code": "URY",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 210,
@@ -1886,8 +1886,8 @@ export const countryCodes = [
         "Code": "UZB",
         "Region": "Europe & Central Asia",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "Blend",
-        "Other": ""
+        //"LendingCategory": "Blend",
+        //"Other": ""
     },
     {
         "Number": 211,
@@ -1895,8 +1895,8 @@ export const countryCodes = [
         "Code": "VUT",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 212,
@@ -1904,8 +1904,8 @@ export const countryCodes = [
         "Code": "VEN",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "Upper middle income",
-        "LendingCategory": "IBRD",
-        "Other": ""
+        //"LendingCategory": "IBRD",
+        //"Other": ""
     },
     {
         "Number": 213,
@@ -1913,8 +1913,8 @@ export const countryCodes = [
         "Code": "VNM",
         "Region": "East Asia & Pacific",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IBRD*",
-        "Other": ""
+        //"LendingCategory": "IBRD*",
+        //"Other": ""
     },
     {
         "Number": 214,
@@ -1922,8 +1922,8 @@ export const countryCodes = [
         "Code": "VIR",
         "Region": "Latin America & Caribbean",
         "IncomeGroup": "High income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 215,
@@ -1931,8 +1931,8 @@ export const countryCodes = [
         "Code": "PSE",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "..",
-        "Other": ""
+        //"LendingCategory": "..",
+        //"Other": ""
     },
     {
         "Number": 216,
@@ -1940,8 +1940,8 @@ export const countryCodes = [
         "Code": "YEM",
         "Region": "Middle East & North Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": ""
+        //"LendingCategory": "IDA",
+        //"Other": ""
     },
     {
         "Number": 217,
@@ -1949,8 +1949,8 @@ export const countryCodes = [
         "Code": "ZMB",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Lower middle income",
-        "LendingCategory": "IDA",
-        "Other": "HIPC"
+        //"LendingCategory": "IDA",
+        //"Other": "HIPC"
     },
     {
         "Number": 218,
@@ -1958,7 +1958,7 @@ export const countryCodes = [
         "Code": "ZWE",
         "Region": "Sub-Saharan Africa",
         "IncomeGroup": "Low income",
-        "LendingCategory": "Blend",
-        "Other": ""
+        //"LendingCategory": "Blend",
+        //"Other": ""
     }
 ]

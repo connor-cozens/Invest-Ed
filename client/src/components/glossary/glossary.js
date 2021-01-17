@@ -14,14 +14,19 @@ const Glossary = () => {
         <>
         <h2 className="title">Glossary</h2>
         <div id='glossary' className="container">
-            <Collapsible title={glossaryData.countryCodesSectionTitle}>
-                <h3 className="sectionTitle">{glossaryData.countryCodesTableTitle}</h3>
-                <p>{glossaryData.countryCodesTableDescription}</p>
-                {RenderTable(RenderHeaders(glossaryData.tableHeadings), RenderCountryCodes())}
-                <p><strong>*</strong> indicates a change of classification</p>
+            <Collapsible title={glossaryData.bgGuidance.sectionTitle}>
+                <h3 className="sectionTitle">{glossaryData.bgGuidance.title}</h3>
+                <p><em>{glossaryData.bgGuidance.version}</em></p>
+                <p dangerouslySetInnerHTML={{ __html: glossaryData.bgGuidance.description }} />
+            </Collapsible>
+            <br />
+            <Collapsible title={glossaryData.countryCodes.sectionTitle}>
+                <h3 className="sectionTitle">{glossaryData.countryCodes.tableTitle}</h3>
+                <p>{glossaryData.countryCodes.tableDescription}</p>
+                {RenderTable(RenderHeaders(glossaryData.countryCodes.tableHeadings), RenderCountryCodes())}
+                <p dangerouslySetInnerHTML={{ __html: glossaryData.countryCodes.classification }} />
                 <br />
-                <p>{glossaryData.countryCodesIDADescription}</p>
-                <p dangerouslySetInnerHTML={{ __html: glossaryData.countryCodesNote }} />
+                <p dangerouslySetInnerHTML={{ __html: glossaryData.countryCodes.note }} />
             </Collapsible>
             <br />
             <Collapsible title={glossaryData.orgTypes.sectionTitle}>
@@ -29,19 +34,13 @@ const Glossary = () => {
                 {RenderTable(RenderHeaders(glossaryData.orgTypes.tableHeadings), RenderOrgTypes())}
                 <p style={{ marginBottom: "0" }}>{glossaryData.orgTypes.preexistingDesc}</p>
                 <p>{glossaryData.orgTypes.inductiveDesc}</p>
+                {/*INSERT BLURB HERE W PAPER REFERENCE*/}
             </Collapsible>
             <br />
             <Collapsible title={glossaryData.edSubSectors.sectionTitle}>
                 <h3 className="sectionTitle">{glossaryData.edSubSectors.tableTitle}</h3>
-                    {RenderTable(RenderHeaders(glossaryData.edSubSectors.tableHeadings), RenderSubSectors())}
-                    {edSubSectors.map((sector, i) => (
-                        sector.AdditionalCodes != ""
-                            ? <>
-                                <p style={{marginBottom: 0}}><strong>{sector.EducationSubSector}:</strong></p>
-                                <p style={{marginLeft: '2vw'}}>{sector.AdditionalCodes}</p>
-                            </>
-                            : null
-                    ))}
+                {RenderTable(RenderHeaders(glossaryData.edSubSectors.tableHeadings), RenderSubSectors())}
+                <p>{glossaryData.edSubSectors.additionalCodes}</p>
             </Collapsible>
             <br />
             <Collapsible title={glossaryData.progAreas.sectionTitle}>
@@ -49,10 +48,9 @@ const Glossary = () => {
                 {RenderTable(RenderHeaders(glossaryData.progAreas.tableHeadings), RenderProgramAreas())}
             </Collapsible>
             <br />
-            <Collapsible title={glossaryData.bgGuidance.sectionTitle}>
-                    <h3 className="sectionTitle">{glossaryData.bgGuidance.title}</h3>
-                    <p><em>{glossaryData.bgGuidance.version}</em></p>
-                    <p dangerouslySetInnerHTML={{ __html: glossaryData.bgGuidance.description }} />
+            <Collapsible title={glossaryData.references.sectionTitle}>
+                <h3 className="sectionTitle">{glossaryData.references.sectionTitle}</h3>
+                {RenderReferences()}
             </Collapsible>
             <br />
         </div>
@@ -77,38 +75,21 @@ const RenderTable = (tableHead, tableBody) => {
 
 }
 
+const RenderReferences = () => {
+
+    return (
+        <>
+            <ul>
+                {glossaryData.references.refs.map((ref, i) => (
+                    <li style={{marginBottom: '1vh'}} dangerouslySetInnerHTML={{ __html: ref }} />
+                ))}
+            </ul>
+        </>
+    )
+    
+}
+
 const RenderProgramAreas = () => {
-    let nums = []
-    let start = false
-    let idx = -1
-    progAreas.map((area, i) => {
-        if (area.AMPProgramArea != "") {
-            idx += 1
-            nums.push(1)
-        }
-        else nums[idx] += 1
-    })
-    let nums2 = []
-    idx = -1
-    progAreas.map((area, i) => {
-        if (area.AMPProgramAreaDefinition != "") {
-            idx += 1
-            nums2.push(1)
-        }
-        else nums2[idx] += 1
-    })
-    let nums3 = []
-    idx = -1
-    progAreas.map((area, i) => {
-        if (area.AMPProgramActivities != "") {
-            idx += 1
-            nums3.push(1)
-        }
-        else nums3[idx] += 1
-    })
-
-    console.log(nums2)
-
     return (
     <>
             {progAreas.map((area, i) => {
@@ -131,9 +112,10 @@ const RenderSubSectors = () => {
         <>
             {edSubSectors.map((sector, i) => (
                 <tr className={i % 2 == 0 ? "rowStyle" : "rowStyleAlt"}>
-                    <td className="cellBorderRight" style={{ fontWeight: "bold", width: '10%' }}>{sector.EducationSubSector}</td>
-                    <td className="cellBorderRight" style={{width: '70%' }}>{sector.WorldBankDefinition}</td>
-                    <td className="" style={{ width: '20%' }}>{sector.Exclusions}</td>
+                    <td className="cellBorderRight" style={{ fontWeight: "bold", width: '8%' }}>{sector.EducationSubSector}</td>
+                    <td className="cellBorderRight" style={{width: '60%' }}>{sector.WorldBankDefinition}</td>
+                    <td className="cellBorderRight" style={{ width: '16%' }}>{sector.Exclusions}</td>
+                    <td className="" style={{ width: '16%' }}>{sector.AdditionalCodes}</td>
                 </tr>
             ))}
         </>
@@ -146,16 +128,14 @@ const RenderOrgTypes = () => {
         <>
             {preexistingDefinitions.map((def, i) => (
                 <tr className={"rowStyle"}>
-                    <td className={def.OrganisationalType != "" ? "cellBorderRight" : "cellBorderRight cellBorderBottom "} style={{ fontWeight: "bold" }}>{def.OrganisationalType}</td>
-                    <td className={i % 2 != 0 && def.Definition != "" ? "cellBorderTop cellBorderBottom " : null}>{def.Definition}</td>
-                    <td className={def.Examples != "" ? "cellBorderTop cellBorderLeft" : "cellBorderLeft cellBorderBottom"}>{def.Examples}</td>
+                    <td className={def.OrganisationalType != "" ? "cellBorderTop cellBorderRight" : "cellBorderRight cellBorderBottom"} style={{ fontWeight: "bold" }}>{def.OrganisationalType}</td>
+                    <td className="cellBorderTop cellBorderBottom">{def.Definition}</td>
                 </tr>
             ))}
             {inductiveDefinitions.map((def, i) => (
                 <tr className="rowStyleAlt">
                     <td className="cellBorderBottom" style={{fontWeight: "bold"}}>{def.OrganisationalType}</td>
                     <td className="cellBorderLeft cellBorderRight cellBorderBottom">{def.Definition}</td>
-                    <td className="cellBorderBottom">{def.Examples}</td>
                 </tr>  
             ))}
         </>
@@ -181,8 +161,6 @@ const RenderCountryCodes = () => {
                     <td style={{ width: '10%' }}>{boldWord(country.Code)}</td>
                     <td style={{ width: '20%' }}>{boldWord(country.Region)}</td>
                     <td style={{ width: '20%' }}>{boldWord(country.IncomeGroup)}</td>
-                    <td style={{ width: '15%' }}>{boldWord(country.LendingCategory)}</td>
-                    <td style={{ width: '10%' }}>{boldWord(country.Other)}</td>
                 </tr>
             ))}
         </>

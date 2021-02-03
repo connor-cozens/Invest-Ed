@@ -1,10 +1,10 @@
 import React, {Component, useEffect, useState} from 'react'
 import './glossary.css';
 import { glossaryData } from './glossaryData.js';
-import { countryCodes } from './countryCodes.js';
-import { preexistingDefinitions, inductiveDefinitions } from './orgTypes.js';
-import { edSubSectors } from './edSubSectors.js';
-import { progAreas } from './progAreas.js';
+import { countryCodes } from '../../componentsData/countryCodes';
+import { preexistingDefinitions, inductiveDefinitions } from '../../componentsData/orgTypes';
+import { edSubSectors } from '../../componentsData/edSubSectors';
+import { progAreas } from '../../componentsData/progAreas';
 
 const Glossary = () => {
     let headings = { ...glossaryData.tableHeadings };

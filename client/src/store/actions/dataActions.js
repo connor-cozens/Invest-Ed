@@ -13,6 +13,10 @@ import {
   CLEAR_SET_USER_ERROR,
 
   //FORMS
+  GET_INITIATIVE_TAGS,
+  GENERATE_TAG_NUMBER,
+  SET_IMPLEMENTER,
+
   SET_REVIEW_FORM,
   SET_MODIFY_FORM,
   SET_ADD_FORM,
@@ -49,7 +53,54 @@ import {
 } from '../reducers/dataReducer';
 
 import {LOGIN_SUCCESS} from '../reducers/authReducer';
-import {forceLogout} from './authActions';
+import { forceLogout } from './authActions';
+
+
+export const getInitiativeTags = (user) => (dispatch) => {
+    let headers = { withCredentials: true, accepts: "application/json" }
+
+    axios.get(`/dashboard/getInitiativeTags`, headers)
+        .then(response => {
+            dispatch({ type: GET_INITIATIVE_TAGS, payload: response.data });
+        })
+        .catch(err => {
+            dispatch({ type: GET_INITIATIVE_TAGS, payload: ["Get Initiative Tags Error"] });
+        })
+}
+
+export const generateTagNumber = (user) => (dispatch) => {
+    let headers = { withCredentials: true, accepts: "application/json" }
+
+    axios.get(`/dashboard/generateTagNumber`, headers)
+        .then(response => {
+            console.log(response.data)
+            dispatch({ type: GENERATE_TAG_NUMBER, payload: response.data });
+        })
+        .catch(err => {
+            dispatch({ type: GENERATE_TAG_NUMBER, payload: ["Generate Tag Number Error"] });
+        })
+}
+
+export const setImplementer = (implementer, initiative, funder, tag) => (dispatch) => {
+    let headers = { withCredentials: true, accepts: "application/json" }
+    let body = {
+        implementer: implementer,
+        initiative: initiative,
+        funder: funder,
+        tag: tag
+    }
+
+    axios.post(`/dashboard/setImplementer`, body, headers)
+        .then(response => {
+            dispatch({ type: SET_IMPLEMENTER, payload: response.data });
+        })
+        .catch(err => {
+            console.log(err)
+            dispatch({ type: SET_IMPLEMENTER, payload: ["Set Implementer Error"] });
+        })
+}
+
+
 
 //USER REGISTRATION ACTIONS
 export const registerUser = (user) => (dispatch) => {

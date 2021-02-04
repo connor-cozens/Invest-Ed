@@ -48,6 +48,124 @@ const poolTemp = sql.createPool({
 
 const User = require("../models/User")
 
+dashboard.get('/getInitiativeTags', (req, res) => {
+    if (req.user) {
+        let query = 'SELECT * FROM initiative order by tagNumber'
+        console.log(query)
+        pool.query(query, {}, function (err, results) {
+            if (err) {
+                console.log(err)
+                return res.json(err)
+            } else {
+                console.log(results);
+                return res.json(results)
+            }
+        })
+
+
+    } else {
+        res.json({ "error": { "message": "Error: Not authorized to access this page" } })
+    }
+})
+
+dashboard.get('/generateTagNumber', (req, res) => {
+    if (req.user) {
+        let query = 'SELECT tagNumber FROM girlsed.initiative ORDER BY tagNumber DESC LIMIT 1'
+        console.log(query)
+        pool.query(query, {}, function (err, results) {
+            if (err) {
+                console.log(err)
+                return res.json(err)
+            } else {
+                let tagNumber = parseInt(results[0].tagNumber) + 1333
+                return res.json(tagNumber)
+            }
+        })
+
+
+    } else {
+        res.json({ "error": { "message": "Error: Not authorized to access this page" } })
+    }
+})
+
+dashboard.post('/setImplementer', (req, res) => {
+    if (req.user) {
+        let query = {
+            funder: {
+                funder: [`INSERT INTO ` + db_girlsed_temp + `.funder VALUES ("` + req.body.funder.name + `", "` + req.body.funder.site + `", "` + req.body.funder.motive + `", "` + req.body.funder.impact + `", "` + req.body.funder.orgForm + `")`],
+                funderAsiaBases: Object.values(req.body.funder.asiaIntBases).map(base => `INSERT INTO ` + db_girlsed_temp + `.funderasiabases VALUES ("` + req.body.funder.name + `", "` + base + `")`),
+                funderAsiaOperations: Object.values(req.body.funder.asiaOps).map(op => `INSERT INTO ` + db_girlsed_temp + `.funderasiaoperations VALUES ("` + req.body.funder.name + `", "` + op + `")`),
+                funderEdSubSectors: Object.values(req.body.funder.edSubSectors).map(sub => `INSERT INTO ` + db_girlsed_temp + `.fundereducationsubsectors VALUES ("` + req.body.funder.name + `", "` + sub + `")`),
+                funderIntBases: Object.values(req.body.funder.intBases).map(base => `INSERT INTO ` + db_girlsed_temp + `.funderinternationalbases VALUES ("` + req.body.funder.name + `", "` + base + `")`),
+                funderOrgTraits: Object.values(req.body.funder.orgTraits).map(trait => `INSERT INTO ` + db_girlsed_temp + `.funderorganizationtraits VALUES ("` + req.body.funder.name + `", "` + trait + `")`),
+                //funds: [],
+            },
+            initiative: {
+                initiative: [`INSERT INTO ` + db_girlsed_temp + `.initiative VALUES (` + req.body.tag + `, "` + req.body.initiative.name + `", "` + req.body.initiative.site + `", "` + req.body.initiative.targetsWomen + `", "` + req.body.initiative.startYear + `", "` + req.body.initiative.endYear + `", "` + req.body.initiative.desc + `", "` + req.body.initiative.mainProgActivity + `", "` + req.body.initiative.mainProgArea + `", "` + req.body.initiative.accessFee + `")`],
+                initiativeCountryOfOp: Object.values(req.body.initiative.countries).map(c => `INSERT INTO ` + db_girlsed_temp + `.initiativecountryofoperation VALUES ("` + req.body.tag + `", "` + c + `")`),
+                initiativeMainEdSubSectors: Object.values(req.body.initiative.mainEd).map(e => `INSERT INTO ` + db_girlsed_temp + `.initiativemaineducationsubsector VALUES ("` + req.body.tag + `", "` + e + `")`),
+                initiativeEdSubSectors: Object.values(req.body.initiative.mainEd).map(e => `INSERT INTO ` + db_girlsed_temp + `.initiativeeducationsubsectors VALUES ("` + req.body.tag + `", "` + e + `")`).concat(Object.values(req.body.initiative.otherEd).map(e => `INSERT INTO ` + db_girlsed_temp + `.initiativeeducationsubsectors VALUES ("` + req.body.tag + `", "` + e + `")`)),
+                initiativeFundingSource: Object.values(req.body.initiative.fundingSource).map(f => `INSERT INTO ` + db_girlsed_temp + `.initiativefundingsource VALUES ("` + req.body.tag + `", "` + f + `")`),
+                initiativeLaunchCountry: Object.values(req.body.initiative.launchCountries).map(f => `INSERT INTO ` + db_girlsed_temp + `.initiativelaunchcountry VALUES ("` + req.body.tag + `", "` + f + `")`),
+                initiativeProgActivities: [`INSERT INTO ` + db_girlsed_temp + `.initiativeprogrammingactivities VALUES ("` + req.body.tag + `", "` + req.body.initiative.mainProgArea + `")`].concat(Object.values(req.body.initiative.otherProgArea).map(e => `INSERT INTO ` + db_girlsed_temp + `.initiativeprogrammingactivities VALUES ("` + req.body.tag + `", "` + e + `")`)),
+                initiativeRegion: Object.values(req.body.initiative.regions).map(f => `INSERT INTO ` + db_girlsed_temp + `.initiativeregion VALUES ("` + req.body.tag + `", "` + f + `")`),
+                initiativeTargetGeo: Object.values(req.body.initiative.targetGeo).map(f => `INSERT INTO ` + db_girlsed_temp + `.initiativetargetgeography VALUES ("` + req.body.tag + `", "` + f + `")`),
+                initiativeTargetSchoolMgmt: [`INSERT INTO ` + db_girlsed_temp + `.initiativetargetschoolmanagement VALUES ("` + req.body.tag + `", "` + req.body.initiative.targetSchoolMgmt + `")`],
+            },
+            implementer: {
+                implements: [`INSERT INTO ` + db_girlsed_temp + `.implements VALUES (` + req.body.tag + `, "` + req.body.implementer.name + `", "` + req.body.initiative.startYear + `", "` + req.body.initiative.endYear + `")`],
+                implementor: [`INSERT INTO ` + db_girlsed_temp + `.implementor VALUES ("` + req.body.implementer.name + `", "` + req.body.implementer.motive + `")`],
+            }
+        }
+
+        const runQueries = async () => {
+            let promisePool = poolTemp.promise()
+            let results = []
+
+            console.log(Object.keys(query.funder).length)
+            for (let i = 0; i < Object.keys(query.funder).length; i++) {
+                console.log(Object.values(query.funder)[i].length)
+                for (let j = 0; j < Object.values(query.funder)[i].length; j++) {
+                    await promisePool.query(Object.values(query.funder)[i][j])
+                        .then(res => results.push({ "success": { "message": "success", "query": Object.values(query.funder)[i][j] } }))
+                        .catch(err => results.push({ "error": { "message": "Error: " + err.sqlMessage, "query": Object.values(query.funder)[i][j] } }));
+                }
+            }
+
+           for (let i = 0; i < Object.keys(query.initiative).length; i++) {
+                for (let j = 0; j < Object.values(query.initiative)[i].length; j++) {
+                    await promisePool.query(Object.values(query.initiative)[i][j])
+                        .then(res => results.push({ "success": { "message": "success", "query": Object.values(query.initiative)[i][j] } }))
+                        .catch(err => results.push({ "error": { "message": "Error: " + err.sqlMessage, "query": Object.values(query.initiative)[i][j] } }));
+                }
+            }
+
+
+            for (let i = 0; i < Object.keys(query.implementer).length; i++) {
+                for (let j = 0; j < Object.values(query.implementer)[i].length; j++) {
+                    await promisePool.query(Object.values(query.implementer)[i][j])
+                        .then(res => results.push({ "success": { "message": "success", "query": Object.values(query.implementer)[i][j] } }))
+                        .catch(err => results.push({ "error": { "message": "Error: " + err.sqlMessage, "query": Object.values(query.implementer)[i][j] } }));
+                }
+            }
+
+            Object.values(results).map(result => {
+                if (result.error)
+                    console.log("ERRORS FOUND, ROLLING BACK INSERTS")
+            })
+
+
+            console.log('RESULTS', results, results.length)
+            res.json(results)
+        }
+
+        runQueries()
+
+    } else {
+        res.json({ "error": { "message": "Error: Not authorized to access this page" } })
+    }
+})
+
 //GET from from DB
 dashboard.get('/form/:tagNum', (req, res) =>{
   if(req.user){

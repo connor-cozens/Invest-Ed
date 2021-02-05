@@ -88,7 +88,7 @@ dashboard.get('/generateTagNumber', (req, res) => {
     }
 })
 
-dashboard.post('/setImplementer', (req, res) => {
+dashboard.post('/addInitiative', (req, res) => {
     if (req.user) {
         let query = {
             funder: {

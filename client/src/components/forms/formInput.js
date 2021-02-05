@@ -4,61 +4,42 @@ import { Redirect } from 'react-router-dom';
 import './formInput.css'
 import { formData } from './formData.js';
 import { formProgAreas } from '../../componentsData/progAreas'
-import { generateTagNumber, setImplementer } from '../../store/actions/dataActions';
+import { generateTagNumber, addInitiative } from '../../store/actions/dataActions';
 
 
 
 
 const FormInput = (props) => {
-     const [funder, setFunder] = useState({
-        name: "", //
-        site: "", //
-        motive: "", //
-        impact: "", //
-        orgForm: "", //
-        intBases: [], //
-        edSubSectors: [], //
-        orgTraits: [], //
-        asiaIntBases: [], //
-        asiaOps: [] //
-    })
-
-    const [initiative, setInitiative] = useState({
-        name: "", 
-        site: "", 
-        targetsWomen: "", 
-        startYear: "", 
-        endYear: "", 
-        launchCountries: [], 
-        desc: "", 
-        regions: [],
-        countries: [], 
-        targetGeo: [],
-        mainEd: [],
-        otherEd: [], 
-        mainProgArea: "",
-        mainProgActivity: "",
-        otherProgArea: [],
-        fundingSource: [],
-        accessFee: "", 
-        targetSchoolMgmt: "",
-        //targetPopSectors: [], REQUIRED??????
-        outcomes: "" //not accounted for
-    })
-
-    const [implementer, setImplementer] = useState({
-        name: "", //
-        motive: "" //
-    })
+    const { funder, setFunder, initiative, setInitiative, implementer, setImplementer } = props
 
     const [comments, setComments] = useState("") //check db for comments table
 
+    const [submitted, setSubmitted] = useState(false)
+    const [errors, setErrors] = useState(false)
+
+
+
     useEffect(() => {
-        if (initiative.mainProgArea != "") setInitiative({ ...initiative, mainProgActivity: Object.values(formProgAreas.filter(area => area.programmingActivity == initiative.mainProgArea))[0].programTheme})
+        if (initiative.mainProgArea != "")
+            setInitiative({ ...initiative, mainProgActivity: Object.values(formProgAreas.filter(area => area.programmingActivity == initiative.mainProgArea))[0].programTheme })
     }, [initiative.mainProgArea])
 
-    useEffect(() => props.generateTagNumber(), [])
-    //useEffect(() => console.log('IMPLEMNENTER SET', props.implementerSet), [props.implementerSet])
+    useEffect(() => {
+        props.generateTagNumber()
+
+    }, [])
+
+    useEffect(() => {
+        if (submitted) {
+            console.log('IMPLEMNENTER SET', props.submissionResults)
+            Object.values(props.submissionResults).map(result => {
+                console.log(result)
+                if (result.error) setErrors(true)
+            })
+        }
+    }, [props.submissionResults])
+
+    useEffect(() => console.log(errors), [errors])
 
     /*useEffect(() => console.log('FUNDER: ', funder), [funder])
     useEffect(() => console.log('IMPLEMENTER: ', implementer), [implementer])
@@ -70,6 +51,7 @@ const FormInput = (props) => {
     }
 
     const isSearchDisabled = () => {
+        if (errors) return true
         let disabled = false
         Object.values(funder).map(funder => {
             if (funder == "" || funder == []) {
@@ -92,9 +74,9 @@ const FormInput = (props) => {
     }
 
     const submitForm = () => {
-
-        props.setImplementerForm(implementer, initiative, funder, props.tag)
-        
+        //HANDLE WHETHER FORM IS NEW OR BEING REVIEWED & SUBMITTED BY ROOT USER
+        props.addInitiative(implementer, initiative, funder, props.tag)
+        setSubmitted(true)
 
         console.log(funder, initiative, implementer, comments)
     }
@@ -104,43 +86,50 @@ const FormInput = (props) => {
         <>
             <h2 className="title">{formData.title}</h2>
             <div id='formInput' className="container">
-                <p>{formData.description}</p>
-                <Collapsible title={formData.funder.title}>
-                    <h3 className="sectionTitle">{formData.funder.title}</h3>
-                    {
-                        Object.values(formData.funder).map(field => (
-                            field != formData.funder.title ? <RenderFormFields field={field} funder={funder} setFunder={setFunder} /> : null
-                        ))
-                    }
+                <>
+                    <p>{formData.description}</p>
+                    <Collapsible title={formData.funder.title}>
+                        <h3 className="sectionTitle">{formData.funder.title}</h3>
+                        {
+                            Object.values(formData.funder).map(field => (
+                                field != formData.funder.title ? <RenderFormFields field={field} funder={funder} setFunder={setFunder} /> : null
+                            ))
+                        }
 
-                </Collapsible>
-                <br />
-                <Collapsible title={formData.initiative.title}>
-                    <h3 className="sectionTitle">{formData.initiative.title}</h3>
-                    {
-                        Object.values(formData.initiative).map(field => (
-                            field != formData.initiative.title ? <RenderFormFields field={field} initiative={initiative} setInitiative={setInitiative} /> : null
-                        ))
-                    }
+                    </Collapsible>
+                    <br />
+                    <Collapsible title={formData.initiative.title}>
+                        <h3 className="sectionTitle">{formData.initiative.title}</h3>
+                        {
+                            Object.values(formData.initiative).map(field => (
+                                field != formData.initiative.title ? <RenderFormFields field={field} initiative={initiative} setInitiative={setInitiative} /> : null
+                            ))
+                        }
 
-                </Collapsible>
-                <br />
-                <Collapsible title={formData.implementer.title}>
-                    <h3 className="sectionTitle">{formData.implementer.title}</h3>
-                    {
-                        Object.values(formData.implementer).map(field => (
-                            field != formData.implementer.title ? <RenderFormFields field={field} implementer={implementer} setImplementer={setImplementer} /> : null
-                        ))
-                    }
-                </Collapsible>
-                <br />
-                <Collapsible title={formData.comments.title}>
-                    <h3 className="sectionTitle">{formData.comments.title}</h3>
-                    <RenderFormFields field={formData.comments} comments={comments} setComments={setComments} />
-                </Collapsible>
-                <br />
-                <button className={isSearchDisabled() ? "search disabled" : "search"} disabled={false/*isSearchDisabled()*/} onClick={() => submitForm()}>{formData.submit.title}</button>
-                <br /><br />
+                    </Collapsible>
+                    <br />
+                    <Collapsible title={formData.implementer.title}>
+                        <h3 className="sectionTitle">{formData.implementer.title}</h3>
+                        {
+                            Object.values(formData.implementer).map(field => (
+                                field != formData.implementer.title ? <RenderFormFields field={field} implementer={implementer} setImplementer={setImplementer} /> : null
+                            ))
+                        }
+                    </Collapsible>
+                    <br />
+                    <Collapsible title={formData.comments.title}>
+                        <h3 className="sectionTitle">{formData.comments.title}</h3>
+                        <RenderFormFields field={formData.comments} comments={comments} setComments={setComments} />
+                    </Collapsible>
+                    <br />
+                    {errors
+                        ? <div className="errorContainer">
+                            {Object.values(props.submissionResults).map(e => e.error ? <p>{e.error.message} for query {e.error.query}</p> : null)}
+                            </div>
+                        : null}
+                    <button className={isSearchDisabled() ? "search disabled" : "search"} disabled={isSearchDisabled()} onClick={() => submitForm()}>{formData.submit.title}</button>
+                    <br /><br />
+                </>
             </div>
         </>
     );
@@ -313,13 +302,13 @@ const mapStateToProps = (state) => {
     return {
         authorized: state.authenticate.auth,
         tag: state.data.tag,
-        implementerSet: state.data.implementerSet
+        submissionResults: state.data.addInitiative
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setImplementerForm: (implementer, initiative, funder, tag) => dispatch(setImplementer(implementer, initiative, funder, tag)),
+        addInitiative: (implementer, initiative, funder, tag) => dispatch(addInitiative(implementer, initiative, funder, tag)),
         generateTagNumber: () => dispatch(generateTagNumber())
     }
 }

@@ -15,7 +15,7 @@ import {
   //FORMS
   GET_INITIATIVE_TAGS,
   GENERATE_TAG_NUMBER,
-  SET_IMPLEMENTER,
+  ADD_INITIATIVE,
 
   SET_REVIEW_FORM,
   SET_MODIFY_FORM,
@@ -81,7 +81,7 @@ export const generateTagNumber = (user) => (dispatch) => {
         })
 }
 
-export const setImplementer = (implementer, initiative, funder, tag) => (dispatch) => {
+export const addInitiative = (implementer, initiative, funder, tag) => (dispatch) => {
     let headers = { withCredentials: true, accepts: "application/json" }
     let body = {
         implementer: implementer,
@@ -90,14 +90,19 @@ export const setImplementer = (implementer, initiative, funder, tag) => (dispatc
         tag: tag
     }
 
-    axios.post(`/dashboard/setImplementer`, body, headers)
+    axios.post(`/dashboard/addInitiative`, body, headers)
         .then(response => {
-            dispatch({ type: SET_IMPLEMENTER, payload: response.data });
+            console.log(response)
+            dispatch({ type: ADD_INITIATIVE, payload: response });
         })
         .catch(err => {
             console.log(err)
-            dispatch({ type: SET_IMPLEMENTER, payload: ["Set Implementer Error"] });
+            dispatch({ type: ADD_INITIATIVE, payload: ["Add Initiative Error"] });
         })
+}
+
+export const resetSubmissionResults = () => (dispatch) => {
+    dispatch({ type: ADD_INITIATIVE, payload: [] })
 }
 
 

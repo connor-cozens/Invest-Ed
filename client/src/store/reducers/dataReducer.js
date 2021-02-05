@@ -14,7 +14,7 @@ export const CLEAR_SET_USER_ERROR = 'CLEAR_SET_USER_ERROR';
 //Form retrieval
 export const GET_INITIATIVE_TAGS = 'GET_INITIATIVE_TAGS';
 export const GENERATE_TAG_NUMBER = 'GENERATE_TAG_NUMBER';
-export const SET_IMPLEMENTER = 'SET_IMPLEMENTER';
+export const ADD_INITIATIVE = 'ADD_INITIATIVE';
 
 export const SET_REVIEW_FORM = 'SET_REVIEW_FORM';
 export const SET_ADD_FORM = 'SET_ADD_FORM';
@@ -178,10 +178,10 @@ const dataReducer = (state = initState, action) => {
             tag: action.payload
         }
 
-    case SET_IMPLEMENTER:
+    case ADD_INITIATIVE:
         return {
             ...state,
-            implementerSet: action.payload
+            addInitiative: action.payload.data != undefined ? action.payload.data : undefined
         }
 
     case SET_REVIEW_FORM:

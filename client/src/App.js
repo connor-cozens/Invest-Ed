@@ -18,7 +18,8 @@ import formReview from './components/formSubmission/formReview';
 import Glossary from './components/glossary/glossary';
 import {getUser, clearUserRetrievalError, clearFormRetrievalError} from './store/actions/dataActions';
 
-import FormInput from './components/forms/formInput';
+import FormBase from './components/forms/formBase';
+import FormReview from './components/forms/formReview';
 
 
 
@@ -56,7 +57,8 @@ class App extends Component {
             <Route exact path = '/formReview' component = {formReview} />
             <Route exact path='/glossary' component={Glossary} />
 
-            <Route exact path='/temp' component={FormInput} />
+            <Route exact path='/initiative-submission' component={FormBase} />
+            <Route exact path='/submission-review' component={FormReview} />
 
           </Switch>
         </div>

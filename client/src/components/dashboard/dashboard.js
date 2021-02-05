@@ -173,7 +173,7 @@ class dashboard extends Component {
           this.setState({
             addClicked: false
           });
-          return <Redirect to='/formsubmission'/>
+          return <Redirect to='/initiative-submission'/>
         }
         //If user selects option to review form
         else if (this.state.reviewClicked){

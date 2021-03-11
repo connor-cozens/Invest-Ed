@@ -4,7 +4,8 @@ const async     = require('async');
 var storage     = require ('node-persist')
 var redis       = require("redis")
 
-const { db_username, db_password, db_host, db_girlsed_main, db_girlsed_temp} = require('../config')
+const { db_username, db_password, db_host, db_girlsed_main, db_girlsed_temp } = require('../config')
+console.log(db_username, db_password, db_host, db_girlsed_main, db_girlsed_temp)
 
 var client = redis.createClient()
 client.on('connect', function(){
@@ -46,7 +47,517 @@ const poolTemp = sql.createPool({
     queueLimit: 0
 })
 
-const User = require("../models/User")
+const User = require("../models/User");
+const { response } = require("express");
+
+dashboard.get('/getInitiativeTags', (req, res) => {
+    if (req.user) {
+        let query = 'SELECT * FROM initiative order by tagNumber'
+        console.log(query)
+        pool.query(query, {}, function (err, results) {
+            if (err) {
+                console.log(err)
+                return res.json(err)
+            } else {
+                console.log(results);
+                return res.json(results)
+            }
+        })
+
+
+    } else {
+        res.json({ "error": { "message": "Error: Not authorized to access this page" } })
+    }
+})
+
+dashboard.get('/generateTagNumber', (req, res) => {
+    let promisePool = pool.promise()
+    let promisePoolTemp = poolTemp.promise()
+
+    if (req.user) {
+        let query = `SELECT tagNumber FROM ${db_girlsed_main}.initiative ORDER BY tagNumber DESC LIMIT 1`
+        let queryTemp = `SELECT tagNumber FROM ${db_girlsed_temp}.initiative ORDER BY tagNumber DESC LIMIT 1`
+        let mainTag = -1
+        let tempTag = -1
+
+        const runQueries = async (res) => {
+            await promisePool.query(query)
+                .then(async response => {
+                    console.log('MAIN TAG', response[0][0].tagNumber)
+                    mainTag = parseInt(response[0][0].tagNumber)
+
+                    await promisePoolTemp.query(queryTemp)
+                        .then(response => {
+                            console.log('TEMP TAG', response[0][0].tagNumber)
+                            tempTag = parseInt(response[0][0].tagNumber)
+
+                            if (mainTag >= tempTag) return res.json(mainTag + 1)
+                            else return res.json(tempTag + 1)
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            return res.json(err)
+                        })
+                })
+                .catch(err => {
+                    console.log(err)
+                    return res.json(err)
+                })
+        }
+
+        runQueries(res)
+
+    } else {
+        res.json({ "error": { "message": "Error: Not authorized to access this page" } })
+    }
+})
+
+dashboard.post('/addInitiative', (req, res) => {
+    if (req.user) {
+        let query = {
+            funder: {
+                funder: [`INSERT INTO ` + db_girlsed_temp + `.funder VALUES ("` + req.body.funder.name + `", "` + req.body.funder.site + `", "` + req.body.funder.motive + `", "` + req.body.funder.impact + `", "` + req.body.funder.orgForm + `")`],
+                funderAsiaBases: Object.values(req.body.funder.asiaIntBases).map(base => `INSERT INTO ` + db_girlsed_temp + `.funderasiabases VALUES ("` + req.body.funder.name + `", "` + base + `")`),
+                funderAsiaOperations: Object.values(req.body.funder.asiaOps).map(op => `INSERT INTO ` + db_girlsed_temp + `.funderasiaoperations VALUES ("` + req.body.funder.name + `", "` + op + `")`),
+                funderEdSubSectors: Object.values(req.body.funder.edSubSectors).map(sub => `INSERT INTO ` + db_girlsed_temp + `.fundereducationsubsectors VALUES ("` + req.body.funder.name + `", "` + sub + `")`),
+                funderIntBases: Object.values(req.body.funder.intBases).map(base => `INSERT INTO ` + db_girlsed_temp + `.funderinternationalbases VALUES ("` + req.body.funder.name + `", "` + base + `")`),
+                funderOrgTraits: Object.values(req.body.funder.orgTraits).map(trait => `INSERT INTO ` + db_girlsed_temp + `.funderorganizationtraits VALUES ("` + req.body.funder.name + `", "` + trait + `")`),
+                funds: [`INSERT INTO ` + db_girlsed_temp + `.funds VALUES (` + req.body.tag + `, "` + req.body.funder.name + `", "` + req.body.initiative.startYear + `", "` + req.body.initiative.endYear + `")`],
+            },
+            initiative: {
+                initiative: [`INSERT INTO ` + db_girlsed_temp + `.initiative VALUES (` + req.body.tag + `, "` + req.body.initiative.name + `", "` + req.body.initiative.site + `", "` + req.body.initiative.targetsWomen + `", "` + req.body.initiative.startYear + `", "` + req.body.initiative.endYear + `", "` + req.body.initiative.desc + `", "` + req.body.initiative.mainProgActivity + `", "` + req.body.initiative.mainProgArea + `", "` + req.body.initiative.accessFee + `")`],
+                initiativeCountryOfOp: Object.values(req.body.initiative.countries).map(c => `INSERT INTO ` + db_girlsed_temp + `.initiativecountryofoperation VALUES ("` + req.body.tag + `", "` + c + `")`),
+                initiativeMainEdSubSectors: Object.values(req.body.initiative.mainEd).map(e => `INSERT INTO ` + db_girlsed_temp + `.initiativemaineducationsubsector VALUES ("` + req.body.tag + `", "` + e + `")`),
+                initiativeEdSubSectors: Object.values(req.body.initiative.mainEd).map(e => `INSERT INTO ` + db_girlsed_temp + `.initiativeeducationsubsectors VALUES ("` + req.body.tag + `", "` + e + `")`).concat(Object.values(req.body.initiative.otherEd).map(e => `INSERT INTO ` + db_girlsed_temp + `.initiativeeducationsubsectors VALUES ("` + req.body.tag + `", "` + e + `")`)),
+                initiativeFundingSource: Object.values(req.body.initiative.fundingSource).map(f => `INSERT INTO ` + db_girlsed_temp + `.initiativefundingsource VALUES ("` + req.body.tag + `", "` + f + `")`),
+                initiativeLaunchCountry: [`INSERT INTO ` + db_girlsed_temp + `.initiativelaunchcountry VALUES ("` + req.body.tag + `", "` + req.body.initiative.launchCountry + `")`], //Object.values(req.body.initiative.launchCountries).map(f => `INSERT INTO ` + db_girlsed_temp + `.initiativelaunchcountry VALUES ("` + req.body.tag + `", "` + f + `")`),
+                initiativeProgActivities: [`INSERT INTO ` + db_girlsed_temp + `.initiativeprogrammingactivities VALUES ("` + req.body.tag + `", "` + req.body.initiative.mainProgArea + `")`].concat(Object.values(req.body.initiative.otherProgArea).map(e => `INSERT INTO ` + db_girlsed_temp + `.initiativeprogrammingactivities VALUES ("` + req.body.tag + `", "` + e + `")`)),
+                initiativeRegion: Object.values(req.body.initiative.regions).map(f => `INSERT INTO ` + db_girlsed_temp + `.initiativeregion VALUES ("` + req.body.tag + `", "` + f + `")`),
+                initiativeTargetGeo: Object.values(req.body.initiative.targetGeo).map(f => `INSERT INTO ` + db_girlsed_temp + `.initiativetargetgeography VALUES ("` + req.body.tag + `", "` + f + `")`),
+                initiativeTargetSchoolMgmt: [`INSERT INTO ` + db_girlsed_temp + `.initiativetargetschoolmanagement VALUES ("` + req.body.tag + `", "` + req.body.initiative.targetSchoolMgmt + `")`],
+            },
+            implementer: {
+                implements: [`INSERT INTO ` + db_girlsed_temp + `.implements VALUES (` + req.body.tag + `, "` + req.body.implementer.name + `", "` + req.body.initiative.startYear + `", "` + req.body.initiative.endYear + `")`],
+                implementor: [`INSERT INTO ` + db_girlsed_temp + `.implementor VALUES ("` + req.body.implementer.name + `", "` + req.body.implementer.motive + `")`],
+            }
+        }
+
+        let rollbackQuery = {
+            funder: {
+                funder: [`DELETE FROM ` + db_girlsed_temp + `.funder WHERE funderName="` + req.body.funder.name + `"`],
+                funderAsiaBases: [`DELETE FROM ` + db_girlsed_temp + `.funderasiabases WHERE funderName="` + req.body.funder.name],
+                funderAsiaOperations: [`DELETE FROM ` + db_girlsed_temp + `.funderasiaoperations WHERE funderName="` + req.body.funder.name],
+                funderEdSubSectors: [`DELETE FROM ` + db_girlsed_temp + `.fundereducationsubsectors WHERE funderName="` + req.body.funder.name],
+                funderIntBases: [`DELETE FROM ` + db_girlsed_temp + `.funderinternationalbases WHERE funderName="` + req.body.funder.name],      
+                funderOrgTraits: [`DELETE FROM ` + db_girlsed_temp + `.funderorganizationtraits WHERE funderName="` + req.body.funder.name],
+                funds: [`DELETE FROM ` + db_girlsed_temp + `.funder WHERE tagNum=` + req.body.tag],
+            },
+            initiative: {
+                initiative: [`DELETE FROM ` + db_girlsed_temp + `.initiative WHERE tagNumber=` + req.body.tag],
+                initiativeCountryOfOp: [`DELETE FROM ` + db_girlsed_temp + `.initiativecountryofoperation WHERE tagNumber=` + req.body.tag],
+                initiativeMainEdSubSectors: [`DELETE FROM ` + db_girlsed_temp + `.initiativemaineducationsubsector WHERE tagNumber=` + req.body.tag],
+                initiativeEdSubSectors: [`DELETE FROM ` + db_girlsed_temp + `.initiativeeducationsubsectors WHERE initiativeTagNumber=` + req.body.tag],
+                initiativeFundingSource: [`DELETE FROM ` + db_girlsed_temp + `.initiativefundingsource WHERE tagNumber=` + req.body.tag],
+                initiativeLaunchCountry: [`DELETE FROM ` + db_girlsed_temp + `.initiativelaunchcountry WHERE tagNumber=` + req.body.tag],
+                initiativeProgActivities: [`DELETE FROM ` + db_girlsed_temp + `.initiativeprogrammingactivities WHERE tagNumber=` + req.body.tag],
+                initiativeRegion: [`DELETE FROM ` + db_girlsed_temp + `.initiativeregion WHERE tagNumber=` + req.body.tag],
+                initiativeTargetGeo: [`DELETE FROM ` + db_girlsed_temp + `.initiativetargetgeography WHERE tagNumber=` + req.body.tag],
+                initiativeTargetSchoolMgmt: [`DELETE FROM ` + db_girlsed_temp + `.initiativetargetschoolmanagement WHERE tagNumber=` + req.body.tag],
+            },
+            implementer: {
+                implements: [`DELETE FROM ` + db_girlsed_temp + `.implements WHERE tagNumber=` + req.body.tag],
+                implementor: [`DELETE FROM ` + db_girlsed_temp + `.implementor WHERE implementorName="` + req.body.implementer.name + `"`],
+            }
+        }
+
+        const runQueries = async () => {
+            let promisePool = poolTemp.promise()
+            let results = []
+            let rollbackResults = []
+
+            for (let i = 0; i < Object.keys(query.funder).length; i++) {
+                for (let j = 0; j < Object.values(query.funder)[i].length; j++) {
+                    await promisePool.query(Object.values(query.funder)[i][j])
+                        .then(res => results.push({ "success": { "message": "success", "query": Object.values(query.funder)[i][j] } }))
+                        .catch(err => results.push({ "error": { "message": "Error: " + err.sqlMessage, "query": Object.values(query.funder)[i][j], "rollback": Object.values(rollbackQuery.funder)[i][j] } }));
+                }
+            }
+
+           for (let i = 0; i < Object.keys(query.initiative).length; i++) {
+                for (let j = 0; j < Object.values(query.initiative)[i].length; j++) {
+                    await promisePool.query(Object.values(query.initiative)[i][j])
+                        .then(res => results.push({ "success": { "message": "success", "query": Object.values(query.initiative)[i][j] } }))
+                        .catch(err => results.push({ "error": { "message": "Error: " + err.sqlMessage, "query": Object.values(query.initiative)[i][j], "rollback": Object.values(rollbackQuery.initiative)[i][j] } }));
+                }
+            }
+
+
+            for (let i = 0; i < Object.keys(query.implementer).length; i++) {
+                for (let j = 0; j < Object.values(query.implementer)[i].length; j++) {
+                    await promisePool.query(Object.values(query.implementer)[i][j])
+                        .then(res => results.push({ "success": { "message": "success", "query": Object.values(query.implementer)[i][j] } }))
+                        .catch(err => results.push({ "error": { "message": "Error: " + err.sqlMessage, "query": Object.values(query.implementer)[i][j], "rollback": Object.values(rollbackQuery.implementer)[i][j] } }));
+                }
+            }
+
+            //rollback if errors found
+            for (let i = 0; i < Object.values(results).length; i++) {
+                if (results[i].error) {
+                    console.log("ERROR FOUND, ROLLING BACK INSERTS")
+                    await promisePool.query(results[i].error.rollback)
+                        .then(res => rollbackResults.push({ "success": { "message": "success", "query": results[i].error.rollback } }))
+                        .catch(err => rollbackResults.push({ "error": { "message": "Error: " + err.sqlMessage, "query": results[i].error.rollback } }));
+                }
+            }
+
+            console.log(rollbackResults)
+
+            res.json(results)
+        }
+
+        runQueries()
+
+    } else {
+        res.json({ "error": { "message": "Error: Not authorized to access this page" } })
+    }
+
+})
+
+dashboard.post('/updateInitiative', (req, res) => {
+    if (req.user) {
+        let query = {
+            funder: {
+                funder: [`UPDATE ` + db_girlsed_temp + `.funder SET funderName=` + sql.escape(req.body.funder.name) + `, funderWebsite=` + sql.escape(req.body.funder.site) + `, profitMotive=` + sql.escape(req.body.funder.motive) + `, impactInvesting=` + sql.escape(req.body.funder.impact) + `, organizationalForm=` + sql.escape(req.body.funder.orgForm) + ` WHERE funderName=` + sql.escape(req.body.tag)],
+                //funder: [`INSERT` + db_girlsed_temp + `.funder VALUES ("` + req.body.funder.name + `", "` + req.body.funder.site + `", "` + req.body.funder.motive + `", "` + req.body.funder.impact + `", "` + req.body.funder.orgForm + `")`],
+                funderAsiaBases: Object.values(req.body.funder.asiaIntBases).map(base => `UPDATE ` + db_girlsed_temp + `.funderasiabases SET asiaBase=` + sql.escape(base) + ` WHERE funderName=` + sql.escape(funderName)),
+                funderAsiaBasesName: Object.values(req.body.funder.asiaIntBases).map(base => `UPDATE ` + db_girlsed_temp + `.funderasiabases SET funderName=` + sql.escape(req.body.funder.name) + ` WHERE funderName=` + sql.escape(funderName)),
+                //funderAsiaBases: Object.values(req.body.funder.asiaIntBases).map(base => `INSERT INTO ` + db_girlsed_temp + `.funderasiabases VALUES ("` + req.body.funder.name + `", "` + base + `")`),
+                funderAsiaOperations: Object.values(req.body.funder.asiaOps).map(op => `UPDATE ` + db_girlsed_temp + `.funderasiaoperations SET asiaOperatons=` + sql.escape(op) + ` WHERE funderName=` + sql.escape(funderName)),
+                funderAsiaOperationsName: Object.values(req.body.funder.asiaOps).map(op => `UPDATE ` + db_girlsed_temp + `.funderasiaoperations SET funderName=` + sql.escape(req.body.funder.name) + ` WHERE funderName=` + sql.escape(funderName)),
+                //funderAsiaOperations: Object.values(req.body.funder.asiaOps).map(op => `INSERT INTO ` + db_girlsed_temp + `.funderasiaoperations VALUES ("` + req.body.funder.name + `", "` + op + `")`),
+                funderEdSubSectors: Object.values(req.body.funder.edSubSectors).map(sub => `UPDATE ` + db_girlsed_temp + `.fundereducationsubsectors SET educationSubsector=` + sql.escape(sub) + `WHERE funderName=` + sql.escape(funderName)),
+                funderEdSubSectorsName: Object.values(req.body.funder.edSubSectors).map(sub => `UPDATE ` + db_girlsed_temp + `.fundereducationsubsectors SET funderName=` + sql.escape(req.body.funder.name) + `WHERE funderName=` + sql.escape(funderName)),
+                //funderEdSubSectors: Object.values(req.body.funder.edSubSectors).map(sub => `INSERT INTO ` + db_girlsed_temp + `.fundereducationsubsectors VALUES ("` + req.body.funder.name + `", "` + sub + `")`),
+                funderIntBases: Object.values(req.body.funder.intBases).map(base => `UPDATE ` + db_girlsed_temp + `.funderinternationalbases SET funderName=` + req.body.funder.name + `", "` + base + `")`),
+
+                //funderIntBases: Object.values(req.body.funder.intBases).map(base => `INSERT INTO ` + db_girlsed_temp + `.funderinternationalbases VALUES ("` + req.body.funder.name + `", "` + base + `")`),
+                funderOrgTraits: Object.values(req.body.funder.orgTraits).map(trait => `UPDATE ` + db_girlsed_temp + `.funderorganizationtraits SET funderName=` + req.body.funder.name + `", "` + trait + `")`),
+
+                //funderOrgTraits: Object.values(req.body.funder.orgTraits).map(trait => `INSERT INTO ` + db_girlsed_temp + `.funderorganizationtraits VALUES ("` + req.body.funder.name + `", "` + trait + `")`),
+                funds: [`UPDATE ` + db_girlsed_temp + `.funds SET funderName=` + sql.escape(req.body.funder.name) + `, startYear=` + sql.escape(req.body.initiative.startYear) + `, endYear=` + sql.escape(req.body.initiative.endYear) + ` WHERE tagNum=` + sql.escape()],
+
+                //funds: [`INSERT INTO ` + db_girlsed_temp + `.funds VALUES (` + req.body.tag + `, "` + req.body.funder.name + `", "` + req.body.initiative.startYear + `", "` + req.body.initiative.endYear + `")`],
+            },
+            initiative: {
+                initiative: [`INSERT INTO ` + db_girlsed_temp + `.initiative VALUES (` + req.body.tag + `, "` + req.body.initiative.name + `", "` + req.body.initiative.site + `", "` + req.body.initiative.targetsWomen + `", "` + req.body.initiative.startYear + `", "` + req.body.initiative.endYear + `", "` + req.body.initiative.desc + `", "` + req.body.initiative.mainProgActivity + `", "` + req.body.initiative.mainProgArea + `", "` + req.body.initiative.accessFee + `")`],
+                initiativeCountryOfOp: Object.values(req.body.initiative.countries).map(c => `INSERT INTO ` + db_girlsed_temp + `.initiativecountryofoperation VALUES ("` + req.body.tag + `", "` + c + `")`),
+                initiativeMainEdSubSectors: Object.values(req.body.initiative.mainEd).map(e => `INSERT INTO ` + db_girlsed_temp + `.initiativemaineducationsubsector VALUES ("` + req.body.tag + `", "` + e + `")`),
+                initiativeEdSubSectors: Object.values(req.body.initiative.mainEd).map(e => `INSERT INTO ` + db_girlsed_temp + `.initiativeeducationsubsectors VALUES ("` + req.body.tag + `", "` + e + `")`).concat(Object.values(req.body.initiative.otherEd).map(e => `INSERT INTO ` + db_girlsed_temp + `.initiativeeducationsubsectors VALUES ("` + req.body.tag + `", "` + e + `")`)),
+                initiativeFundingSource: Object.values(req.body.initiative.fundingSource).map(f => `INSERT INTO ` + db_girlsed_temp + `.initiativefundingsource VALUES ("` + req.body.tag + `", "` + f + `")`),
+                initiativeLaunchCountry: [`INSERT INTO ` + db_girlsed_temp + `.initiativelaunchcountry VALUES ("` + req.body.tag + `", "` + req.body.initiative.launchCountry + `")`], //Object.values(req.body.initiative.launchCountries).map(f => `INSERT INTO ` + db_girlsed_temp + `.initiativelaunchcountry VALUES ("` + req.body.tag + `", "` + f + `")`),
+                initiativeProgActivities: [`INSERT INTO ` + db_girlsed_temp + `.initiativeprogrammingactivities VALUES ("` + req.body.tag + `", "` + req.body.initiative.mainProgArea + `")`].concat(Object.values(req.body.initiative.otherProgArea).map(e => `INSERT INTO ` + db_girlsed_temp + `.initiativeprogrammingactivities VALUES ("` + req.body.tag + `", "` + e + `")`)),
+                initiativeRegion: Object.values(req.body.initiative.regions).map(f => `INSERT INTO ` + db_girlsed_temp + `.initiativeregion VALUES ("` + req.body.tag + `", "` + f + `")`),
+                initiativeTargetGeo: Object.values(req.body.initiative.targetGeo).map(f => `INSERT INTO ` + db_girlsed_temp + `.initiativetargetgeography VALUES ("` + req.body.tag + `", "` + f + `")`),
+                initiativeTargetSchoolMgmt: [`INSERT INTO ` + db_girlsed_temp + `.initiativetargetschoolmanagement VALUES ("` + req.body.tag + `", "` + req.body.initiative.targetSchoolMgmt + `")`],
+            },
+            implementer: {
+                implements: [`INSERT INTO ` + db_girlsed_temp + `.implements VALUES (` + req.body.tag + `, "` + req.body.implementer.name + `", "` + req.body.initiative.startYear + `", "` + req.body.initiative.endYear + `")`],
+                implementor: [`INSERT INTO ` + db_girlsed_temp + `.implementor VALUES ("` + req.body.implementer.name + `", "` + req.body.implementer.motive + `")`],
+            }
+        }
+
+        let rollbackQuery = {
+            funder: {
+                funder: [`DELETE FROM ` + db_girlsed_temp + `.funder WHERE funderName="` + req.body.funder.name + `"`],
+                funderAsiaBases: [`DELETE FROM ` + db_girlsed_temp + `.funderasiabases WHERE funderName="` + req.body.funder.name],
+                funderAsiaOperations: [`DELETE FROM ` + db_girlsed_temp + `.funderasiaoperations WHERE funderName="` + req.body.funder.name],
+                funderEdSubSectors: [`DELETE FROM ` + db_girlsed_temp + `.fundereducationsubsectors WHERE funderName="` + req.body.funder.name],
+                funderIntBases: [`DELETE FROM ` + db_girlsed_temp + `.funderinternationalbases WHERE funderName="` + req.body.funder.name],
+                funderOrgTraits: [`DELETE FROM ` + db_girlsed_temp + `.funderorganizationtraits WHERE funderName="` + req.body.funder.name],
+                funds: [`DELETE FROM ` + db_girlsed_temp + `.funder WHERE tagNum=` + req.body.tag],
+            },
+            initiative: {
+                initiative: [`DELETE FROM ` + db_girlsed_temp + `.initiative WHERE tagNumber=` + req.body.tag],
+                initiativeCountryOfOp: [`DELETE FROM ` + db_girlsed_temp + `.initiativecountryofoperation WHERE tagNumber=` + req.body.tag],
+                initiativeMainEdSubSectors: [`DELETE FROM ` + db_girlsed_temp + `.initiativemaineducationsubsector WHERE tagNumber=` + req.body.tag],
+                initiativeEdSubSectors: [`DELETE FROM ` + db_girlsed_temp + `.initiativeeducationsubsectors WHERE initiativeTagNumber=` + req.body.tag],
+                initiativeFundingSource: [`DELETE FROM ` + db_girlsed_temp + `.initiativefundingsource WHERE tagNumber=` + req.body.tag],
+                initiativeLaunchCountry: [`DELETE FROM ` + db_girlsed_temp + `.initiativelaunchcountry WHERE tagNumber=` + req.body.tag],
+                initiativeProgActivities: [`DELETE FROM ` + db_girlsed_temp + `.initiativeprogrammingactivities WHERE tagNumber=` + req.body.tag],
+                initiativeRegion: [`DELETE FROM ` + db_girlsed_temp + `.initiativeregion WHERE tagNumber=` + req.body.tag],
+                initiativeTargetGeo: [`DELETE FROM ` + db_girlsed_temp + `.initiativetargetgeography WHERE tagNumber=` + req.body.tag],
+                initiativeTargetSchoolMgmt: [`DELETE FROM ` + db_girlsed_temp + `.initiativetargetschoolmanagement WHERE tagNumber=` + req.body.tag],
+            },
+            implementer: {
+                implements: [`DELETE FROM ` + db_girlsed_temp + `.implements WHERE tagNumber=` + req.body.tag],
+                implementor: [`DELETE FROM ` + db_girlsed_temp + `.implementor WHERE implementorName="` + req.body.implementer.name + `"`],
+            }
+        }
+
+        const runQueries = async () => {
+            let promisePool = poolTemp.promise()
+            let results = []
+            let rollbackResults = []
+
+            for (let i = 0; i < Object.keys(query.funder).length; i++) {
+                for (let j = 0; j < Object.values(query.funder)[i].length; j++) {
+                    await promisePool.query(Object.values(query.funder)[i][j])
+                        .then(res => results.push({ "success": { "message": "success", "query": Object.values(query.funder)[i][j] } }))
+                        .catch(err => results.push({ "error": { "message": "Error: " + err.sqlMessage, "query": Object.values(query.funder)[i][j], "rollback": Object.values(rollbackQuery.funder)[i][j] } }));
+                }
+            }
+
+            for (let i = 0; i < Object.keys(query.initiative).length; i++) {
+                for (let j = 0; j < Object.values(query.initiative)[i].length; j++) {
+                    await promisePool.query(Object.values(query.initiative)[i][j])
+                        .then(res => results.push({ "success": { "message": "success", "query": Object.values(query.initiative)[i][j] } }))
+                        .catch(err => results.push({ "error": { "message": "Error: " + err.sqlMessage, "query": Object.values(query.initiative)[i][j], "rollback": Object.values(rollbackQuery.initiative)[i][j] } }));
+                }
+            }
+
+
+            for (let i = 0; i < Object.keys(query.implementer).length; i++) {
+                for (let j = 0; j < Object.values(query.implementer)[i].length; j++) {
+                    await promisePool.query(Object.values(query.implementer)[i][j])
+                        .then(res => results.push({ "success": { "message": "success", "query": Object.values(query.implementer)[i][j] } }))
+                        .catch(err => results.push({ "error": { "message": "Error: " + err.sqlMessage, "query": Object.values(query.implementer)[i][j], "rollback": Object.values(rollbackQuery.implementer)[i][j] } }));
+                }
+            }
+
+            //rollback if errors found
+            for (let i = 0; i < Object.values(results).length; i++) {
+                if (results[i].error) {
+                    console.log("ERROR FOUND, ROLLING BACK INSERTS")
+                    await promisePool.query(results[i].error.rollback)
+                        .then(res => rollbackResults.push({ "success": { "message": "success", "query": results[i].error.rollback } }))
+                        .catch(err => rollbackResults.push({ "error": { "message": "Error: " + err.sqlMessage, "query": results[i].error.rollback } }));
+                }
+            }
+
+            console.log(rollbackResults)
+
+            res.json(results)
+        }
+
+        runQueries()
+
+    } else {
+        res.json({ "error": { "message": "Error: Not authorized to access this page" } })
+    }
+
+})
+
+dashboard.post('/getInitiative', async (req, res) => {
+    if (req.user) {
+        let funderQuery = {
+            funds: {
+                field: 'name',
+                query: `SELECT funderName FROM ` + db_girlsed_temp + `.funds WHERE tagNum=` + req.body.tag,
+            },
+            funderSite: {
+                field: 'site',
+                query: `SELECT funderWebsite FROM ` + db_girlsed_temp + `.funder WHERE funderName="`,
+            },
+            funderMotive: {
+                field: 'motive',
+                query: `SELECT profitMotive FROM ` + db_girlsed_temp + `.funder WHERE funderName="`,
+            },
+            funderImpact: {
+                field: 'impact',
+                query: `SELECT impactInvesting FROM ` + db_girlsed_temp + `.funder WHERE funderName="`,
+            },
+            funderOrgForm: {
+                field: 'orgForm',
+                query: `SELECT organizationalForm FROM ` + db_girlsed_temp + `.funder WHERE funderName="`,
+            },
+            funderAsiaBases: {
+                field: 'asiaIntBases',
+                query: `SELECT asiaBase FROM ` + db_girlsed_temp + `.funderasiabases WHERE funderName="`,
+            },
+            funderAsiaOperations: {
+                field: 'asiaOps',
+                query: `SELECT asiaOperatons FROM ` + db_girlsed_temp + `.funderasiaoperations WHERE funderName="`,
+            },
+            funderEdSubSectors: {
+                field: 'edSubSectors',
+                query: `SELECT educationSubsector FROM ` + db_girlsed_temp + `.fundereducationsubsectors WHERE funderName="`,
+            },
+            funderIntBases: {
+                field: 'intBases',
+                query: `SELECT baseLocation FROM ` + db_girlsed_temp + `.funderinternationalbases WHERE funderName="`,
+            },
+            funderOrgTraits: {
+                field: 'orgTraits',
+                query: `SELECT trait FROM ` + db_girlsed_temp + `.funderorganizationtraits WHERE funderName="`,
+            },
+        }
+        let initiativeQuery = {
+            initiative: {
+                field: {
+                    name: 'name',
+                    site: 'site',
+                    targetsWomen: 'targetsWomen',
+                    startYear: 'startYear',
+                    endYear: 'endYear',
+                    desc: 'desc',
+                    mainProgArea: 'mainProgArea',
+                    mainProgActivity: 'mainProgActivity',
+                    accessFee: 'accessFee'
+                },
+                query: `SELECT initiativeName, initiativeWebsite, targetsWomen, startYear, endYear, description, mainProgrammingArea, mainProgrammingActivity, feeToAccess FROM ` + db_girlsed_temp + `.initiative WHERE tagNumber=` + req.body.tag,
+            },
+            initiativeLaunchCountry: {
+                field: "launchCountry",
+                query: `SELECT launchCountry FROM ` + db_girlsed_temp + `.initiativelaunchcountry WHERE tagNumber=` + req.body.tag
+            },
+            initiativeRegion: {
+                field: "regions",
+                query: `SELECT region FROM ` + db_girlsed_temp + `.initiativeregion WHERE tagNumber=` + req.body.tag
+            },
+            initiativeCountryOfOp: {
+                field: "countries",
+                query: `SELECT country FROM ` + db_girlsed_temp + `.initiativecountryofoperation WHERE tagNumber=` + req.body.tag
+            },
+            initiativeTargetGeo: {
+                field: "targetGeo",
+                query: `SELECT targetGeography FROM ` + db_girlsed_temp + `.initiativetargetgeography WHERE tagNumber=` + req.body.tag
+            },
+            initiativeMainEdSubSectors: {
+                field: "mainEd",
+                query: `SELECT mainEducationSubsector FROM ` + db_girlsed_temp + `.initiativemaineducationsubsector WHERE tagNumber=` + req.body.tag
+            },
+            initiativeEdSubSectors: {
+                field: "otherEd",
+                query: `SELECT educationSubsector FROM ` + db_girlsed_temp + `.initiativeeducationsubsectors WHERE educationSubsector NOT IN (SELECT mainEducationSubsector FROM ` + db_girlsed_temp + `.initiativemaineducationsubsector WHERE tagNumber=` + req.body.tag + `) AND initiativeTagNumber=` + req.body.tag,
+            },
+            initiativeFundingSource: {
+                field: "fundingSource",
+                query: `SELECT sourceOfFunding FROM ` + db_girlsed_temp + `.initiativefundingsource WHERE tagNumber=` + req.body.tag
+            },
+            initiativeProgActivities: { 
+                field: "otherProgArea",
+                query: `SELECT programmingActivity FROM ` + db_girlsed_temp + `.initiativeprogrammingactivities WHERE tagNumber=` + req.body.tag + ` AND programmingActivity NOT IN (SELECT mainProgrammingActivity FROM ` + db_girlsed_temp + `.initiative WHERE tagNumber=` + req.body.tag + `)`,
+            },
+            initiativeTargetSchoolMgmt: {
+                field: "targetSchoolMgmt",
+                query: `SELECT targetSchoolManagementType FROM ` + db_girlsed_temp + `.initiativetargetschoolmanagement WHERE tagNumber=` + req.body.tag
+            },
+        }
+
+        let implementerQuery = {
+            implements: {
+                field: 'name',
+                query: `SELECT implementorName FROM ` + db_girlsed_temp + `.implements WHERE tagNum=` + req.body.tag,
+            },
+            implementor: {
+                field: 'motive',
+                query: `SELECT profitMotive FROM ` + db_girlsed_temp + `.implementor WHERE implementorName="`,
+            }
+        }
+
+        const runInitiativeQuery = async (query) => {
+            let promisePool = pool.promise()
+            let promisePoolTemp = poolTemp.promise()
+            return await promisePool.query(query.query)
+                .then(res => {
+                    let responseBody = {}
+                    for (let i = 0; i < Object.values(query.field).length; i++) {
+                        responseBody = {
+                            initiative: {
+                                ...responseBody.initiative,
+                                [Object.values(query.field)[i]]: Object.values(Object.values(res[0])[0])[i]
+                            }
+                        }
+                    }
+                    return responseBody
+                })
+                .catch(err => {
+                    console.log(err)
+                    res.json(err)
+                });
+        }
+
+        const runQueries = async () => {
+            let promisePool = pool.promise()
+            let promisePoolTemp = poolTemp.promise()
+            let results = []
+            let responseBody = {}
+            return await runInitiativeQuery(initiativeQuery.initiative).then(async res => {
+                responseBody = res
+
+                for (let i = 0; i < Object.values(initiativeQuery).length; i++) {
+                    console.log(Object.values(initiativeQuery)[i].query)
+                    await promisePool.query(Object.values(initiativeQuery)[i].query)
+                        .then(async res => {
+                            let array = []
+                            for (let i = 0; i < Object.values(res[0]).length; i++) {
+                                array.push(Object.values(res[0][i])[0])
+                            }
+                            responseBody = { initiative: { ...responseBody.initiative, [Object.values(initiativeQuery)[i].field]: array } }
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            res.json(err)
+                        });
+                }
+
+
+                await promisePool.query(funderQuery.funds.query)
+                    .then(async res => {
+                        let funderName = Object.values(Object.values(res[0])[0])[0]
+                        responseBody = { initiative: { ...responseBody.initiative }, funder: { name: funderName } }
+
+                        for (let i = 1; i < Object.values(funderQuery).length; i++) {
+                            await promisePool.query(Object.values(funderQuery)[i].query + funderName + '"')
+                                .then(async res => {
+                                    let array = []
+                                    for (let i = 0; i < Object.values(res[0]).length; i++) {
+                                        array.push(Object.values(res[0][i])[0])
+                                    }
+                                    responseBody = { initiative: { ...responseBody.initiative }, funder: {...responseBody.funder, [Object.values(funderQuery)[i].field]: array } }
+                                })
+                                .catch(err => {
+                                    console.log(err)
+                                    res.json(err)
+                                });
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        res.json(err)
+                    });
+
+                return await promisePool.query(implementerQuery.implements.query)
+                    .then(async res => {
+                        let implementorName = Object.values(Object.values(res[0])[0])[0]
+
+                        return await promisePool.query(implementerQuery.implementor.query + implementorName + '"')
+                            .then(async res => {
+                                responseBody = { initiative: { ...responseBody.initiative }, funder: { ...responseBody.funder }, implementer: { name: implementorName, motive: Object.values(Object.values(res[0])[0])[0] } }
+                                return responseBody
+                            })
+                            .catch(err => {
+                                console.log(err)
+                                res.json(err)
+                            });
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        res.json(err)
+                    }); 
+            })
+            .catch(err => {
+                console.log(err)
+                res.json(err)
+            });
+        }
+        
+        
+        let result = await runQueries()
+        res.json(result)
+        console.log('RESULT', result)
+    }
+})
 
 //GET from from DB
 dashboard.get('/form/:tagNum', (req, res) =>{

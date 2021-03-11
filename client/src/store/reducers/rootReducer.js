@@ -6,8 +6,11 @@ import dataReducer from './dataReducer';
 //Save redux store in localStorage
 export const saveToLocalStorage = (state) => {
   try {
-    const serializedState = JSON.stringify(state);
-    localStorage.setItem('state', serializedState);
+      const serializedState = JSON.stringify(state);
+      if (localStorage == undefined) {
+          localStorage.setItem('state', serializedState);
+      }
+    
   }
   catch(err){
     console.log(err);

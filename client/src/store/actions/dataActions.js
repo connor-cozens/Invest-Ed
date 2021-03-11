@@ -13,6 +13,11 @@ import {
   CLEAR_SET_USER_ERROR,
 
   //FORMS
+  GET_INITIATIVE_TAGS,
+  GENERATE_TAG_NUMBER,
+  ADD_INITIATIVE,
+  GET_INITIATIVE,
+
   SET_REVIEW_FORM,
   SET_MODIFY_FORM,
   SET_ADD_FORM,
@@ -49,7 +54,83 @@ import {
 } from '../reducers/dataReducer';
 
 import {LOGIN_SUCCESS} from '../reducers/authReducer';
-import {forceLogout} from './authActions';
+import { forceLogout } from './authActions';
+
+
+export const getInitiativeTags = (user) => (dispatch) => {
+    let headers = { withCredentials: true, accepts: "application/json" }
+
+    axios.get(`/dashboard/getInitiativeTags`, headers)
+        .then(response => {
+            dispatch({ type: GET_INITIATIVE_TAGS, payload: response.data });
+        })
+        .catch(err => {
+            dispatch({ type: GET_INITIATIVE_TAGS, payload: ["Get Initiative Tags Error"] });
+        })
+}
+
+export const generateTagNumber = (tag) => (dispatch) => {
+    if (tag)
+        dispatch({ type: GENERATE_TAG_NUMBER, payload: tag });
+
+    else {
+        let headers = { withCredentials: true, accepts: "application/json" }
+
+        axios.get(`/dashboard/generateTagNumber`, headers)
+            .then(response => {
+                dispatch({ type: GENERATE_TAG_NUMBER, payload: response.data });
+            })
+            .catch(err => {
+                dispatch({ type: GENERATE_TAG_NUMBER, payload: ["Generate Tag Number Error"] });
+            })
+    }
+    
+}
+
+export const addInitiative = (implementer, initiative, funder, tag) => (dispatch) => {
+    let headers = { withCredentials: true, accepts: "application/json" }
+    let body = {
+        implementer: implementer,
+        initiative: initiative,
+        funder: funder,
+        tag: tag
+    }
+
+    axios.post(`/dashboard/addInitiative`, body, headers)
+        .then(response => {
+            console.log(response)
+            dispatch({ type: ADD_INITIATIVE, payload: response });
+        })
+        .catch(err => {
+            console.log(err)
+            dispatch({ type: ADD_INITIATIVE, payload: ["Add Initiative Error"] });
+        })
+}
+
+export const getInitiative = (tag) => (dispatch) => {
+    let headers = { withCredentials: true, accepts: "application/json" }
+    let body = {
+        tag: tag
+    }
+
+    axios.post(`/dashboard/getInitiative`, body, headers)
+        .then(response => {
+            console.log(response.data)
+            dispatch({ type: GET_INITIATIVE, payload: response });
+        })
+        .catch(err => {
+            console.log(err)
+            dispatch({ type: GET_INITIATIVE, payload: ["Get Initiative Error"] });
+        })
+
+}
+
+
+export const resetSubmissionResults = () => (dispatch) => {
+    dispatch({ type: ADD_INITIATIVE, payload: [] })
+}
+
+
 
 //USER REGISTRATION ACTIONS
 export const registerUser = (user) => (dispatch) => {

@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import './dashboard.css';
-import {getApprovedForm, getNonApprovedForm, clearFormStatus, setNewFormStatus, clearFormRetrievalError} from '../../store/actions/dataActions';
+import {getInitiativeTags, getApprovedForm, getNonApprovedForm, clearFormStatus, setNewFormStatus, clearFormRetrievalError} from '../../store/actions/dataActions';
 
 class Collapsible extends React.Component {
   constructor(props){
@@ -60,7 +60,9 @@ class dashboard extends Component {
   }
 
   componentDidMount = () => {
-    this.props.clearFormRetrievalError();
+      this.props.clearFormRetrievalError();
+      this.props.getInitiativeTags();
+      
   }
 
   componentDidUpdate = () => {
@@ -149,10 +151,10 @@ class dashboard extends Component {
         reviewEnabled: this.state.reviewEnabled
       })
     }
-  }
+    }
 
   render() {
-    const {authorized, formAccessError, formStatus, clearForm, userData} = this.props;
+    const {authorized, formAccessError, formStatus, clearForm, userData, tagNumbers} = this.props;
     if (authorized === false){
       return <Redirect to='/' />
     }
@@ -164,14 +166,19 @@ class dashboard extends Component {
           this.setState({
             modifyClicked: false
           });
-          return <Redirect to='/formsubmission'/>
+            return <Redirect
+                to={{
+                    pathname: "/initiative-submission",
+                    state: { tag: this.state.modifyTagNum }
+                }}
+            />
         //If user selects option to add a new form
         }
         else if (this.state.addClicked) {
           this.setState({
             addClicked: false
           });
-          return <Redirect to='/formsubmission'/>
+          return <Redirect to='/initiative-submission'/>
         }
         //If user selects option to review form
         else if (this.state.reviewClicked){
@@ -321,7 +328,7 @@ class dashboard extends Component {
               <div className = "card card-body">
                 <h4><b>Add Initiative</b></h4>
                 <hr/>
-                <Link onClick={this.handleAddClick}><h5>Complete Form ></h5></Link>
+                <Link onClick={this.handleAddClick}><h5>Complete Form</h5></Link>
               </div>
             </div>
           </div>
@@ -335,7 +342,14 @@ class dashboard extends Component {
                 {pendingFormsList}
                 {approvedFormsList}
                 <br></br>
-                <input type="number" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Initiative to Modify by Tag Number" onChange={this.tagNumChange}/><br></br>
+                <select name="modifyTagNumSelect" placeholder="Select Initiative to Modify by Tag Number" onChange={e => this.setState({modifyTagNum: e.target.value})} value={this.state.modifyTagNum}>
+                    <option value={null} >Select Initiative to Modify by Tag Number</option>
+                    {RenderTagList(tagNumbers)}
+                </select>
+                <button className="search-button btn btn-primary" onClick={this.handleModifyClick} disabled={this.state.modifyTagNum == null}>Search</button>
+                <br></br>
+
+                            {/*<input type="number" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Initiative to Modify by Tag Number" onChange={this.tagNumChange}/><br></br>
                 {
                   !this.state.modifyEnabled ?
                     <button className="search-button btn btn-primary disabled" disabled>Search</button> :
@@ -343,7 +357,7 @@ class dashboard extends Component {
                 }
                 {
                   this.state.modifyClicked ? error : null
-                }
+                }*/}
               </div>
             </div>
           </div>
@@ -359,17 +373,29 @@ class dashboard extends Component {
   }
 }
 
+const RenderTagList = (tagNumbers) => {
+
+    return (
+        Object.values(tagNumbers).map(tag => (
+            <option value={tag.tagNumber}>{tag.tagNumber}</option>
+    ))
+        )
+}
+
 const mapStateToProps = (state) => {
   return {
     authorized: state.authenticate.auth,
     formAccessError: state.data.formRetrievalError,
     formStatus: state.data.formStatus,
-    userData: state.data.userInformation
+    userData: state.data.userInformation,
+    tagNumbers: state.data.tagNumbers,
+
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getInitiativeTags: () => dispatch(getInitiativeTags()),
     getForm: (tag, getType) => dispatch(getNonApprovedForm(tag, getType)),
     clearForm: () => dispatch(clearFormStatus()),
     clearFormRetrievalError: () => dispatch(clearFormRetrievalError()),

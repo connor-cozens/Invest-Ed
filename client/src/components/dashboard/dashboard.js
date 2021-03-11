@@ -166,7 +166,12 @@ class dashboard extends Component {
           this.setState({
             modifyClicked: false
           });
-          return <Redirect to='/formsubmission'/>
+            return <Redirect
+                to={{
+                    pathname: "/initiative-submission",
+                    state: { tag: this.state.modifyTagNum }
+                }}
+            />
         //If user selects option to add a new form
         }
         else if (this.state.addClicked) {

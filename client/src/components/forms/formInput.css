@@ -112,3 +112,11 @@
     margin-bottom: 2vh;
     border-radius: 4px;
 }
+
+.successContainer {
+    background-color: #4BB543;
+    color: white;
+    padding: 3vh 3vw 2vh 3vw;
+    margin-bottom: 2vh;
+    border-radius: 4px;
+}

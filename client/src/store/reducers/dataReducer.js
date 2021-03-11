@@ -15,6 +15,7 @@ export const CLEAR_SET_USER_ERROR = 'CLEAR_SET_USER_ERROR';
 export const GET_INITIATIVE_TAGS = 'GET_INITIATIVE_TAGS';
 export const GENERATE_TAG_NUMBER = 'GENERATE_TAG_NUMBER';
 export const ADD_INITIATIVE = 'ADD_INITIATIVE';
+export const GET_INITIATIVE = 'GET_INITIATIVE';
 
 export const SET_REVIEW_FORM = 'SET_REVIEW_FORM';
 export const SET_ADD_FORM = 'SET_ADD_FORM';
@@ -182,6 +183,12 @@ const dataReducer = (state = initState, action) => {
         return {
             ...state,
             addInitiative: action.payload.data != undefined ? action.payload.data : undefined
+        }
+
+    case GET_INITIATIVE:
+        return {
+            ...state,
+            getInitiative: action.payload.data
         }
 
     case SET_REVIEW_FORM:

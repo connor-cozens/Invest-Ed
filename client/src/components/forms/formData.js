@@ -10,6 +10,10 @@ import { tuitionSource } from '../../componentsData/tuitionSource'
 export const formData = {
     title: "Add New Initiative",
     description: "Please fill out the forms in each of the following sections and click 'Submit' to add a new initiative.",
+    edit: {
+        title: "Modify Initiative",
+        description: "Please edit the forms in each of the following sections and click 'Submit' to modify this initiative.",
+    },
 
     funder: {
         title: "Funder",
@@ -94,10 +98,10 @@ export const formData = {
             title: "End Year",
             placeholder: "End Year",
         },
-        launchCountries: {
-            title: "Launch Country(s)",
-            placeholder: "Select all that apply...",
-            type: "multiple",
+        launchCountry: {
+            title: "Launch Country",
+            placeholder: "Select a launch country...",
+            //type: "multiple",
             options: Object.values(countryCodes.map(country => country.Economy)),
         },
         desc: {
@@ -192,7 +196,6 @@ export const formData = {
         placeholder: "Write any comments you have about this form."
     },
 
-    submit: {
-        title: "Submit"
-    }
+    submit: { title: "Submit" },
+    resubmit: { title: "Re-submit" }
 }

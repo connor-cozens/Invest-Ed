@@ -32,7 +32,7 @@ const FormBase = (props) => {
         targetsWomen: "",
         startYear: "",
         endYear: "",
-        launchCountries: [],
+        launchCountry: "",
         desc: "",
         regions: [],
         countries: [],
@@ -59,6 +59,12 @@ const FormBase = (props) => {
     }, [])
 
     useEffect(() => {
+        props.resetSubmissionResults()
+    }, [success])
+
+    useEffect(() => console.log(initiative), [initiative])
+
+    useEffect(() => {
         let errorsFound = false
         console.log('FORMBASE: ', props.submissionResults)
         if (props.submissionResults != undefined) {
@@ -69,7 +75,10 @@ const FormBase = (props) => {
                     errorsFound = true
                 }
             })
-            if (!errorsFound) setSuccess(true)
+            if (!errorsFound) {
+                setSuccess(true)
+                window.scrollTo(0, 0)
+            }
         }
         
 
@@ -81,6 +90,44 @@ const FormBase = (props) => {
         return <Redirect to='/' />
     }
 
+    const determineValue = (field) => {
+        if (field == formData.funder.name) return funder.name
+        if (field == formData.funder.site) return funder.site
+        if (field == formData.funder.motive) return funder.motive
+        if (field == formData.funder.impact) return funder.impact
+        if (field == formData.funder.orgForm) return funder.orgForm
+        if (field == formData.funder.intBases) return funder.intBases
+        if (field == formData.funder.edSubSectors) return funder.edSubSectors
+        if (field == formData.funder.orgTraits) return funder.orgTraits
+        if (field == formData.funder.asiaIntBases) return funder.asiaIntBases
+        if (field == formData.funder.asiaOps) return funder.asiaOps
+
+        if (field == formData.initiative.name) return initiative.name
+        if (field == formData.initiative.site) return initiative.site
+        if (field == formData.initiative.targetsWomen) return initiative.targetsWomen
+        if (field == formData.initiative.startYear) return initiative.startYear
+        if (field == formData.initiative.endYear) return initiative.endYear
+        if (field == formData.initiative.launchCountry) return initiative.launchCountry
+        if (field == formData.initiative.desc) return initiative.desc
+        if (field == formData.initiative.regions) return initiative.regions
+        if (field == formData.initiative.countries) return initiative.countries
+        if (field == formData.initiative.targetGeo) return initiative.targetGeo
+        if (field == formData.initiative.mainEd) return initiative.mainEd
+        if (field == formData.initiative.otherEd) return initiative.otherEd
+        if (field == formData.initiative.mainProgArea) return initiative.mainProgArea
+        if (field == formData.initiative.otherProgArea) return initiative.otherProgArea
+        if (field == formData.initiative.fundingSource) return initiative.fundingSource
+        if (field == formData.initiative.accessFee) return initiative.accessFee
+        if (field == formData.initiative.targetSchoolMgmt) return initiative.targetSchoolMgmt
+        if (field == formData.initiative.targetPopSectors) return initiative.targetPopSectors
+        if (field == formData.initiative.outcomes) return initiative.outcomes
+
+        if (field == formData.implementer.name) return implementer.name
+        if (field == formData.implementer.motive) return implementer.motive
+
+        //if (field == formData.comments) return comments
+    }
+
 
     return (
         !success
@@ -88,11 +135,15 @@ const FormBase = (props) => {
                 funder={funder} setFunder={setFunder}
                 initiative={initiative} setInitiative={setInitiative}
                 implementer={implementer} setImplementer={setImplementer}
+                determineValue={determineValue}
+                { ...props }
             />
             : <FormReview
                 funder={funder} setFunder={setFunder}
                 initiative={initiative} setInitiative={setInitiative}
                 implementer={implementer} setImplementer={setImplementer}
+                determineValue={determineValue}
+                { ...props }
             />
     )
 }

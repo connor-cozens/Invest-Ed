@@ -16,6 +16,7 @@ import {
   GET_INITIATIVE_TAGS,
   GENERATE_TAG_NUMBER,
   ADD_INITIATIVE,
+  GET_INITIATIVE,
 
   SET_REVIEW_FORM,
   SET_MODIFY_FORM,
@@ -68,17 +69,22 @@ export const getInitiativeTags = (user) => (dispatch) => {
         })
 }
 
-export const generateTagNumber = (user) => (dispatch) => {
-    let headers = { withCredentials: true, accepts: "application/json" }
+export const generateTagNumber = (tag) => (dispatch) => {
+    if (tag)
+        dispatch({ type: GENERATE_TAG_NUMBER, payload: tag });
 
-    axios.get(`/dashboard/generateTagNumber`, headers)
-        .then(response => {
-            console.log(response.data)
-            dispatch({ type: GENERATE_TAG_NUMBER, payload: response.data });
-        })
-        .catch(err => {
-            dispatch({ type: GENERATE_TAG_NUMBER, payload: ["Generate Tag Number Error"] });
-        })
+    else {
+        let headers = { withCredentials: true, accepts: "application/json" }
+
+        axios.get(`/dashboard/generateTagNumber`, headers)
+            .then(response => {
+                dispatch({ type: GENERATE_TAG_NUMBER, payload: response.data });
+            })
+            .catch(err => {
+                dispatch({ type: GENERATE_TAG_NUMBER, payload: ["Generate Tag Number Error"] });
+            })
+    }
+    
 }
 
 export const addInitiative = (implementer, initiative, funder, tag) => (dispatch) => {
@@ -100,6 +106,25 @@ export const addInitiative = (implementer, initiative, funder, tag) => (dispatch
             dispatch({ type: ADD_INITIATIVE, payload: ["Add Initiative Error"] });
         })
 }
+
+export const getInitiative = (tag) => (dispatch) => {
+    let headers = { withCredentials: true, accepts: "application/json" }
+    let body = {
+        tag: tag
+    }
+
+    axios.post(`/dashboard/getInitiative`, body, headers)
+        .then(response => {
+            console.log(response.data)
+            dispatch({ type: GET_INITIATIVE, payload: response });
+        })
+        .catch(err => {
+            console.log(err)
+            dispatch({ type: GET_INITIATIVE, payload: ["Get Initiative Error"] });
+        })
+
+}
+
 
 export const resetSubmissionResults = () => (dispatch) => {
     dispatch({ type: ADD_INITIATIVE, payload: [] })

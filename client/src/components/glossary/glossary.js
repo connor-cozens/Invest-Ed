@@ -1,4 +1,5 @@
-import React, {Component, useEffect, useState} from 'react'
+import React, { Component, useEffect, useState } from 'react'
+import { Collapsible } from '../common/collapsible.js';
 import './glossary.css';
 import { glossaryData } from './glossaryData.js';
 import { countryCodes } from '../../componentsData/countryCodes';
@@ -7,20 +8,18 @@ import { edSubSectors } from '../../componentsData/edSubSectors';
 import { progAreas } from '../../componentsData/progAreas';
 
 const Glossary = () => {
-    let headings = { ...glossaryData.tableHeadings };
-    console.log(countryCodes);
 
     return (
         <>
         <h2 className="title">Glossary</h2>
         <div id='glossary' className="container">
-            <Collapsible title={glossaryData.bgGuidance.sectionTitle}>
+                <Collapsible title={glossaryData.bgGuidance.sectionTitle} open={false}>
                 <h3 className="sectionTitle">{glossaryData.bgGuidance.title}</h3>
                 <p><em>{glossaryData.bgGuidance.version}</em></p>
                 <p dangerouslySetInnerHTML={{ __html: glossaryData.bgGuidance.description }} />
             </Collapsible>
             <br />
-            <Collapsible title={glossaryData.countryCodes.sectionTitle}>
+            <Collapsible title={glossaryData.countryCodes.sectionTitle} open={false}>
                 <h3 className="sectionTitle">{glossaryData.countryCodes.tableTitle}</h3>
                 <p>{glossaryData.countryCodes.tableDescription}</p>
                 {RenderTable(RenderHeaders(glossaryData.countryCodes.tableHeadings), RenderCountryCodes())}
@@ -29,7 +28,7 @@ const Glossary = () => {
                 <p dangerouslySetInnerHTML={{ __html: glossaryData.countryCodes.note }} />
             </Collapsible>
             <br />
-            <Collapsible title={glossaryData.orgTypes.sectionTitle}>
+            <Collapsible title={glossaryData.orgTypes.sectionTitle} open={false}>
                 <h3 className="sectionTitle">{glossaryData.orgTypes.defsTableTitle}</h3>
                 {RenderTable(RenderHeaders(glossaryData.orgTypes.tableHeadings), RenderOrgTypes())}
                 <p style={{ marginBottom: "0" }}>{glossaryData.orgTypes.preexistingDesc}</p>
@@ -37,18 +36,18 @@ const Glossary = () => {
                 {/*INSERT BLURB HERE W PAPER REFERENCE*/}
             </Collapsible>
             <br />
-            <Collapsible title={glossaryData.edSubSectors.sectionTitle}>
+            <Collapsible title={glossaryData.edSubSectors.sectionTitle} open={false}>
                 <h3 className="sectionTitle">{glossaryData.edSubSectors.tableTitle}</h3>
                 {RenderTable(RenderHeaders(glossaryData.edSubSectors.tableHeadings), RenderSubSectors())}
                 <p>{glossaryData.edSubSectors.additionalCodes}</p>
             </Collapsible>
             <br />
-            <Collapsible title={glossaryData.progAreas.sectionTitle}>
+            <Collapsible title={glossaryData.progAreas.sectionTitle} open={false}>
                 <h3 className="sectionTitle">{glossaryData.progAreas.tableTitle}</h3>
                 {RenderTable(RenderHeaders(glossaryData.progAreas.tableHeadings), RenderProgramAreas())}
             </Collapsible>
             <br />
-            <Collapsible title={glossaryData.references.sectionTitle}>
+            <Collapsible title={glossaryData.references.sectionTitle} open={false}>
                 <h3 className="sectionTitle">{glossaryData.references.sectionTitle}</h3>
                 {RenderReferences()}
             </Collapsible>
@@ -73,6 +72,15 @@ const RenderTable = (tableHead, tableBody) => {
         </div>
     )
 
+}
+
+const RenderHeaders = (headers) => {
+
+    return (
+        <tr>
+            {Object.values(headers).map((header) => (<th className="stickyHeader">{header}</th>))}
+        </tr>
+    )
 }
 
 const RenderReferences = () => {
@@ -122,7 +130,6 @@ const RenderSubSectors = () => {
     )
 }
 
-
 const RenderOrgTypes = () => {
     return (
         <>
@@ -141,7 +148,6 @@ const RenderOrgTypes = () => {
         </>
     )
 }
-
 
 const RenderCountryCodes = () => {
 
@@ -167,37 +173,5 @@ const RenderCountryCodes = () => {
     )
 }
 
-const RenderHeaders = (headers) => {
-
-    return (
-        <tr>
-            {Object.values(headers).map((header) => (<th className="stickyHeader">{header}</th>))}
-        </tr>
-    )
-}
-
-
-const Collapsible = (props) => {
-    const [open, setOpen] = useState(false);
-
-    const toggle = () => {
-        setOpen(!open)
-    }
-
-    return (
-        <div>
-            <div onClick={(e) => toggle(e)} className='header'>
-                {open ? <i className="arrow up"></i> : <i className="arrow down"></i>}
-                {props.title}
-            </div>
-
-            {open ? (
-                <div className='content'>
-                    {props.children}
-                </div>
-            ) : null}
-        </div>
-    );
-}
 
 export default Glossary

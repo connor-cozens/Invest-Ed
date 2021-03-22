@@ -138,7 +138,8 @@ const Profile = (props) => {
                             <li style={{ paddingBottom: "15px" }} className="list-group-item">Email: <b>{userData ? userData.email : null}</b></li>
                             <li style={{ paddingBottom: "15px" }} className="list-group-item">User Type: <b>{userType}</b></li>
 
-                            <button className="search-button btn btn-primary" onClick={editClick} >Edit Information</button>
+
+    const userType = userData ? (userData.accessLevel == 2 ? "Organization user" : (userData.accessLevel == 1 ? "Research user": "Root user")) : null
 
                         </ul>
                     </div>

@@ -5,7 +5,7 @@ import { Collapsible } from '../common/collapsible.js';
 import './formInput.css'
 import { formData } from './formData.js';
 import { formProgAreas } from '../../componentsData/progAreas';
-import { generateTagNumber, addInitiative, getInitiative } from '../../store/actions/dataActions';
+import { generateTagNumber, addInitiative, removeInitiative, getInitiative } from '../../store/actions/dataActions';
 
 const FormInput = (props) => {
     const { determineValue, funder, setFunder, initiative, setInitiative, implementer, setImplementer } = props
@@ -27,7 +27,7 @@ const FormInput = (props) => {
             if (editing && (props.modifyInitiative != undefined)) {
                 setInitiative({
                     ...props.modifyInitiative.initiative,
-                    mainProgArea: props.modifyInitiative.initiative.mainProgActivity,
+                    mainProgArea: props.modifyInitiative.initiative != undefined ? props.modifyInitiative.initiative.mainProgActivity : '',
                 })
                 setFunder({ ...props.modifyInitiative.funder })
                 setImplementer({ ...props.modifyInitiative.implementer })
@@ -40,7 +40,7 @@ const FormInput = (props) => {
     useEffect(() => {
         if (props.location.state) {
             props.generateTagNumber(props.location.state.tag)
-            props.getInitiative(props.location.state.tag)
+            props.getInitiative(props.location.state.tag, props.userData.accessLevel)
         }
         else props.generateTagNumber()
 
@@ -66,6 +66,17 @@ const FormInput = (props) => {
         }
     }, [props.submissionResults])
 
+    //determine errors upon submitted form
+    useEffect(() => {
+        console.log(props.removeResults)
+        if (submitted) {
+            Object.values(props.removeResults).map(result => {
+                //console.log(result)
+                if (result.error) setErrors(true)
+            })
+        }
+    }, [props.removeResults])
+
     useEffect(() => console.log(errors), [errors])
 
     if (props.authorized === false) {
@@ -84,9 +95,16 @@ const FormInput = (props) => {
     }
 
     const submitForm = () => {
+        if (editing && (props.modifyInitiative != undefined)) {
+            props.removeInitiative(implementer, initiative, funder, props.tag, props.userData.accessLevel)
+            setSubmitted(true)
+
+        } else {
+            props.addInitiative(implementer, initiative, funder, props.tag, props.userData.accessLevel)
+            setSubmitted(true)
+        }
         //HANDLE WHETHER FORM IS NEW OR BEING REVIEWED & SUBMITTED BY ROOT USER
-        props.addInitiative(implementer, initiative, funder, props.tag)
-        setSubmitted(true)
+       
 
         console.log(funder, initiative, implementer, comments)
     }
@@ -255,16 +273,19 @@ const RenderFormFields = (props) => {
 const mapStateToProps = (state) => {
     return {
         authorized: state.authenticate.auth,
+        userData: state.data.userInformation,
         tag: state.data.tag,
         submissionResults: state.data.addInitiative,
+        removeResults: state.data.removeInitiative,
         modifyInitiative: state.data.getInitiative
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addInitiative: (implementer, initiative, funder, tag) => dispatch(addInitiative(implementer, initiative, funder, tag)),
-        getInitiative: (tag) => dispatch(getInitiative(tag)),
+        addInitiative: (implementer, initiative, funder, tag, accessLevel) => dispatch(addInitiative(implementer, initiative, funder, tag, accessLevel)),
+        removeInitiative: (implementer, initiative, funder, tag, accessLevel) => dispatch(removeInitiative(implementer, initiative, funder, tag, accessLevel)),
+        getInitiative: (tag, accessLevel) => dispatch(getInitiative(tag, accessLevel)),
         generateTagNumber: (tag) => dispatch(generateTagNumber(tag))
     }
 }

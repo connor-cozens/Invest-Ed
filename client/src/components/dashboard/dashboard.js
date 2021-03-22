@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import './dashboard.css';
-import {getInitiativeTags, getApprovedForm, getNonApprovedForm, clearFormStatus, setNewFormStatus, clearFormRetrievalError} from '../../store/actions/dataActions';
+import { getInitiativeTags, getInitiativeTagsForReview, getApprovedForm, getNonApprovedForm, clearFormStatus, setNewFormStatus, clearFormRetrievalError} from '../../store/actions/dataActions';
 
 class Collapsible extends React.Component {
   constructor(props){
@@ -61,7 +61,10 @@ class dashboard extends Component {
 
   componentDidMount = () => {
       this.props.clearFormRetrievalError();
-      this.props.getInitiativeTags();
+      if (this.props.userData != null)
+        this.props.getInitiativeTags(this.props.userData.accessLevel);
+        this.props.getInitiativeTagsForReview();
+
       
   }
 
@@ -154,7 +157,7 @@ class dashboard extends Component {
     }
 
   render() {
-    const {authorized, formAccessError, formStatus, clearForm, userData, tagNumbers} = this.props;
+      const { authorized, formAccessError, formStatus, clearForm, userData, tagNumbers, tagNumbersForReview} = this.props;
     if (authorized === false){
       return <Redirect to='/' />
     }
@@ -185,7 +188,12 @@ class dashboard extends Component {
           this.setState({
             reviewClicked: false
           });
-          return <Redirect to='/formReview'/>
+            return <Redirect
+                to={{
+                    pathname: "/initiative-submission",
+                    state: { tag: this.state.reviewTagNum }
+                }}
+            />
         }
       }
       else {
@@ -262,9 +270,9 @@ class dashboard extends Component {
     ) : null
 
     //RENDER FOR RA/ROOT USERS
-    //Render list of forms to be reviewed only if RA or root user
+    //Render list of forms to be reviewed only if root user
     const reviewFormsList = userData ? (
-      userData.accessLevel !== 0 ? (
+      userData.accessLevel == 0 ? (
         userData.reviewForms ? (
           <div>
             <br></br>
@@ -295,8 +303,28 @@ class dashboard extends Component {
     ) : null
 
     //Render review option only if RA or root user
-    const review = userData ? (userData.accessLevel !== 0 ?
-      <div className = "container" style = {{marginBottom: "100px"}}>
+    const review = userData ? (userData.accessLevel == 0 ?
+        <div className="container">
+            <div className="row mt-4">
+                <div className="col-md-9 m-auto">
+                    <div className="card card-body">
+                        <h4><b>Review Initiative</b></h4>
+                        <hr />
+                        {pendingFormsList}
+                        {approvedFormsList}
+                        <br></br>
+                        <select name="reviewTagNumSelect" placeholder="Select Initiative to Review by Tag Number" onChange={e => this.setState({ reviewTagNum: e.target.value })} value={this.state.reviewTagNum}>
+                            <option value={null} >Select Initiative to Modify by Tag Number</option>
+                            {RenderTagList(tagNumbersForReview)}
+                        </select>
+                        <button className="search-button btn btn-primary" onClick={this.handleReviewClick} disabled={this.state.reviewTagNum == null}>Search</button>
+                        <br></br>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+      /*<div className = "container" style = {{marginBottom: "100px"}}>
         <div className = "row mt-4">
           <div className = "col-md-9 m-auto">
             <div className = "card card-body">
@@ -316,7 +344,7 @@ class dashboard extends Component {
             </div>
           </div>
         </div>
-      </div>: null
+      </div>*/: null
     ) : null
 
     return (
@@ -333,21 +361,36 @@ class dashboard extends Component {
             </div>
           </div>
         </div>
-        <div className = "container">
-          <div className = "row mt-4">
-            <div className = "col-md-9 m-auto">
-              <div className = "card card-body">
-                <h4><b>Modify Initiative</b></h4>
-                <hr/>
-                {pendingFormsList}
-                {approvedFormsList}
-                <br></br>
-                <select name="modifyTagNumSelect" placeholder="Select Initiative to Modify by Tag Number" onChange={e => this.setState({modifyTagNum: e.target.value})} value={this.state.modifyTagNum}>
-                    <option value={null} >Select Initiative to Modify by Tag Number</option>
-                    {RenderTagList(tagNumbers)}
-                </select>
-                <button className="search-button btn btn-primary" onClick={this.handleModifyClick} disabled={this.state.modifyTagNum == null}>Search</button>
-                <br></br>
+        
+                {userData 
+                    ? userData.accessLevel != 2
+                        ? <>
+                        <div className="container">
+                            <div className="row mt-4">
+                                <div className="col-md-9 m-auto">
+                                    <div className="card card-body">
+                            <h4><b>Modify Initiative</b></h4>
+                            <hr />
+                            {pendingFormsList}
+                            {approvedFormsList}
+                            <br></br>
+                            <select name="modifyTagNumSelect" placeholder="Select Initiative to Modify by Tag Number" onChange={e => this.setState({ modifyTagNum: e.target.value })} value={this.state.modifyTagNum}>
+                                <option value={null} >Select Initiative to Modify by Tag Number</option>
+                                {RenderTagList(tagNumbers)}
+                            </select>
+                            <button className="search-button btn btn-primary" onClick={this.handleModifyClick} disabled={this.state.modifyTagNum == null}>Search</button>
+                            <br></br>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </>
+                        : null
+                    : null
+                            
+                }
+                
 
                             {/*<input type="number" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Initiative to Modify by Tag Number" onChange={this.tagNumChange}/><br></br>
                 {
@@ -358,10 +401,6 @@ class dashboard extends Component {
                 {
                   this.state.modifyClicked ? error : null
                 }*/}
-              </div>
-            </div>
-          </div>
-        </div>
         {review}
       </div>
     )
@@ -374,11 +413,14 @@ class dashboard extends Component {
 }
 
 const RenderTagList = (tagNumbers) => {
+    console.log('TAGS', tagNumbers)
 
     return (
-        Object.values(tagNumbers).map(tag => (
-            <option value={tag.tagNumber}>{tag.tagNumber}</option>
-    ))
+        tagNumbers != null
+            ? Object.values(tagNumbers).map(tag => (
+                <option value={tag.tagNumber}>{tag.tagNumber}</option>
+            ))
+            : null
         )
 }
 
@@ -389,13 +431,15 @@ const mapStateToProps = (state) => {
     formStatus: state.data.formStatus,
     userData: state.data.userInformation,
     tagNumbers: state.data.tagNumbers,
+    tagNumbersForReview: state.data.tagNumbersForReview,
 
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getInitiativeTags: () => dispatch(getInitiativeTags()),
+    getInitiativeTags: (accessLevel) => dispatch(getInitiativeTags(accessLevel)),
+    getInitiativeTagsForReview: () => dispatch(getInitiativeTagsForReview()),
     getForm: (tag, getType) => dispatch(getNonApprovedForm(tag, getType)),
     clearForm: () => dispatch(clearFormStatus()),
     clearFormRetrievalError: () => dispatch(clearFormRetrievalError()),

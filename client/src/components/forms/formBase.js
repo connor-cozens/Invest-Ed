@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { generateTagNumber, resetSubmissionResults } from '../../store/actions/dataActions';
+import { generateTagNumber, resetSubmissionResults, resetRemoveResults } from '../../store/actions/dataActions';
 
 import './formInput.css'
 import { formData } from './formData.js';
@@ -56,10 +56,12 @@ const FormBase = (props) => {
 
     useEffect(() => {
         props.resetSubmissionResults()
+        props.resetRemoveResults()
     }, [])
 
     useEffect(() => {
         props.resetSubmissionResults()
+        props.resetRemoveResults()
     }, [success])
 
     useEffect(() => console.log(initiative), [initiative])
@@ -85,6 +87,28 @@ const FormBase = (props) => {
         
 
     }, [props.submissionResults])
+
+    useEffect(() => {
+        let errorsFound = false
+        console.log('FORMBASE: ', props.submissionResults)
+        if (props.removeResults != undefined) {
+            Object.values(props.removeResults).map(result => {
+                console.log(result)
+                if (result.error) {
+                    setErrors(true)
+                    errorsFound = true
+                }
+            })
+            if (!errorsFound) {
+                setSuccess(true)
+                window.scrollTo(0, 0)
+            }
+        }
+        
+
+        
+
+    }, [props.removeResults])
 
     if (props.authorized === false) {
         return <Redirect to='/' />
@@ -153,13 +177,16 @@ const mapStateToProps = (state) => {
     return {
         authorized: state.authenticate.auth,
         //tag: state.data.tag,
-        submissionResults: state.data.addInitiative
+        submissionResults: state.data.addInitiative,
+        removeResults: state.data.removeInitiative,
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         resetSubmissionResults: () => dispatch(resetSubmissionResults()),
+        resetRemoveResults: () => dispatch(resetRemoveResults()),
+
         //generateTagNumber: () => dispatch(generateTagNumber())
     }
 }

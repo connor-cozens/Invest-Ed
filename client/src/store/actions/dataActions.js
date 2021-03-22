@@ -14,9 +14,11 @@ import {
 
   //FORMS
   GET_INITIATIVE_TAGS,
+  GET_INITIATIVE_TAGS_FOR_REVIEW,
   GENERATE_TAG_NUMBER,
   ADD_INITIATIVE,
   GET_INITIATIVE,
+  REMOVE_INITIATIVE,
 
   SET_REVIEW_FORM,
   SET_MODIFY_FORM,
@@ -57,15 +59,28 @@ import {LOGIN_SUCCESS} from '../reducers/authReducer';
 import { forceLogout } from './authActions';
 
 
-export const getInitiativeTags = (user) => (dispatch) => {
+export const getInitiativeTags = (accessLevel) => (dispatch) => {
     let headers = { withCredentials: true, accepts: "application/json" }
-
-    axios.get(`/dashboard/getInitiativeTags`, headers)
+    let body = { accessLevel: accessLevel }
+    axios.post(`/dashboard/getInitiativeTags`, body, headers)
         .then(response => {
             dispatch({ type: GET_INITIATIVE_TAGS, payload: response.data });
         })
         .catch(err => {
             dispatch({ type: GET_INITIATIVE_TAGS, payload: ["Get Initiative Tags Error"] });
+        })
+}
+
+export const getInitiativeTagsForReview = () => (dispatch) => {
+    let headers = { withCredentials: true, accepts: "application/json" }
+    console.log('GETTTT')
+    axios.get(`/dashboard/getInitiativeTagsForReview`, headers)
+        .then(response => {
+            console.log(response)
+            dispatch({ type: GET_INITIATIVE_TAGS_FOR_REVIEW, payload: response.data });
+        })
+        .catch(err => {
+            dispatch({ type: GET_INITIATIVE_TAGS_FOR_REVIEW, payload: ["Get Initiative Tags For Review Error"] });
         })
 }
 
@@ -87,13 +102,35 @@ export const generateTagNumber = (tag) => (dispatch) => {
     
 }
 
-export const addInitiative = (implementer, initiative, funder, tag) => (dispatch) => {
+export const removeInitiative = (implementer, initiative, funder, tag, accessLevel) => (dispatch) => {
     let headers = { withCredentials: true, accepts: "application/json" }
     let body = {
         implementer: implementer,
         initiative: initiative,
         funder: funder,
-        tag: tag
+        tag: tag,
+        accessLevel: accessLevel
+    }
+
+    axios.post(`/dashboard/removeInitiative`, body, headers)
+        .then(response => {
+            console.log(response)
+            dispatch({ type: REMOVE_INITIATIVE, payload: response });
+        })
+        .catch(err => {
+            console.log(err)
+            dispatch({ type: REMOVE_INITIATIVE, payload: ["Remove Initiative Error"] });
+        })
+}
+
+export const addInitiative = (implementer, initiative, funder, tag, accessLevel) => (dispatch) => {
+    let headers = { withCredentials: true, accepts: "application/json" }
+    let body = {
+        implementer: implementer,
+        initiative: initiative,
+        funder: funder,
+        tag: tag,
+        accessLevel: accessLevel
     }
 
     axios.post(`/dashboard/addInitiative`, body, headers)
@@ -107,10 +144,11 @@ export const addInitiative = (implementer, initiative, funder, tag) => (dispatch
         })
 }
 
-export const getInitiative = (tag) => (dispatch) => {
+export const getInitiative = (tag, accessLevel) => (dispatch) => {
     let headers = { withCredentials: true, accepts: "application/json" }
     let body = {
-        tag: tag
+        tag: tag,
+        accessLevel: accessLevel,
     }
 
     axios.post(`/dashboard/getInitiative`, body, headers)
@@ -128,6 +166,10 @@ export const getInitiative = (tag) => (dispatch) => {
 
 export const resetSubmissionResults = () => (dispatch) => {
     dispatch({ type: ADD_INITIATIVE, payload: [] })
+}
+
+export const resetRemoveResults = () => (dispatch) => {
+    dispatch({ type: REMOVE_INITIATIVE, payload: [] })
 }
 
 

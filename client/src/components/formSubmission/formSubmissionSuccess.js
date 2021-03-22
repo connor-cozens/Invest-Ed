@@ -35,7 +35,7 @@ const FormSubmissionSuccess = (props) => {
     const message = userData ? (
       form ? (
         //If an organization user, change request submitted message displays, otherwise changes made message displays for RA/root users
-        userData.accessLevel == 0 ? (
+        userData.accessLevel == 2 ? (
           <div className ="alert alert-dismissible alert-success" style = {{textAlign: "left"}}>
             <h5><strong>Your change request was submitted successfully</strong></h5> Form submission tag number: <strong>{form.tagNumber}</strong>.
           </div>

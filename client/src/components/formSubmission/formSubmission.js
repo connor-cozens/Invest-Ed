@@ -1333,7 +1333,7 @@ class formSubmission extends React.Component{
         if (formStatus === 'add') {
           if (userData) {
             //If an organization user, then submit to temp db for review
-            if (userData.accessLevel === 0) {
+            if (userData.accessLevel === 2) {
               this.props.submitNonRA(this.state, this.props.inDB, false);
             }
             //Otherwise, if an RA or root user, submit directly to main db
@@ -1385,7 +1385,7 @@ class formSubmission extends React.Component{
                 isUpdated: this.state.isUpdated
               });
               //If an organization user, then submit modified form to temp db for review
-              if (userData.accessLevel == 0) {
+              if (userData.accessLevel == 2) {
                 //Only allow submission if form fields have been updated
                 if (this.state.isUpdated === true) {
                   for (const [key, value] of Object.entries(this.state.reviews)) {

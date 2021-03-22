@@ -13,8 +13,10 @@ export const CLEAR_SET_USER_ERROR = 'CLEAR_SET_USER_ERROR';
 
 //Form retrieval
 export const GET_INITIATIVE_TAGS = 'GET_INITIATIVE_TAGS';
+export const GET_INITIATIVE_TAGS_FOR_REVIEW = 'GET_INITIATIVE_TAGS_FOR_REVIEW';
 export const GENERATE_TAG_NUMBER = 'GENERATE_TAG_NUMBER';
 export const ADD_INITIATIVE = 'ADD_INITIATIVE';
+export const REMOVE_INITIATIVE = 'REMOVE_INITIATIVE';
 export const GET_INITIATIVE = 'GET_INITIATIVE';
 
 export const SET_REVIEW_FORM = 'SET_REVIEW_FORM';
@@ -173,6 +175,12 @@ const dataReducer = (state = initState, action) => {
             tagNumbers: action.payload
         }
 
+    case GET_INITIATIVE_TAGS_FOR_REVIEW:
+        return {
+            ...state,
+            tagNumbersForReview: action.payload
+        }
+
     case GENERATE_TAG_NUMBER:
         return {
             ...state,
@@ -183,6 +191,12 @@ const dataReducer = (state = initState, action) => {
         return {
             ...state,
             addInitiative: action.payload.data != undefined ? action.payload.data : undefined
+        }
+
+    case REMOVE_INITIATIVE:
+        return {
+            ...state,
+            removeInitiative: action.payload.data != undefined ? action.payload.data : undefined
         }
 
     case GET_INITIATIVE:

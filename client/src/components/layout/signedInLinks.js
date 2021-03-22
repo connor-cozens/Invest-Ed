@@ -13,7 +13,7 @@ class SignedInLinks extends Component {
     if (authorized) {
       const loading = "Loading";
 
-      const register = userData ? (userData.accessLevel == 0 ? null :
+      const register = userData ? (userData.accessLevel == 2 ? null :
         <li className="nav-item">
           <Link to = '/register' className = "nav-link">Register a User</Link>
         </li>

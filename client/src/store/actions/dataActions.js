@@ -25,6 +25,9 @@ import {
   SET_ADD_FORM,
   SET_VIEW_FORM,
 
+  //UPDATE USER
+  UPDATE_USER,
+
   PULLED_APPROVED_FORM,
   NOT_PULLED_APPROVED_FORM,
 
@@ -206,6 +209,27 @@ export const registerUser = (user) => (dispatch) => {
       dispatch({type: REGISTER_ERROR, payload: ["Registration Error"]});
     })
 }
+
+
+export const updateUser = (userData) => (dispatch) =>
+{
+	console.log(userData)
+	let headers = { withCredentials: true, accepts: "application/json" }
+    let body = {
+        account: userData,
+    }
+
+    axios.post(`/dashboard/updateUser`, body, headers)
+        .then(response => {
+            console.log(response)
+            dispatch({ type: UPDATE_USER, payload: response });
+        })
+        .catch(err => {
+            console.log(err)
+            dispatch({ type: UPDATE_USER, payload: ["Update User Error"] });
+        })
+}
+
 
 export const setRegistrationComplete = () => (dispatch) => {
   try {

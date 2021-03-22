@@ -57,11 +57,70 @@ const poolTempOrg = sql.createPool({
     queueLimit: 0
 })
 
+//Create pool connection to accounts DB
+const poolProfiles = sql.createPool({
+    host: db_host,
+    user: db_username,
+    password: db_password,
+    database: db_accounts,
+    waitForConnections: true,
+    connectionLimit: 20,
+    queueLimit: 0
+})
+
 const User = require("../models/User");
 const { response } = require("express");
 
-dashboard.post('/getInitiativeTags', (req, res) => {
+
+// Update account info
+dashboard.post('/updateUser', (req, res) => {
+	
+	let userId = req.user
+	
     if (req.user) {
+        let query = {
+			
+			profiles: {
+				username: [`UPDATE ` + db_accounts + `.users SET username = '` + req.body.account.username + `' WHERE ` + db_accounts + `.users.id = ` + req.user ] ,
+				orgName: [`UPDATE ` + db_accounts + `.users SET organization = '` + req.body.account.organization + `' WHERE ` + db_accounts + `.users.id = ` + req.user ] ,
+				email: [`UPDATE ` + db_accounts + `.users SET email = '` + req.body.account.email + `' WHERE ` + db_accounts + `.users.id = ` + req.user ] ,
+				
+			}
+        }
+
+		const runQueries = async () => {
+			let promisePool = poolProfiles.promise()
+            let results = []
+			
+			console.log(Object.keys(query.profiles).length)
+			for (let i = 0; i < Object.keys(query.profiles).length; i++) {
+                console.log(Object.values(query.profiles)[i].length)
+                for (let j = 0; j < Object.values(query.profiles)[i].length; j++) {
+                    await promisePool.query(Object.values(query.profiles)[i][j])
+                        .then(res => results.push({ "success": { "message": "success", "query": Object.values(query.profiles)[i][j] } }))
+                        .catch(err => results.push({ "error": { "message": "Error: " + err.sqlMessage, "query": Object.values(query.profiles)[i][j] } }));
+                }
+            }
+			
+			Object.values(results).map(result => {
+                if (result.error)
+                    console.log("ERRORS FOUND, ROLLING BACK INSERTS")
+            })
+
+
+            console.log('RESULTS', results, results.length)
+            res.json(results)
+			
+		}
+
+        runQueries()
+
+    } else {
+        res.json({ "error": { "message": "Error: Not authorized to access this page" } })
+    }
+})
+
+dashboard.post('/getInitiativeTags', (req, res) => {    if (req.user) {
         const DATABASE = req.body.accessLevel == 0 ? db_girlsed_temp : req.body.accessLevel == 1 ? db_girlsed_temp : db_girlsed_org_temp
         let query = 'SELECT * FROM ' + DATABASE + '.initiative order by tagNumber'
         let whichPool = req.body.accessLevel == 0 ? poolTemp : req.body.accessLevel == 1 ? poolTemp : poolTempOrg

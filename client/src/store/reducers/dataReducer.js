@@ -24,6 +24,9 @@ export const SET_ADD_FORM = 'SET_ADD_FORM';
 export const SET_MODIFY_FORM = 'SET_MODIFY_FORM';
 export const SET_VIEW_FORM = 'SET_VIEW_FORM';  //For readOnly access to form
 
+//Update User
+export const UPDATE_USER = 'UPDATE_USER';
+
 export const PULLED_APPROVED_FORM = 'PULLED_APPROVED_FORM';
 export const NOT_PULLED_APPROVED_FORM = 'NOT_PULLED_APPROVED_FORM';
 export const CLEAR_FORM_STATUS = 'CLEAR_FORM_STATUS';
@@ -167,6 +170,12 @@ const dataReducer = (state = initState, action) => {
           userRetrievalError: null
         };
 
+	//UPDATE USER
+	case UPDATE_USER:
+		return{
+			...state,
+			updateUser: action.payload.data != undefined ? action.payload.data : undefined
+		}
 
     //FORM DISPATCH HANDLERS
     case GET_INITIATIVE_TAGS:

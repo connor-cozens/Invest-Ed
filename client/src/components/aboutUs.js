@@ -36,10 +36,9 @@ class Collapsible extends React.Component {
 const About = () => {
 
   return (
-    <div id = 'about'>
+    <div id='about'>
       <div className = "container">
-        <h2 style = {{paddingTop: '50px', textAlign: "center"}}>The Invest-Ed Data Visualization Tool</h2>
-        <br></br>
+        <h2 className="title">The Invest-Ed Data Visualization Tool</h2>
         <Collapsible title="Girls’ and Women’s Education Initiatives in Asia Supported by Private Foundations and Impact Investing Organisations (About)">
           <div>
             <p>This platform visualises data on girls’ and women’s education initiatives in Asia supported by private foundations and private-sector impact investing organisations.
@@ -55,7 +54,7 @@ const About = () => {
             </p>
           </div>
         </Collapsible>
-        <br></br><br></br>
+        <br></br>
         <Collapsible title="The Invest-Ed Database Project Team (Past and Current Members)">
           <div>
             <b>Director and Principal Investigator</b>
@@ -68,13 +67,13 @@ const About = () => {
             <p>Connor Cozens, Marlin Manka, Justin Marshall, Leopoldine Vassiliou</p>
           </div>
         </Collapsible>
-        <br></br><br></br>
+        <br></br>
         <Collapsible title="Financial Support">
           <p>The Invest-ED Database was developed as part of larger research program on non-state private actors supported by an Insight Grant (2012-19) from
           the Social Sciences and Humanities Research Council of Canada (Principal Investigator, Srivastava). Parts of the project were supported with co-funding
           from the Brookings Institution.</p>
         </Collapsible>
-        <br></br><br></br>
+        <br></br>
         <Collapsible title="Publications">
         <p>Data are being analysed and further publications are in process. They will be added here as they become available.</p><br></br>
         <p>Srivastava, P., & Read, R. (2020). New education finance: Exploring impact investment, networks, and market-making in South Asia. In, P. Sarangapani & R. Pappu (Eds.),
@@ -93,7 +92,7 @@ const About = () => {
         <p>Srivastava, P., & Read, R. (2018). The landscape for philanthropy in Asia: focus on India. Brief prepared for the Roundtable on Philanthropy and CSR support
         for the Right to Education Act. Philanthropy and Education, NORRAG, New Delhi, 27 April 2018.</p><br></br>
         </Collapsible>
-        <br></br><br></br>
+        <br></br>
       </div>
     </div>
   );

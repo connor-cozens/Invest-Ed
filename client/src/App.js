@@ -15,7 +15,13 @@ import FormSubmissionSuccess from './components/formSubmission/formSubmissionSuc
 import FormReviewSuccess from './components/formSubmission/formReviewSuccess';
 import contactUs from './components/contactUs/contactUs';
 import formReview from './components/formSubmission/formReview';
+import Glossary from './components/glossary/glossary';
 import {getUser, clearUserRetrievalError, clearFormRetrievalError} from './store/actions/dataActions';
+
+import FormBase from './components/forms/formBase';
+import FormReview from './components/forms/formReview';
+
+
 
 class App extends Component {
   componentDidMount() {
@@ -49,6 +55,11 @@ class App extends Component {
             <Route exact path = '/formsubmission' component = {formSubmission} />
             <Route exact path = '/contactUs' component = {contactUs} />
             <Route exact path = '/formReview' component = {formReview} />
+            <Route exact path='/glossary' component={Glossary} />
+
+            <Route exact path='/initiative-submission' component={FormBase} />
+            <Route exact path='/submission-review' component={FormReview} />
+
           </Switch>
         </div>
       </BrowserRouter>

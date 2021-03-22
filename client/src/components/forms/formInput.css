@@ -1,0 +1,122 @@
+.header {
+    cursor: pointer;
+    border: solid 1px #f2f2f2;
+    padding: 2vh 1vw 2vh 1vw;
+    background-color: white;
+    color: black;
+    font-size: 18px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+.content {
+    cursor: pointer;
+    border-left: solid 1px #f2f2f2;
+    border-right: solid 1px #f2f2f2;
+    border-bottom: solid 1px #f2f2f2;
+    border-radius: 0 0 5px 5px;
+    padding: 3vh 3vw 3vh 3vw;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    background-color: #ecf0f1;
+}
+
+.formMargins {
+    margin: 1vh 1vw;
+}
+
+.selectPlaceholder {
+    color: grey
+}
+
+.contentNoSection {
+    cursor: pointer;
+    border-left: solid 1px #f2f2f2;
+    border-right: solid 1px #f2f2f2;
+    border-bottom: solid 1px #f2f2f2;
+    border-radius: 0 0 5px 5px;
+    padding: 3vh 3vw 3vh 3vw;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+.arrow {
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 5px;
+    margin: 5px 15px;
+}
+
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.title {
+      text-align: center;
+      margin: auto;
+      padding: 4vh 4vw 4vh 4vw;
+}
+
+.sectionTitle {
+    text-align: left;
+    margin: auto;
+    margin-bottom: 2vh;
+    font-size: 24px;
+}
+
+.container {
+    width: 85vw;
+    margin: auto;
+}
+
+.search {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.disabled {
+    background-color: #DCDCDC;
+}
+
+.selectedOptions {
+    display: inline-block;
+    border: none;
+    background-color: #2C3E50;
+    color: #FFFFFF;
+    font-size: 16px;
+    /*line-height: 1;*/
+    text-align: center;
+    padding: 8px 16px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    /*margin-right: -1px;*/
+    /*border: 1px solid rgba(0, 0, 0, 0.1);*/
+    /*box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);*/
+    transition: all 0.15s ease-in-out; /*The decadence*/
+}
+
+.errorContainer {
+    background-color: #ff0033;
+    color: white;
+    padding: 3vh 3vw 2vh 3vw;
+    margin-bottom: 2vh;
+    border-radius: 4px;
+}
+
+.successContainer {
+    background-color: #4BB543;
+    color: white;
+    padding: 3vh 3vw 2vh 3vw;
+    margin-bottom: 2vh;
+    border-radius: 4px;
+}

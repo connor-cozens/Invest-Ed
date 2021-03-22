@@ -1,0 +1,113 @@
+#glossary .header {
+    cursor: pointer;
+    border: solid 1px #f2f2f2;
+    padding: 2vh 1vw 2vh 1vw;
+    background-color: white;
+    color: black;
+    font-size: 18px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+#glossary .content {
+    cursor: pointer;
+    border-left: solid 1px #f2f2f2;
+    border-right: solid 1px #f2f2f2;
+    border-bottom: solid 1px #f2f2f2;
+    border-radius: 0 0 5px 5px;
+    padding: 3vh 3vw 3vh 3vw;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    background-color: #ecf0f1;
+}
+
+.arrow {
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 5px;
+    margin: 5px 15px;
+}
+
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.title {
+      text-align: center;
+      margin: auto;
+      padding: 4vh 4vw 4vh 4vw;
+}
+
+.sectionTitle {
+    text-align: center;
+    margin: auto;
+    margin-bottom: 2vh;
+    font-size: 24px;
+}
+
+.tableContainer {
+    height: 75vh;
+    overflow: scroll;
+    border: solid 1px #DCDCDC;
+    margin-bottom: 1vh; 
+}
+
+.container {
+    width: 85vw;
+    margin: auto;
+}
+
+.stickyHeader {
+    position: sticky;
+    top: 0;
+    background: #DCDCDC;
+}
+
+td {
+    padding: 6px;
+}
+
+th {
+    padding: 6px;
+}
+
+.rowStyle {
+    background-color: #ededed;
+}
+
+.rowStyleAlt {
+    background-color: #ffffff;
+}
+
+.orgTypeRow {
+    background-color: coral;
+}
+
+.orgTypeRowAlt {
+    background-color: lightblue;
+}
+
+.cellBorderTop {
+    border-top: solid 1px black;
+}
+
+.cellBorderLeft {
+    border-left: solid 1px black;
+}
+
+.cellBorderRight {
+    border-right: solid 1px black;
+}
+
+.cellBorderBottom {
+    border-bottom: solid 1px black;
+}
+
+.cellBorder {
+    border: solid 1px black;
+}

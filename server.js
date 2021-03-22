@@ -65,7 +65,7 @@ var ChangePassword = require('./routes/ChangePassword')
 
 
 app.use('/', Index)
-app.use('/login', Login)
+app.use('/api/login', Login)
 app.use('/register', Register)
 app.use('/visualize', Visualize)
 app.use('/contact', Contact)

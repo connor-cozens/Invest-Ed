@@ -18,7 +18,7 @@ class Profile extends Component {
       );
     }
 
-    const userType = userData ? (userData.accessLevel == 2 ? "Organization user" : (userData.accessLevel == 1 ? "Research user": "Root user")) : null
+    const userType = userData ? (userData.accessLevel == 0 ? "Organization user" : (userData.accessLevel == 1 ? "Research user": "Root user")) : null
 
     return(
       <div>

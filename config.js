@@ -8,6 +8,5 @@ module.exports = {
   //Databases
   db_accounts: process.env.DB_ACCOUNTS,
   db_girlsed_main: process.env.DB_GIRLSED_MAIN,
-  db_girlsed_temp: process.env.DB_GIRLSED_TEMP,
-  db_girlsed_org_temp: process.env.DB_GIRLSED_ORG_TEMP
+  db_girlsed_temp: process.env.DB_GIRLSED_TEMP
 };

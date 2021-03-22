@@ -18,7 +18,7 @@ index.get('/', (req,res) => {
           //If found user using user id deserialized from the session id, send user info
           if(user){
             //If organization user
-            if (user.accessLevel === 2) {
+            if (user.accessLevel === 0) {
               res.json({"error": false, "message":
                 [{"username": user.username,
                   "email": user.email,
@@ -34,7 +34,7 @@ index.get('/', (req,res) => {
               //Query db for all organization users
               User.findAll({
                 where: {
-                  accessLevel: 2
+                  accessLevel: 0
                 }
               }).then(results => {
                 const reviewForms = []

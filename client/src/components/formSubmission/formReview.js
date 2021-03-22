@@ -358,7 +358,7 @@ class formReview extends React.Component{
     if (formStatus === 'review') {
       if (userData) {
         //If an RA or root user, then submit review to temp db
-        if (userData.accessLevel !== 2) {
+        if (userData.accessLevel !== 0) {
           this.state.needsReview = 0;  //Form is ready for approval is the initial assumption
           for (const [key, value] of Object.entries(this.state.reviews)) {
             //If any field is found to be rejected, then form still requires further review
@@ -398,7 +398,7 @@ class formReview extends React.Component{
     }
 
     if (userData) {
-      if (userData.accessLevel == 2) {
+      if (userData.accessLevel == 0) {
         return <Redirect to='/' />
       }
     }

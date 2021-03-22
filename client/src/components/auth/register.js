@@ -31,7 +31,7 @@ class Register extends PureComponent {
   handleSubmit = (event) => {
     event.preventDefault();
     if (this.state.accesslevel == 'organization'){
-      this.state.accesslevel = 2
+      this.state.accesslevel = 0
     } else if (this.state.accesslevel == 'research'){
       this.state.accesslevel = 1
     }
@@ -47,7 +47,7 @@ class Register extends PureComponent {
     }
 
     if (userData) {
-      if (userData.accessLevel == 2) {
+      if (userData.accessLevel == 0) {
         return <Redirect to='/' />
       }
     }
@@ -65,13 +65,12 @@ class Register extends PureComponent {
             <select type="accesslevel" id="accesslevel" name="accesslevel" onChange={this.handleChange}>
               <option value="Select" selected = "selected">Select a user access type*</option>
               <option value="organization">Organization user</option>
-            </select> : userData.accessLevel == 1 
-            ? <select type="accesslevel" id="accesslevel" name="accesslevel" onChange={this.handleChange}>
+            </select> :
+            <select type="accesslevel" id="accesslevel" name="accesslevel" onChange={this.handleChange}>
               <option value="Select" selected = "selected">Select a user access type*</option>
               <option value="research">Research user</option>
               <option value="organization">Organization user</option>
-              </select>
-            : null
+            </select>
 
     const errors = [];
     if (registerError !== null){

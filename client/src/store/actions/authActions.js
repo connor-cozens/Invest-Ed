@@ -13,14 +13,13 @@ import {
 } from '../reducers/dataReducer';
 
 export const loginUser = (user) => (dispatch) => {
-  axios.post(`/api/login`, {
+  axios.post(`/login`, {
     username: user.username,
     password: user.password},
     {withCredentials: true})
-      .then(response => {
-        console.log(response)
+    .then(response => {
       // If there are validation errors
-        if (response.data.error == true) {
+      if (response.data.error ==  true) {
         const errorList = response.data.messages;
         const errorMsgList = [];
         errorList.forEach(error => {

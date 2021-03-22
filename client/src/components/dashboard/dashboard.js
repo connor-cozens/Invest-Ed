@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import './dashboard.css';
-import { getInitiativeTags, getInitiativeTagsForReview, getApprovedForm, getNonApprovedForm, clearFormStatus, setNewFormStatus, clearFormRetrievalError} from '../../store/actions/dataActions';
+import {getApprovedForm, getNonApprovedForm, clearFormStatus, setNewFormStatus, clearFormRetrievalError} from '../../store/actions/dataActions';
 
 class Collapsible extends React.Component {
   constructor(props){
@@ -60,12 +60,7 @@ class dashboard extends Component {
   }
 
   componentDidMount = () => {
-      this.props.clearFormRetrievalError();
-      if (this.props.userData != null)
-        this.props.getInitiativeTags(this.props.userData.accessLevel);
-        this.props.getInitiativeTagsForReview();
-
-      
+    this.props.clearFormRetrievalError();
   }
 
   componentDidUpdate = () => {
@@ -154,10 +149,10 @@ class dashboard extends Component {
         reviewEnabled: this.state.reviewEnabled
       })
     }
-    }
+  }
 
   render() {
-      const { authorized, formAccessError, formStatus, clearForm, userData, tagNumbers, tagNumbersForReview} = this.props;
+    const {authorized, formAccessError, formStatus, clearForm, userData} = this.props;
     if (authorized === false){
       return <Redirect to='/' />
     }
@@ -169,31 +164,21 @@ class dashboard extends Component {
           this.setState({
             modifyClicked: false
           });
-            return <Redirect
-                to={{
-                    pathname: "/initiative-submission",
-                    state: { tag: this.state.modifyTagNum }
-                }}
-            />
+          return <Redirect to='/formsubmission'/>
         //If user selects option to add a new form
         }
         else if (this.state.addClicked) {
           this.setState({
             addClicked: false
           });
-          return <Redirect to='/initiative-submission'/>
+          return <Redirect to='/formsubmission'/>
         }
         //If user selects option to review form
         else if (this.state.reviewClicked){
           this.setState({
             reviewClicked: false
           });
-            return <Redirect
-                to={{
-                    pathname: "/initiative-submission",
-                    state: { tag: this.state.reviewTagNum }
-                }}
-            />
+          return <Redirect to='/formReview'/>
         }
       }
       else {
@@ -270,9 +255,9 @@ class dashboard extends Component {
     ) : null
 
     //RENDER FOR RA/ROOT USERS
-    //Render list of forms to be reviewed only if root user
+    //Render list of forms to be reviewed only if RA or root user
     const reviewFormsList = userData ? (
-      userData.accessLevel == 0 ? (
+      userData.accessLevel !== 0 ? (
         userData.reviewForms ? (
           <div>
             <br></br>
@@ -303,28 +288,8 @@ class dashboard extends Component {
     ) : null
 
     //Render review option only if RA or root user
-    const review = userData ? (userData.accessLevel == 0 ?
-        <div className="container">
-            <div className="row mt-4">
-                <div className="col-md-9 m-auto">
-                    <div className="card card-body">
-                        <h4><b>Review Initiative</b></h4>
-                        <hr />
-                        {pendingFormsList}
-                        {approvedFormsList}
-                        <br></br>
-                        <select name="reviewTagNumSelect" placeholder="Select Initiative to Review by Tag Number" onChange={e => this.setState({ reviewTagNum: e.target.value })} value={this.state.reviewTagNum}>
-                            <option value={null} >Select Initiative to Modify by Tag Number</option>
-                            {RenderTagList(tagNumbersForReview)}
-                        </select>
-                        <button className="search-button btn btn-primary" onClick={this.handleReviewClick} disabled={this.state.reviewTagNum == null}>Search</button>
-                        <br></br>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-      /*<div className = "container" style = {{marginBottom: "100px"}}>
+    const review = userData ? (userData.accessLevel !== 0 ?
+      <div className = "container" style = {{marginBottom: "100px"}}>
         <div className = "row mt-4">
           <div className = "col-md-9 m-auto">
             <div className = "card card-body">
@@ -344,7 +309,7 @@ class dashboard extends Component {
             </div>
           </div>
         </div>
-      </div>*/: null
+      </div>: null
     ) : null
 
     return (
@@ -356,43 +321,21 @@ class dashboard extends Component {
               <div className = "card card-body">
                 <h4><b>Add Initiative</b></h4>
                 <hr/>
-                <Link onClick={this.handleAddClick}><h5>Complete Form</h5></Link>
+                <Link onClick={this.handleAddClick}><h5>Complete Form ></h5></Link>
               </div>
             </div>
           </div>
         </div>
-        
-                {userData 
-                    ? userData.accessLevel != 2
-                        ? <>
-                        <div className="container">
-                            <div className="row mt-4">
-                                <div className="col-md-9 m-auto">
-                                    <div className="card card-body">
-                            <h4><b>Modify Initiative</b></h4>
-                            <hr />
-                            {pendingFormsList}
-                            {approvedFormsList}
-                            <br></br>
-                            <select name="modifyTagNumSelect" placeholder="Select Initiative to Modify by Tag Number" onChange={e => this.setState({ modifyTagNum: e.target.value })} value={this.state.modifyTagNum}>
-                                <option value={null} >Select Initiative to Modify by Tag Number</option>
-                                {RenderTagList(tagNumbers)}
-                            </select>
-                            <button className="search-button btn btn-primary" onClick={this.handleModifyClick} disabled={this.state.modifyTagNum == null}>Search</button>
-                            <br></br>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </>
-                        : null
-                    : null
-                            
-                }
-                
-
-                            {/*<input type="number" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Initiative to Modify by Tag Number" onChange={this.tagNumChange}/><br></br>
+        <div className = "container">
+          <div className = "row mt-4">
+            <div className = "col-md-9 m-auto">
+              <div className = "card card-body">
+                <h4><b>Modify Initiative</b></h4>
+                <hr/>
+                {pendingFormsList}
+                {approvedFormsList}
+                <br></br>
+                <input type="number" name="modifyTagNum" value={this.state.modifyTagNum} placeholder="Initiative to Modify by Tag Number" onChange={this.tagNumChange}/><br></br>
                 {
                   !this.state.modifyEnabled ?
                     <button className="search-button btn btn-primary disabled" disabled>Search</button> :
@@ -400,7 +343,11 @@ class dashboard extends Component {
                 }
                 {
                   this.state.modifyClicked ? error : null
-                }*/}
+                }
+              </div>
+            </div>
+          </div>
+        </div>
         {review}
       </div>
     )
@@ -412,34 +359,17 @@ class dashboard extends Component {
   }
 }
 
-const RenderTagList = (tagNumbers) => {
-    console.log('TAGS', tagNumbers)
-
-    return (
-        tagNumbers != null
-            ? Object.values(tagNumbers).map(tag => (
-                <option value={tag.tagNumber}>{tag.tagNumber}</option>
-            ))
-            : null
-        )
-}
-
 const mapStateToProps = (state) => {
   return {
     authorized: state.authenticate.auth,
     formAccessError: state.data.formRetrievalError,
     formStatus: state.data.formStatus,
-    userData: state.data.userInformation,
-    tagNumbers: state.data.tagNumbers,
-    tagNumbersForReview: state.data.tagNumbersForReview,
-
+    userData: state.data.userInformation
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getInitiativeTags: (accessLevel) => dispatch(getInitiativeTags(accessLevel)),
-    getInitiativeTagsForReview: () => dispatch(getInitiativeTagsForReview()),
     getForm: (tag, getType) => dispatch(getNonApprovedForm(tag, getType)),
     clearForm: () => dispatch(clearFormStatus()),
     clearFormRetrievalError: () => dispatch(clearFormRetrievalError()),

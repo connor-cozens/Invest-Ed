@@ -4,7 +4,7 @@ const async     = require('async');
 var storage     = require ('node-persist')
 var redis       = require("redis")
 
-const { db_username, db_password, db_host, db_girlsed_main, DATABASE, db_girlsed_temp, db_girlsed_org_temp} = require('../config')
+const { db_username, db_password, db_host, db_accounts, db_girlsed_main, DATABASE, db_girlsed_temp, db_girlsed_org_temp} = require('../config')
 
 var client = redis.createClient()
 client.on('connect', function(){

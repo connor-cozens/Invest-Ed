@@ -100,7 +100,7 @@ To run the React.js client app run ```npm start``` in cmd or terminal.
 		
 ## Deployment
 
-Manually change the port, database access keys, and database names via the [config.js](https://github.com/condevcx3/Invest-Ed/blob/master/config.js) file when deploying for production.
+Manually change the port, database access keys, and database names via the [config.js](https://github.com/connor-cozens/Invest-Ed/blob/master/config.js) file when deploying for production.
 
 Manually set the baseURL in [axiosConfig.js](https://github.com/condevcx3/Invest-Ed/blob/master/client/src/axios/axiosConfig.js), by setting the address and port.
 

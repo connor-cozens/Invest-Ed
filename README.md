@@ -51,7 +51,7 @@ Redis is an in-memory data store as a database cache used to store user sessions
   
       ```mysql> source pathToYourSQLFile;```
       
-  6. Repeat for each SQL file.
+  6. Repeat  steps 4 and 5 for each SQL file, naming them appropriately.
 
 ### Configure Node Packages Locally
 - Node packages are not included in git, so they must be installed locally.
@@ -85,15 +85,15 @@ Set the baseURL in [axiosConfig.js](https://github.com/condevcx3/Invest-Ed/blob/
 			
 ## Running the Project Locally
 
-To Run the Node.js Express backend app run ```npm run dev``` in cmd or terminal.
+To run the project locally, you first have to ensure that redis is running in a console. If you run the `redis-stack-server` command it should start the redis service. If you get an error, it is likely already running on a port on your computer.
+
+To Run the Node.js Express backend app run ```npm run dev``` in the base folder of the invest-ed app.
 		
 - Running this command will invoke nodemon, which is a tool that automatically restarts the node server when file changes are made during development. 
 		
 - Running this command will also preload dotenv, which will preload all environment variables.
 		
-		
-		
-To run the React.js client app run ```npm start``` in cmd or terminal. 
+To run the React.js client app run ```npm start``` in the client folder to run the frontend. 
 		
   - This will run the React.js app in development mode.
 		
@@ -102,7 +102,7 @@ To run the React.js client app run ```npm start``` in cmd or terminal.
 
 Manually change the port, database access keys, and database names via the [config.js](https://github.com/connor-cozens/Invest-Ed/blob/master/config.js) file when deploying for production.
 
-Manually set the baseURL in [axiosConfig.js](https://github.com/condevcx3/Invest-Ed/blob/master/client/src/axios/axiosConfig.js), by setting the address and port.
+Manually set the baseURL in [axiosConfig.js](https://github.com/connor-cozens/Invest-Ed/blob/master/client/src/axios/axiosConfig.js), by setting the address and port.
 
 
 ## Resources

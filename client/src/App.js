@@ -1,32 +1,33 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import {connect} from 'react-redux';
+import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import { connect } from 'react-redux';
 import Navbar from './components/layout/navbar';
 import Register from './components/auth/register';
 import Login from './components/auth/login';
 import Profile from './components/profile/profile';
 import Dashboard from './components/dashboard/dashboard';
-import Landing from './components/landing';
-import About from './components/aboutUs';
+import Landing from './components/landing/landing';
+import About from './components/about/about';
 import RegistrationSuccess from './components/auth/registrationSuccess';
 import Visualize from './components/visualize/visualize';
-import formSubmission from './components/formSubmission/formSubmission';
+import FormSubmission from './components/formSubmission/formSubmission';
 import FormSubmissionSuccess from './components/formSubmission/formSubmissionSuccess';
 import FormReviewSuccess from './components/formSubmission/formReviewSuccess';
-import contactUs from './components/contactUs/contactUs';
-import formReview from './components/formSubmission/formReview';
-import {getUser, clearUserRetrievalError, clearFormRetrievalError} from './store/actions/dataActions';
+import ContactUs from "./components/contactUs/contactUs";
+import FormReview from './components/formSubmission/formReview';
+import { clearFormRetrievalError } from './store/actions/formActions';
+import { getUser, clearUserRetrievalError } from './store/actions/userActions';
 
 class App extends Component {
   componentDidMount() {
     //Clear user retrieval errors on reload
     this.props.clearUserRetrievalError();
-    //Attempt to re-retreive user data
+    //Attempt to re-retrieve user data
     this.props.getUser();
   }
 
   //Only fire when redux state change updates props passed into component
-  static getDerivedStateFromProps(props, state){
+  static getDerivedStateFromProps(props, state) {
     props.getUser();
   }
 
@@ -34,22 +35,22 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <Navbar/>
-          <Switch>
-            <Route exact path = '/' component = {Landing} />
-            <Route exact path = '/about' component = {About} />
-            <Route exact path = '/visualize' component = {Visualize} />
-            <Route exact path = '/register' component = {Register} />
-            <Route exact path = '/register-success' component = {RegistrationSuccess} />
-            <Route exact path = '/form-submission-success' component = {FormSubmissionSuccess} />
-            <Route exact path = '/form-review-success' component = {FormReviewSuccess} />
-            <Route exact path = '/dashboard' component = {Dashboard} />
-            <Route exact path = '/login' component = {Login} />
-            <Route exact path = '/profile' component = {Profile} />
-            <Route exact path = '/formsubmission' component = {formSubmission} />
-            <Route exact path = '/contactUs' component = {contactUs} />
-            <Route exact path = '/formReview' component = {formReview} />
-          </Switch>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/visualize" element={<Visualize />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/register-success" element={<RegistrationSuccess />} />
+            <Route path="/form-submission-success" element={<FormSubmissionSuccess />} />
+            <Route path="/form-review-success" element={<FormReviewSuccess />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/formsubmission" element={<FormSubmission />} />
+            <Route path="/contactUs" element={<ContactUs />} />
+            <Route path="/formReview" element={<FormReview />} />
+          </Routes>
         </div>
       </BrowserRouter>
     );

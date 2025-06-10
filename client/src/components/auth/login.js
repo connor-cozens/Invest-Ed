@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import {Redirect} from 'react-router-dom';
-import { DropdownList } from 'react-widgets'
-import {connect} from 'react-redux';
-import {loginUser, clearAuthError} from '../../store/actions/authActions';
+import {redirect} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { loginUser, clearAuthError } from '../../store/actions/authActions';
 import './auth.css';
 
-//Component providing login functionality
 class Login extends Component {
   state = {
     username: '',
@@ -27,42 +25,42 @@ class Login extends Component {
     this.props.logIn(this.state);
   };
 
-  render(){
+  render() {
     console.log(this.props.authorized);
-    const {authorized, authError} = this.props;
+    const { authorized, authError } = this.props;
 
-    if (authorized === true){
-      return <Redirect to='/' />
+    if (authorized === true) {
+      return <redirect to='/' />
     }
 
     const errors = [];
-    if (authError){
+    if (authError) {
       authError.forEach((error) => {
         errors.push(
-          <div key = {error} className="alert alert-danger alert-dismissible fade show" role={error}>
+          <div key={error} className="alert alert-danger alert-dismissible fade show" role={error}>
             {error}
           </div>
         )
       });
     }
 
-    return(
-      <div className = "row mt-5">
-        <div className = "col-md-3 m-auto">
-          <form onSubmit ={this.handleSubmit} className="form-inline">
-            <div className = "card card-body text-center">
+    return (
+      <div className="row mt-5">
+        <div className="col-md-3 m-auto">
+          <form onSubmit={this.handleSubmit} className="form-inline">
+            <div className="card card-body text-center">
               <h2>Login</h2>
-                <div className = "loginform">
-                  <br/>
-                  {errors}
-                  <input type = "username" id = "username" placeholder = "Username" onChange={this.handleChange} style = {{width: "80%"}}/>
-                  <input type = "password" id = "password" placeholder = "Password" onChange={this.handleChange} style = {{width: "80%"}}/>
-                  <input type = "submit" value = "Login" style = {{width: "80%"}}/>
-                </div>
+              <div className="loginform">
+                <br />
+                {errors}
+                <input type="username" id="username" placeholder="Username" onChange={this.handleChange} style={{ width: "80%" }} />
+                <input type="password" id="password" placeholder="Password" onChange={this.handleChange} style={{ width: "80%" }} />
+                <input type="submit" value="Login" style={{ width: "80%" }} />
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
+      </div>
     );
   }
 }

@@ -1,37 +1,6 @@
-import React, {Component} from 'react'
-import './aboutUs.css';
-
-class Collapsible extends React.Component {
-  constructor(props){
-      super(props);
-      this.state = {
-        open: false
-      }
-      this.toggle = this.toggle.bind(this);
-  }
-
-  toggle(e){
-      this.setState({open: !this.state.open})
-  }
-
-  render() {
-    return (<div>
-      <div onClick={(e)=>this.toggle(e)} className='header'>
-      {
-        this.state.open ?
-        <i className ="arrow up"></i>
-        : <i className ="arrow down"></i>
-      }
-      {this.props.title}</div>
-      {this.state.open ? (
-          <div className='content'>
-              {this.props.children}
-          </div>
-          ) : null}
-      </div>
-    );
-  }
-}
+import React from 'react'
+import './about.css';
+import {Collapsible} from "../components/collapsible";
 
 const About = () => {
 
@@ -79,17 +48,17 @@ const About = () => {
         <p>Data are being analysed and further publications are in process. They will be added here as they become available.</p><br></br>
         <p>Srivastava, P., & Read, R. (2020). New education finance: Exploring impact investment, networks, and market-making in South Asia. In, P. Sarangapani & R. Pappu (Eds.),
         Handbook of education systems in South Asia. Global Education Systems Series. Singapore: Springer.<br/>
-        <a href = "https://doi.org/10.1007/978-981-13-3309-5_24-1" target="_blank">https://doi.org/10.1007/978-981-13-3309-5_24-1</a></p><br></br>
+        <a href = "https://doi.org/10.1007/978-981-13-3309-5_24-1" target="_blank" rel="noreferrer">https://doi.org/10.1007/978-981-13-3309-5_24-1</a></p><br></br>
         <p>Matthews, D., & Srivastava, P. (2019). Canada’s Feminist International Assistance Policy and private sector engagement in education: Considering action for
         girls’ and women’s education in Asia. Policy Brief, Global Affairs Canada—SSHRC International Policy Ideas Challenge 2019. London, ON: University of Western
         Ontario.
-        <a href = "https://ir.lib.uwo.ca/edupub/161/" target="_blank"> https://ir.lib.uwo.ca/edupub/161/</a></p><br></br>
+        <a href = "https://ir.lib.uwo.ca/edupub/161/" target="_blank" rel="noreferrer"> https://ir.lib.uwo.ca/edupub/161/</a></p><br></br>
         <p>Srivastava, P., & Read, R. (2019). Philanthropic and impact investors: private sector engagement, hybridity and the problem of definition. In, N. Ridge & A.
         Terway (Eds.), Philanthropy in education: diverse perspectives and global trends, pp. 15-36. Cheltenham, UK: Edward Elgar.
-        <a href = "https://doi.org/10.4337/9781789904123.00010" target="_blank"> https://doi.org/10.4337/9781789904123.00010</a></p><br></br>
+        <a href = "https://doi.org/10.4337/9781789904123.00010" target="_blank" rel="noreferrer"> https://doi.org/10.4337/9781789904123.00010</a></p><br></br>
         <p>Srivastava, P., & Read, R. (2019). Towards transparency: A report on piloting the Invest-ED tool on private sector investment in education with philanthropic
         and impact investing actors in Asia. Western University/Brookings Institution, 2019, pp. 63.
-        <a href = "https://ir.lib.uwo.ca/edupub/109/" target="_blank"> https://ir.lib.uwo.ca/edupub/109/</a></p><br></br>
+        <a href = "https://ir.lib.uwo.ca/edupub/109/" target="_blank" rel="noreferrer"> https://ir.lib.uwo.ca/edupub/109/</a></p><br></br>
         <p>Srivastava, P., & Read, R. (2018). The landscape for philanthropy in Asia: focus on India. Brief prepared for the Roundtable on Philanthropy and CSR support
         for the Right to Education Act. Philanthropy and Education, NORRAG, New Delhi, 27 April 2018.</p><br></br>
         </Collapsible>

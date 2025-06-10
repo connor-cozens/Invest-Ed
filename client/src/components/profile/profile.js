@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 import Image from '../../images/profile.png'
@@ -9,7 +8,7 @@ class Profile extends Component {
     const {authorized, userAccessError, userData} = this.props;
 
     if (authorized !== true) {
-      return <Redirect to='/' />
+      return <redirect to='/' />
     }
 
     if (userAccessError) {
@@ -18,16 +17,16 @@ class Profile extends Component {
       );
     }
 
-    const userType = userData ? (userData.accessLevel == 0 ? "Organization user" : (userData.accessLevel == 1 ? "Research user": "Root user")) : null
+    const userType = userData ? (userData.accessLevel === 0 ? "Organization user" : (userData.accessLevel === 1 ? "Research user": "Root user")) : null
 
     return(
       <div>
         <div style = {{margin: "auto", height: "500px"}}>
           <h2 style = {{marginTop: "50px"}}>Account Details</h2>
           <div className="card" style={{margin: "0 auto", width: "25rem", marginTop: "25px", borderStyle: "none"}}>
-            <img className="card-img-top" src={Image} alt="Card image cap" style = {{margin: "0 auto", marginTop: "25px", width:"200px", height:"200px"}}/>
+            <img className="card-img-top" src={Image} alt="Card cap" style = {{margin: "0 auto", marginTop: "25px", width:"200px", height:"200px"}}/>
             <div className="card-body" style = {{margin: "auto"}}>
-              <h3 style = {{textAlign: "left"}}className ="card-title"><b>{userData ? userData.firstname + ' ' + userData.lastname : null}</b></h3>
+              <h3 style = {{textAlign: "left"}} className ="card-title"><b>{userData ? userData.firstname + ' ' + userData.lastname : null}</b></h3>
             </div>
           </div>
           <div className="card" style={{margin: "0 auto", width: "25rem"}}>

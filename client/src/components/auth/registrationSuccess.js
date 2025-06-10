@@ -1,23 +1,23 @@
-import React, {useEffect} from 'react'
-import {useHistory} from 'react-router';
-import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
-import {setRegistrationComplete} from '../../store/actions/dataActions';
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import { redirect } from 'react-router-dom'
+import { setRegistrationComplete } from '../../store/actions/userActions';
+import { useNavigate } from 'react-router-dom';
 
 const RegistrationSuccess = (props) => {
-  const {authorized} = props;
-  const history = useHistory();
+  const { authorized } = props;
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.onpopstate = (e) => {
-      history.push('/register')
+      navigate('/register')
     }
-  }, [history])
+  }, [navigate])
 
   //Block access from register success component if logged in and attempting to access via url
   var fromRegister = false;
-  if (props.location.state !== undefined){
-    if (props.location.state.registration === true){
+  if (props.location.state !== undefined) {
+    if (props.location.state.registration === true) {
       fromRegister = true;
     }
   }
@@ -25,10 +25,10 @@ const RegistrationSuccess = (props) => {
   if (authorized === true && fromRegister === true) {
     props.registrationComplete();
     return (
-      <div className = "container">
-        <div className = "row mt-5">
-          <div className = "col-md-8 m-auto">
-            <div className = "card card-body text-center">
+      <div className="container">
+        <div className="row mt-5">
+          <div className="col-md-8 m-auto">
+            <div className="card card-body text-center">
               <h4>You have successfully registered an organization user.</h4>
             </div>
           </div>
@@ -36,7 +36,7 @@ const RegistrationSuccess = (props) => {
       </div>
     );
   }
-  return <Redirect to='/' />
+  return <redirect to='/' />
 }
 
 const mapStateToProps = (state) => {

@@ -1,5 +1,5 @@
 import {combineReducers, applyMiddleware, compose} from 'redux';
-import thunk from 'redux-thunk';
+import {thunk} from 'redux-thunk';
 import authReducer from './authReducer';
 import dataReducer from './dataReducer';
 

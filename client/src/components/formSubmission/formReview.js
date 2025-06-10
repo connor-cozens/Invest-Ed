@@ -1,12 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './formReview.css';
-import {connect} from 'react-redux';
-import {Redirect} from 'react-router-dom'
-import {reviewForm} from '../../store/actions/dataActions'
+import { connect } from 'react-redux';
+import { reviewForm } from '../../store/actions/formActions'
 
-class formReview extends React.Component{
-  constructor(props){
+class FormReview extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       //Original values
@@ -148,7 +146,7 @@ class formReview extends React.Component{
   }
 
   componentDidMount = () => {
-    const {props} = this;
+    const { props } = this;
     if (props.formStatus === 'review') {
       this.setState({
         //Original value Setters
@@ -199,7 +197,7 @@ class formReview extends React.Component{
 
       if (props.location.state !== undefined) {
         if (props.location.state.savedState !== undefined) {
-          const {savedState, isUnsaved} = props.location.state;
+          const { savedState, isUnsaved } = props.location.state;
           this.setState({
             //Other Setters
             originalComments: savedState.originalComments,
@@ -220,42 +218,42 @@ class formReview extends React.Component{
           //Review Setters
           needsReview: props.form.status !== undefined ? (props.form.status.length > 0 ? (props.form.status[0].length > 0 ? (props.form.status[0][0].needsReview !== undefined ? props.form.status[0][0].needsReview : null) : null) : null) : null,
           originalReviews: {
-            fnameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null) : 1,
-            furlA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderUrlApproval : null) : null) : null) : null) : 1,
-            motiveA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderMotiveApproval : null) : null) : null) : null) : 1,
-            impactA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderImpactApproval : null) : null) : null) : null) : 1,
-            organizationFormA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrganizationFormApproval : null) : null) : null) : null) : 1,
+            fnameA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null) : 1,
+            furlA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderUrlApproval : null) : null) : null) : null) : 1,
+            motiveA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderMotiveApproval : null) : null) : null) : null) : 1,
+            impactA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderImpactApproval : null) : null) : null) : null) : 1,
+            organizationFormA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrganizationFormApproval : null) : null) : null) : null) : 1,
             // multi val funder
-            internationalBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderInternationalBaseApproval : null) : null) : null) : null) : 1,
-            edSubsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderEdSubsApproval : null) : null) : null) : null) : 1,
-            orgTraitsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrgTraitsApproval : null) : null) : null) : null) : 1,
-            asialBasesA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaBasesApproval : null) : null) : null) : null) : 1,
-            asiaOperationsA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaOperationsApproval : null) : null) : null) : null) : 1,
+            internationalBasesA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderInternationalBaseApproval : null) : null) : null) : null) : 1,
+            edSubsA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderEdSubsApproval : null) : null) : null) : null) : 1,
+            orgTraitsA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderOrgTraitsApproval : null) : null) : null) : null) : 1,
+            asialBasesA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaBasesApproval : null) : null) : null) : null) : 1,
+            asiaOperationsA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderAsiaOperationsApproval : null) : null) : null) : null) : 1,
             // single val initiative
-            initNameA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initNameApproval : null) : null) : null) : null) : 1,
-            initURLA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initUrlApproval : null) : null) : null) : null) : 1,
-            tWomenA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetsWomenApproval : null) : null) : null) : null) : 1,
-            initStartA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initStartApproval : null) : null) : null) : null) : 1,
-            initEndA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initEndApproval : null) : null) : null) : null) : 1,
-            idescriptionA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initDescriptionApproval : null) : null) : null) : null) : 1,
+            initNameA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initNameApproval : null) : null) : null) : null) : 1,
+            initURLA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initUrlApproval : null) : null) : null) : null) : 1,
+            tWomenA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetsWomenApproval : null) : null) : null) : null) : 1,
+            initStartA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initStartApproval : null) : null) : null) : null) : 1,
+            initEndA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initEndApproval : null) : null) : null) : null) : 1,
+            idescriptionA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initDescriptionApproval : null) : null) : null) : null) : 1,
             programAreaA: 1, //set to approved as this is not based on user input
-            initiativeMainProgramActivityA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMainProgramActivityApproval : null) : null) : null) : null) : 1,
-            feeAccessA:  props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initFeeAccessApproval : null) : null) : null) : null) : 1,
+            initiativeMainProgramActivityA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMainProgramActivityApproval : null) : null) : null) : null) : 1,
+            feeAccessA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initFeeAccessApproval : null) : null) : null) : null) : 1,
             // multi val initiative
-            regionsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initRegionsApproval : null) : null) : null) : null) : 1,
-            countriesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initCountriesApproval : null) : null) : null) : null) : 1,
-            activitiesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initActivitiesApproval : null) : null) : null) : null) : 1,
+            regionsA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initRegionsApproval : null) : null) : null) : null) : 1,
+            countriesA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initCountriesApproval : null) : null) : null) : null) : 1,
+            activitiesA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initActivitiesApproval : null) : null) : null) : null) : 1,
             sourceOfFeesA: 1, //Set to 1 for now, as not a field on form    //props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initSourceOfFeesApproval : null) : null) : null) : null,
-            launchCountryA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initLaunchCountryApproval : null) : null) : null) : null) : 1,
-            targetGeosA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetGeoApproval : null) : null) : null) : null) : 1,
-            targetPopulationSectorsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetPopulationSectorApproval : null) : null) : null) : null) : 1,
-            outcomesMonitoredA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOutcomesMonitoredApproval : null) : null) : null) : null) : 1,
-            mEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMEdSubsApproval : null) : null) : null) : null) : 1,
-            oEdSubsA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOEdSubsApproval : null) : null) : null) : null) : 1,
-            managementTypesA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initManagementTypesApproval : null) : null) : null) : null) : 1,
+            launchCountryA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initLaunchCountryApproval : null) : null) : null) : null) : 1,
+            targetGeosA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetGeoApproval : null) : null) : null) : null) : 1,
+            targetPopulationSectorsA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initTargetPopulationSectorApproval : null) : null) : null) : null) : 1,
+            outcomesMonitoredA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOutcomesMonitoredApproval : null) : null) : null) : null) : 1,
+            mEdSubsA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initMEdSubsApproval : null) : null) : null) : null) : 1,
+            oEdSubsA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initOEdSubsApproval : null) : null) : null) : null) : 1,
+            managementTypesA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].initManagementTypesApproval : null) : null) : null) : null) : 1,
             // single val implementer
-            inameA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorNameApproval : null) : null) : null) : null) : 1,
-            impMotiveA: props.inDB == false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorMotiveApproval : null) : null) : null) : null) : 1
+            inameA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorNameApproval : null) : null) : null) : null) : 1,
+            impMotiveA: props.inDB === false ? (props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].implementorMotiveApproval : null) : null) : null) : null) : 1
           },
           reviews: {
             fnameA: props.form.reviews !== undefined ? (props.form.reviews.length > 0 ? (props.form.reviews[0].length > 0 ? (props.form.reviews[0][0] !== undefined ? props.form.reviews[0][0].funderNameApproval : null) : null) : null) : null,
@@ -307,15 +305,11 @@ class formReview extends React.Component{
       if (JSON.stringify(this.state.reviews) === JSON.stringify(this.state.originalReviews)) {
         this.props.history.push('/dashboard')
       } else {
-        this.state.isUnsaved = true;
-        this.setState({
-          isUnsaved: this.state.isUnsaved
-        })
         this.setState({
           isUnsaved: true
-        });
+        })
         this.props.history.push({
-          pathname: '/formReview',
+          pathname: '/FormReview',
           state: {
             savedState: this.state,
             isUnsaved: true
@@ -325,14 +319,14 @@ class formReview extends React.Component{
     }
   }
 
-  handleApprovalSelection(e){
+  handleApprovalSelection(e) {
     this.state.reviews[[e.target.name]] = parseInt(e.target.value);
     this.setState({
       reviews: this.state.reviews
     });
   }
 
-  handleChange(e){
+  handleChange(e) {
     this.setState({
       [e.target.id]: e.target.value
     })
@@ -345,25 +339,22 @@ class formReview extends React.Component{
 
   //Stay with unsaved changes
   handleStay(e) {
-    this.state.isUnsaved = false;
-    this.setState({
-      isUnsaved: this.state.isUnsaved
-    })
+    this.setState({ isUnsaved: false });
   }
 
   handleFormSubmit(e) {
     e.preventDefault();
-    const {formStatus, userData} = this.props;
+    const { formStatus, userData } = this.props;
     //If submitting a new form
     if (formStatus === 'review') {
       if (userData) {
         //If an RA or root user, then submit review to temp db
         if (userData.accessLevel !== 0) {
-          this.state.needsReview = 0;  //Form is ready for approval is the initial assumption
+          this.setState({ needsReview: 0 })
           for (const [key, value] of Object.entries(this.state.reviews)) {
             //If any field is found to be rejected, then form still requires further review
-            if (value == 0) {
-              this.state.needsReview = 1;
+            if (value === 0) {
+              this.setState({ needsReview: 1 })
             }
             this.setState({
               needsReview: this.state.needsReview
@@ -391,60 +382,60 @@ class formReview extends React.Component{
     }
   }
 
-  render(){
-    const {authorized, formReviewed, formReviewError, userData, formStatus, inDB} = this.props;
+  render() {
+    const { authorized, formReviewed, formReviewError, userData, formStatus, inDB } = this.props;
     if (authorized === false) {
-      return <Redirect to='/' />
+      return <redirect to='/' />
     }
 
     if (userData) {
-      if (userData.accessLevel == 0) {
-        return <Redirect to='/' />
+      if (userData.accessLevel === 0) {
+        return <redirect to='/' />
       }
     }
 
-    if (formReviewed === true){
-      return <Redirect to=
+    if (formReviewed === true) {
+      return <redirect to=
         {{
           pathname: '/form-review-success',
-          state: {submission: true}
+          state: { submission: true }
         }} />
     }
 
     const reviewError = formReviewError ?
-    <div className="alert alert-dismissible alert-danger" style = {{width: "75%"}}>
-    {
-      formReviewError.errorMessage !== undefined ? <strong> {formReviewError.errorMessage} </strong> : <strong> {formReviewError} </strong>
-    }
-    {
-      formReviewError.errorSpecs !== undefined ?
-        <div>
-          <br></br>
-          {formReviewError.errorSpecs}
-        </div> : null
-    }
-    </div> : (
-      this.state.isUpdated !== null ? (
-        this.state.isUpdated === false ? (
-          <div className="alert alert-dismissible alert-warning" style = {{width: "75%"}}>
-            <strong>No new comments have been added to this form.</strong> Please leave a comment explaining your rejection before submitting your review.
-          </div>
+      <div className="alert alert-dismissible alert-danger" style={{ width: "75%" }}>
+        {
+          formReviewError.errorMessage !== undefined ? <strong> {formReviewError.errorMessage} </strong> : <strong> {formReviewError} </strong>
+        }
+        {
+          formReviewError.errorSpecs !== undefined ?
+            <div>
+              <br></br>
+              {formReviewError.errorSpecs}
+            </div> : null
+        }
+      </div> : (
+        this.state.isUpdated !== null ? (
+          this.state.isUpdated === false ? (
+            <div className="alert alert-dismissible alert-warning" style={{ width: "75%" }}>
+              <strong>No new comments have been added to this form.</strong> Please leave a comment explaining your rejection before submitting your review.
+            </div>
+          ) : null
         ) : null
-      ) : null
-    );
+      );
 
     const approvalFeedback = formStatus === 'review' ? (
       inDB === true ? (
-        <div className ="alert alert-dismissible alert-success">
+        <div className="alert alert-dismissible alert-success">
           <strong>This initiative has been approved.</strong> The information on this form is currently public.
         </div>
       ) : (
         this.state.needsReview === 0 ? (
-          <div className ="alert alert-dismissible alert-success">
+          <div className="alert alert-dismissible alert-success">
             <strong>This initiative has been approved.</strong> The information on this form is currently public.
           </div>
         ) : (
-          <div className ="alert alert-dismissible alert-warning">
+          <div className="alert alert-dismissible alert-warning">
             <strong>This initiative is under review for approval.</strong> Please make any necessary changes to the approval status of the below fields. <i>By default, modified fields are set to rejected.</i><br></br><br></br><strong>Accepting all fields will make this initiative information public.</strong>
           </div>
         )
@@ -452,144 +443,144 @@ class formReview extends React.Component{
     ) : null
 
     const unsavedWarning = this.state.isUnsaved === true ?
-    <div className="alert alert-dismissible alert-danger">
-      <strong> You have unsaved changes. </strong>Are you sure you want to leave?
-      <button type="button" className ="btn btn-warning" onClick = {this.handleLeave}>Yes</button>
-      <button type="button" className ="btn btn-warning" onClick = {this.handleStay}>No</button>
-    </div> : null
+      <div className="alert alert-dismissible alert-danger">
+        <strong> You have unsaved changes. </strong>Are you sure you want to leave?
+        <button type="button" className="btn btn-warning" onClick={this.handleLeave}>Yes</button>
+        <button type="button" className="btn btn-warning" onClick={this.handleStay}>No</button>
+      </div> : null
 
     return (
-        <div className = "formReview">
-          <h3>Review Initiative</h3>
-          <div>
-            <br></br>
-            {unsavedWarning}
-            {approvalFeedback}
-            <form onSubmit={this.handleFormSubmit}>
+      <div className="formReview">
+        <h3>Review Initiative</h3>
+        <div>
+          <br></br>
+          {unsavedWarning}
+          {approvalFeedback}
+          <form onSubmit={this.handleFormSubmit}>
 
             <h4><b>Funder</b></h4>
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Name: <strong>{this.state.fname}</strong></p>
-                <input type="radio" id="needsReview1" name="fnameA" value={1} checked = {this.state.reviews.fnameA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview1">Accept</label>
-                <input type="radio" id="needsReview2" name="fnameA" value={0} checked = {this.state.reviews.fnameA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview2">Reject</label>
+                <input type="radio" id="needsReview1" name="fnameA" value={1} checked={this.state.reviews.fnameA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview1">Accept</label>
+                <input type="radio" id="needsReview2" name="fnameA" value={0} checked={this.state.reviews.fnameA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview2">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Website: <strong>{this.state.furl}</strong></p>
-                <input type="radio" id="needsReview3" name="furlA" value={1} checked = {this.state.reviews.furlA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview3">Accept</label>
-                <input type="radio" id="needsReview4" name="furlA" value={0} checked = {this.state.reviews.furlA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview4">Reject</label>
+                <input type="radio" id="needsReview3" name="furlA" value={1} checked={this.state.reviews.furlA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview3">Accept</label>
+                <input type="radio" id="needsReview4" name="furlA" value={0} checked={this.state.reviews.furlA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview4">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Profit Motive: <strong>{this.state.motive}</strong></p>
-                <input type="radio" id="needsReview3_5" name="motiveA" value={1} checked = {this.state.reviews.motiveA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview3_5">Accept</label>
-                <input type="radio" id="needsReview4_5" name="motiveA" value={0} checked = {this.state.reviews.motiveA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview4_5">Reject</label>
+                <input type="radio" id="needsReview3_5" name="motiveA" value={1} checked={this.state.reviews.motiveA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview3_5">Accept</label>
+                <input type="radio" id="needsReview4_5" name="motiveA" value={0} checked={this.state.reviews.motiveA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview4_5">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Impact Investing: <strong>{this.state.impact}</strong></p>
-                <input type="radio" id="needsReview5" name="impactA" value={1} checked = {this.state.reviews.impactA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview5">Accept</label>
-                <input type="radio" id="needsReview6" name="impactA" value={0} checked = {this.state.reviews.impactA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview6">Reject</label>
+                <input type="radio" id="needsReview5" name="impactA" value={1} checked={this.state.reviews.impactA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview5">Accept</label>
+                <input type="radio" id="needsReview6" name="impactA" value={0} checked={this.state.reviews.impactA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview6">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Organizational Form: <strong>{this.state.organizationForm}</strong></p>
-                <input type="radio" id="needsReview9" name="organizationFormA" value={1} checked = {this.state.reviews.organizationFormA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview9">Accept</label>
-                <input type="radio" id="needsReview10" name="organizationFormA" value={0} checked = {this.state.reviews.organizationFormA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview10">Reject</label>
+                <input type="radio" id="needsReview9" name="organizationFormA" value={1} checked={this.state.reviews.organizationFormA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview9">Accept</label>
+                <input type="radio" id="needsReview10" name="organizationFormA" value={0} checked={this.state.reviews.organizationFormA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview10">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>International Base(s):</p>
                 <div id="iBases">
                   <ul className="list-group">
-                  {
-                    this.state.internationalBases.map(base => {
-                      return (
-                        <li className="list-group-item d-flex justify-content-between align-items-center bg-light"><strong>{base}</strong></li>
-                      );
-                    })
-                  }
+                    {
+                      this.state.internationalBases.map(base => {
+                        return (
+                          <li className="list-group-item d-flex justify-content-between align-items-center bg-light"><strong>{base}</strong></li>
+                        );
+                      })
+                    }
                   </ul>
                 </div>
                 <br></br>
-                <input type="radio" id="needsReview11" name="internationalBasesA" value={1} checked = {this.state.reviews.internationalBasesA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview11">Accept</label>
-                <input type="radio" id="needsReview12" name="internationalBasesA" value={0} checked = {this.state.reviews.internationalBasesA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview12">Reject</label>
+                <input type="radio" id="needsReview11" name="internationalBasesA" value={1} checked={this.state.reviews.internationalBasesA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview11">Accept</label>
+                <input type="radio" id="needsReview12" name="internationalBasesA" value={0} checked={this.state.reviews.internationalBasesA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview12">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Education Subsector(s):</p>
                 <div id="edSubs">
                   <ul className="list-group">
-                  {
-                    this.state.edSubs.map(edSub => {
-                      return (
-                        <li className="list-group-item d-flex justify-content-between align-items-center bg-light"><strong>{edSub}</strong></li>
-                      );
-                    })
-                  }
+                    {
+                      this.state.edSubs.map(edSub => {
+                        return (
+                          <li className="list-group-item d-flex justify-content-between align-items-center bg-light"><strong>{edSub}</strong></li>
+                        );
+                      })
+                    }
                   </ul>
                 </div>
                 <br></br>
-                <input type="radio" id="needsReview15" name="edSubsA" value={1} checked = {this.state.reviews.edSubsA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview15">Accept</label>
-                <input type="radio" id="needsReview16" name="edSubsA" value={0} checked = {this.state.reviews.edSubsA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview16">Reject</label>
+                <input type="radio" id="needsReview15" name="edSubsA" value={1} checked={this.state.reviews.edSubsA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview15">Accept</label>
+                <input type="radio" id="needsReview16" name="edSubsA" value={0} checked={this.state.reviews.edSubsA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview16">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Organizational Trait(s):</p>
                 <div id="orgTraits">
                   <ul className="list-group">
-                  {
-                    this.state.orgTraits.map(orgTrait => {
-                      return (
-                        <li className="list-group-item d-flex justify-content-between align-items-center bg-light"><strong>{orgTrait}</strong></li>
-                      );
-                    })
-                  }
+                    {
+                      this.state.orgTraits.map(orgTrait => {
+                        return (
+                          <li className="list-group-item d-flex justify-content-between align-items-center bg-light"><strong>{orgTrait}</strong></li>
+                        );
+                      })
+                    }
                   </ul>
                 </div>
                 <br></br>
-                <input type="radio" id="needsReview17" name="orgTraitsA" value={1} checked = {this.state.reviews.orgTraitsA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview17">Accept</label>
-                <input type="radio" id="needsReview18" name="orgTraitsA" value={0} checked = {this.state.reviews.orgTraitsA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview18">Reject</label>
+                <input type="radio" id="needsReview17" name="orgTraitsA" value={1} checked={this.state.reviews.orgTraitsA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview17">Accept</label>
+                <input type="radio" id="needsReview18" name="orgTraitsA" value={0} checked={this.state.reviews.orgTraitsA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview18">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Asia International Base(s):</p>
                 <div id="aIBases">
                   <ul className="list-group">
-                  {
-                    this.state.asiaIBases.map(base => {
-                      return (
-                        <li className="list-group-item d-flex justify-content-between align-items-center bg-light"><strong>{base}</strong></li>
-                      );
-                    })
-                  }
+                    {
+                      this.state.asiaIBases.map(base => {
+                        return (
+                          <li className="list-group-item d-flex justify-content-between align-items-center bg-light"><strong>{base}</strong></li>
+                        );
+                      })
+                    }
                   </ul>
                 </div>
                 <br></br>
-                <input type="radio" id="needsReview19" name="asialBasesA" value={1} checked = {this.state.reviews.asialBasesA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview19">Accept</label>
-                <input type="radio" id="needsReview20" name="asialBasesA" value={0} checked = {this.state.reviews.asialBasesA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview20">Reject</label>
+                <input type="radio" id="needsReview19" name="asialBasesA" value={1} checked={this.state.reviews.asialBasesA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview19">Accept</label>
+                <input type="radio" id="needsReview20" name="asialBasesA" value={0} checked={this.state.reviews.asialBasesA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview20">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Asia Operation(s):</p>
                 <div id="asiaOperationLocations">
                   <ul className="list-group">
@@ -603,83 +594,83 @@ class formReview extends React.Component{
                   </ul>
                 </div>
                 <br></br>
-                <input type="radio" id="needsReview21" name="asiaOperationsA" value={1} checked = {this.state.reviews.asiaOperationsA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview21">Accept</label>
-                <input type="radio" id="needsReview22" name="asiaOperationsA" value={0} checked = {this.state.reviews.asiaOperationsA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview22">Reject</label>
+                <input type="radio" id="needsReview21" name="asiaOperationsA" value={1} checked={this.state.reviews.asiaOperationsA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview21">Accept</label>
+                <input type="radio" id="needsReview22" name="asiaOperationsA" value={0} checked={this.state.reviews.asiaOperationsA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview22">Reject</label>
               </div>
             </div>
 
             <br></br>
             <h4><b>Initiative</b></h4>
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Name: <strong>{this.state.initName}</strong></p>
-                <input type="radio" id="needsReview23" name="initNameA" value={1} checked = {this.state.reviews.initNameA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview23">Accept</label>
-                <input type="radio" id="needsReview24" name="initNameA" value={0} checked = {this.state.reviews.initNameA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview24">Reject</label>
+                <input type="radio" id="needsReview23" name="initNameA" value={1} checked={this.state.reviews.initNameA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview23">Accept</label>
+                <input type="radio" id="needsReview24" name="initNameA" value={0} checked={this.state.reviews.initNameA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview24">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Website: <strong>{this.state.initURL}</strong></p>
-                <input type="radio" id="needsReview25" name="initURLA" value={1} checked = {this.state.reviews.initURLA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview25">Accept</label>
-                <input type="radio" id="needsReview26" name="initURLA" value={0} checked = {this.state.reviews.initURLA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview26">Reject</label>
+                <input type="radio" id="needsReview25" name="initURLA" value={1} checked={this.state.reviews.initURLA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview25">Accept</label>
+                <input type="radio" id="needsReview26" name="initURLA" value={0} checked={this.state.reviews.initURLA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview26">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Targets Women: <strong>{this.state.tWomen}</strong></p>
-                <input type="radio" id="needsReview27" name="tWomenA" value={1} checked = {this.state.reviews.tWomenA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview27">Accept</label>
-                <input type="radio" id="needsReview28" name="tWomenA" value={0} checked = {this.state.reviews.tWomenA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview28">Reject</label>
+                <input type="radio" id="needsReview27" name="tWomenA" value={1} checked={this.state.reviews.tWomenA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview27">Accept</label>
+                <input type="radio" id="needsReview28" name="tWomenA" value={0} checked={this.state.reviews.tWomenA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview28">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Start Year: <strong>{this.state.initStart}</strong></p>
-                <input type="radio" id="needsReview29" name="initStartA" value={1} checked = {this.state.reviews.initStartA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview29">Accept</label>
-                <input type="radio" id="needsReview30" name="initStartA" value={0} checked = {this.state.reviews.initStartA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview30">Reject</label>
+                <input type="radio" id="needsReview29" name="initStartA" value={1} checked={this.state.reviews.initStartA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview29">Accept</label>
+                <input type="radio" id="needsReview30" name="initStartA" value={0} checked={this.state.reviews.initStartA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview30">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>End Year: <strong>{this.state.initEnd}</strong></p>
-                <input type="radio" id="needsReview31" name="initEndA" value={1} checked = {this.state.reviews.initEndA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview31">Accept</label>
-                <input type="radio" id="needsReview32" name="initEndA" value={0} checked = {this.state.reviews.initEndA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview32">Reject</label>
+                <input type="radio" id="needsReview31" name="initEndA" value={1} checked={this.state.reviews.initEndA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview31">Accept</label>
+                <input type="radio" id="needsReview32" name="initEndA" value={0} checked={this.state.reviews.initEndA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview32">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Launch Country:</p>
                 <div id="launchCountries">
                   <ul className="list-group">
-                  {
-                    this.state.launchCountries.map(country => {
-                      return (
-                        <li className="list-group-item d-flex justify-content-between align-items-center bg-light"><strong>{country}</strong></li>
-                      );
-                    })
-                  }
+                    {
+                      this.state.launchCountries.map(country => {
+                        return (
+                          <li className="list-group-item d-flex justify-content-between align-items-center bg-light"><strong>{country}</strong></li>
+                        );
+                      })
+                    }
                   </ul>
                 </div>
                 <br></br>
-                <input type="radio" id="needsReview33" name="launchCountryA" value={1} checked = {this.state.reviews.launchCountryA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview33">Accept</label>
-                <input type="radio" id="needsReview34" name="launchCountryA" value={0} checked = {this.state.reviews.launchCountryA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview34">Reject</label>
+                <input type="radio" id="needsReview33" name="launchCountryA" value={1} checked={this.state.reviews.launchCountryA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview33">Accept</label>
+                <input type="radio" id="needsReview34" name="launchCountryA" value={0} checked={this.state.reviews.launchCountryA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview34">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Description: <strong>{this.state.idescription}</strong></p>
-                <input type="radio" id="needsReview35" name="idescriptionA" value={1} checked = {this.state.reviews.idescriptionA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview35">Accept</label>
-                <input type="radio" id="needsReview36" name="idescriptionA" value={0} checked = {this.state.reviews.idescriptionA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview36">Reject</label>
+                <input type="radio" id="needsReview35" name="idescriptionA" value={1} checked={this.state.reviews.idescriptionA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview35">Accept</label>
+                <input type="radio" id="needsReview36" name="idescriptionA" value={0} checked={this.state.reviews.idescriptionA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview36">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Region(s):</p>
                 <div id="initRegions">
                   <ul className="list-group">
@@ -693,13 +684,13 @@ class formReview extends React.Component{
                   </ul>
                 </div>
                 <br></br>
-                <input type="radio" id="needsReview37" name="regionsA" value={1} checked = {this.state.reviews.regionsA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview37">Accept</label>
-                <input type="radio" id="needsReview38" name="regionsA" value={0} checked = {this.state.reviews.regionsA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview38">Reject</label>
+                <input type="radio" id="needsReview37" name="regionsA" value={1} checked={this.state.reviews.regionsA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview37">Accept</label>
+                <input type="radio" id="needsReview38" name="regionsA" value={0} checked={this.state.reviews.regionsA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview38">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Countries:</p>
                 <div id="initCountries">
                   <ul className="list-group">
@@ -713,13 +704,13 @@ class formReview extends React.Component{
                   </ul>
                 </div>
                 <br></br>
-                <input type="radio" id="needsReview39" name="countriesA" value={1} checked = {this.state.reviews.countriesA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview39">Accept</label>
-                <input type="radio" id="needsReview40" name="countriesA" value={0} checked = {this.state.reviews.countriesA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview40">Reject</label>
+                <input type="radio" id="needsReview39" name="countriesA" value={1} checked={this.state.reviews.countriesA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview39">Accept</label>
+                <input type="radio" id="needsReview40" name="countriesA" value={0} checked={this.state.reviews.countriesA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview40">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Target Geography:</p>
                 <div id="targetGeos">
                   <ul className="list-group">
@@ -733,13 +724,13 @@ class formReview extends React.Component{
                   </ul>
                 </div>
                 <br></br>
-                <input type="radio" id="needsReview41" name="targetGeosA" value={1} checked = {this.state.reviews.targetGeosA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview41">Accept</label>
-                <input type="radio" id="needsReview42" name="targetGeosA" value={0} checked = {this.state.reviews.targetGeosA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview42">Reject</label>
+                <input type="radio" id="needsReview41" name="targetGeosA" value={1} checked={this.state.reviews.targetGeosA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview41">Accept</label>
+                <input type="radio" id="needsReview42" name="targetGeosA" value={0} checked={this.state.reviews.targetGeosA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview42">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Main Education Subsector:</p>
                 <div id="mEdSubs">
                   <ul className="list-group">
@@ -753,13 +744,13 @@ class formReview extends React.Component{
                   </ul>
                 </div>
                 <br></br>
-                <input type="radio" id="needsReview43" name="mEdSubsA" value={1} checked = {this.state.reviews.mEdSubsA == 1} onChange = {this.handleApprovalSelection}/> <label name="accept" htmlFor="needsReview43">Accept</label>
-                <input type="radio" id="needsReview44" name="mEdSubsA" value={0} checked = {this.state.reviews.mEdSubsA == 0} onChange = {this.handleApprovalSelection}/> <label name="reject" htmlFor="needsReview44">Reject</label>
+                <input type="radio" id="needsReview43" name="mEdSubsA" value={1} checked={this.state.reviews.mEdSubsA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview43">Accept</label>
+                <input type="radio" id="needsReview44" name="mEdSubsA" value={0} checked={this.state.reviews.mEdSubsA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview44">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Other Education Subsector(s):</p>
                 <div id="oEdSubs">
                   <ul className="list-group">
@@ -773,16 +764,16 @@ class formReview extends React.Component{
                   </ul>
                 </div>
                 <br></br>
-                <input type="radio" id="needsReview45" name="oEdSubsA" value={1} checked = {this.state.reviews.oEdSubsA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview45">Accept</label>
-                <input type="radio" id="needsReview46" name="oEdSubsA" value={0} checked = {this.state.reviews.oEdSubsA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview46">Reject</label>
+                <input type="radio" id="needsReview45" name="oEdSubsA" value={1} checked={this.state.reviews.oEdSubsA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview45">Accept</label>
+                <input type="radio" id="needsReview46" name="oEdSubsA" value={0} checked={this.state.reviews.oEdSubsA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview46">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Main Program Activity: <strong>{this.state.mainProgramActivity}</strong></p>
-                <input type="radio" id="needsReview47" name="initiativeMainProgramActivityA" value={1} checked = {this.state.reviews.initiativeMainProgramActivityA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview47">Accept</label>
-                <input type="radio" id="needsReview48" name="initiativeMainProgramActivityA" value={0} checked = {this.state.reviews.initiativeMainProgramActivityA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview48">Reject</label>
+                <input type="radio" id="needsReview47" name="initiativeMainProgramActivityA" value={1} checked={this.state.reviews.initiativeMainProgramActivityA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview47">Accept</label>
+                <input type="radio" id="needsReview48" name="initiativeMainProgramActivityA" value={0} checked={this.state.reviews.initiativeMainProgramActivityA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview48">Reject</label>
                 <br></br><br></br>
 
                 <p>Program Area:</p>
@@ -794,8 +785,8 @@ class formReview extends React.Component{
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Other Programming Activities:</p>
                 <div id="initActivities">
                   <ul className="list-group">
@@ -809,21 +800,21 @@ class formReview extends React.Component{
                   </ul>
                 </div>
                 <br></br>
-                <input type="radio" id="needsReview49" name="activitiesA" value={1} checked = {this.state.reviews.activitiesA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview49">Accept</label>
-                <input type="radio" id="needsReview50" name="activitiesA" value={0} checked = {this.state.reviews.activitiesA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview50">Reject</label>
+                <input type="radio" id="needsReview49" name="activitiesA" value={1} checked={this.state.reviews.activitiesA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview49">Accept</label>
+                <input type="radio" id="needsReview50" name="activitiesA" value={0} checked={this.state.reviews.activitiesA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview50">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Fee to Access: <strong>{this.state.feeAccess}</strong></p>
-                <input type="radio" id="needsReview51" name="feeAccessA" value={1} checked = {this.state.reviews.feeAccessA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview51">Accept</label>
-                <input type="radio" id="needsReview52" name="feeAccessA" value={0} checked = {this.state.reviews.feeAccessA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview52">Reject</label>
+                <input type="radio" id="needsReview51" name="feeAccessA" value={1} checked={this.state.reviews.feeAccessA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview51">Accept</label>
+                <input type="radio" id="needsReview52" name="feeAccessA" value={0} checked={this.state.reviews.feeAccessA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview52">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Target School Management Type:</p>
                 <div id="managementTypes">
                   <ul className="list-group">
@@ -837,13 +828,13 @@ class formReview extends React.Component{
                   </ul>
                 </div>
                 <br></br>
-                <input type="radio" id="needsReview53" name="managementTypesA" value={1} checked = {this.state.reviews.managementTypesA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview53">Accept</label>
-                <input type="radio" id="needsReview54" name="managementTypesA" value={0} checked = {this.state.reviews.managementTypesA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview54">Reject</label>
+                <input type="radio" id="needsReview53" name="managementTypesA" value={1} checked={this.state.reviews.managementTypesA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview53">Accept</label>
+                <input type="radio" id="needsReview54" name="managementTypesA" value={0} checked={this.state.reviews.managementTypesA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview54">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Target Population Sector(s):</p>
                 <div id="targetPopSector">
                   <ul className="list-group">
@@ -857,13 +848,13 @@ class formReview extends React.Component{
                   </ul>
                 </div>
                 <br></br>
-                <input type="radio" id="needsReview55" name="targetPopulationSectorsA" value={1} checked = {this.state.reviews.targetPopulationSectorsA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview55">Accept</label>
-                <input type="radio" id="needsReview56" name="targetPopulationSectorsA" value={0} checked = {this.state.reviews.targetPopulationSectorsA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview56">Reject</label>
+                <input type="radio" id="needsReview55" name="targetPopulationSectorsA" value={1} checked={this.state.reviews.targetPopulationSectorsA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview55">Accept</label>
+                <input type="radio" id="needsReview56" name="targetPopulationSectorsA" value={0} checked={this.state.reviews.targetPopulationSectorsA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview56">Reject</label>
               </div>
             </div>
 
-            <div className="card   mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card   mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Outcomes Monitored:</p>
                 <div id="outcomesMonitored">
                   <ul className="list-group">
@@ -877,41 +868,41 @@ class formReview extends React.Component{
                   </ul>
                 </div>
                 <br></br>
-                <input type="radio" id="needsReview57" name="outcomesMonitoredA" value={1} checked = {this.state.reviews.outcomesMonitoredA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview57">Accept</label>
-                <input type="radio" id="needsReview58" name="outcomesMonitoredA" value={0} checked = {this.state.reviews.outcomesMonitoredA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview58">Reject</label>
+                <input type="radio" id="needsReview57" name="outcomesMonitoredA" value={1} checked={this.state.reviews.outcomesMonitoredA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview57">Accept</label>
+                <input type="radio" id="needsReview58" name="outcomesMonitoredA" value={0} checked={this.state.reviews.outcomesMonitoredA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview58">Reject</label>
               </div>
             </div>
 
             <br></br>
             <h4><b>Implementer</b></h4>
-            <div className="card  mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card  mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Name: <strong>{this.state.iname}</strong></p>
-                <input type="radio" id="needsReview61" name="inameA" value={1} checked = {this.state.reviews.inameA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview61">Accept</label>
-                <input type="radio" id="needsReview62" name="inameA" value={0} checked = {this.state.reviews.inameA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview62">Reject</label>
+                <input type="radio" id="needsReview61" name="inameA" value={1} checked={this.state.reviews.inameA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview61">Accept</label>
+                <input type="radio" id="needsReview62" name="inameA" value={0} checked={this.state.reviews.inameA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview62">Reject</label>
               </div>
             </div>
 
-            <div className="card  mb-3" style={{maxWidth: "20rem;"}}>
-              <div className ="card-body bg-light">
+            <div className="card  mb-3" style={{ maxWidth: "20rem;" }}>
+              <div className="card-body bg-light">
                 <p>Profit Motive: <strong>{this.state.impMotive}</strong></p>
-                <input type="radio" id="needsReview63" name="impMotiveA" value={1} checked = {this.state.reviews.impMotiveA == 1} onChange = {this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview63">Accept</label>
-                <input type="radio" id="needsReview64" name="impMotiveA" value={0} checked = {this.state.reviews.impMotiveA == 0} onChange = {this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview64">Reject</label>
+                <input type="radio" id="needsReview63" name="impMotiveA" value={1} checked={this.state.reviews.impMotiveA === 1} onChange={this.handleApprovalSelection} /> <label name="accept" htmlFor="needsReview63">Accept</label>
+                <input type="radio" id="needsReview64" name="impMotiveA" value={0} checked={this.state.reviews.impMotiveA === 0} onChange={this.handleApprovalSelection} /> <label name="reject" htmlFor="needsReview64">Reject</label>
               </div>
             </div>
             <br></br>
 
             <h4>Comments about Submission and Review</h4>
-              <textarea id="comments" name="comment" value = {this.state.comments} maxLength ="10000" placeholder="Write any comments you have about this form" onChange={this.handleChange}></textarea>
-              <p>(10,000 character limit)</p>
+            <textarea id="comments" name="comment" value={this.state.comments} maxLength="10000" placeholder="Write any comments you have about this form" onChange={this.handleChange}></textarea>
+            <p>(10,000 character limit)</p>
             <br></br><br></br>
 
-            <input type="submit"value="Submit Review" onChange/>
+            <input type="submit" value="Submit Review" onChange />
             <br></br><br></br>
             {reviewError}
-            </form>
-          </div>
+          </form>
         </div>
+      </div>
     );
   }
 }
@@ -932,8 +923,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    reviewForm: (form, inDB, isModified) => {dispatch(reviewForm(form, inDB, isModified))},
+    reviewForm: (form, inDB, isModified) => { dispatch(reviewForm(form, inDB, isModified)) },
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(formReview)
+export default connect(mapStateToProps, mapDispatchToProps)(FormReview)
